@@ -161,7 +161,7 @@
 
     if(!name){ alert("Please enter Name"); return; }
     if(!village){ alert("Please enter Village"); return; }
-    if(cell.length !== 10){ alert("Please enter valid 10 digit Cell No."); return; }
+    if(!cell){ alert("Please enter Cell No."); return; }
 
     const member = {
       id: editId || Date.now().toString(),
@@ -184,17 +184,18 @@
   }
 
   function sendToGoogleSheet(member){
+    const sno = members.findIndex(m => m.id === member.id) + 1;
+    const formData = new URLSearchParams();
+    formData.append("sno", sno);
+    formData.append("name", member.name);
+    formData.append("village", member.village);
+    formData.append("occupation", member.occupation || "");
+    formData.append("cell", member.cell);
+
     fetch(GOOGLE_SCRIPT_URL, {
       method: "POST",
       mode: "no-cors",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({
-        sno: members.length,
-        name: member.name,
-        village: member.village,
-        occupation: member.occupation,
-        cell: member.cell
-      })
+      body: formData
     }).catch(() => {
       alert("Saved in app, but Google Sheet sync failed. Please check internet.");
     });
@@ -303,3 +304,4 @@
   renderTable();
 </script></body>
 </html>
+
