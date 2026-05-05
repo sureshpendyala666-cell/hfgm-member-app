@@ -205,12 +205,7 @@ function sendToGoogleSheet(member, sno){
   formData.append("occupation", member.occupation);
   formData.append("cell", member.cell);
 
-  fetch(GOOGLE_SCRIPT_URL,{
-    method:"POST",
-    mode:"no-cors",
-    body:formData
-  });
-}
+ fetch("https://script.google.com/macros/s/AKfycbxs44Zm4j3kK3jcsEKGQjUWGtsrt34Vun0Zcx9foU7G0OibLM5qviUg5b6Tdnuaitzo9g/exec", {
 
 function resetForm(){
   document.getElementById("editId").value = "";
