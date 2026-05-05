@@ -3,44 +3,152 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HFGM Member App</title>
+<title>HFGM Member Pro App</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Arial;
+  background:linear-gradient(135deg,#06172b,#0b4da2,#00a6a6);
+  padding:15px;
+}
+.app{max-width:1000px;margin:auto}
+.header{
+  text-align:center;color:white;padding:25px;
+  background:rgba(255,255,255,.15);
+  border-radius:25px;margin-bottom:20px;
+}
+.card{
+  background:white;padding:18px;border-radius:20px;
+  box-shadow:0 10px 25px #0004;margin-bottom:20px;
+}
+input{
+  width:100%;padding:12px;margin:8px 0;
+  border-radius:10px;border:1px solid #ccc;font-size:16px;
+}
+button{
+  padding:12px 18px;border:0;border-radius:10px;
+  background:#0b4da2;color:white;font-weight:bold;
+  margin:5px;cursor:pointer;
+}
+.green{background:#0b8f68}
+.red{background:#d93025}
+table{width:100%;border-collapse:collapse;margin-top:15px;background:white}
+th{background:#0b4da2;color:white;padding:10px}
+td{border:1px solid #ddd;padding:8px;text-align:center}
+.grid{display:grid;grid-template-columns:1fr 2fr;gap:20px}
+@media(max-width:800px){.grid{grid-template-columns:1fr}}
+</style>
 </head>
 
-<body style="font-family:Arial;padding:20px">
+<body>
 
-<h2>HFGM Member App</h2>
+<div class="app">
 
-<h2>HFGM Member App</h2>
+  <div class="header">
+    <h1>🕊️ HFGM Member Pro App</h1>
+    <p>Holy Spirit Fellowship Global Ministry</p>
+  </div>
 
-<input type="text" id="name" placeholder="Enter name"><br><br>
-<input type="text" id="village" placeholder="Enter village"><br><br>
-<input type="text" id="occupation" placeholder="Enter occupation"><br><br>
-<input type="text" id="cell" placeholder="Enter mobile number"><br><br>
+  <div class="grid">
 
-<button onclick="saveData()">Save</button>
+    <div class="card">
+      <h2>Add Member</h2>
+
+      <input id="name" placeholder="Name">
+      <input id="village" placeholder="Village">
+      <input id="occupation" placeholder="Occupation">
+      <input id="cell" placeholder="Cell No">
+
+      <button onclick="saveData()">Save Member</button>
+      <button class="red" onclick="clearForm()">Clear</button>
+    </div>
+
+    <div class="card">
+      <h2>Members List</h2>
+
+      <input id="search" placeholder="Search member..." oninput="renderTable()">
+
+      <table>
+        <thead>
+          <tr>
+            <th>S.No</th>
+            <th>Name</th>
+            <th>Village</th>
+            <th>Occupation</th>
+            <th>Cell</th>
+            <th>WhatsApp</th>
+          </tr>
+        </thead>
+        <tbody id="memberTable"></tbody>
+      </table>
+    </div>
+
+  </div>
+
+</div>
+
 <script>
-function saveData() {
-  var name = document.getElementById("name").value;
-  var village = document.getElementById("village").value;
-  var occupation = document.getElementById("occupation").value;
-  var cell = document.getElementById("cell").value;
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxs44Zm4j3kK3jcsEKGQjUWGtsrt34Vun0Zcx9foU7G0OibLM5qviUg5b6Tdnuaitzo9g/exec";
 
-fetch("https://script.google.com/macros/s/AKfycbxs44Zm4j3kK3jcsEKGQjUWGtsrt34Vun0Zcx9foU7G0OibLM5qviUg5b6Tdnuaitzo9g/exec", {
-    method: "POST",
-    body: JSON.stringify({
-      name: name,
-      village: village,
-      occupation: occupation,
-      cell: cell
-    })
-  })
-  .then(function(response){
-    alert("Saved Successfully ✅");
-  })
-  .catch(function(error){
-    alert("Error ❌");
+let members = JSON.parse(localStorage.getItem("members") || "[]");
+
+function saveData(){
+  let name = document.getElementById("name").value.trim();
+  let village = document.getElementById("village").value.trim();
+  let occupation = document.getElementById("occupation").value.trim();
+  let cell = document.getElementById("cell").value.trim();
+
+  if(!name || !village || !cell){
+    alert("Name, Village, Cell compulsory");
+    return;
+  }
+
+  let member = {name,village,occupation,cell};
+  members.push(member);
+  localStorage.setItem("members", JSON.stringify(members));
+  renderTable();
+  clearForm();
+
+  fetch(SCRIPT_URL,{
+    method:"POST",
+    body:JSON.stringify(member)
   });
+
+  alert("Saved Successfully ✅");
 }
+
+function clearForm(){
+  document.getElementById("name").value="";
+  document.getElementById("village").value="";
+  document.getElementById("occupation").value="";
+  document.getElementById("cell").value="";
+}
+
+function renderTable(){
+  let q = document.getElementById("search").value.toLowerCase();
+  let table = document.getElementById("memberTable");
+
+  let list = members.filter(m =>
+    m.name.toLowerCase().includes(q) ||
+    m.village.toLowerCase().includes(q) ||
+    m.occupation.toLowerCase().includes(q) ||
+    m.cell.includes(q)
+  );
+
+  table.innerHTML = list.map((m,i)=>`
+    <tr>
+      <td>${i+1}</td>
+      <td>${m.name}</td>
+      <td>${m.village}</td>
+      <td>${m.occupation}</td>
+      <td>${m.cell}</td>
+      <td><a href="https://wa.me/91${m.cell}" target="_blank">WhatsApp</a></td>
+    </tr>
+  `).join("");
+}
+
+renderTable();
 </script>
 
 </body>
