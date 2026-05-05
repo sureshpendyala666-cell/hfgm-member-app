@@ -1,39 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>HFGM Member App</title>
+</head>
+
+<body>
+
+<h2>Add Member</h2>
+
+<input id="name" placeholder="Name"><br><br>
+<input id="village" placeholder="Village"><br><br>
+<input id="occupation" placeholder="Occupation"><br><br>
+<input id="cell" placeholder="Mobile"><br><br>
+
+<button onclick="saveData()">Save</button>
+
 <script>
-let count = 0;
+function saveData() {
 
-function saveMember(){
-  count++;
+  var name = document.getElementById("name").value;
+  var village = document.getElementById("village").value;
+  var occupation = document.getElementById("occupation").value;
+  var cell = document.getElementById("cell").value;
 
-  let name = document.getElementById("name").value;
-  let village = document.getElementById("village").value;
-  let occupation = document.getElementById("occupation").value;
-  let cell = document.getElementById("cell").value;
-
-  // TABLE update
-  document.getElementById("table").innerHTML += `
-    <tr>
-      <td>${count}</td>
-      <td>${name}</td>
-      <td>${village}</td>
-      <td>${occupation}</td>
-      <td>${cell}</td>
-    </tr>
-  `;
-
-  // 🔥 GOOGLE SHEET SAVE
-  fetch("https://script.google.com/macros/s/AKfycbxs44Zm4j3kK3jcsEKGQjUWGtsrt34Vun0Zcx9foU7G0OibLM5qviUg5b6Tdnuaitzo9g/exec", {
+  fetch("PASTE_YOUR_SCRIPT_URL_HERE", {
     method: "POST",
-    body: new URLSearchParams({
-      sno: count,
+    body: JSON.stringify({
       name: name,
       village: village,
       occupation: occupation,
       cell: cell
     })
+  })
+  .then(res => res.json())
+  .then(data => {
+    alert("Saved Successfully ✅");
+  })
+  .catch(err => {
+    alert("Error ❌");
   });
-
-  alert("Saved + Sent to Sheet ✅");
 }
 </script>
 
-
+</body>
+</html>
