@@ -1,35 +1,7 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Test App</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-</head>
-<body style="font-family:Arial;padding:20px">
-
-<h2>HFGM Member Test</h2>
-
-<input id="name" placeholder="Name"><br><br>
-<input id="village" placeholder="Village"><br><br>
-<input id="occupation" placeholder="Occupation"><br><br>
-<input id="cell" placeholder="Cell No"><br><br>
-
-<button onclick="saveMember()">Save Member</button>
-
-<table border="1" width="100%" style="margin-top:20px">
-<thead>
-<tr>
-<th>S.No</th><th>Name</th><th>Village</th><th>Occupation</th><th>Cell</th>
-</tr>
-</thead>
-<tbody id="table"></tbody>
-</table>
-
 <script>
 let count = 0;
 
 function saveMember(){
-  alert("Button working");
-
   count++;
 
   let name = document.getElementById("name").value;
@@ -37,6 +9,7 @@ function saveMember(){
   let occupation = document.getElementById("occupation").value;
   let cell = document.getElementById("cell").value;
 
+  // TABLE update
   document.getElementById("table").innerHTML += `
     <tr>
       <td>${count}</td>
@@ -46,9 +19,21 @@ function saveMember(){
       <td>${cell}</td>
     </tr>
   `;
+
+  // 🔥 GOOGLE SHEET SAVE
+  fetch("https://script.google.com/macros/s/AKfycbxs44Zm4j3kK3jcsEKGQjUWGtsrt34Vun0Zcx9foU7G0OibLM5qviUg5b6Tdnuaitzo9g/exec", {
+    method: "POST",
+    body: new URLSearchParams({
+      sno: count,
+      name: name,
+      village: village,
+      occupation: occupation,
+      cell: cell
+    })
+  });
+
+  alert("Saved + Sent to Sheet ✅");
 }
 </script>
 
-</body>
-</html>
 
