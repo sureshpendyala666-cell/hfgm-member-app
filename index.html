@@ -1,23 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HFGM Member App</title>
 </head>
 
-<body>
+<body style="font-family:Arial;padding:20px">
 
-<h2>Add Member</h2>
+<h2>HFGM Member App</h2>
 
 <input id="name" placeholder="Name"><br><br>
 <input id="village" placeholder="Village"><br><br>
 <input id="occupation" placeholder="Occupation"><br><br>
-<input id="cell" placeholder="Mobile"><br><br>
+<input id="cell" placeholder="Cell No"><br><br>
 
 <button onclick="saveData()">Save</button>
 
 <script>
 function saveData() {
-
   var name = document.getElementById("name").value;
   var village = document.getElementById("village").value;
   var occupation = document.getElementById("occupation").value;
@@ -32,11 +33,10 @@ function saveData() {
       cell: cell
     })
   })
-  .then(res => res.json())
-  .then(data => {
+  .then(function(response){
     alert("Saved Successfully ✅");
   })
-  .catch(err => {
+  .catch(function(error){
     alert("Error ❌");
   });
 }
