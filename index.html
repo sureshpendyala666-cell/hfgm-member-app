@@ -25,7 +25,7 @@ function saveData() {
   var occupation = document.getElementById("occupation").value;
   var cell = document.getElementById("cell").value;
 
- fetch("https://script.google.com/macros/s/AKfycbxs44Zm4j3kK3jcsEKGQjUWGtsrt34Vun0Zcx9foU7G0OibLM5qviUg5b6Tdnuaitzo9g/exec", {
+fetch("https://script.google.com/macros/s/AKfycbxs44Zm4j3kK3jcsEKGQjUWGtsrt34Vun0Zcx9foU7G0OibLM5qviUg5b6Tdnuaitzo9g/exec", {
     method: "POST",
     body: JSON.stringify({
       name: name,
