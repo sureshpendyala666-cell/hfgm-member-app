@@ -113,7 +113,11 @@ fetch(SCRIPT_URL, {
   mode: "no-cors",
   body: formData
 });
-
+let member = {name, village, occupation, cell};
+members.push(member);
+localStorage.setItem("members", JSON.stringify(members));
+renderTable();
+clearForm();
 alert("Saved Successfully ✅");
 }
 
