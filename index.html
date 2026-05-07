@@ -146,18 +146,22 @@ function saveMember(){
 }
 
 function sendToGoogleSheet(member){
+
   const sno = members.findIndex(m => m.id === member.id) + 1;
 
-  const url = GOOGLE_SCRIPT_URL
-    + "?sno=" + encodeURIComponent(sno)
+  const url =
+    GOOGLE_SCRIPT_URL
+    + "?sno=" + sno
     + "&name=" + encodeURIComponent(member.name)
     + "&village=" + encodeURIComponent(member.village)
     + "&occupation=" + encodeURIComponent(member.occupation || "")
     + "&cell=" + encodeURIComponent(member.cell);
 
-  fetch(url, { mode: "no-cors" });
-}
+  fetch(url)
+    .then(() => console.log("Saved to Google Sheet"))
+    .catch(err => console.log(err));
 
+}
 function resetForm(){
   editId.value="";
   name.value="";
