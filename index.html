@@ -3,283 +3,539 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HFGM Member Pro App</title>
+<title>HFGM Ministry App</title>
+
 <style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:Arial}
-body{min-height:100vh;background:linear-gradient(135deg,#071726,#0b4da2,#09a7a7);padding:16px}
-.app{max-width:1100px;margin:auto}
-.hero{color:white;text-align:center;padding:26px;border-radius:28px;background:rgba(255,255,255,.12);margin-bottom:18px}
-.logo{font-size:54px}
-.grid{display:grid;grid-template-columns:380px 1fr;gap:18px}
-.card{background:white;border-radius:24px;padding:18px;box-shadow:0 16px 40px #0004}
-label{font-weight:bold;margin-top:12px;display:block}
-input{width:100%;padding:13px;margin-top:6px;border-radius:14px;border:1px solid #ccc}
-button{border:0;border-radius:12px;padding:10px 12px;font-weight:bold;cursor:pointer}
-.primary{background:#0b4da2;color:white}
-.clear{background:#e8eef7;color:#0b4da2}
-.green{background:#0b8f68;color:white}
-.red{background:#d93025;color:white}
-.tools{display:grid;grid-template-columns:1fr 150px 130px;gap:10px;margin-bottom:14px}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
-.stat{background:#f2f7ff;border-radius:16px;padding:12px;text-align:center}
-.stat b{font-size:22px;color:#0b4da2;display:block}
-.table-wrap{overflow:auto}
-table{width:100%;border-collapse:collapse;min-width:900px;background:white}
-th{background:#0b4da2;color:white;padding:12px;font-size:13px}
-td{padding:10px;border-bottom:1px solid #ddd;text-align:center}
-.whatsapp{background:#25D366;color:white;text-decoration:none;padding:8px 10px;border-radius:10px;font-size:12px}
-.mini{padding:8px 10px;font-size:12px}
-.footer{text-align:center;color:white;margin-top:16px}
-@media(max-width:850px){.grid{grid-template-columns:1fr}.tools{grid-template-columns:1fr}}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial;
+}
+
+body{
+background:linear-gradient(135deg,#06151c,#0b4da2,#0aa6a6);
+padding:15px;
+min-height:100vh;
+}
+
+.app{
+max-width:1200px;
+margin:auto;
+}
+
+.topmenu{
+display:flex;
+gap:10px;
+background:white;
+padding:12px;
+border-radius:15px;
+margin-bottom:15px;
+overflow:auto;
+}
+
+.topmenu a{
+text-decoration:none;
+background:#0b4da2;
+color:white;
+padding:10px 15px;
+border-radius:10px;
+font-weight:bold;
+white-space:nowrap;
+}
+
+.hero{
+background:rgba(255,255,255,.15);
+padding:25px;
+border-radius:25px;
+text-align:center;
+color:white;
+margin-bottom:20px;
+}
+
+.hero h1{
+font-size:32px;
+margin-top:10px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:350px 1fr;
+gap:20px;
+}
+
+.card{
+background:white;
+padding:20px;
+border-radius:20px;
+box-shadow:0 10px 30px rgba(0,0,0,.2);
+}
+
+.card h2{
+margin-bottom:15px;
+color:#0b4da2;
+}
+
+input{
+width:100%;
+padding:12px;
+margin-top:10px;
+border-radius:10px;
+border:1px solid #ccc;
+}
+
+button{
+padding:12px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+font-weight:bold;
+}
+
+.primary{
+background:#0b4da2;
+color:white;
+width:100%;
+margin-top:15px;
+}
+
+.green{
+background:#0b8f68;
+color:white;
+}
+
+.red{
+background:#d93025;
+color:white;
+}
+
+.tools{
+display:flex;
+gap:10px;
+margin-bottom:15px;
+}
+
+.tools input{
+margin-top:0;
+}
+
+.stats{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:10px;
+margin-bottom:15px;
+}
+
+.stat{
+background:#f2f7ff;
+padding:15px;
+border-radius:15px;
+text-align:center;
+}
+
+.stat b{
+display:block;
+font-size:22px;
+color:#0b4da2;
+}
+
+.table-wrap{
+overflow:auto;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+background:white;
+}
+
+th{
+background:#0b4da2;
+color:white;
+padding:10px;
+}
+
+td{
+padding:10px;
+border-bottom:1px solid #ddd;
+text-align:center;
+}
+
+.whatsapp{
+background:#25D366;
+color:white;
+padding:8px 10px;
+border-radius:10px;
+text-decoration:none;
+}
+
+.actions{
+display:flex;
+gap:5px;
+justify-content:center;
+}
+
+.mini{
+padding:8px 10px;
+font-size:12px;
+}
+
+.footer{
+text-align:center;
+color:white;
+margin-top:20px;
+}
+
+@media(max-width:850px){
+
+.grid{
+grid-template-columns:1fr;
+}
+
+}
+
 </style>
 </head>
 
 <body>
+
 <div class="app">
-  <div class="hero">
-    <div class="logo">🕊️</div>
-    <h1>HFGM Member Pro App</h1>
-    <p>Holy Spirit Fellowship Global Ministry • Member Registration</p>
-  </div>
 
-  <div class="grid">
-    <div class="card">
-      <h2 id="formTitle">Add New Member</h2>
-      <input type="hidden" id="editId">
+<div class="topmenu">
 
-      <label>Name</label>
-      <input id="name" placeholder="Enter full name">
+<a href="#">Dashboard</a>
+<a href="#">Members</a>
+<a href="#">Attendance</a>
+<a href="#">Donations</a>
+<a href="#">Reports</a>
 
-      <label>Village</label>
-      <input id="village" placeholder="Enter village name">
+</div>
 
-      <label>Occupation</label>
-      <input id="occupation" placeholder="Enter occupation">
+<div class="hero">
 
-      <label>Cell No.</label>
-      <input id="cell" inputmode="numeric" maxlength="10" placeholder="Enter 10 digit mobile number">
+<div style="font-size:60px;">🕊️</div>
 
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:15px">
-        <button class="primary" onclick="saveMember()">Save Member</button>
-        <button class="clear" onclick="resetForm()">Clear</button>
-      </div>
-    </div>
+<h1>HFGM Ministry App</h1>
 
-    <div class="card">
-      <div class="stats">
-        <div class="stat"><b id="totalCount">0</b>Total</div>
-        <div class="stat"><b id="villageCount">0</b>Villages</div>
-        <div class="stat"><b id="todayCount">0</b>Today</div>
-      </div>
+<p>Holy Spirit Fellowship Global Ministry</p>
 
-      <div class="tools">
-        <input id="search" placeholder="Search" oninput="renderTable()">
-        <button class="green" onclick="downloadCSV()">Download Excel</button>
-        <button class="red" onclick="clearAll()">Clear All</button>
-      </div>
+</div>
 
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>S.No</th>
-              <th>Name</th>
-              <th>Village</th>
-              <th>Occupation</th>
-              <th>Cell</th>
-              <th>WhatsApp</th>
-              <th>ID Card</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody id="memberTable"></tbody>
-        </table>
-      </div>
-    </div>
-  </div>
+<div class="grid">
 
-  <div class="footer">Data saves in this mobile/browser automatically.</div>
+<div class="card">
+
+<h2>Add Member</h2>
+
+<input id="name" placeholder="Enter Name">
+
+<input id="village" placeholder="Enter Village">
+
+<input id="occupation" placeholder="Enter Occupation">
+
+<input id="cell" placeholder="Enter Cell Number">
+
+<button class="primary" onclick="saveMember()">
+
+Save Member
+
+</button>
+
+</div>
+
+<div class="card">
+
+<div class="stats">
+
+<div class="stat">
+<b id="totalCount">0</b>
+Total Members
+</div>
+
+<div class="stat">
+<b id="villageCount">0</b>
+Villages
+</div>
+
+<div class="stat">
+<b id="todayCount">0</b>
+Today
+</div>
+
+</div>
+
+<div class="tools">
+
+<input id="search" placeholder="Search..." oninput="renderTable()">
+
+<button class="green" onclick="downloadCSV()">
+Excel
+</button>
+
+<button class="red" onclick="clearAll()">
+Clear
+</button>
+
+</div>
+
+<div class="table-wrap">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>S.No</th>
+<th>Name</th>
+<th>Village</th>
+<th>Occupation</th>
+<th>Cell</th>
+<th>WhatsApp</th>
+<th>Actions</th>
+
+</tr>
+
+</thead>
+
+<tbody id="memberTable"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="footer">
+
+HFGM Ministry Management System
+
+</div>
+
 </div>
 
 <script>
-const STORAGE_KEY = "hfgm_members_pro";
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxlttLdb-YfhO7LPX5-eQl4mlY27ukO0ifr0hGYpPMqmAsfddZN_3BM8TvucgZrLhLxHw/exec";
-let members = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
 
-function saveToStorage(){
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(members));
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxlttLdb-YfhO7LPX5-eQl4mlY27ukO0ifr0hGYpPMqmAsfddZN_3BM8TvucgZrLhLxHw/exec";
+
+let members = JSON.parse(localStorage.getItem("members") || "[]");
+
+function saveStorage(){
+
+localStorage.setItem("members", JSON.stringify(members));
+
 }
 
-document.getElementById("cell").addEventListener("input", function(){
-  this.value = this.value.replace(/\D/g,"").slice(0,10);
-});
-
 function saveMember(){
-  const editId = document.getElementById("editId").value;
-  const name = document.getElementById("name").value.trim();
-  const village = document.getElementById("village").value.trim();
-  const occupation = document.getElementById("occupation").value.trim();
-  const cell = document.getElementById("cell").value.trim();
 
-  if(!name){alert("Please enter Name");return;}
-  if(!village){alert("Please enter Village");return;}
-  if(!cell){alert("Please enter Cell No.");return;}
+const name = document.getElementById("name").value;
+const village = document.getElementById("village").value;
+const occupation = document.getElementById("occupation").value;
+const cell = document.getElementById("cell").value;
 
-  const member = {
-    id: editId || Date.now().toString(),
-    name, village, occupation, cell,
-    createdDate: new Date().toISOString().slice(0,10)
-  };
+if(!name || !village || !cell){
 
-  if(editId){
-    members = members.map(m => m.id === editId ? {...m,...member} : m);
-    alert("Member updated ✅");
-  }else{
-    members.push(member);
-    sendToGoogleSheet(member);
-    alert("Member saved ✅");
-  }
+alert("Fill all details");
 
-  saveToStorage();
-  resetForm();
-  renderTable();
+return;
+
+}
+
+const member = {
+
+id:Date.now(),
+
+name,
+village,
+occupation,
+cell,
+
+date:new Date().toISOString().slice(0,10)
+
+};
+
+members.push(member);
+
+saveStorage();
+
+renderTable();
+
+sendToGoogleSheet(member);
+
+document.getElementById("name").value="";
+document.getElementById("village").value="";
+document.getElementById("occupation").value="";
+document.getElementById("cell").value="";
+
+alert("Saved Successfully");
+
 }
 
 function sendToGoogleSheet(member){
 
-  const sno = members.findIndex(m => m.id === member.id) + 1;
+const sno = members.length;
 
-  const url =
-    GOOGLE_SCRIPT_URL
-    + "?sno=" + sno
-    + "&name=" + encodeURIComponent(member.name)
-    + "&village=" + encodeURIComponent(member.village)
-    + "&occupation=" + encodeURIComponent(member.occupation || "")
-    + "&cell=" + encodeURIComponent(member.cell);
+const url =
+GOOGLE_SCRIPT_URL
++ "?sno=" + sno
++ "&name=" + encodeURIComponent(member.name)
++ "&village=" + encodeURIComponent(member.village)
++ "&occupation=" + encodeURIComponent(member.occupation)
++ "&cell=" + encodeURIComponent(member.cell);
 
-  fetch(url)
-    .then(() => console.log("Saved to Google Sheet"))
-    .catch(err => console.log(err));
+fetch(url);
 
-}
-function resetForm(){
-  editId.value="";
-  name.value="";
-  village.value="";
-  occupation.value="";
-  cell.value="";
-  formTitle.innerText="Add New Member";
-}
-
-function editMember(id){
-  const m = members.find(x=>x.id===id);
-  if(!m)return;
-  editId.value=m.id;
-  name.value=m.name;
-  village.value=m.village;
-  occupation.value=m.occupation;
-  cell.value=m.cell;
-  formTitle.innerText="Edit Member";
-  window.scrollTo({top:0,behavior:"smooth"});
-}
-
-function deleteMember(id){
-  if(!confirm("Delete this member?"))return;
-  members = members.filter(m=>m.id!==id);
-  saveToStorage();
-  renderTable();
-}
-
-function clearAll(){
-  if(!confirm("Delete all members?"))return;
-  members=[];
-  saveToStorage();
-  renderTable();
-}
-
-function filteredMembers(){
-  const q = search.value.toLowerCase().trim();
-  return members.filter(m =>
-    m.name.toLowerCase().includes(q) ||
-    m.village.toLowerCase().includes(q) ||
-    (m.occupation||"").toLowerCase().includes(q) ||
-    m.cell.includes(q)
-  );
 }
 
 function renderTable(){
-  const list = filteredMembers();
-  totalCount.innerText = members.length;
-  villageCount.innerText = new Set(members.map(m=>m.village.toLowerCase())).size;
-  const today = new Date().toISOString().slice(0,10);
-  todayCount.innerText = members.filter(m=>m.createdDate===today).length;
 
-  if(!list.length){
-    memberTable.innerHTML = <tr><td colspan="8">No members found</td></tr>;
-    return;
-  }
+const tbody = document.getElementById("memberTable");
 
-  memberTable.innerHTML = list.map((m,i)=>`
-    <tr>
-      <td>${i+1}</td>
-      <td><b>${m.name}</b></td>
-      <td>${m.village}</td>
-      <td>${m.occupation || "-"}</td>
-      <td>${m.cell}</td>
-      <td><a class="whatsapp" target="_blank" href="https://wa.me/91${m.cell}">WhatsApp</a></td>
-      <td><button class="mini green" onclick="printCard('${m.name}','${m.village}','${m.cell}',${i+1})">Print ID</button></td>
-      <td>
-        <button class="mini primary" onclick="editMember('${m.id}')">Edit</button>
-        <button class="mini red" onclick="deleteMember('${m.id}')">Delete</button>
-      </td>
-    </tr>
-  `).join("");
+const q = document.getElementById("search").value.toLowerCase();
+
+const filtered = members.filter(m =>
+
+m.name.toLowerCase().includes(q) ||
+m.village.toLowerCase().includes(q) ||
+m.cell.includes(q)
+
+);
+
+document.getElementById("totalCount").innerText = members.length;
+
+document.getElementById("villageCount").innerText =
+new Set(members.map(m=>m.village)).size;
+
+const today = new Date().toISOString().slice(0,10);
+
+document.getElementById("todayCount").innerText =
+members.filter(m=>m.date===today).length;
+
+tbody.innerHTML = filtered.map((m,i)=>`
+
+<tr>
+
+<td>${i+1}</td>
+
+<td>${m.name}</td>
+
+<td>${m.village}</td>
+
+<td>${m.occupation}</td>
+
+<td>${m.cell}</td>
+
+<td>
+
+<a class="whatsapp"
+href="https://wa.me/91${m.cell}"
+target="_blank">
+
+WhatsApp
+
+</a>
+
+</td>
+
+<td>
+
+<div class="actions">
+
+<button class="mini green"
+onclick="editMember(${m.id})">
+
+Edit
+
+</button>
+
+<button class="mini red"
+onclick="deleteMember(${m.id})">
+
+Delete
+
+</button>
+
+</div>
+
+</td>
+
+</tr>
+
+`).join("");
+
 }
 
-function printCard(name,village,cell,id){
-  let win = window.open("", "", "width=420,height=600");
-  win.document.write(`
-  <html>
-  <head>
-    <title>HFGM Member Card</title>
-    <style>
-      body{font-family:Arial;text-align:center;padding:20px;background:#f2f8ff}
-      .card{border:3px solid #0b4da2;border-radius:20px;padding:22px;background:white}
-      .logo{font-size:55px}
-      h2{color:#0b4da2}
-      p{font-size:18px}
-    </style>
-  </head>
-  <body>
-    <div class="card">
-      <div class="logo">🕊️</div>
-      <h2>HFGM MEMBER CARD</h2>
-      <p><b>ID:</b> HFGM00${id}</p>
-      <p><b>Name:</b> ${name}</p>
-      <p><b>Village:</b> ${village}</p>
-      <p><b>Cell:</b> ${cell}</p>
-    </div>
-    <script>window.print();<\/script>
-  </body>
-  </html>
-  `);
-  win.document.close();
+function deleteMember(id){
+
+members = members.filter(m=>m.id!==id);
+
+saveStorage();
+
+renderTable();
+
+}
+
+function editMember(id){
+
+const m = members.find(x=>x.id===id);
+
+document.getElementById("name").value = m.name;
+document.getElementById("village").value = m.village;
+document.getElementById("occupation").value = m.occupation;
+document.getElementById("cell").value = m.cell;
+
+deleteMember(id);
+
+}
+
+function clearAll(){
+
+if(confirm("Delete all members?")){
+
+members=[];
+
+saveStorage();
+
+renderTable();
+
+}
+
 }
 
 function downloadCSV(){
-  if(!members.length){alert("No data");return;}
-  let csv="S.No,Name,Village,Occupation,Cell,Date\n";
-  members.forEach((m,i)=>{
-    csv += ${i+1},"${m.name}","${m.village}","${m.occupation||""}","${m.cell}","${m.createdDate}"\n;
-  });
-  const blob = new Blob([csv],{type:"text/csv"});
-  const a=document.createElement("a");
-  a.href=URL.createObjectURL(blob);
-  a.download="HFGM_Members.csv";
-  a.click();
+
+let csv =
+"S.No,Name,Village,Occupation,Cell\n";
+
+members.forEach((m,i)=>{
+
+csv +=
+${i+1},${m.name},${m.village},${m.occupation},${m.cell}\n;
+
+});
+
+const blob =
+new Blob([csv], {type:"text/csv"});
+
+const a =
+document.createElement("a");
+
+a.href =
+URL.createObjectURL(blob);
+
+a.download =
+"HFGM_Members.csv";
+
+a.click();
+
 }
 
 renderTable();
+
 </script>
+
 </body>
 </html>
