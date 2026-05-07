@@ -376,20 +376,20 @@ alert("Saved Successfully");
 
 function sendToGoogleSheet(member){
 
-const sno = members.length;
+  const sno = members.length;
 
-const url =
-GOOGLE_SCRIPT_URL
-+ "?sno=" + sno
-+ "&name=" + encodeURIComponent(member.name)
-+ "&village=" + encodeURIComponent(member.village)
-+ "&occupation=" + encodeURIComponent(member.occupation)
-+ "&cell=" + encodeURIComponent(member.cell);
+  const url =
+    GOOGLE_SCRIPT_URL
+    + "?sno=" + encodeURIComponent(sno)
+    + "&name=" + encodeURIComponent(member.name)
+    + "&village=" + encodeURIComponent(member.village)
+    + "&occupation=" + encodeURIComponent(member.occupation || "")
+    + "&cell=" + encodeURIComponent(member.cell);
 
-fetch(url, { mode: "no-cors" });
+  const img = new Image();
+  img.src = url;
 
 }
-
 
 
 function renderTable(){
