@@ -386,9 +386,11 @@ GOOGLE_SCRIPT_URL
 + "&occupation=" + encodeURIComponent(member.occupation)
 + "&cell=" + encodeURIComponent(member.cell);
 
-fetch(url);
+fetch(url, { mode: "no-cors" });
 
 }
+
+
 
 function renderTable(){
 
