@@ -11,6 +11,10 @@ body{font-family:Arial;background:linear-gradient(135deg,#003b8e,#02a6a6);paddin
 .hero{text-align:center;background:#0b4da2;color:white}
 .topmenu{display:flex;gap:10px;background:white;padding:12px;border-radius:15px;margin:15px;overflow:auto}
 .topmenu a{text-decoration:none;background:#0b4da2;color:white;padding:10px 15px;border-radius:10px;font-weight:bold;white-space:nowrap}
+.dashboard{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin:15px}
+.dashcard{background:white;border-radius:20px;padding:20px;text-align:center;box-shadow:0 6px 20px #0003}
+.dashcard h3{color:#0b4da2;font-size:26px;margin:5px}
+.dashcard p{font-weight:bold}
 .grid{display:grid;grid-template-columns:350px 1fr;gap:20px}
 input,button,select{width:100%;padding:12px;margin:8px 0;border-radius:10px;border:1px solid #ccc}
 button{background:#0b4da2;color:white;font-weight:bold;cursor:pointer}
@@ -25,7 +29,7 @@ table{width:100%;border-collapse:collapse;min-width:850px}
 th{background:#0b4da2;color:white;padding:10px}
 td{padding:10px;border-bottom:1px solid #ddd;text-align:center}
 .totalBox{background:#eef5ff;padding:15px;border-radius:15px;margin:10px 0;font-size:20px;font-weight:bold;color:#0b4da2;text-align:center}
-@media(max-width:800px){.grid{grid-template-columns:1fr}}
+@media(max-width:800px){.grid,.dashboard{grid-template-columns:1fr}}
 </style>
 </head>
 
@@ -34,6 +38,7 @@ td{padding:10px;border-bottom:1px solid #ddd;text-align:center}
 <div class="app">
 
 <div class="topmenu">
+<a href="#dashboard">Dashboard</a>
 <a href="#members">Members</a>
 <a href="#attendance">Attendance</a>
 <a href="#donations">Donations</a>
@@ -42,6 +47,13 @@ td{padding:10px;border-bottom:1px solid #ddd;text-align:center}
 <div class="hero">
 <h1>🕊️ HFGM Ministry Pro App</h1>
 <p>Holy Spirit Fellowship Global Ministry</p>
+</div>
+
+<div class="dashboard" id="dashboard">
+<div class="dashcard"><h3 id="dashMembers">0</h3><p>👥 Total Members</p></div>
+<div class="dashcard"><h3 id="dashVillages">0</h3><p>🏘️ Villages</p></div>
+<div class="dashcard"><h3 id="dashAttendance">0</h3><p>🙏 Attendance</p></div>
+<div class="dashcard"><h3>₹<span id="dashDonations">0</span></h3><p>💰 Donations</p></div>
 </div>
 
 <div class="grid" id="members">
@@ -150,6 +162,15 @@ let members = JSON.parse(localStorage.getItem("hfgm_members") || "[]");
 let attendance = JSON.parse(localStorage.getItem("hfgm_attendance") || "[]");
 let donations = JSON.parse(localStorage.getItem("hfgm_donations") || "[]");
 
+function updateDashboard(){
+let totalDonation = donations.reduce((sum,d)=>sum+Number(d.amount || 0),0);
+
+document.getElementById("dashMembers").innerText = members.length;
+document.getElementById("dashVillages").innerText = new Set(members.map(m=>(m.village || "").toLowerCase())).size;
+document.getElementById("dashAttendance").innerText = attendance.length;
+document.getElementById("dashDonations").innerText = totalDonation;
+}
+
 function saveMember(){
 const name=document.getElementById("name").value.trim();
 const village=document.getElementById("village").value.trim();
@@ -228,6 +249,8 @@ tbody.innerHTML+=`
 <td><button class="delete" onclick="deleteMember(${members.indexOf(m)})">Delete</button></td>
 </tr>`;
 });
+
+updateDashboard();
 }
 
 function deleteMember(index){
@@ -302,6 +325,8 @@ tbody.innerHTML+=`
 <td><button class="delete" onclick="deleteAttendance(${i})">Delete</button></td>
 </tr>`;
 });
+
+updateDashboard();
 }
 
 function deleteAttendance(index){
@@ -355,6 +380,7 @@ tbody.innerHTML+=`
 });
 
 document.getElementById("donationTotal").innerText=total;
+updateDashboard();
 }
 
 function deleteDonation(index){
@@ -368,6 +394,7 @@ renderDonations();
 renderTable();
 renderAttendance();
 renderDonations();
+updateDashboard();
 </script>
 
 </body>
