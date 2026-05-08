@@ -14,20 +14,19 @@ body{font-family:Arial;background:linear-gradient(135deg,#003b8e,#02a6a6);paddin
 .dashboard{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin:15px}
 .dashcard{background:white;border-radius:20px;padding:20px;text-align:center;box-shadow:0 6px 20px #0003}
 .dashcard h3{color:#0b4da2;font-size:26px;margin:5px}
-.dashcard p{font-weight:bold}
 .grid{display:grid;grid-template-columns:350px 1fr;gap:20px}
 input,button,select{width:100%;padding:12px;margin:8px 0;border-radius:10px;border:1px solid #ccc}
 button{background:#0b4da2;color:white;font-weight:bold;cursor:pointer}
-.delete{background:#d93025}
-.green{background:#0b8f68}
+.delete{background:#d93025}.green{background:#0b8f68}
 .whatsapp{background:#25D366;color:white;padding:7px 10px;border-radius:8px;text-decoration:none;font-size:13px}
 .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:10px}
 .stat{background:#eef5ff;padding:12px;border-radius:12px;text-align:center}
 .stat b{font-size:22px;color:#0b4da2}
 .table-wrap{overflow:auto}
-table{width:100%;border-collapse:collapse;min-width:850px}
+table{width:100%;border-collapse:collapse;min-width:950px}
 th{background:#0b4da2;color:white;padding:10px}
 td{padding:10px;border-bottom:1px solid #ddd;text-align:center}
+.photoPreview{width:90px;height:90px;border-radius:50%;object-fit:cover;border:3px solid #0b4da2;display:block;margin:10px auto}
 .totalBox{background:#eef5ff;padding:15px;border-radius:15px;margin:10px 0;font-size:20px;font-weight:bold;color:#0b4da2;text-align:center}
 @media(max-width:800px){.grid,.dashboard{grid-template-columns:1fr}}
 </style>
@@ -60,10 +59,16 @@ td{padding:10px;border-bottom:1px solid #ddd;text-align:center}
 
 <div class="card">
 <h2>Add Member</h2>
+
 <input id="name" placeholder="Name">
 <input id="village" placeholder="Village">
 <input id="occupation" placeholder="Occupation">
 <input id="cell" placeholder="Cell Number">
+
+<label><b>Member Photo</b></label>
+<input id="photo" type="file" accept="image/*" onchange="previewPhoto()">
+<img id="photoPreview" class="photoPreview" src="" style="display:none">
+
 <button onclick="saveMember()">Save Member</button>
 </div>
 
@@ -82,6 +87,7 @@ td{padding:10px;border-bottom:1px solid #ddd;text-align:center}
 <thead>
 <tr>
 <th>ID</th>
+<th>Photo</th>
 <th>Name</th>
 <th>Village</th>
 <th>Occupation</th>
@@ -112,13 +118,7 @@ td{padding:10px;border-bottom:1px solid #ddd;text-align:center}
 <div class="table-wrap">
 <table>
 <thead>
-<tr>
-<th>S.No</th>
-<th>Name</th>
-<th>Date</th>
-<th>Status</th>
-<th>Delete</th>
-</tr>
+<tr><th>S.No</th><th>Name</th><th>Date</th><th>Status</th><th>Delete</th></tr>
 </thead>
 <tbody id="attendanceTable"></tbody>
 </table>
@@ -139,14 +139,7 @@ td{padding:10px;border-bottom:1px solid #ddd;text-align:center}
 <div class="table-wrap">
 <table>
 <thead>
-<tr>
-<th>S.No</th>
-<th>Name</th>
-<th>Amount</th>
-<th>Purpose</th>
-<th>Date</th>
-<th>Delete</th>
-</tr>
+<tr><th>S.No</th><th>Name</th><th>Amount</th><th>Purpose</th><th>Date</th><th>Delete</th></tr>
 </thead>
 <tbody id="donationTable"></tbody>
 </table>
@@ -161,10 +154,23 @@ const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxlttLdb-YfhO
 let members = JSON.parse(localStorage.getItem("hfgm_members") || "[]");
 let attendance = JSON.parse(localStorage.getItem("hfgm_attendance") || "[]");
 let donations = JSON.parse(localStorage.getItem("hfgm_donations") || "[]");
+let selectedPhoto = "";
+
+function previewPhoto(){
+const file = document.getElementById("photo").files[0];
+if(!file)return;
+
+const reader = new FileReader();
+reader.onload = function(e){
+selectedPhoto = e.target.result;
+document.getElementById("photoPreview").src = selectedPhoto;
+document.getElementById("photoPreview").style.display = "block";
+}
+reader.readAsDataURL(file);
+}
 
 function updateDashboard(){
 let totalDonation = donations.reduce((sum,d)=>sum+Number(d.amount || 0),0);
-
 document.getElementById("dashMembers").innerText = members.length;
 document.getElementById("dashVillages").innerText = new Set(members.map(m=>(m.village || "").toLowerCase())).size;
 document.getElementById("dashAttendance").innerText = attendance.length;
@@ -187,7 +193,8 @@ id:"HFGM"+(members.length+1),
 name,
 village,
 occupation,
-cell
+cell,
+photo:selectedPhoto
 };
 
 members.push(member);
@@ -199,20 +206,21 @@ document.getElementById("name").value="";
 document.getElementById("village").value="";
 document.getElementById("occupation").value="";
 document.getElementById("cell").value="";
+document.getElementById("photo").value="";
+document.getElementById("photoPreview").style.display="none";
+selectedPhoto="";
 
 alert("Member Saved ✅");
 }
 
 function sendToGoogleSheet(member){
 const sno=members.length;
-
 const url=GOOGLE_SCRIPT_URL
 +"?sno="+encodeURIComponent(sno)
 +"&name="+encodeURIComponent(member.name)
 +"&village="+encodeURIComponent(member.village)
 +"&occupation="+encodeURIComponent(member.occupation || "")
 +"&cell="+encodeURIComponent(member.cell);
-
 const img=new Image();
 img.src=url;
 }
@@ -229,23 +237,24 @@ const filtered=members.filter(m =>
 );
 
 document.getElementById("totalCount").innerText=members.length;
-document.getElementById("villageCount").innerText=
-new Set(members.map(m=>(m.village || "").toLowerCase())).size;
+document.getElementById("villageCount").innerText=new Set(members.map(m=>(m.village || "").toLowerCase())).size;
 
 tbody.innerHTML="";
 
 filtered.forEach((m,i)=>{
 const id = m.id || "HFGM"+(members.indexOf(m)+1);
+const photo = m.photo || "";
 
 tbody.innerHTML+=`
 <tr>
 <td>${id}</td>
+<td>${photo ? <img src="${photo}" style="width:50px;height:50px;border-radius:50%;object-fit:cover"> : "No Photo"}</td>
 <td>${m.name}</td>
 <td>${m.village}</td>
 <td>${m.occupation || ""}</td>
 <td>${m.cell}</td>
 <td><a class="whatsapp" target="_blank" href="https://wa.me/91${m.cell}">WhatsApp</a></td>
-<td><button class="green" onclick="printIDCard('${id}','${m.name}','${m.village}','${m.cell}')">Print ID</button></td>
+<td><button class="green" onclick="printIDCard('${id}','${m.name}','${m.village}','${m.cell}','${photo}')">Print ID</button></td>
 <td><button class="delete" onclick="deleteMember(${members.indexOf(m)})">Delete</button></td>
 </tr>`;
 });
@@ -261,7 +270,7 @@ renderTable();
 }
 }
 
-function printIDCard(id,name,village,cell){
+function printIDCard(id,name,village,cell,photo){
 const win=window.open("");
 win.document.write(`
 <html>
@@ -269,20 +278,24 @@ win.document.write(`
 <title>ID Card</title>
 <style>
 body{font-family:Arial;display:flex;justify-content:center;align-items:center;height:100vh;background:#eee}
-.card{width:320px;background:#0b4da2;color:white;padding:22px;border-radius:20px;text-align:center}
-.card h1{margin:5px}
-.card p{font-size:17px}
+.card{width:350px;background:linear-gradient(135deg,#073b8e,#0aa6a6);color:white;padding:22px;border-radius:22px;text-align:center;border:5px solid #fff;box-shadow:0 8px 30px #0005}
+.logo{font-size:42px}
+.photo{width:110px;height:110px;border-radius:50%;object-fit:cover;border:4px solid white;margin:10px auto;background:#ddd}
+.card h2{margin:5px 0}
+.card p{font-size:17px;margin:8px 0}
+.footer{font-size:13px;margin-top:12px;border-top:1px solid #ffffff88;padding-top:10px}
 </style>
 </head>
 <body>
 <div class="card">
-<h1>🕊️ HFGM</h1>
-<h2>MEMBER ID CARD</h2>
+<div class="logo">🕊️</div>
+<h2>HFGM MEMBER ID CARD</h2>
+${photo ? <img class="photo" src="${photo}"> : <div class="photo"></div>}
 <p><b>ID:</b> ${id}</p>
 <p><b>Name:</b> ${name}</p>
 <p><b>Village:</b> ${village}</p>
 <p><b>Cell:</b> ${cell}</p>
-<p>Holy Spirit Fellowship Global Ministry</p>
+<div class="footer">Holy Spirit Fellowship Global Ministry</div>
 </div>
 <script>window.print();<\/script>
 </body>
@@ -363,7 +376,6 @@ alert("Donation Saved ✅");
 function renderDonations(){
 const tbody=document.getElementById("donationTable");
 tbody.innerHTML="";
-
 let total=0;
 
 donations.forEach((d,i)=>{
