@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>HFGM Member App</title>
+<title>HFGM Ministry App</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
 body{font-family:Arial;background:linear-gradient(135deg,#003b8e,#02a6a6);padding:20px;min-height:100vh}
-.app{max-width:1100px;margin:auto}
+.app{max-width:1150px;margin:auto}
 .hero,.card{background:white;padding:20px;border-radius:20px;margin:15px}
 .hero{text-align:center;background:#0b4da2;color:white}
 .topmenu{display:flex;gap:10px;background:white;padding:12px;border-radius:15px;margin:15px;overflow:auto}
@@ -23,6 +23,7 @@ button{background:#0b4da2;color:white;font-weight:bold;cursor:pointer}
 table{width:100%;border-collapse:collapse;min-width:700px}
 th{background:#0b4da2;color:white;padding:10px}
 td{padding:10px;border-bottom:1px solid #ddd;text-align:center}
+.totalBox{background:#eef5ff;padding:15px;border-radius:15px;margin:10px 0;font-size:20px;font-weight:bold;color:#0b4da2;text-align:center}
 @media(max-width:800px){.grid{grid-template-columns:1fr}}
 </style>
 </head>
@@ -32,18 +33,18 @@ td{padding:10px;border-bottom:1px solid #ddd;text-align:center}
 
 <div class="topmenu">
 <a href="#">Dashboard</a>
-<a href="#">Members</a>
+<a href="#members">Members</a>
 <a href="#attendance">Attendance</a>
-<a href="#">Donations</a>
+<a href="#donations">Donations</a>
 <a href="#">Reports</a>
 </div>
 
 <div class="hero">
-<h1>🕊️ HFGM Member App</h1>
+<h1>🕊️ HFGM Ministry App</h1>
 <p>Holy Spirit Fellowship Global Ministry</p>
 </div>
 
-<div class="grid">
+<div class="grid" id="members">
 
 <div class="card">
 <h2>Add Member</h2>
@@ -115,6 +116,39 @@ td{padding:10px;border-bottom:1px solid #ddd;text-align:center}
 </div>
 </div>
 
+<div class="card" id="donations">
+<h2>Donations</h2>
+
+<input id="donorName" placeholder="Donor Name">
+<input id="donationAmount" type="number" placeholder="Amount">
+<input id="donationPurpose" placeholder="Purpose">
+<input id="donationDate" type="date">
+
+<button onclick="saveDonation()">Save Donation</button>
+
+<div class="totalBox">
+Total Donations: ₹<span id="donationTotal">0</span>
+</div>
+
+<h3 style="color:#0b4da2">Donation List</h3>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>S.No</th>
+<th>Name</th>
+<th>Amount</th>
+<th>Purpose</th>
+<th>Date</th>
+<th>Delete</th>
+</tr>
+</thead>
+<tbody id="donationTable"></tbody>
+</table>
+</div>
+</div>
+
 </div>
 
 <script>
@@ -122,132 +156,185 @@ const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxlttLdb-YfhO
 
 let members = JSON.parse(localStorage.getItem("hfgm_members") || "[]");
 let attendance = JSON.parse(localStorage.getItem("hfgm_attendance") || "[]");
+let donations = JSON.parse(localStorage.getItem("hfgm_donations") || "[]");
 
 function saveMember(){
-  const name = document.getElementById("name").value.trim();
-  const village = document.getElementById("village").value.trim();
-  const occupation = document.getElementById("occupation").value.trim();
-  const cell = document.getElementById("cell").value.trim();
+const name=document.getElementById("name").value.trim();
+const village=document.getElementById("village").value.trim();
+const occupation=document.getElementById("occupation").value.trim();
+const cell=document.getElementById("cell").value.trim();
 
-  if(!name || !village || !cell){
-    alert("Please fill Name, Village, Cell");
-    return;
-  }
+if(!name || !village || !cell){
+alert("Please fill Name, Village, Cell");
+return;
+}
 
-  const member = {name,village,occupation,cell};
-  members.push(member);
-  localStorage.setItem("hfgm_members", JSON.stringify(members));
-  renderTable();
-  sendToGoogleSheet(member);
+const member={name,village,occupation,cell};
+members.push(member);
+localStorage.setItem("hfgm_members",JSON.stringify(members));
+renderTable();
+sendToGoogleSheet(member);
 
-  document.getElementById("name").value="";
-  document.getElementById("village").value="";
-  document.getElementById("occupation").value="";
-  document.getElementById("cell").value="";
+name.value="";
+document.getElementById("name").value="";
+document.getElementById("village").value="";
+document.getElementById("occupation").value="";
+document.getElementById("cell").value="";
 
-  alert("Saved Successfully ✅");
+alert("Member Saved ✅");
 }
 
 function sendToGoogleSheet(member){
-  const sno = members.length;
-  const url = GOOGLE_SCRIPT_URL
-    + "?sno=" + encodeURIComponent(sno)
-    + "&name=" + encodeURIComponent(member.name)
-    + "&village=" + encodeURIComponent(member.village)
-    + "&occupation=" + encodeURIComponent(member.occupation || "")
-    + "&cell=" + encodeURIComponent(member.cell);
+const sno=members.length;
+const url=GOOGLE_SCRIPT_URL
++"?sno="+encodeURIComponent(sno)
++"&name="+encodeURIComponent(member.name)
++"&village="+encodeURIComponent(member.village)
++"&occupation="+encodeURIComponent(member.occupation || "")
++"&cell="+encodeURIComponent(member.cell);
 
-  const img = new Image();
-  img.src = url;
+const img=new Image();
+img.src=url;
 }
 
 function renderTable(){
-  const tbody = document.getElementById("memberTable");
-  const search = document.getElementById("search").value.toLowerCase();
+const tbody=document.getElementById("memberTable");
+const search=document.getElementById("search").value.toLowerCase();
 
-  const filtered = members.filter(m =>
-    m.name.toLowerCase().includes(search) ||
-    m.village.toLowerCase().includes(search) ||
-    m.occupation.toLowerCase().includes(search) ||
-    m.cell.includes(search)
-  );
+const filtered=members.filter(m =>
+m.name.toLowerCase().includes(search) ||
+m.village.toLowerCase().includes(search) ||
+(m.occupation || "").toLowerCase().includes(search) ||
+m.cell.includes(search)
+);
 
-  document.getElementById("totalCount").innerText = members.length;
-  document.getElementById("villageCount").innerText =
-    new Set(members.map(m => m.village.toLowerCase())).size;
+document.getElementById("totalCount").innerText=members.length;
+document.getElementById("villageCount").innerText=new Set(members.map(m=>m.village.toLowerCase())).size;
 
-  tbody.innerHTML = "";
-
-  filtered.forEach((m,i)=>{
-    tbody.innerHTML += `
-      <tr>
-        <td>${i+1}</td>
-        <td>${m.name}</td>
-        <td>${m.village}</td>
-        <td>${m.occupation}</td>
-        <td>${m.cell}</td>
-        <td><a class="whatsapp" target="_blank" href="https://wa.me/91${m.cell}">WhatsApp</a></td>
-        <td><button class="delete" onclick="deleteMember(${members.indexOf(m)})">Delete</button></td>
-      </tr>
-    `;
-  });
+tbody.innerHTML="";
+filtered.forEach((m,i)=>{
+tbody.innerHTML+=`
+<tr>
+<td>${i+1}</td>
+<td>${m.name}</td>
+<td>${m.village}</td>
+<td>${m.occupation}</td>
+<td>${m.cell}</td>
+<td><a class="whatsapp" target="_blank" href="https://wa.me/91${m.cell}">WhatsApp</a></td>
+<td><button class="delete" onclick="deleteMember(${members.indexOf(m)})">Delete</button></td>
+</tr>`;
+});
 }
 
 function deleteMember(index){
-  if(confirm("Delete this member?")){
-    members.splice(index,1);
-    localStorage.setItem("hfgm_members", JSON.stringify(members));
-    renderTable();
-  }
+if(confirm("Delete this member?")){
+members.splice(index,1);
+localStorage.setItem("hfgm_members",JSON.stringify(members));
+renderTable();
+}
 }
 
 function saveAttendance(){
-  const name = document.getElementById("attName").value.trim();
-  const date = document.getElementById("attDate").value;
-  const status = document.getElementById("attStatus").value;
+const name=document.getElementById("attName").value.trim();
+const date=document.getElementById("attDate").value;
+const status=document.getElementById("attStatus").value;
 
-  if(!name || !date){
-    alert("Please enter name and date");
-    return;
-  }
+if(!name || !date){
+alert("Please enter name and date");
+return;
+}
 
-  attendance.push({name,date,status});
-  localStorage.setItem("hfgm_attendance", JSON.stringify(attendance));
-  renderAttendance();
+attendance.push({name,date,status});
+localStorage.setItem("hfgm_attendance",JSON.stringify(attendance));
+renderAttendance();
 
-  document.getElementById("attName").value="";
-  document.getElementById("attDate").value="";
+document.getElementById("attName").value="";
+document.getElementById("attDate").value="";
 
-  alert("Attendance Saved ✅");
+alert("Attendance Saved ✅");
 }
 
 function renderAttendance(){
-  const tbody = document.getElementById("attendanceTable");
-  tbody.innerHTML = "";
+const tbody=document.getElementById("attendanceTable");
+tbody.innerHTML="";
 
-  attendance.forEach((a,i)=>{
-    tbody.innerHTML += `
-      <tr>
-        <td>${i+1}</td>
-        <td>${a.name}</td>
-        <td>${a.date}</td>
-        <td>${a.status}</td>
-        <td><button class="delete" onclick="deleteAttendance(${i})">Delete</button></td>
-      </tr>
-    `;
-  });
+attendance.forEach((a,i)=>{
+tbody.innerHTML+=`
+<tr>
+<td>${i+1}</td>
+<td>${a.name}</td>
+<td>${a.date}</td>
+<td>${a.status}</td>
+<td><button class="delete" onclick="deleteAttendance(${i})">Delete</button></td>
+</tr>`;
+});
 }
 
 function deleteAttendance(index){
-  if(confirm("Delete attendance?")){
-    attendance.splice(index,1);
-    localStorage.setItem("hfgm_attendance", JSON.stringify(attendance));
-    renderAttendance();
-  }
+if(confirm("Delete attendance?")){
+attendance.splice(index,1);
+localStorage.setItem("hfgm_attendance",JSON.stringify(attendance));
+renderAttendance();
+}
+}
+
+function saveDonation(){
+const donorName=document.getElementById("donorName").value.trim();
+const amount=document.getElementById("donationAmount").value.trim();
+const purpose=document.getElementById("donationPurpose").value.trim();
+const date=document.getElementById("donationDate").value;
+
+if(!donorName || !amount){
+alert("Enter donor name and amount");
+return;
+}
+
+donations.push({donorName,amount,purpose,date});
+localStorage.setItem("hfgm_donations",JSON.stringify(donations));
+renderDonations();
+
+document.getElementById("donorName").value="";
+document.getElementById("donationAmount").value="";
+document.getElementById("donationPurpose").value="";
+document.getElementById("donationDate").value="";
+
+alert("Donation Saved ✅");
+}
+
+function renderDonations(){
+const tbody=document.getElementById("donationTable");
+tbody.innerHTML="";
+
+let total=0;
+
+donations.forEach((d,i)=>{
+total+=Number(d.amount);
+
+tbody.innerHTML+=`
+<tr>
+<td>${i+1}</td>
+<td>${d.donorName}</td>
+<td>₹${d.amount}</td>
+<td>${d.purpose}</td>
+<td>${d.date}</td>
+<td><button class="delete" onclick="deleteDonation(${i})">Delete</button></td>
+</tr>`;
+});
+
+document.getElementById("donationTotal").innerText=total;
+}
+
+function deleteDonation(index){
+if(confirm("Delete donation?")){
+donations.splice(index,1);
+localStorage.setItem("hfgm_donations",JSON.stringify(donations));
+renderDonations();
+}
 }
 
 renderTable();
 renderAttendance();
+renderDonations();
 </script>
 
 </body>
