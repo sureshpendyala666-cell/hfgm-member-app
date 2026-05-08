@@ -169,41 +169,13 @@ let donations = JSON.parse(localStorage.getItem("hfgm_donations") || "[]");
 let selectedPhoto = "";
 
 function previewPhoto(){
-const file=document.getElementById("photo").files[0];
-if(!file){selectedPhoto="";return;}
 
-const reader=new FileReader();
+selectedPhoto = "";
 
-reader.onload=function(e){
-const img=new Image();
+document.getElementById("photoPreview").style.display = "none";
 
-img.onload=function(){
-const canvas=document.createElement("canvas");
-const size=180;
-canvas.width=size;
-canvas.height=size;
-
-const ctx=canvas.getContext("2d");
-ctx.fillStyle="#ffffff";
-ctx.fillRect(0,0,size,size);
-
-let s=Math.min(img.width,img.height);
-let sx=(img.width-s)/2;
-let sy=(img.height-s)/2;
-
-ctx.drawImage(img,sx,sy,s,s,0,0,size,size);
-
-selectedPhoto=canvas.toDataURL("image/jpeg",0.55);
-
-document.getElementById("photoPreview").src=selectedPhoto;
-document.getElementById("photoPreview").style.display="block";
-};
-
-img.src=e.target.result;
-};
-
-reader.readAsDataURL(file);
 }
+
 
 function updateDashboard(){
 let totalDonation=donations.reduce((sum,d)=>sum+Number(d.amount||0),0);
