@@ -330,35 +330,28 @@ localStorage.setItem("members", JSON.stringify(members));
 
 function saveMember(){
 
-const name = document.getElementById("name").value;
-const village = document.getElementById("village").value;
-const occupation = document.getElementById("occupation").value;
-const cell = document.getElementById("cell").value;
+const name = document.getElementById("name").value.trim();
+const village = document.getElementById("village").value.trim();
+const occupation = document.getElementById("occupation").value.trim();
+const cell = document.getElementById("cell").value.trim();
 
 if(!name || !village || !cell){
-
-alert("Fill all details");
-
+alert("Please fill Name, Village, Cell");
 return;
-
 }
 
 const member = {
-
-id:Date.now(),
-
-name,
-village,
-occupation,
-cell,
-
-date:new Date().toISOString().slice(0,10)
-
+id: Date.now(),
+name: name,
+village: village,
+occupation: occupation,
+cell: cell,
+date: new Date().toISOString().slice(0,10)
 };
 
 members.push(member);
 
-saveStorage();
+localStorage.setItem("hfgm_members", JSON.stringify(members));
 
 renderTable();
 
@@ -369,7 +362,7 @@ document.getElementById("village").value="";
 document.getElementById("occupation").value="";
 document.getElementById("cell").value="";
 
-alert("Saved Successfully");
+alert("Saved Successfully ✅");
 
 }
 
