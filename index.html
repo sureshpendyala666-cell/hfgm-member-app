@@ -375,21 +375,21 @@ alert("Saved Successfully");
 
 function sendToGoogleSheet(member){
 
-  const sno = members.length;
+const sno = members.length;
 
-  const url =
-    GOOGLE_SCRIPT_URL
-    + "?sno=" + encodeURIComponent(sno)
-    + "&name=" + encodeURIComponent(member.name)
-    + "&village=" + encodeURIComponent(member.village)
-    + "&occupation=" + encodeURIComponent(member.occupation || "")
-    + "&cell=" + encodeURIComponent(member.cell);
+const params = new URLSearchParams({
+sno: sno,
+name: member.name,
+village: member.village,
+occupation: member.occupation || "",
+cell: member.cell
+});
 
-  const img = new Image();
-  img.src = url;
+const img = new Image();
+img.src = GOOGLE_SCRIPT_URL + "?" + params.toString();
 
 }
-
+ 
 
 function renderTable(){
 
