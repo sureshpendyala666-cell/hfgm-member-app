@@ -5,179 +5,123 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
-body{
-  font-family:Arial;
-  background:linear-gradient(135deg,#003b8e,#02a6a6);
-  padding:20px;
-  min-height:100vh;
-}
-
-.app{
-  max-width:1100px;
-  margin:auto;
-}
-
-.hero,.card{
-  background:white;
-  padding:20px;
-  border-radius:20px;
-  margin:15px;
-}
-
-.hero{
-  text-align:center;
-  background:#0b4da2;
-  color:white;
-}
-
-.grid{
-  display:grid;
-  grid-template-columns:350px 1fr;
-  gap:20px;
-}
-
-input,button{
-  width:100%;
-  padding:12px;
-  margin:8px 0;
-  border-radius:10px;
-  border:1px solid #ccc;
-}
-
-button{
-  background:#0b4da2;
-  color:white;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-.delete{
-  background:#d93025;
-}
-
-.whatsapp{
-  background:#25D366;
-  color:white;
-  padding:7px 10px;
-  border-radius:8px;
-  text-decoration:none;
-  font-size:13px;
-}
-
-.stats{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:10px;
-  margin-bottom:10px;
-}
-
-.stat{
-  background:#eef5ff;
-  padding:12px;
-  border-radius:12px;
-  text-align:center;
-}
-
-.stat b{
-  font-size:22px;
-  color:#0b4da2;
-}
-
-.table-wrap{
-  overflow:auto;
-}
-
-table{
-  width:100%;
-  border-collapse:collapse;
-  min-width:700px;
-}
-
-th{
-  background:#0b4da2;
-  color:white;
-  padding:10px;
-}
-
-td{
-  padding:10px;
-  border-bottom:1px solid #ddd;
-  text-align:center;
-}
-
-@media(max-width:800px){
-  .grid{
-    grid-template-columns:1fr;
-  }
-}
+body{font-family:Arial;background:linear-gradient(135deg,#003b8e,#02a6a6);padding:20px;min-height:100vh}
+.app{max-width:1100px;margin:auto}
+.hero,.card{background:white;padding:20px;border-radius:20px;margin:15px}
+.hero{text-align:center;background:#0b4da2;color:white}
+.topmenu{display:flex;gap:10px;background:white;padding:12px;border-radius:15px;margin:15px;overflow:auto}
+.topmenu a{text-decoration:none;background:#0b4da2;color:white;padding:10px 15px;border-radius:10px;font-weight:bold;white-space:nowrap}
+.grid{display:grid;grid-template-columns:350px 1fr;gap:20px}
+input,button,select{width:100%;padding:12px;margin:8px 0;border-radius:10px;border:1px solid #ccc}
+button{background:#0b4da2;color:white;font-weight:bold;cursor:pointer}
+.delete{background:#d93025}
+.whatsapp{background:#25D366;color:white;padding:7px 10px;border-radius:8px;text-decoration:none;font-size:13px}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:10px}
+.stat{background:#eef5ff;padding:12px;border-radius:12px;text-align:center}
+.stat b{font-size:22px;color:#0b4da2}
+.table-wrap{overflow:auto}
+table{width:100%;border-collapse:collapse;min-width:700px}
+th{background:#0b4da2;color:white;padding:10px}
+td{padding:10px;border-bottom:1px solid #ddd;text-align:center}
+@media(max-width:800px){.grid{grid-template-columns:1fr}}
 </style>
 </head>
 
 <body>
-
 <div class="app">
 
+<div class="topmenu">
+<a href="#">Dashboard</a>
+<a href="#">Members</a>
+<a href="#attendance">Attendance</a>
+<a href="#">Donations</a>
+<a href="#">Reports</a>
+</div>
+
 <div class="hero">
-  <h1>🕊️ HFGM Member App</h1>
-  <p>Holy Spirit Fellowship Global Ministry</p>
+<h1>🕊️ HFGM Member App</h1>
+<p>Holy Spirit Fellowship Global Ministry</p>
 </div>
 
 <div class="grid">
 
 <div class="card">
-  <h2>Add Member</h2>
-
-  <input id="name" placeholder="Name">
-  <input id="village" placeholder="Village">
-  <input id="occupation" placeholder="Occupation">
-  <input id="cell" placeholder="Cell Number">
-
-  <button onclick="saveMember()">Save Member</button>
+<h2>Add Member</h2>
+<input id="name" placeholder="Name">
+<input id="village" placeholder="Village">
+<input id="occupation" placeholder="Occupation">
+<input id="cell" placeholder="Cell Number">
+<button onclick="saveMember()">Save Member</button>
 </div>
 
 <div class="card">
-  <h2>Members List</h2>
+<h2>Members List</h2>
 
-  <div class="stats">
-    <div class="stat">
-      <b id="totalCount">0</b>
-      Total Members
-    </div>
+<div class="stats">
+<div class="stat"><b id="totalCount">0</b>Total Members</div>
+<div class="stat"><b id="villageCount">0</b>Villages</div>
+</div>
 
-    <div class="stat">
-      <b id="villageCount">0</b>
-      Villages
-    </div>
-  </div>
+<input id="search" placeholder="Search member..." oninput="renderTable()">
 
-  <input id="search" placeholder="Search member..." oninput="renderTable()">
-
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>S.No</th>
-          <th>Name</th>
-          <th>Village</th>
-          <th>Occupation</th>
-          <th>Cell</th>
-          <th>WhatsApp</th>
-          <th>Delete</th>
-        </tr>
-      </thead>
-
-      <tbody id="memberTable"></tbody>
-    </table>
-  </div>
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>S.No</th>
+<th>Name</th>
+<th>Village</th>
+<th>Occupation</th>
+<th>Cell</th>
+<th>WhatsApp</th>
+<th>Delete</th>
+</tr>
+</thead>
+<tbody id="memberTable"></tbody>
+</table>
+</div>
 </div>
 
 </div>
+
+<div class="card" id="attendance">
+<h2>Attendance</h2>
+
+<input id="attName" placeholder="Member Name">
+<input id="attDate" type="date">
+
+<select id="attStatus">
+<option value="Present">Present</option>
+<option value="Absent">Absent</option>
+</select>
+
+<button onclick="saveAttendance()">Save Attendance</button>
+
+<h3 style="margin-top:20px;color:#0b4da2">Attendance List</h3>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>S.No</th>
+<th>Name</th>
+<th>Date</th>
+<th>Status</th>
+<th>Delete</th>
+</tr>
+</thead>
+<tbody id="attendanceTable"></tbody>
+</table>
+</div>
+</div>
+
 </div>
 
 <script>
 const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxlttLdb-YfhO7LPX5-eQl4mlY27ukO0ifr0hGYpPMqmAsfddZN_3BM8TvucgZrLhLxHw/exec";
 
 let members = JSON.parse(localStorage.getItem("hfgm_members") || "[]");
+let attendance = JSON.parse(localStorage.getItem("hfgm_attendance") || "[]");
 
 function saveMember(){
   const name = document.getElementById("name").value.trim();
@@ -190,19 +134,10 @@ function saveMember(){
     return;
   }
 
-  const member = {
-    name:name,
-    village:village,
-    occupation:occupation,
-    cell:cell
-  };
-
+  const member = {name,village,occupation,cell};
   members.push(member);
-
   localStorage.setItem("hfgm_members", JSON.stringify(members));
-
   renderTable();
-
   sendToGoogleSheet(member);
 
   document.getElementById("name").value="";
@@ -215,7 +150,6 @@ function saveMember(){
 
 function sendToGoogleSheet(member){
   const sno = members.length;
-
   const url = GOOGLE_SCRIPT_URL
     + "?sno=" + encodeURIComponent(sno)
     + "&name=" + encodeURIComponent(member.name)
@@ -239,7 +173,6 @@ function renderTable(){
   );
 
   document.getElementById("totalCount").innerText = members.length;
-
   document.getElementById("villageCount").innerText =
     new Set(members.map(m => m.village.toLowerCase())).size;
 
@@ -253,16 +186,8 @@ function renderTable(){
         <td>${m.village}</td>
         <td>${m.occupation}</td>
         <td>${m.cell}</td>
-        <td>
-          <a class="whatsapp" target="_blank" href="https://wa.me/91${m.cell}">
-            WhatsApp
-          </a>
-        </td>
-        <td>
-          <button class="delete" onclick="deleteMember(${members.indexOf(m)})">
-            Delete
-          </button>
-        </td>
+        <td><a class="whatsapp" target="_blank" href="https://wa.me/91${m.cell}">WhatsApp</a></td>
+        <td><button class="delete" onclick="deleteMember(${members.indexOf(m)})">Delete</button></td>
       </tr>
     `;
   });
@@ -276,7 +201,53 @@ function deleteMember(index){
   }
 }
 
+function saveAttendance(){
+  const name = document.getElementById("attName").value.trim();
+  const date = document.getElementById("attDate").value;
+  const status = document.getElementById("attStatus").value;
+
+  if(!name || !date){
+    alert("Please enter name and date");
+    return;
+  }
+
+  attendance.push({name,date,status});
+  localStorage.setItem("hfgm_attendance", JSON.stringify(attendance));
+  renderAttendance();
+
+  document.getElementById("attName").value="";
+  document.getElementById("attDate").value="";
+
+  alert("Attendance Saved ✅");
+}
+
+function renderAttendance(){
+  const tbody = document.getElementById("attendanceTable");
+  tbody.innerHTML = "";
+
+  attendance.forEach((a,i)=>{
+    tbody.innerHTML += `
+      <tr>
+        <td>${i+1}</td>
+        <td>${a.name}</td>
+        <td>${a.date}</td>
+        <td>${a.status}</td>
+        <td><button class="delete" onclick="deleteAttendance(${i})">Delete</button></td>
+      </tr>
+    `;
+  });
+}
+
+function deleteAttendance(index){
+  if(confirm("Delete attendance?")){
+    attendance.splice(index,1);
+    localStorage.setItem("hfgm_attendance", JSON.stringify(attendance));
+    renderAttendance();
+  }
+}
+
 renderTable();
+renderAttendance();
 </script>
 
 </body>
