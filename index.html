@@ -128,65 +128,63 @@ let attendance = JSON.parse(localStorage.getItem("hfgm_attendance") || "[]");
 let donations = JSON.parse(localStorage.getItem("hfgm_donations") || "[]");
 
 function saveMember(){
-  let name = document.getElementById("name").value.trim();
-  let village = document.getElementById("village").value.trim();
-  let occupation = document.getElementById("occupation").value.trim();
-  let cell = document.getElementById("cell").value.trim();
+
+let name = document.getElementById("name").value.trim();
+let village = document.getElementById("village").value.trim();
+let occupation = document.getElementById("occupation").value.trim();
+let cell = document.getElementById("cell").value.trim();
+
 let photoInput = document.getElementById("photo");
 let file = photoInput.files[0];
-  if(!name || !village || !cell){
-    alert("Name, Village, Cell fill cheyandi");
-    return;
-  }
 
-  let member = {
-    id:"HFGM" + (members.length + 1),
-    name:name,
-    village:village,
-    occupation:occupation,
-    cell:cell
-  };
-
- if(file){
+if(!name || !village || !cell){
+alert("Fill all fields");
+return;
+}
 
 let reader = new FileReader();
 
 reader.onload = function(e){
 
-members.push({
-   id:id,
-   name:name,
-   village:village,
-   occupation:occupation,
-   cell:cell,
-   photo:e.target.result
-});
+let member = {
+id:"HFGM" + (members.length + 1),
+name:name,
+village:village,
+occupation:occupation,
+cell:cell,
+photo:e.target.result
+};
 
-localStorage.setItem("hfgm_members", JSON.stringify(members));
+members.push(member);
 
-location.reload();
+localStorage.setItem(
+"hfgm_members",
+JSON.stringify(members)
+);
+
+renderMembers();
+
+document.getElementById("name").value="";
+document.getElementById("village").value="";
+document.getElementById("occupation").value="";
+document.getElementById("cell").value="";
+document.getElementById("photo").value="";
+
+alert("Member Saved");
 
 };
 
+if(file){
 reader.readAsDataURL(file);
-
 }else{
-
-members.push({
-   id:id,
-   name:name,
-   village:village,
-   occupation:occupation,
-   cell:cell,
-   photo:""
+reader.onload({
+target:{
+result:""
+}
 });
-
-localStorage.setItem("hfgm_members", JSON.stringify(members));
-
-location.reload();
-
 }
 
+}
 function renderMembers(){
   let tbody = document.getElementById("memberTable");
   let search = document.getElementById("search").value.toLowerCase();
