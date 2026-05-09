@@ -1,26 +1,31 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>HFGM Firebase App</title>
+<title>HFGM Ministry Pro App</title>
 <style>
-body{margin:0;font-family:Arial;background:linear-gradient(135deg,#031b55,#006cb5,#09b5a5);padding:20px}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(135deg,#031b55,#006cb5,#09b5a5);min-height:100vh;padding:18px}
 .app{max-width:1200px;margin:auto}
-.hero,.card,.dash{background:white;border-radius:22px;padding:20px;margin:15px 0;box-shadow:0 8px 25px #0003}
-.hero{background:#0b4da2;color:white;text-align:center}
+.hero,.card,.dash{background:white;border-radius:22px;padding:20px;margin:15px 0;box-shadow:0 8px 25px rgba(0,0,0,.25)}
+.hero{background:linear-gradient(135deg,#073b8e,#0aa6a6);color:white;text-align:center}
 .dashboard{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
 .dash{text-align:center;font-weight:bold}.dash b{font-size:32px;color:#0b4da2}
 .grid{display:grid;grid-template-columns:330px 1fr;gap:20px}
-input,select,button{width:100%;padding:13px;margin:8px 0;border-radius:12px;border:1px solid #ccc}
+input,select,button{width:100%;padding:13px;margin:8px 0;border-radius:12px;border:1px solid #ccc;font-size:15px}
 button{background:#0b4da2;color:white;border:none;font-weight:bold;cursor:pointer}
-.green{background:#087b5b}.red{background:#d93025}.wa{background:#25D366;color:white;padding:8px 12px;border-radius:10px;text-decoration:none;font-weight:bold}
-.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:850px}
-th{background:#0b4da2;color:white;padding:12px}td{padding:12px;border-bottom:1px solid #ddd;text-align:center}
+.green{background:#087b5b}.red{background:#d93025}
+.wa{background:#25D366;color:white;padding:8px 12px;border-radius:10px;text-decoration:none;font-weight:bold;display:inline-block}
+.table-wrap{overflow:auto}
+table{width:100%;border-collapse:collapse;min-width:900px}
+th{background:#0b4da2;color:white;padding:12px}
+td{padding:12px;border-bottom:1px solid #ddd;text-align:center}
 .total{background:#eef5ff;padding:15px;border-radius:15px;text-align:center;font-size:22px;color:#0b4da2;font-weight:bold}
-@media(max-width:850px){.grid,.dashboard{grid-template-columns:1fr}}
+.small{font-size:12px;color:#666;margin-top:6px}
+@media(max-width:850px){.grid,.dashboard{grid-template-columns:1fr}body{padding:10px}}
 </style>
 </head>
-
 <body>
 <div class="app">
 
@@ -40,10 +45,12 @@ th{background:#0b4da2;color:white;padding:12px}td{padding:12px;border-bottom:1px
 <div class="card">
 <h2>Add Member</h2>
 <input id="name" placeholder="Name">
+<input id="age" type="number" placeholder="Age">
 <input id="village" placeholder="Village">
 <input id="occupation" placeholder="Occupation">
 <input id="cell" placeholder="Cell Number">
 <button onclick="saveMember()">Save Member</button>
+<div class="small">Age new field added ✅</div>
 </div>
 
 <div class="card">
@@ -52,7 +59,7 @@ th{background:#0b4da2;color:white;padding:12px}td{padding:12px;border-bottom:1px
 <div class="table-wrap">
 <table>
 <thead>
-<tr><th>ID</th><th>Name</th><th>Village</th><th>Occupation</th><th>Cell</th><th>WhatsApp</th><th>ID Card</th><th>Delete</th></tr>
+<tr><th>ID</th><th>Name</th><th>Age</th><th>Village</th><th>Occupation</th><th>Cell</th><th>WhatsApp</th><th>ID Card</th><th>Delete</th></tr>
 </thead>
 <tbody id="memberTable"></tbody>
 </table>
@@ -78,7 +85,19 @@ th{background:#0b4da2;color:white;padding:12px}td{padding:12px;border-bottom:1px
 <h2>Donations</h2>
 <input id="donorName" placeholder="Donor Name">
 <input id="donationAmount" type="number" placeholder="Amount">
-<input id="donationPurpose" placeholder="Purpose">
+<select id="donationPurpose">
+<option value="">Select Purpose / Service</option>
+<option>Church Construction</option>
+<option>Monthly Ministry Support</option>
+<option>Healing & Deliverance Meeting</option>
+<option>Sunday Service</option>
+<option>All Night Prayer</option>
+<option>Pastor Support</option>
+<option>Poor Feeding</option>
+<option>Gospel Outreach</option>
+<option>Children Ministry</option>
+<option>General Offering</option>
+</select>
 <input id="donationDate" type="date">
 <button onclick="saveDonation()">Save Donation</button>
 <div class="total">Total Donations: ₹<span id="donationTotal">0</span></div>
@@ -97,13 +116,13 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
-apiKey: "AIzaSyBLyi5hI-jSSyIf-H9rnpP_4Ldj6Cfpqu8",
-authDomain: "hfgm-ministry.firebaseapp.com",
-projectId: "hfgm-ministry",
-storageBucket: "hfgm-ministry.firebasestorage.app",
-messagingSenderId: "1079389581104",
-appId: "1:1079389581104:web:3830dc23c81389cb7fe2f5",
-measurementId: "G-2L8ZX8BJKM"
+  apiKey: "AIzaSyBLyi5hI-jSSyIf-H9rnpP_4Ldj6Cfpqu8",
+  authDomain: "hfgm-ministry.firebaseapp.com",
+  projectId: "hfgm-ministry",
+  storageBucket: "hfgm-ministry.firebasestorage.app",
+  messagingSenderId: "1079389581104",
+  appId: "1:1079389581104:web:3830dc23c81389cb7fe2f5",
+  measurementId: "G-2L8ZX8BJKM"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -111,38 +130,192 @@ const db = getFirestore(app);
 
 let members=[], attendance=[], donations=[];
 
+const $ = (id)=>document.getElementById(id);
+
 window.saveMember = async function(){
-let name=nameEl.value.trim(), village=villageEl.value.trim(), occupation=occupationEl.value.trim(), cell=cellEl.value.trim();
-if(!name||!village||!cell){alert("Name, Village, Cell fill cheyandi");return;}
-await addDoc(collection(db,"members"),{name,village,occupation,cell});
-nameEl.value=""; villageEl.value=""; occupationEl.value=""; cellEl.value="";
-alert("Member Saved ✅");
-renderMembers();
+  try{
+    let name=$("name").value.trim();
+    let age=$("age").value.trim();
+    let village=$("village").value.trim();
+    let occupation=$("occupation").value.trim();
+    let cell=$("cell").value.trim();
+
+    if(!name || !village || !cell){
+      alert("Name, Village, Cell fill cheyandi");
+      return;
+    }
+
+    await addDoc(collection(db,"members"),{
+      name:name,
+      age:age,
+      village:village,
+      occupation:occupation,
+      cell:cell,
+      createdAt:new Date().toISOString()
+    });
+
+    $("name").value="";
+    $("age").value="";
+    $("village").value="";
+    $("occupation").value="";
+    $("cell").value="";
+
+    alert("Member Saved ✅");
+    await renderMembers();
+  }catch(error){
+    alert("Save Error: " + error.message);
+    console.error(error);
+  }
 }
 
 window.renderMembers = async function(){
-let tb=memberTable, s=search.value.toLowerCase();
-tb.innerHTML=""; members=[];
-let snap=await getDocs(collection(db,"members"));
-snap.forEach(d=>{
-let m=d.data(); m.id=d.id; members.push(m);
-if((m.name||"").toLowerCase().includes(s)||(m.village||"").toLowerCase().includes(s)||(m.occupation||"").toLowerCase().includes(s)||(m.cell||"").includes(s)){
-tb.innerHTML+=`<tr>
-<td>${d.id}</td><td>${m.name||""}</td><td>${m.village||""}</td><td>${m.occupation||""}</td><td>${m.cell||""}</td>
-<td><a class="wa" target="_blank" href="https://wa.me/91${m.cell}">WhatsApp</a></td>
-<td><button class="green" onclick="printID('${d.id}')">Print ID</button></td>
-<td><button class="red" onclick="deleteMember('${d.id}')">Delete</button></td>
-</tr>`;
-}
-});
-updateDashboard();
+  try{
+    let tb=$("memberTable");
+    let s=$("search").value.toLowerCase();
+    tb.innerHTML="";
+    members=[];
+
+    let snap=await getDocs(collection(db,"members"));
+    snap.forEach(d=>{
+      let m=d.data();
+      m.id=d.id;
+      members.push(m);
+
+      if((m.name||"").toLowerCase().includes(s) ||
+         (m.village||"").toLowerCase().includes(s) ||
+         (m.occupation||"").toLowerCase().includes(s) ||
+         (m.cell||"").includes(s)){
+        tb.innerHTML+=`
+        <tr>
+        <td>${d.id}</td>
+        <td>${m.name||""}</td>
+        <td>${m.age||""}</td>
+        <td>${m.village||""}</td>
+        <td>${m.occupation||""}</td>
+        <td>${m.cell||""}</td>
+        <td><a class="wa" target="_blank" href="https://wa.me/91${m.cell}">WhatsApp</a></td>
+        <td><button class="green" onclick="printID('${d.id}')">Print ID</button></td>
+        <td><button class="red" onclick="deleteMember('${d.id}')">Delete</button></td>
+        </tr>`;
+      }
+    });
+    updateDashboard();
+  }catch(error){
+    console.error(error);
+  }
 }
 
 window.deleteMember=async function(id){
-if(confirm("Delete member?")){await deleteDoc(doc(db,"members",id));renderMembers();}
+  if(confirm("Delete member?")){
+    await deleteDoc(doc(db,"members",id));
+    await renderMembers();
+  }
 }
 
 window.printID=function(id){
-let m=members.find(x=>x.id===id);
-let w=window.open("");
-w.document.write(`<html><body style="font-family:Arial;display:flex;justify-content:center;align-items:center;height:100vh
+  let m=members.find(x=>x.id===id);
+  if(!m){alert("Member not found");return;}
+  let w=window.open("");
+  w.document.write(`<html><body style="font-family:Arial;display:flex;justify-content:center;align-items:center;height:100vh;background:#eee">
+  <div style="width:350px;background:linear-gradient(135deg,#073b8e,#0aa6a6);color:white;padding:25px;border-radius:22px;text-align:center;border:5px solid white">
+  <h1>🕊️ HFGM</h1><h2>MEMBER ID CARD</h2>
+  <div style="width:120px;height:120px;border-radius:50%;background:white;margin:10px auto"></div>
+  <p><b>ID:</b> ${id}</p><p><b>Name:</b> ${m.name}</p><p><b>Age:</b> ${m.age||""}</p><p><b>Village:</b> ${m.village}</p><p><b>Cell:</b> ${m.cell}</p>
+  <p>Holy Spirit Fellowship Global Ministry</p>
+  </div><script>window.print();<\/script></body></html>`);
+  w.document.close();
+}
+
+window.saveAttendance=async function(){
+  try{
+    let name=$("attName").value.trim();
+    let date=$("attDate").value;
+    let status=$("attStatus").value;
+    if(!name||!date){alert("Name and Date fill cheyandi");return;}
+    await addDoc(collection(db,"attendance"),{name,date,status,createdAt:new Date().toISOString()});
+    $("attName").value="";
+    $("attDate").value="";
+    alert("Attendance Saved ✅");
+    await renderAttendance();
+  }catch(error){
+    alert("Attendance Error: " + error.message);
+    console.error(error);
+  }
+}
+
+async function renderAttendance(){
+  try{
+    attendance=[];
+    $("attendanceTable").innerHTML="";
+    let snap=await getDocs(collection(db,"attendance"));
+    let i=1;
+    snap.forEach(d=>{
+      let a=d.data();
+      attendance.push(a);
+      $("attendanceTable").innerHTML+=`<tr><td>${i++}</td><td>${a.name||""}</td><td>${a.date||""}</td><td>${a.status||""}</td><td><button class="red" onclick="deleteAttendance('${d.id}')">Delete</button></td></tr>`;
+    });
+    updateDashboard();
+  }catch(error){console.error(error);}
+}
+
+window.deleteAttendance=async function(id){
+  await deleteDoc(doc(db,"attendance",id));
+  await renderAttendance();
+}
+
+window.saveDonation=async function(){
+  try{
+    let donorName=$("donorName").value.trim();
+    let amount=Number($("donationAmount").value||0);
+    let purpose=$("donationPurpose").value;
+    let date=$("donationDate").value;
+    if(!donorName||!amount||!purpose){alert("Donor name, amount, purpose select cheyandi");return;}
+    await addDoc(collection(db,"donations"),{donorName,amount,purpose,date,createdAt:new Date().toISOString()});
+    $("donorName").value="";
+    $("donationAmount").value="";
+    $("donationPurpose").value="";
+    $("donationDate").value="";
+    alert("Donation Saved ✅");
+    await renderDonations();
+  }catch(error){
+    alert("Donation Error: " + error.message);
+    console.error(error);
+  }
+}
+
+async function renderDonations(){
+  try{
+    donations=[];
+    $("donationTable").innerHTML="";
+    let total=0,i=1;
+    let snap=await getDocs(collection(db,"donations"));
+    snap.forEach(d=>{
+      let x=d.data();
+      donations.push(x);
+      total+=Number(x.amount||0);
+      $("donationTable").innerHTML+=`<tr><td>${i++}</td><td>${x.donorName||""}</td><td>₹${x.amount||0}</td><td>${x.purpose||""}</td><td>${x.date||""}</td><td><button class="red" onclick="deleteDonation('${d.id}')">Delete</button></td></tr>`;
+    });
+    $("donationTotal").innerText=total;
+    updateDashboard();
+  }catch(error){console.error(error);}
+}
+
+window.deleteDonation=async function(id){
+  await deleteDoc(doc(db,"donations",id));
+  await renderDonations();
+}
+
+function updateDashboard(){
+  $("dashMembers").innerText=members.length;
+  $("dashVillages").innerText=new Set(members.map(m=>(m.village||"").toLowerCase()).filter(Boolean)).size;
+  $("dashAttendance").innerText=attendance.length;
+  $("dashDonations").innerText=donations.reduce((s,d)=>s+Number(d.amount||0),0);
+}
+
+renderMembers();
+renderAttendance();
+renderDonations();
+</script>
+
+</body>
+</html>
