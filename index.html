@@ -441,6 +441,104 @@ renderAttendance();
 renderDonations();
 updateDashboard();
 </script>
+<script type="module">
 
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+getFirestore,
+collection,
+addDoc,
+getDocs,
+deleteDoc,
+doc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+apiKey: "AIzaSyBLyi5hI-jSSyIf-H9rnpP_4Ldj6Cfpqu8",
+authDomain: "hfgm-ministry.firebaseapp.com",
+projectId: "hfgm-ministry",
+storageBucket: "hfgm-ministry.firebasestorage.app",
+messagingSenderId: "1079389581104",
+appId: "1:1079389581104:web:3830dc23c81389cb7fe2f5",
+measurementId: "G-2L8ZX8BJKM"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+window.saveMember = async function(){
+
+let name=document.getElementById("name").value;
+let village=document.getElementById("village").value;
+let occupation=document.getElementById("occupation").value;
+let cell=document.getElementById("cell").value;
+
+await addDoc(collection(db,"members"),{
+name,
+village,
+occupation,
+cell
+});
+
+alert("Member Saved");
+
+renderMembers();
+
+document.getElementById("name").value="";
+document.getElementById("village").value="";
+document.getElementById("occupation").value="";
+document.getElementById("cell").value="";
+}
+
+window.renderMembers = async function(){
+
+let tbody=document.getElementById("memberTable");
+tbody.innerHTML="";
+
+const querySnapshot = await getDocs(collection(db,"members"));
+
+querySnapshot.forEach((docSnap)=>{
+
+let m=docSnap.data();
+
+tbody.innerHTML += `
+<tr>
+<td>${docSnap.id}</td>
+<td>${m.name}</td>
+<td>${m.village}</td>
+<td>${m.occupation}</td>
+<td>${m.cell}</td>
+
+<td>
+<a href="https://wa.me/91${m.cell}" target="_blank">
+<button class="whatsapp-btn">WhatsApp</button>
+</a>
+</td>
+
+<td>
+<button onclick="deleteMember('${docSnap.id}')" class="delete-btn">
+Delete
+</button>
+</td>
+
+</tr>
+`;
+
+});
+
+}
+
+window.deleteMember = async function(id){
+
+await deleteDoc(doc(db,"members",id));
+
+renderMembers();
+
+}
+
+renderMembers();
+
+</script>
 </body>
 </html>
