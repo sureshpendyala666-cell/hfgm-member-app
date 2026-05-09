@@ -1,4 +1,6 @@
-<!DOCTYPE html>
+from pathlib import Path
+
+code = r'''<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -49,7 +51,7 @@ body{
 .dashboard{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
 .dash{text-align:center;font-weight:bold}
 .dash b{font-size:32px;color:#0b4da2}
-.grid{display:grid;grid-template-columns:330px 1fr;gap:20px}
+.grid{display:grid;grid-template-columns:360px 1fr;gap:20px}
 input,select,button{
   width:100%;
   padding:13px;
@@ -77,9 +79,17 @@ button{
   display:inline-block;
 }
 .table-wrap{overflow:auto}
-table{width:100%;border-collapse:collapse;min-width:940px}
+table{width:100%;border-collapse:collapse;min-width:1080px}
 th{background:#0b4da2;color:white;padding:12px}
 td{padding:12px;border-bottom:1px solid #ddd;text-align:center}
+.photo-mini{
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  object-fit:cover;
+  border:2px solid #0b4da2;
+  background:#eee;
+}
 .total{
   background:#eef5ff;
   padding:15px;
@@ -90,6 +100,16 @@ td{padding:12px;border-bottom:1px solid #ddd;text-align:center}
   font-weight:bold;
 }
 .small{font-size:12px;color:#666;margin-top:6px}
+.badge{
+  background:#eef5ff;
+  color:#0b4da2;
+  padding:7px 10px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:bold;
+  display:inline-block;
+  margin-bottom:8px;
+}
 @media(max-width:850px){
   .grid,.dashboard{grid-template-columns:1fr}
   body{padding:10px}
@@ -124,13 +144,16 @@ td{padding:12px;border-bottom:1px solid #ddd;text-align:center}
 
 <div class="card">
 <h2>Add Member</h2>
+<div class="badge">New: Photo + Unique ID + QR Card</div>
 <input id="name" placeholder="Name">
 <input id="age" type="number" placeholder="Age">
 <input id="village" placeholder="Village">
 <input id="occupation" placeholder="Occupation">
 <input id="cell" placeholder="Cell Number">
+<label><b>Member Photo</b></label>
+<input id="photo" type="file" accept="image/*">
 <button onclick="saveMember()">Save Member</button>
-<div class="small">Auto ID format: HFGM001, HFGM002...</div>
+<div class="small">ID format: HFGM-Unique Number</div>
 </div>
 
 <div class="card">
@@ -141,6 +164,7 @@ td{padding:12px;border-bottom:1px solid #ddd;text-align:center}
 <thead>
 <tr>
 <th>ID</th>
+<th>Photo</th>
 <th>Name</th>
 <th>Age</th>
 <th>Village</th>
@@ -257,8 +281,39 @@ let donations = [];
 
 const $ = (id) => document.getElementById(id);
 
-function makeMemberId(count){
-  return "HFGM" + String(count + 1).padStart(3,"0");
+function makeUniqueId(){
+  return "HFGM-" + Date.now().toString().slice(-7);
+}
+
+function resizeImage(file){
+  return new Promise((resolve)=>{
+    if(!file){ resolve(""); return; }
+
+    const reader = new FileReader();
+    reader.onload = function(e){
+      const img = new Image();
+      img.onload = function(){
+        const canvas = document.createElement("canvas");
+        const maxSize = 420;
+        let w = img.width;
+        let h = img.height;
+
+        if(w > h){
+          if(w > maxSize){ h = Math.round(h * maxSize / w); w = maxSize; }
+        }else{
+          if(h > maxSize){ w = Math.round(w * maxSize / h); h = maxSize; }
+        }
+
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img,0,0,w,h);
+        resolve(canvas.toDataURL("image/jpeg",0.7));
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
 }
 
 window.saveMember = async function(){
@@ -268,13 +323,15 @@ window.saveMember = async function(){
     let village = $("village").value.trim();
     let occupation = $("occupation").value.trim();
     let cell = $("cell").value.trim();
+    let file = $("photo").files[0];
 
     if(!name || !village || !cell){
       alert("Name, Village, Cell fill cheyandi");
       return;
     }
 
-  let customId = "HFGM" + Date.now();
+    let customId = makeUniqueId();
+    let photoData = await resizeImage(file);
 
     await addDoc(collection(db,"members"),{
       customId: customId,
@@ -283,6 +340,7 @@ window.saveMember = async function(){
       village: village,
       occupation: occupation,
       cell: cell,
+      photo: photoData,
       createdAt: new Date().toISOString()
     });
 
@@ -291,6 +349,7 @@ window.saveMember = async function(){
     $("village").value = "";
     $("occupation").value = "";
     $("cell").value = "";
+    $("photo").value = "";
 
     alert("Member Saved ✅");
     await renderMembers();
@@ -308,14 +367,12 @@ window.renderMembers = async function(){
     members = [];
 
     let snap = await getDocs(collection(db,"members"));
-    let displayIndex = 0;
 
     snap.forEach(d=>{
       let m = d.data();
       m.fireId = d.id;
-      m.customId = m.customId || makeMemberId(displayIndex);
+      m.customId = m.customId || d.id;
       members.push(m);
-      displayIndex++;
 
       if(
         (m.name||"").toLowerCase().includes(search) ||
@@ -324,9 +381,12 @@ window.renderMembers = async function(){
         (m.cell||"").includes(search) ||
         (m.customId||"").toLowerCase().includes(search)
       ){
+        let photoHtml = m.photo ? `<img class="photo-mini" src="${m.photo}">` : `<div class="photo-mini"></div>`;
+
         tbody.innerHTML += `
         <tr>
         <td>${m.customId}</td>
+        <td>${photoHtml}</td>
         <td>${m.name||""}</td>
         <td>${m.age||""}</td>
         <td>${m.village||""}</td>
@@ -368,6 +428,7 @@ Occupation: ${m.occupation || ""}
 Cell: ${m.cell}`;
 
   let qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=130x130&data=" + encodeURIComponent(qrText);
+  let photo = m.photo ? `<img src="${m.photo}" class="photo">` : `<div class="photo"></div>`;
 
   let w = window.open("");
   w.document.write(`
@@ -384,7 +445,7 @@ Cell: ${m.cell}`;
     background:#eee;
   }
   .card{
-    width:360px;
+    width:370px;
     background:linear-gradient(135deg,#073b8e,#0aa6a6);
     color:white;
     padding:25px;
@@ -394,11 +455,13 @@ Cell: ${m.cell}`;
     box-shadow:0 10px 35px #0005;
   }
   .photo{
-    width:110px;
-    height:110px;
+    width:115px;
+    height:115px;
     border-radius:50%;
     background:white;
     margin:10px auto;
+    object-fit:cover;
+    border:4px solid white;
   }
   .qr{
     background:white;
@@ -414,7 +477,7 @@ Cell: ${m.cell}`;
   <div class="card">
     <h1>🕊️ HFGM</h1>
     <h2>MEMBER ID CARD</h2>
-    <div class="photo"></div>
+    ${photo}
     <p><b>ID:</b> ${m.customId}</p>
     <p><b>Name:</b> ${m.name}</p>
     <p><b>Age:</b> ${m.age || ""}</p>
@@ -424,7 +487,7 @@ Cell: ${m.cell}`;
     <p>Holy Spirit Fellowship Global Ministry</p>
   </div>
   <script>
-  setTimeout(function(){ window.print(); }, 900);
+  setTimeout(function(){ window.print(); }, 1000);
   <\/script>
   </body>
   </html>`);
@@ -575,3 +638,8 @@ renderDonations();
 
 </body>
 </html>
+'''
+
+path = Path("/mnt/data/hfgm_photo_qr_upgrade_index.html")
+path.write_text(code, encoding="utf-8")
+print(path)
