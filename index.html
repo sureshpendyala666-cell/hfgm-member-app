@@ -225,41 +225,48 @@ td{
 
 </div>
 
-<script>
-let members = JSON.parse(localStorage.getItem("hfgm_members") || "[]");
-let attendance = JSON.parse(localStorage.getItem("hfgm_attendance") || "[]");
-let donations = JSON.parse(localStorage.getItem("hfgm_donations") || "[]");
+<script type="module">
 
-function saveMember(){
-  let name=document.getElementById("name").value.trim();
-  let village=document.getElementById("village").value.trim();
-  let occupation=document.getElementById("occupation").value.trim();
-  let cell=document.getElementById("cell").value.trim();
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
-  if(!name || !village || !cell){
-    alert("Name, Village, Cell fill cheyandi");
-    return;
-  }
+import {
+getFirestore,
+collection,
+addDoc,
+getDocs
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-  members.push({
-    id:"HFGM"+(members.length+1),
-    name:name,
-    village:village,
-    occupation:occupation,
-    cell:cell
-  });
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "hfgm-ministry.firebaseapp.com",
+  projectId: "hfgm-ministry",
+  storageBucket: "hfgm-ministry.appspot.com",
+  messagingSenderId: "XXXX",
+  appId: "XXXX"
+};
 
-  localStorage.setItem("hfgm_members",JSON.stringify(members));
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-  document.getElementById("name").value="";
-  document.getElementById("village").value="";
-  document.getElementById("occupation").value="";
-  document.getElementById("cell").value="";
+window.saveMember = async function(){
 
-  renderMembers();
-  alert("Member Saved ✅");
-}
+let name = document.getElementById("name").value;
+let village = document.getElementById("village").value;
+let occupation = document.getElementById("occupation").value;
+let cell = document.getElementById("cell").value;
 
+await addDoc(collection(db,"members"),{
+name:name,
+village:village,
+occupation:occupation,
+cell:cell
+});
+
+alert("Member Saved");
+
+};
+
+</script>
 function renderMembers(){
   let tbody=document.getElementById("memberTable");
   let search=document.getElementById("search").value.toLowerCase();
