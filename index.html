@@ -157,10 +157,7 @@ photo:e.target.result
 
 members.push(member);
 
-localStorage.setItem(
-"hfgm_members",
-JSON.stringify(members)
-);
+localStorage.setItem("hfgm_members", JSON.stringify(members));
 
 renderMembers();
 
@@ -173,7 +170,6 @@ document.getElementById("photo").value="";
 alert("Member Saved");
 
 };
-
 if(file){
 reader.readAsDataURL(file);
 }else{
