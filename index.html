@@ -1,163 +1,412 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>HFGM Ministry App</title>
+<title>HFGM Ministry Pro</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
 <style>
-body{font-family:Arial;background:linear-gradient(135deg,#003b8e,#02a6a6);padding:20px;min-height:100vh}
-.app{max-width:1150px;margin:auto}
-.hero,.card{background:white;padding:20px;border-radius:20px;margin:15px}
-.hero{text-align:center;background:#0b4da2;color:white}
-.menu{display:flex;gap:10px;background:white;padding:12px;border-radius:15px;margin:15px;overflow:auto}
-.menu a{background:#0b4da2;color:white;padding:10px 15px;border-radius:10px;text-decoration:none;font-weight:bold}
-.dashboard{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin:15px}
-.dash{background:white;padding:20px;border-radius:20px;text-align:center;font-weight:bold}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:linear-gradient(135deg,#002f7a,#00a6a6);
+  min-height:100vh;
+  color:#111;
+}
+.login{
+  max-width:380px;
+  margin:80px auto;
+  background:#fff;
+  padding:25px;
+  border-radius:22px;
+  text-align:center;
+  box-shadow:0 10px 30px #0005;
+}
+.app{max-width:1150px;margin:auto;padding:14px 14px 90px}
+.hero{
+  background:#0b4da2;
+  color:white;
+  text-align:center;
+  padding:25px;
+  border-radius:24px;
+  margin:15px 0;
+}
+.hero h1{margin:5px;font-size:30px}
+.menu{
+  position:sticky;
+  top:0;
+  z-index:99;
+  display:flex;
+  gap:10px;
+  background:#ffffffee;
+  padding:10px;
+  border-radius:0 0 18px 18px;
+  overflow:auto;
+}
+.menu a{
+  background:#0b4da2;
+  color:white;
+  padding:10px 15px;
+  border-radius:12px;
+  text-decoration:none;
+  font-weight:bold;
+  white-space:nowrap;
+}
+.dashboard{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+  margin:15px 0;
+}
+.dash{
+  background:white;
+  border-radius:20px;
+  padding:18px;
+  text-align:center;
+  box-shadow:0 5px 18px #0003;
+  font-weight:bold;
+}
 .dash b{font-size:28px;color:#0b4da2}
-.grid{display:grid;grid-template-columns:350px 1fr;gap:20px}
-input,select,button{width:100%;padding:12px;margin:8px 0;border-radius:10px;border:1px solid #ccc}
-button{background:#0b4da2;color:white;font-weight:bold;cursor:pointer}
+.grid{
+  display:grid;
+  grid-template-columns:340px 1fr;
+  gap:18px;
+}
+.card{
+  background:white;
+  padding:20px;
+  border-radius:22px;
+  margin:15px 0;
+  box-shadow:0 5px 18px #0002;
+}
+input,select,button{
+  width:100%;
+  padding:12px;
+  margin:8px 0;
+  border-radius:12px;
+  border:1px solid #ccc;
+  font-size:15px;
+}
+button{
+  background:#0b4da2;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+  border:none;
+}
 .green{background:#0b8f68}
-.delete{background:#d93025}
-.wa{background:#25D366;color:white;padding:7px 10px;border-radius:8px;text-decoration:none}
+.red,.delete{background:#d93025}
+.wa{
+  background:#25D366;
+  color:white;
+  padding:8px 10px;
+  border-radius:8px;
+  text-decoration:none;
+  font-size:13px;
+}
 .table-wrap{overflow:auto}
-table{width:100%;border-collapse:collapse;min-width:850px}
+table{width:100%;border-collapse:collapse;min-width:900px}
 th{background:#0b4da2;color:white;padding:10px}
 td{padding:10px;border-bottom:1px solid #ddd;text-align:center}
-.photo{width:55px;height:55px;border-radius:50%;object-fit:cover;border:2px solid #0b4da2}
-.total{background:#eef5ff;padding:15px;border-radius:15px;text-align:center;font-size:22px;color:#0b4da2;font-weight:bold}
-@media(max-width:800px){.grid,.dashboard{grid-template-columns:1fr}}
+.photo{
+  width:55px;
+  height:55px;
+  border-radius:50%;
+  object-fit:cover;
+  border:2px solid #0b4da2;
+}
+.preview{
+  width:95px;
+  height:95px;
+  border-radius:50%;
+  object-fit:cover;
+  border:3px solid #0b4da2;
+  display:none;
+  margin:10px auto;
+}
+.total{
+  background:#eef5ff;
+  padding:15px;
+  border-radius:15px;
+  text-align:center;
+  font-size:22px;
+  color:#0b4da2;
+  font-weight:bold;
+}
+.bottom-nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  background:white;
+  display:none;
+  justify-content:space-around;
+  padding:10px 5px;
+  box-shadow:0 -4px 18px #0003;
+  z-index:100;
+}
+.bottom-nav a{
+  color:#0b4da2;
+  text-decoration:none;
+  font-weight:bold;
+  font-size:13px;
+  text-align:center;
+}
+@media(max-width:800px){
+  .grid,.dashboard{grid-template-columns:1fr}
+  .menu{display:none}
+  .bottom-nav{display:flex}
+  .hero h1{font-size:24px}
+  .app{padding-bottom:95px}
+}
 </style>
 </head>
+
 <body>
 
-<div class="app">
+<div id="loginBox" class="login">
+  <h2>🕊️ HFGM Admin Login</h2>
+  <p>Holy Spirit Fellowship Global Ministry</p>
+  <input id="loginUser" placeholder="Username">
+  <input id="loginPass" type="password" placeholder="Password">
+  <button onclick="login()">Login</button>
+  <p style="font-size:13px;color:#666">admin / hfgm123</p>
+</div>
+
+<div id="mainApp" class="app" style="display:none">
 
 <div class="menu">
-<a href="#dashboard">Dashboard</a>
-<a href="#members">Members</a>
-<a href="#attendance">Attendance</a>
-<a href="#donations">Donations</a>
+  <a href="#dashboard">Dashboard</a>
+  <a href="#members">Members</a>
+  <a href="#attendance">Attendance</a>
+  <a href="#donations">Donations</a>
+  <a href="#" onclick="logout()">Logout</a>
 </div>
 
 <div class="hero">
-<h1>🕊️ HFGM Ministry Pro App</h1>
-<p>Holy Spirit Fellowship Global Ministry</p>
+  <h1>🕊️ HFGM Ministry Pro App</h1>
+  <p>Holy Spirit Fellowship Global Ministry</p>
 </div>
 
 <div class="dashboard" id="dashboard">
-<div class="dash"><b id="dashMembers">0</b><br>👥 Members</div>
-<div class="dash"><b id="dashVillages">0</b><br>🏘️ Villages</div>
-<div class="dash"><b id="dashAttendance">0</b><br>🙏 Attendance</div>
-<div class="dash"><b>₹<span id="dashDonations">0</span></b><br>💰 Donations</div>
+  <div class="dash"><b id="dashMembers">0</b><br>👥 Members</div>
+  <div class="dash"><b id="dashVillages">0</b><br>🏘️ Villages</div>
+  <div class="dash"><b id="dashAttendance">0</b><br>🙏 Attendance</div>
+  <div class="dash"><b>₹<span id="dashDonations">0</span></b><br>💰 Donations</div>
 </div>
 
 <div class="grid" id="members">
 
 <div class="card">
-<h2>Add Member</h2>
-<input id="name" placeholder="Name">
-<input id="village" placeholder="Village">
-<input id="occupation" placeholder="Occupation">
-<input id="cell" placeholder="Cell Number">
-<input id="photo" placeholder="Photo URL optional">
-<button onclick="saveMember()">Save Member</button>
+  <h2>Add Member</h2>
+  <input id="name" placeholder="Name">
+  <input id="village" placeholder="Village">
+  <input id="occupation" placeholder="Occupation">
+  <input id="cell" placeholder="Cell Number">
+
+  <label><b>Member Photo</b></label>
+  <input id="photoFile" type="file" accept="image/*" capture="environment" onchange="previewPhoto()">
+  <img id="photoPreview" class="preview">
+
+  <button onclick="saveMember()">Save Member</button>
 </div>
 
 <div class="card">
-<h2>Members List</h2>
-<input id="search" placeholder="Search member..." oninput="renderMembers()">
+  <h2>Members List</h2>
+  <input id="search" placeholder="Search member..." oninput="renderMembers()">
 
-<div class="table-wrap">
-<table>
-<thead>
-<tr>
-<th>ID</th><th>Photo</th><th>Name</th><th>Village</th><th>Occupation</th><th>Cell</th><th>WhatsApp</th><th>ID Card</th><th>Delete</th>
-</tr>
-</thead>
-<tbody id="memberTable"></tbody>
-</table>
-</div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Photo</th>
+        <th>Name</th>
+        <th>Village</th>
+        <th>Occupation</th>
+        <th>Cell</th>
+        <th>WhatsApp</th>
+        <th>ID Card</th>
+        <th>Delete</th>
+      </tr>
+      </thead>
+      <tbody id="memberTable"></tbody>
+    </table>
+  </div>
 </div>
 
 </div>
 
 <div class="card" id="attendance">
-<h2>Attendance</h2>
-<input id="attName" placeholder="Member Name">
-<input id="attDate" type="date">
-<select id="attStatus">
-<option>Present</option>
-<option>Absent</option>
-</select>
-<button onclick="saveAttendance()">Save Attendance</button>
+  <h2>Attendance</h2>
+  <input id="attName" placeholder="Member Name">
+  <input id="attDate" type="date">
+  <select id="attStatus">
+    <option>Present</option>
+    <option>Absent</option>
+  </select>
+  <button onclick="saveAttendance()">Save Attendance</button>
 
-<h3>Attendance List</h3>
-<div class="table-wrap">
-<table>
-<thead>
-<tr><th>S.No</th><th>Name</th><th>Date</th><th>Status</th><th>Delete</th></tr>
-</thead>
-<tbody id="attendanceTable"></tbody>
-</table>
-</div>
+  <h3>Attendance List</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+      <tr>
+        <th>S.No</th>
+        <th>Name</th>
+        <th>Date</th>
+        <th>Status</th>
+        <th>Delete</th>
+      </tr>
+      </thead>
+      <tbody id="attendanceTable"></tbody>
+    </table>
+  </div>
 </div>
 
 <div class="card" id="donations">
-<h2>Donations</h2>
-<input id="donorName" placeholder="Donor Name">
-<input id="donationAmount" type="number" placeholder="Amount">
-<input id="donationPurpose" placeholder="Purpose">
-<input id="donationDate" type="date">
-<button onclick="saveDonation()">Save Donation</button>
+  <h2>Donations</h2>
+  <input id="donorName" placeholder="Donor Name">
+  <input id="donationAmount" type="number" placeholder="Amount">
+  <input id="donationPurpose" placeholder="Purpose">
+  <input id="donationDate" type="date">
+  <button onclick="saveDonation()">Save Donation</button>
 
-<div class="total">Total Donations: ₹<span id="donationTotal">0</span></div>
+  <div class="total">Total Donations: ₹<span id="donationTotal">0</span></div>
 
-<h3>Donation List</h3>
-<div class="table-wrap">
-<table>
-<thead>
-<tr><th>S.No</th><th>Name</th><th>Amount</th><th>Purpose</th><th>Date</th><th>Delete</th></tr>
-</thead>
-<tbody id="donationTable"></tbody>
-</table>
+  <h3>Donation List</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+      <tr>
+        <th>S.No</th>
+        <th>Name</th>
+        <th>Amount</th>
+        <th>Purpose</th>
+        <th>Date</th>
+        <th>Delete</th>
+      </tr>
+      </thead>
+      <tbody id="donationTable"></tbody>
+    </table>
+  </div>
 </div>
+
 </div>
 
+<div class="bottom-nav">
+  <a href="#dashboard">🏠<br>Home</a>
+  <a href="#members">👥<br>Members</a>
+  <a href="#attendance">🙏<br>Attend</a>
+  <a href="#donations">💰<br>Donate</a>
 </div>
 
 <script>
 let members = JSON.parse(localStorage.getItem("hfgm_members") || "[]");
 let attendance = JSON.parse(localStorage.getItem("hfgm_attendance") || "[]");
 let donations = JSON.parse(localStorage.getItem("hfgm_donations") || "[]");
+let selectedPhoto = "";
+
+function login(){
+  let u = document.getElementById("loginUser").value.trim();
+  let p = document.getElementById("loginPass").value.trim();
+
+  if(u === "admin" && p === "hfgm123"){
+    localStorage.setItem("hfgm_login","yes");
+    document.getElementById("loginBox").style.display="none";
+    document.getElementById("mainApp").style.display="block";
+  }else{
+    alert("Wrong username or password");
+  }
+}
+
+function logout(){
+  localStorage.removeItem("hfgm_login");
+  location.reload();
+}
+
+if(localStorage.getItem("hfgm_login") === "yes"){
+  document.getElementById("loginBox").style.display="none";
+  document.getElementById("mainApp").style.display="block";
+}
+
+function previewPhoto(){
+  const file = document.getElementById("photoFile").files[0];
+  if(!file){
+    selectedPhoto="";
+    return;
+  }
+
+  const reader = new FileReader();
+
+  reader.onload = function(e){
+    const img = new Image();
+
+    img.onload = function(){
+      const canvas = document.createElement("canvas");
+      const size = 160;
+      canvas.width = size;
+      canvas.height = size;
+
+      const ctx = canvas.getContext("2d");
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0,0,size,size);
+
+      const s = Math.min(img.width,img.height);
+      const sx = (img.width - s) / 2;
+      const sy = (img.height - s) / 2;
+
+      ctx.drawImage(img,sx,sy,s,s,0,0,size,size);
+
+      selectedPhoto = canvas.toDataURL("image/jpeg",0.45);
+
+      document.getElementById("photoPreview").src = selectedPhoto;
+      document.getElementById("photoPreview").style.display = "block";
+    };
+
+    img.src = e.target.result;
+  };
+
+  reader.readAsDataURL(file);
+}
 
 function saveMember(){
   let name = document.getElementById("name").value.trim();
   let village = document.getElementById("village").value.trim();
   let occupation = document.getElementById("occupation").value.trim();
   let cell = document.getElementById("cell").value.trim();
-  let photo = document.getElementById("photo").value.trim();
 
   if(!name || !village || !cell){
     alert("Name, Village, Cell fill cheyandi");
     return;
   }
 
-  members.push({
-    id:"HFGM"+(members.length+1),
+  let member = {
+    id:"HFGM" + (members.length + 1),
     name:name,
     village:village,
     occupation:occupation,
     cell:cell,
-    photo:photo
-  });
+    photo:selectedPhoto || ""
+  };
 
-  localStorage.setItem("hfgm_members", JSON.stringify(members));
+  members.push(member);
+
+  try{
+    localStorage.setItem("hfgm_members", JSON.stringify(members));
+  }catch(e){
+    members.pop();
+    alert("Photo storage full. Small photo use cheyandi or old members delete cheyandi.");
+    return;
+  }
 
   document.getElementById("name").value="";
   document.getElementById("village").value="";
   document.getElementById("occupation").value="";
   document.getElementById("cell").value="";
-  document.getElementById("photo").value="";
+  document.getElementById("photoFile").value="";
+  document.getElementById("photoPreview").style.display="none";
+  selectedPhoto="";
 
   renderMembers();
   alert("Member Saved ✅");
@@ -176,12 +425,12 @@ function renderMembers(){
 
   filtered.forEach((m)=>{
     let index = members.indexOf(m);
-    let img = m.photo ? `<img class="photo" src="${m.photo}">` : "No Photo";
+    let photo = m.photo ? <img class="photo" src="${m.photo}"> : "No Photo";
 
     tbody.innerHTML += `
     <tr>
       <td>${m.id || "HFGM"+(index+1)}</td>
-      <td>${img}</td>
+      <td>${photo}</td>
       <td>${m.name}</td>
       <td>${m.village}</td>
       <td>${m.occupation || ""}</td>
@@ -205,28 +454,34 @@ function deleteMember(index){
 
 function printID(index){
   let m = members[index];
-  let img = m.photo ? `<img src="${m.photo}" style="width:120px;height:120px;border-radius:50%;object-fit:cover;border:4px solid white">` : `<div style="width:120px;height:120px;border-radius:50%;background:white;margin:auto"></div>`;
+  let img = m.photo
+    ? <img src="${m.photo}" style="width:120px;height:120px;border-radius:50%;object-fit:cover;border:4px solid white">
+    : <div style="width:120px;height:120px;border-radius:50%;background:white;margin:auto"></div>;
 
   let w = window.open("");
   w.document.write(`
-  <html><head><title>ID Card</title>
+  <html>
+  <head>
+  <title>ID Card</title>
   <style>
   body{font-family:Arial;display:flex;justify-content:center;align-items:center;height:100vh;background:#eee}
-  .card{width:350px;background:linear-gradient(135deg,#073b8e,#0aa6a6);color:white;padding:25px;border-radius:22px;text-align:center;border:5px solid white}
-  </style></head>
+  .card{width:350px;background:linear-gradient(135deg,#073b8e,#0aa6a6);color:white;padding:25px;border-radius:22px;text-align:center;border:5px solid white;box-shadow:0 10px 30px #0005}
+  </style>
+  </head>
   <body>
   <div class="card">
-  <h1>🕊️ HFGM</h1>
-  <h2>MEMBER ID CARD</h2>
-  ${img}
-  <p><b>ID:</b> ${m.id}</p>
-  <p><b>Name:</b> ${m.name}</p>
-  <p><b>Village:</b> ${m.village}</p>
-  <p><b>Cell:</b> ${m.cell}</p>
-  <p>Holy Spirit Fellowship Global Ministry</p>
+    <h1>🕊️ HFGM</h1>
+    <h2>MEMBER ID CARD</h2>
+    ${img}
+    <p><b>ID:</b> ${m.id}</p>
+    <p><b>Name:</b> ${m.name}</p>
+    <p><b>Village:</b> ${m.village}</p>
+    <p><b>Cell:</b> ${m.cell}</p>
+    <p>Holy Spirit Fellowship Global Ministry</p>
   </div>
   <script>window.print();<\/script>
-  </body></html>`);
+  </body>
+  </html>`);
   w.document.close();
 }
 
