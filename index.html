@@ -1,304 +1,133 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html>
 <head>
-<title>HFGM Ministry Pro</title>
+<title>HFGM Ministry Pro App</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
 <style>
 *{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:Arial,sans-serif;
-  background:linear-gradient(135deg,#002f7a,#00a6a6);
-  min-height:100vh;
-  color:#111;
-}
-.login{
-  max-width:380px;
-  margin:80px auto;
-  background:#fff;
-  padding:25px;
-  border-radius:22px;
-  text-align:center;
-  box-shadow:0 10px 30px #0005;
-}
-.app{max-width:1150px;margin:auto;padding:14px 14px 90px}
-.hero{
-  background:#0b4da2;
-  color:white;
-  text-align:center;
-  padding:25px;
-  border-radius:24px;
-  margin:15px 0;
-}
-.hero h1{margin:5px;font-size:30px}
-.menu{
-  position:sticky;
-  top:0;
-  z-index:99;
-  display:flex;
-  gap:10px;
-  background:#ffffffee;
-  padding:10px;
-  border-radius:0 0 18px 18px;
-  overflow:auto;
-}
-.menu a{
-  background:#0b4da2;
-  color:white;
-  padding:10px 15px;
-  border-radius:12px;
-  text-decoration:none;
-  font-weight:bold;
-  white-space:nowrap;
-}
-.dashboard{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:12px;
-  margin:15px 0;
-}
-.dash{
-  background:white;
-  border-radius:20px;
-  padding:18px;
-  text-align:center;
-  box-shadow:0 5px 18px #0003;
-  font-weight:bold;
-}
+body{margin:0;font-family:Arial;background:linear-gradient(135deg,#003b8e,#00a6a6);min-height:100vh}
+.login{max-width:380px;margin:80px auto;background:white;padding:25px;border-radius:22px;text-align:center}
+.app{max-width:1150px;margin:auto;padding:15px 15px 90px;display:none}
+.hero{background:#0b4da2;color:white;text-align:center;padding:25px;border-radius:22px;margin:15px 0}
+.menu{display:flex;gap:10px;background:white;padding:10px;border-radius:15px;margin:10px 0;overflow:auto}
+.menu a{background:#0b4da2;color:white;padding:10px 14px;border-radius:10px;text-decoration:none;font-weight:bold}
+.dashboard{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.dash{background:white;padding:18px;border-radius:18px;text-align:center;font-weight:bold}
 .dash b{font-size:28px;color:#0b4da2}
-.grid{
-  display:grid;
-  grid-template-columns:340px 1fr;
-  gap:18px;
-}
-.card{
-  background:white;
-  padding:20px;
-  border-radius:22px;
-  margin:15px 0;
-  box-shadow:0 5px 18px #0002;
-}
-input,select,button{
-  width:100%;
-  padding:12px;
-  margin:8px 0;
-  border-radius:12px;
-  border:1px solid #ccc;
-  font-size:15px;
-}
-button{
-  background:#0b4da2;
-  color:white;
-  font-weight:bold;
-  cursor:pointer;
-  border:none;
-}
-.green{background:#0b8f68}
-.red,.delete{background:#d93025}
-.wa{
-  background:#25D366;
-  color:white;
-  padding:8px 10px;
-  border-radius:8px;
-  text-decoration:none;
-  font-size:13px;
-}
+.grid{display:grid;grid-template-columns:340px 1fr;gap:18px}
+.card{background:white;padding:20px;border-radius:22px;margin:15px 0}
+input,select,button{width:100%;padding:12px;margin:8px 0;border-radius:10px;border:1px solid #ccc;font-size:15px}
+button{background:#0b4da2;color:white;font-weight:bold;border:none;cursor:pointer}
+.green{background:#0b8f68}.red{background:#d93025}
+.wa{background:#25D366;color:white;padding:8px 10px;border-radius:8px;text-decoration:none}
 .table-wrap{overflow:auto}
-table{width:100%;border-collapse:collapse;min-width:900px}
+table{width:100%;border-collapse:collapse;min-width:850px}
 th{background:#0b4da2;color:white;padding:10px}
 td{padding:10px;border-bottom:1px solid #ddd;text-align:center}
-.photo{
-  width:55px;
-  height:55px;
-  border-radius:50%;
-  object-fit:cover;
-  border:2px solid #0b4da2;
-}
-.preview{
-  width:95px;
-  height:95px;
-  border-radius:50%;
-  object-fit:cover;
-  border:3px solid #0b4da2;
-  display:none;
-  margin:10px auto;
-}
-.total{
-  background:#eef5ff;
-  padding:15px;
-  border-radius:15px;
-  text-align:center;
-  font-size:22px;
-  color:#0b4da2;
-  font-weight:bold;
-}
-.bottom-nav{
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  background:white;
-  display:none;
-  justify-content:space-around;
-  padding:10px 5px;
-  box-shadow:0 -4px 18px #0003;
-  z-index:100;
-}
-.bottom-nav a{
-  color:#0b4da2;
-  text-decoration:none;
-  font-weight:bold;
-  font-size:13px;
-  text-align:center;
-}
-@media(max-width:800px){
-  .grid,.dashboard{grid-template-columns:1fr}
-  .menu{display:none}
-  .bottom-nav{display:flex}
-  .hero h1{font-size:24px}
-  .app{padding-bottom:95px}
-}
+.photo{width:55px;height:55px;border-radius:50%;object-fit:cover;border:2px solid #0b4da2}
+.preview{width:90px;height:90px;border-radius:50%;object-fit:cover;border:3px solid #0b4da2;display:none;margin:auto}
+.total{background:#eef5ff;padding:15px;border-radius:15px;text-align:center;font-size:22px;color:#0b4da2;font-weight:bold}
+@media(max-width:800px){.grid,.dashboard{grid-template-columns:1fr}.menu{overflow:auto}}
 </style>
 </head>
 
 <body>
 
 <div id="loginBox" class="login">
-  <h2>🕊️ HFGM Admin Login</h2>
-  <p>Holy Spirit Fellowship Global Ministry</p>
-  <input id="loginUser" placeholder="Username">
-  <input id="loginPass" type="password" placeholder="Password">
-  <button onclick="document.getElementById('loginBox').style.display='none';document.getElementById('mainApp').style.display='block';">Login</button>
-  <p style="font-size:13px;color:#666">admin / hfgm123</p>
+<h2>🕊️ HFGM Admin Login</h2>
+<p>Holy Spirit Fellowship Global Ministry</p>
+<input id="loginUser" placeholder="Username">
+<input id="loginPass" type="password" placeholder="Password">
+<button onclick="login()">Login</button>
+<p style="font-size:13px;color:#666">admin / hfgm123</p>
 </div>
 
-<div id="mainApp" class="app" style="display:none">
+<div id="mainApp" class="app">
 
 <div class="menu">
-  <a href="#dashboard">Dashboard</a>
-  <a href="#members">Members</a>
-  <a href="#attendance">Attendance</a>
-  <a href="#donations">Donations</a>
-  <a href="#" onclick="logout()">Logout</a>
+<a href="#dashboard">Dashboard</a>
+<a href="#members">Members</a>
+<a href="#attendance">Attendance</a>
+<a href="#donations">Donations</a>
+<a href="#" onclick="logout()">Logout</a>
 </div>
 
 <div class="hero">
-  <h1>🕊️ HFGM Ministry Pro App</h1>
-  <p>Holy Spirit Fellowship Global Ministry</p>
+<h1>🕊️ HFGM Ministry Pro App</h1>
+<p>Holy Spirit Fellowship Global Ministry</p>
 </div>
 
 <div class="dashboard" id="dashboard">
-  <div class="dash"><b id="dashMembers">0</b><br>👥 Members</div>
-  <div class="dash"><b id="dashVillages">0</b><br>🏘️ Villages</div>
-  <div class="dash"><b id="dashAttendance">0</b><br>🙏 Attendance</div>
-  <div class="dash"><b>₹<span id="dashDonations">0</span></b><br>💰 Donations</div>
+<div class="dash"><b id="dashMembers">0</b><br>👥 Members</div>
+<div class="dash"><b id="dashVillages">0</b><br>🏘️ Villages</div>
+<div class="dash"><b id="dashAttendance">0</b><br>🙏 Attendance</div>
+<div class="dash"><b>₹<span id="dashDonations">0</span></b><br>💰 Donations</div>
 </div>
 
 <div class="grid" id="members">
-
 <div class="card">
-  <h2>Add Member</h2>
-  <input id="name" placeholder="Name">
-  <input id="village" placeholder="Village">
-  <input id="occupation" placeholder="Occupation">
-  <input id="cell" placeholder="Cell Number">
-
-  <label><b>Member Photo</b></label>
-  <input id="photoFile" type="file" accept="image/*" capture="environment" onchange="previewPhoto()">
-  <img id="photoPreview" class="preview">
-
-  <button onclick="saveMember()">Save Member</button>
+<h2>Add Member</h2>
+<input id="name" placeholder="Name">
+<input id="village" placeholder="Village">
+<input id="occupation" placeholder="Occupation">
+<input id="cell" placeholder="Cell Number">
+<label><b>Member Photo</b></label>
+<input id="photoFile" type="file" accept="image/*" onchange="previewPhoto()">
+<img id="photoPreview" class="preview">
+<button onclick="saveMember()">Save Member</button>
 </div>
 
 <div class="card">
-  <h2>Members List</h2>
-  <input id="search" placeholder="Search member..." oninput="renderMembers()">
-
-  <div class="table-wrap">
-    <table>
-      <thead>
-      <tr>
-        <th>ID</th>
-        <th>Photo</th>
-        <th>Name</th>
-        <th>Village</th>
-        <th>Occupation</th>
-        <th>Cell</th>
-        <th>WhatsApp</th>
-        <th>ID Card</th>
-        <th>Delete</th>
-      </tr>
-      </thead>
-      <tbody id="memberTable"></tbody>
-    </table>
-  </div>
+<h2>Members List</h2>
+<input id="search" placeholder="Search member..." oninput="renderMembers()">
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>ID</th><th>Photo</th><th>Name</th><th>Village</th><th>Occupation</th><th>Cell</th><th>WhatsApp</th><th>ID Card</th><th>Delete</th>
+</tr>
+</thead>
+<tbody id="memberTable"></tbody>
+</table>
 </div>
-
+</div>
 </div>
 
 <div class="card" id="attendance">
-  <h2>Attendance</h2>
-  <input id="attName" placeholder="Member Name">
-  <input id="attDate" type="date">
-  <select id="attStatus">
-    <option>Present</option>
-    <option>Absent</option>
-  </select>
-  <button onclick="saveAttendance()">Save Attendance</button>
-
-  <h3>Attendance List</h3>
-  <div class="table-wrap">
-    <table>
-      <thead>
-      <tr>
-        <th>S.No</th>
-        <th>Name</th>
-        <th>Date</th>
-        <th>Status</th>
-        <th>Delete</th>
-      </tr>
-      </thead>
-      <tbody id="attendanceTable"></tbody>
-    </table>
-  </div>
+<h2>Attendance</h2>
+<input id="attName" placeholder="Member Name">
+<input id="attDate" type="date">
+<select id="attStatus">
+<option>Present</option>
+<option>Absent</option>
+</select>
+<button onclick="saveAttendance()">Save Attendance</button>
+<h3>Attendance List</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>S.No</th><th>Name</th><th>Date</th><th>Status</th><th>Delete</th></tr></thead>
+<tbody id="attendanceTable"></tbody>
+</table>
+</div>
 </div>
 
 <div class="card" id="donations">
-  <h2>Donations</h2>
-  <input id="donorName" placeholder="Donor Name">
-  <input id="donationAmount" type="number" placeholder="Amount">
-  <input id="donationPurpose" placeholder="Purpose">
-  <input id="donationDate" type="date">
-  <button onclick="saveDonation()">Save Donation</button>
-
-  <div class="total">Total Donations: ₹<span id="donationTotal">0</span></div>
-
-  <h3>Donation List</h3>
-  <div class="table-wrap">
-    <table>
-      <thead>
-      <tr>
-        <th>S.No</th>
-        <th>Name</th>
-        <th>Amount</th>
-        <th>Purpose</th>
-        <th>Date</th>
-        <th>Delete</th>
-      </tr>
-      </thead>
-      <tbody id="donationTable"></tbody>
-    </table>
-  </div>
+<h2>Donations</h2>
+<input id="donorName" placeholder="Donor Name">
+<input id="donationAmount" type="number" placeholder="Amount">
+<input id="donationPurpose" placeholder="Purpose">
+<input id="donationDate" type="date">
+<button onclick="saveDonation()">Save Donation</button>
+<div class="total">Total Donations: ₹<span id="donationTotal">0</span></div>
+<h3>Donation List</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>S.No</th><th>Name</th><th>Amount</th><th>Purpose</th><th>Date</th><th>Delete</th></tr></thead>
+<tbody id="donationTable"></tbody>
+</table>
+</div>
 </div>
 
-</div>
-
-<div class="bottom-nav">
-  <a href="#dashboard">🏠<br>Home</a>
-  <a href="#members">👥<br>Members</a>
-  <a href="#attendance">🙏<br>Attend</a>
-  <a href="#donations">💰<br>Donate</a>
 </div>
 
 <script>
@@ -307,147 +136,114 @@ let attendance = JSON.parse(localStorage.getItem("hfgm_attendance") || "[]");
 let donations = JSON.parse(localStorage.getItem("hfgm_donations") || "[]");
 let selectedPhoto = "";
 
-function login() {
-
-var username = document.getElementById("loginUser").value;
-var password = document.getElementById("loginPass").value;
-
-if(username == "admin" && password == "hfgm123") {
-
-document.getElementById("loginBox").style.display = "none";
-
-document.getElementById("mainApp").style.display = "block";
-
-} else {
-
-alert("Wrong Username or Password");
-
+function login(){
+  let u=document.getElementById("loginUser").value.trim();
+  let p=document.getElementById("loginPass").value.trim();
+  if(u=="admin" && p=="hfgm123"){
+    document.getElementById("loginBox").style.display="none";
+    document.getElementById("mainApp").style.display="block";
+  }else{
+    alert("Wrong Username or Password");
+  }
 }
 
-}
-if(localStorage.getItem("hfgm_login")=="yes"){
-
-document.getElementById("loginBox").style.display="none";
-document.getElementById("mainApp").style.display="block";
-
-}
 function logout(){
-  localStorage.removeItem("hfgm_login");
-  location.reload();
-}
-
-if(localStorage.getItem("hfgm_login") === "yes"){
-  document.getElementById("loginBox").style.display="none";
-  document.getElementById("mainApp").style.display="block";
+  document.getElementById("mainApp").style.display="none";
+  document.getElementById("loginBox").style.display="block";
 }
 
 function previewPhoto(){
-  const file = document.getElementById("photoFile").files[0];
-  if(!file){
-    selectedPhoto="";
-    return;
-  }
-
-  const reader = new FileReader();
-
-  reader.onload = function(e){
-    const img = new Image();
-
-    img.onload = function(){
-      const canvas = document.createElement("canvas");
-      const size = 160;
-      canvas.width = size;
-      canvas.height = size;
-
-      const ctx = canvas.getContext("2d");
-      ctx.fillStyle = "#ffffff";
-      ctx.fillRect(0,0,size,size);
-
-      const s = Math.min(img.width,img.height);
-      const sx = (img.width - s) / 2;
-      const sy = (img.height - s) / 2;
-
-      ctx.drawImage(img,sx,sy,s,s,0,0,size,size);
-
-      selectedPhoto = canvas.toDataURL("image/jpeg",0.45);
-
-      document.getElementById("photoPreview").src = selectedPhoto;
-      document.getElementById("photoPreview").style.display = "block";
+  let file=document.getElementById("photoFile").files[0];
+  if(!file){selectedPhoto="";return;}
+  let reader=new FileReader();
+  reader.onload=function(e){
+    let img=new Image();
+    img.onload=function(){
+      let canvas=document.createElement("canvas");
+      canvas.width=160;
+      canvas.height=160;
+      let ctx=canvas.getContext("2d");
+      let s=Math.min(img.width,img.height);
+      let sx=(img.width-s)/2;
+      let sy=(img.height-s)/2;
+      ctx.drawImage(img,sx,sy,s,s,0,0,160,160);
+      selectedPhoto=canvas.toDataURL("image/jpeg",0.45);
+      document.getElementById("photoPreview").src=selectedPhoto;
+      document.getElementById("photoPreview").style.display="block";
     };
-
-    img.src = e.target.result;
+    img.src=e.target.result;
   };
-
   reader.readAsDataURL(file);
 }
 
 function saveMember(){
+  let name=document.getElementById("name").value.trim();
+  let village=document.getElementById("village").value.trim();
+  let occupation=document.getElementById("occupation").value.trim();
+  let cell=document.getElementById("cell").value.trim();
 
-const name = document.getElementById("name").value;
-const village = document.getElementById("village").value;
-const occupation = document.getElementById("occupation").value;
-const cell = document.getElementById("cell").value;
+  if(!name || !village || !cell){
+    alert("Name, Village, Cell fill cheyandi");
+    return;
+  }
 
-const photoInput = document.getElementById("photo");
+  let member={
+    id:"HFGM"+(members.length+1),
+    name:name,
+    village:village,
+    occupation:occupation,
+    cell:cell,
+    photo:selectedPhoto
+  };
 
-if(name=="" || village=="" || occupation=="" || cell==""){
-alert("Fill all details");
-return;
+  members.push(member);
+
+  try{
+    localStorage.setItem("hfgm_members",JSON.stringify(members));
+  }catch(e){
+    members.pop();
+    alert("Photo size problem. Old members delete cheyandi or small photo use cheyandi.");
+    return;
+  }
+
+  document.getElementById("name").value="";
+  document.getElementById("village").value="";
+  document.getElementById("occupation").value="";
+  document.getElementById("cell").value="";
+  document.getElementById("photoFile").value="";
+  document.getElementById("photoPreview").style.display="none";
+  selectedPhoto="";
+
+  renderMembers();
+  alert("Member Saved ✅");
 }
 
-const file = photoInput.files[0];
-
-const reader = new FileReader();
-
-reader.onload = function(e){
-
-const photo = e.target.result;
-
-const table = document.getElementById("memberTable");
-
-const row = table.insertRow();
-
-row.innerHTML = `
-<td>HFGM${table.rows.length}</td>
-<td><img src="${photo}" width="60" height="60" style="border-radius:50%"></td>
-<td>${name}</td>
-<td>${village}</td>
-<td>${occupation}</td>
-<td>${cell}</td>
-<td><a href="https://wa.me/91${cell}" target="_blank">WhatsApp</a></td>
-`;
-
-};
-
-reader.readAsDataURL(file);
-
-}
 function renderMembers(){
-  let tbody = document.getElementById("memberTable");
-  let search = document.getElementById("search").value.toLowerCase();
-  tbody.innerHTML = "";
+  let tbody=document.getElementById("memberTable");
+  let search=document.getElementById("search").value.toLowerCase();
+  tbody.innerHTML="";
 
-  let filtered = members.filter(m =>
+  let filtered=members.filter(m =>
     (m.name||"").toLowerCase().includes(search) ||
     (m.village||"").toLowerCase().includes(search) ||
     (m.cell||"").includes(search)
   );
 
   filtered.forEach((m)=>{
-    let index = members.indexOf(m);
-    let photo = m.photo ? <img class="photo" src="${m.photo}"> : "No Photo";
+    let index=members.indexOf(m);
+    let photo=m.photo ? <img class="photo" src="${m.photo}"> : "No Photo";
 
-    tbody.innerHTML += `
+    tbody.innerHTML+=`
     <tr>
       <td>${m.id || "HFGM"+(index+1)}</td>
       <td>${photo}</td>
       <td>${m.name}</td>
       <td>${m.village}</td>
-      <td>${m.occupation || ""}</td>
+      <td>${m.occupation||""}</td>
       <td>${m.cell}</td>
       <td><a class="wa" target="_blank" href="https://wa.me/91${m.cell}">WhatsApp</a></td>
       <td><button class="green" onclick="printID(${index})">Print ID</button></td>
-      <td><button class="delete" onclick="deleteMember(${index})">Delete</button></td>
+      <td><button class="red" onclick="deleteMember(${index})">Delete</button></td>
     </tr>`;
   });
 
@@ -457,48 +253,41 @@ function renderMembers(){
 function deleteMember(index){
   if(confirm("Delete member?")){
     members.splice(index,1);
-    localStorage.setItem("hfgm_members", JSON.stringify(members));
+    localStorage.setItem("hfgm_members",JSON.stringify(members));
     renderMembers();
   }
 }
 
 function printID(index){
-  let m = members[index];
-  let img = m.photo
-    ? <img src="${m.photo}" style="width:120px;height:120px;border-radius:50%;object-fit:cover;border:4px solid white">
-    : <div style="width:120px;height:120px;border-radius:50%;background:white;margin:auto"></div>;
-
-  let w = window.open("");
+  let m=members[index];
+  let photo=m.photo ? <img src="${m.photo}" style="width:120px;height:120px;border-radius:50%;object-fit:cover;border:4px solid white"> : <div style="width:120px;height:120px;border-radius:50%;background:white;margin:auto"></div>;
+  let w=window.open("");
   w.document.write(`
-  <html>
-  <head>
-  <title>ID Card</title>
+  <html><head><title>ID Card</title>
   <style>
   body{font-family:Arial;display:flex;justify-content:center;align-items:center;height:100vh;background:#eee}
-  .card{width:350px;background:linear-gradient(135deg,#073b8e,#0aa6a6);color:white;padding:25px;border-radius:22px;text-align:center;border:5px solid white;box-shadow:0 10px 30px #0005}
-  </style>
-  </head>
+  .card{width:350px;background:linear-gradient(135deg,#073b8e,#0aa6a6);color:white;padding:25px;border-radius:22px;text-align:center;border:5px solid white}
+  </style></head>
   <body>
   <div class="card">
-    <h1>🕊️ HFGM</h1>
-    <h2>MEMBER ID CARD</h2>
-    ${img}
-    <p><b>ID:</b> ${m.id}</p>
-    <p><b>Name:</b> ${m.name}</p>
-    <p><b>Village:</b> ${m.village}</p>
-    <p><b>Cell:</b> ${m.cell}</p>
-    <p>Holy Spirit Fellowship Global Ministry</p>
+  <h1>🕊️ HFGM</h1>
+  <h2>MEMBER ID CARD</h2>
+  ${photo}
+  <p><b>ID:</b> ${m.id}</p>
+  <p><b>Name:</b> ${m.name}</p>
+  <p><b>Village:</b> ${m.village}</p>
+  <p><b>Cell:</b> ${m.cell}</p>
+  <p>Holy Spirit Fellowship Global Ministry</p>
   </div>
   <script>window.print();<\/script>
-  </body>
-  </html>`);
+  </body></html>`);
   w.document.close();
 }
 
 function saveAttendance(){
-  let name = document.getElementById("attName").value.trim();
-  let date = document.getElementById("attDate").value;
-  let status = document.getElementById("attStatus").value;
+  let name=document.getElementById("attName").value.trim();
+  let date=document.getElementById("attDate").value;
+  let status=document.getElementById("attStatus").value;
 
   if(!name || !date){
     alert("Name and Date fill cheyandi");
@@ -506,7 +295,7 @@ function saveAttendance(){
   }
 
   attendance.push({name:name,date:date,status:status});
-  localStorage.setItem("hfgm_attendance", JSON.stringify(attendance));
+  localStorage.setItem("hfgm_attendance",JSON.stringify(attendance));
 
   document.getElementById("attName").value="";
   document.getElementById("attDate").value="";
@@ -516,17 +305,17 @@ function saveAttendance(){
 }
 
 function renderAttendance(){
-  let tbody = document.getElementById("attendanceTable");
-  tbody.innerHTML = "";
+  let tbody=document.getElementById("attendanceTable");
+  tbody.innerHTML="";
 
   attendance.forEach((a,i)=>{
-    tbody.innerHTML += `
+    tbody.innerHTML+=`
     <tr>
       <td>${i+1}</td>
       <td>${a.name}</td>
       <td>${a.date}</td>
       <td>${a.status}</td>
-      <td><button class="delete" onclick="deleteAttendance(${i})">Delete</button></td>
+      <td><button class="red" onclick="deleteAttendance(${i})">Delete</button></td>
     </tr>`;
   });
 
@@ -536,16 +325,16 @@ function renderAttendance(){
 function deleteAttendance(index){
   if(confirm("Delete attendance?")){
     attendance.splice(index,1);
-    localStorage.setItem("hfgm_attendance", JSON.stringify(attendance));
+    localStorage.setItem("hfgm_attendance",JSON.stringify(attendance));
     renderAttendance();
   }
 }
 
 function saveDonation(){
-  let donorName = document.getElementById("donorName").value.trim();
-  let amount = document.getElementById("donationAmount").value.trim();
-  let purpose = document.getElementById("donationPurpose").value.trim();
-  let date = document.getElementById("donationDate").value;
+  let donorName=document.getElementById("donorName").value.trim();
+  let amount=document.getElementById("donationAmount").value.trim();
+  let purpose=document.getElementById("donationPurpose").value.trim();
+  let date=document.getElementById("donationDate").value;
 
   if(!donorName || !amount){
     alert("Donor name and amount fill cheyandi");
@@ -553,7 +342,7 @@ function saveDonation(){
   }
 
   donations.push({donorName:donorName,amount:amount,purpose:purpose,date:date});
-  localStorage.setItem("hfgm_donations", JSON.stringify(donations));
+  localStorage.setItem("hfgm_donations",JSON.stringify(donations));
 
   document.getElementById("donorName").value="";
   document.getElementById("donationAmount").value="";
@@ -565,43 +354,43 @@ function saveDonation(){
 }
 
 function renderDonations(){
-  let tbody = document.getElementById("donationTable");
-  tbody.innerHTML = "";
-  let total = 0;
+  let tbody=document.getElementById("donationTable");
+  tbody.innerHTML="";
+  let total=0;
 
   donations.forEach((d,i)=>{
-    total += Number(d.amount || 0);
-    tbody.innerHTML += `
+    total+=Number(d.amount||0);
+    tbody.innerHTML+=`
     <tr>
       <td>${i+1}</td>
       <td>${d.donorName}</td>
       <td>₹${d.amount}</td>
       <td>${d.purpose}</td>
       <td>${d.date}</td>
-      <td><button class="delete" onclick="deleteDonation(${i})">Delete</button></td>
+      <td><button class="red" onclick="deleteDonation(${i})">Delete</button></td>
     </tr>`;
   });
 
-  document.getElementById("donationTotal").innerText = total;
+  document.getElementById("donationTotal").innerText=total;
   updateDashboard();
 }
 
 function deleteDonation(index){
   if(confirm("Delete donation?")){
     donations.splice(index,1);
-    localStorage.setItem("hfgm_donations", JSON.stringify(donations));
+    localStorage.setItem("hfgm_donations",JSON.stringify(donations));
     renderDonations();
   }
 }
 
 function updateDashboard(){
-  let villages = new Set(members.map(m => (m.village || "").toLowerCase()));
-  let totalDonation = donations.reduce((sum,d)=>sum+Number(d.amount || 0),0);
+  let villages=new Set(members.map(m=>(m.village||"").toLowerCase()));
+  let totalDonation=donations.reduce((sum,d)=>sum+Number(d.amount||0),0);
 
-  document.getElementById("dashMembers").innerText = members.length;
-  document.getElementById("dashVillages").innerText = villages.size;
-  document.getElementById("dashAttendance").innerText = attendance.length;
-  document.getElementById("dashDonations").innerText = totalDonation;
+  document.getElementById("dashMembers").innerText=members.length;
+  document.getElementById("dashVillages").innerText=villages.size;
+  document.getElementById("dashAttendance").innerText=attendance.length;
+  document.getElementById("dashDonations").innerText=totalDonation;
 }
 
 renderMembers();
