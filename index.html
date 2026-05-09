@@ -382,47 +382,46 @@ function previewPhoto(){
 }
 
 function saveMember(){
-  let name = document.getElementById("name").value.trim();
-  let village = document.getElementById("village").value.trim();
-  let occupation = document.getElementById("occupation").value.trim();
-  let cell = document.getElementById("cell").value.trim();
 
-  if(!name || !village || !cell){
-    alert("Name, Village, Cell fill cheyandi");
-    return;
-  }
+const name = document.getElementById("name").value;
+const village = document.getElementById("village").value;
+const occupation = document.getElementById("occupation").value;
+const cell = document.getElementById("cell").value;
 
-  let member = {
-    id:"HFGM" + (members.length + 1),
-    name:name,
-    village:village,
-    occupation:occupation,
-    cell:cell,
-    photo:selectedPhoto || ""
-  };
+const photoInput = document.getElementById("photo");
 
-  members.push(member);
-
-  try{
-    localStorage.setItem("hfgm_members", JSON.stringify(members));
-  }catch(e){
-    members.pop();
-    alert("Photo storage full. Small photo use cheyandi or old members delete cheyandi.");
-    return;
-  }
-
-  document.getElementById("name").value="";
-  document.getElementById("village").value="";
-  document.getElementById("occupation").value="";
-  document.getElementById("cell").value="";
-  document.getElementById("photoFile").value="";
-  document.getElementById("photoPreview").style.display="none";
-  selectedPhoto="";
-
-  renderMembers();
-  alert("Member Saved ✅");
+if(name=="" || village=="" || occupation=="" || cell==""){
+alert("Fill all details");
+return;
 }
 
+const file = photoInput.files[0];
+
+const reader = new FileReader();
+
+reader.onload = function(e){
+
+const photo = e.target.result;
+
+const table = document.getElementById("memberTable");
+
+const row = table.insertRow();
+
+row.innerHTML = `
+<td>HFGM${table.rows.length}</td>
+<td><img src="${photo}" width="60" height="60" style="border-radius:50%"></td>
+<td>${name}</td>
+<td>${village}</td>
+<td>${occupation}</td>
+<td>${cell}</td>
+<td><a href="https://wa.me/91${cell}" target="_blank">WhatsApp</a></td>
+`;
+
+};
+
+reader.readAsDataURL(file);
+
+}
 function renderMembers(){
   let tbody = document.getElementById("memberTable");
   let search = document.getElementById("search").value.toLowerCase();
