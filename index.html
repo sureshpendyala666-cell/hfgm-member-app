@@ -1,23 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>HFGM Ministry App</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HFGM Ministry App</title>
 <style>
-body{font-family:Arial;background:linear-gradient(135deg,#003b8e,#02a6a6);padding:20px;min-height:100vh}
+body{font-family:Arial;margin:0;background:linear-gradient(135deg,#003b8e,#04a7a7);min-height:100vh;padding:20px}
 .app{max-width:1150px;margin:auto}
-.hero,.card{background:white;padding:20px;border-radius:20px;margin:15px}
-.hero{text-align:center;background:#0b4da2;color:white}
+.hero,.card{background:white;border-radius:20px;padding:20px;margin:15px;box-shadow:0 5px 18px #0002}
+.hero{background:#0b4da2;color:white;text-align:center}
 .menu{display:flex;gap:10px;background:white;padding:12px;border-radius:15px;margin:15px;overflow:auto}
-.menu a{background:#0b4da2;color:white;padding:10px 15px;border-radius:10px;text-decoration:none;font-weight:bold}
+.menu a{background:#0b4da2;color:white;text-decoration:none;padding:10px 15px;border-radius:10px;font-weight:bold}
 .dashboard{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin:15px}
-.dash{background:white;padding:20px;border-radius:20px;text-align:center;font-weight:bold}
-.dash b{font-size:28px;color:#0b4da2}
+.box{background:white;padding:20px;border-radius:18px;text-align:center;font-weight:bold}
+.box b{font-size:28px;color:#0b4da2}
 .grid{display:grid;grid-template-columns:350px 1fr;gap:20px}
 input,select,button{width:100%;padding:12px;margin:8px 0;border-radius:10px;border:1px solid #ccc}
-button{background:#0b4da2;color:white;font-weight:bold;cursor:pointer;border:none}
-.green{background:#0b8f68}
-.delete{background:#d93025}
+button{background:#0b4da2;color:white;border:none;font-weight:bold;cursor:pointer}
+.green{background:#0b8f68}.red{background:#d93025}
 .wa{background:#25D366;color:white;padding:8px 10px;border-radius:8px;text-decoration:none}
 .table-wrap{overflow:auto}
 table{width:100%;border-collapse:collapse;min-width:850px}
@@ -27,7 +26,6 @@ td{padding:10px;border-bottom:1px solid #ddd;text-align:center}
 @media(max-width:800px){.grid,.dashboard{grid-template-columns:1fr}}
 </style>
 </head>
-
 <body>
 
 <div class="app">
@@ -45,10 +43,10 @@ td{padding:10px;border-bottom:1px solid #ddd;text-align:center}
 </div>
 
 <div class="dashboard" id="dashboard">
-<div class="dash"><b id="dashMembers">0</b><br>👥 Members</div>
-<div class="dash"><b id="dashVillages">0</b><br>🏘️ Villages</div>
-<div class="dash"><b id="dashAttendance">0</b><br>🙏 Attendance</div>
-<div class="dash"><b>₹<span id="dashDonations">0</span></b><br>💰 Donations</div>
+<div class="box"><b id="dashMembers">0</b><br>👥 Members</div>
+<div class="box"><b id="dashVillages">0</b><br>🏘️ Villages</div>
+<div class="box"><b id="dashAttendance">0</b><br>🙏 Attendance</div>
+<div class="box"><b>₹<span id="dashDonations">0</span></b><br>💰 Donations</div>
 </div>
 
 <div class="grid" id="members">
@@ -65,19 +63,11 @@ td{padding:10px;border-bottom:1px solid #ddd;text-align:center}
 <div class="card">
 <h2>Members List</h2>
 <input id="search" placeholder="Search member..." oninput="renderMembers()">
-
 <div class="table-wrap">
 <table>
 <thead>
 <tr>
-<th>ID</th>
-<th>Name</th>
-<th>Village</th>
-<th>Occupation</th>
-<th>Cell</th>
-<th>WhatsApp</th>
-<th>ID Card</th>
-<th>Delete</th>
+<th>ID</th><th>Name</th><th>Village</th><th>Occupation</th><th>Cell</th><th>WhatsApp</th><th>ID Card</th><th>Delete</th>
 </tr>
 </thead>
 <tbody id="memberTable"></tbody>
@@ -101,13 +91,7 @@ td{padding:10px;border-bottom:1px solid #ddd;text-align:center}
 <div class="table-wrap">
 <table>
 <thead>
-<tr>
-<th>S.No</th>
-<th>Name</th>
-<th>Date</th>
-<th>Status</th>
-<th>Delete</th>
-</tr>
+<tr><th>S.No</th><th>Name</th><th>Date</th><th>Status</th><th>Delete</th></tr>
 </thead>
 <tbody id="attendanceTable"></tbody>
 </table>
@@ -128,14 +112,7 @@ td{padding:10px;border-bottom:1px solid #ddd;text-align:center}
 <div class="table-wrap">
 <table>
 <thead>
-<tr>
-<th>S.No</th>
-<th>Name</th>
-<th>Amount</th>
-<th>Purpose</th>
-<th>Date</th>
-<th>Delete</th>
-</tr>
+<tr><th>S.No</th><th>Name</th><th>Amount</th><th>Purpose</th><th>Date</th><th>Delete</th></tr>
 </thead>
 <tbody id="donationTable"></tbody>
 </table>
@@ -144,58 +121,40 @@ td{padding:10px;border-bottom:1px solid #ddd;text-align:center}
 
 </div>
 
-<script type="module">
-
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyBLyi5hI-jSSyIf-H9rnpP_4Ldj6Cfpqu8",
-  authDomain: "hfgm-ministry.firebaseapp.com",
-  projectId: "hfgm-ministry",
-  storageBucket: "hfgm-ministry.firebasestorage.app",
-  messagingSenderId: "1079389581104",
-  appId: "1:1079389581104:web:3830dc23c81389cb7fe2f5",
-  measurementId: "G-2L8ZX8BJKM"
-};
-
-const app = initializeApp(firebaseConfig);
+<script>
 let members = JSON.parse(localStorage.getItem("hfgm_members") || "[]");
 let attendance = JSON.parse(localStorage.getItem("hfgm_attendance") || "[]");
 let donations = JSON.parse(localStorage.getItem("hfgm_donations") || "[]");
 
 function saveMember(){
+  let name = document.getElementById("name").value.trim();
+  let village = document.getElementById("village").value.trim();
+  let occupation = document.getElementById("occupation").value.trim();
+  let cell = document.getElementById("cell").value.trim();
 
-let name = document.getElementById("name").value.trim();
-let village = document.getElementById("village").value.trim();
-let occupation = document.getElementById("occupation").value.trim();
-let cell = document.getElementById("cell").value.trim();
+  if(!name || !village || !cell){
+    alert("Name, Village, Cell fill cheyandi");
+    return;
+  }
 
-if(!name || !village || !cell){
-   alert("Name, Village, Cell fill cheyandi");
-   return;
-}
-
-let id = "HFGM" + (members.length + 1);
-
-members.push({
-    id:id,
+  let member = {
+    id:"HFGM" + (members.length + 1),
     name:name,
     village:village,
     occupation:occupation,
     cell:cell
-});
+  };
 
-localStorage.setItem("hfgm_members", JSON.stringify(members));
+  members.push(member);
+  localStorage.setItem("hfgm_members", JSON.stringify(members));
 
-renderMembers();
+  document.getElementById("name").value="";
+  document.getElementById("village").value="";
+  document.getElementById("occupation").value="";
+  document.getElementById("cell").value="";
 
-document.getElementById("name").value="";
-document.getElementById("village").value="";
-document.getElementById("occupation").value="";
-document.getElementById("cell").value="";
-
-alert("Member Saved");
-
+  renderMembers();
+  alert("Member Saved ✅");
 }
 
 function renderMembers(){
@@ -203,27 +162,25 @@ function renderMembers(){
   let search = document.getElementById("search").value.toLowerCase();
   tbody.innerHTML = "";
 
-  let filtered = members.filter(m =>
-    (m.name||"").toLowerCase().includes(search) ||
-    (m.village||"").toLowerCase().includes(search) ||
-    (m.occupation||"").toLowerCase().includes(search) ||
-    (m.cell||"").includes(search)
-  );
-
-  filtered.forEach((m)=>{
-    let index = members.indexOf(m);
-
-    tbody.innerHTML += `
-    <tr>
-      <td>${m.id || "HFGM"+(index+1)}</td>
-      <td>${m.name}</td>
-      <td>${m.village}</td>
-      <td>${m.occupation || ""}</td>
-      <td>${m.cell}</td>
-      <td><a class="wa" target="_blank" href="https://wa.me/91${m.cell}">WhatsApp</a></td>
-      <td><button class="green" onclick="printID(${index})">Print ID</button></td>
-      <td><button class="delete" onclick="deleteMember(${index})">Delete</button></td>
-    </tr>`;
+  members.forEach((m,index)=>{
+    if(
+      (m.name || "").toLowerCase().includes(search) ||
+      (m.village || "").toLowerCase().includes(search) ||
+      (m.occupation || "").toLowerCase().includes(search) ||
+      (m.cell || "").includes(search)
+    ){
+      tbody.innerHTML += `
+      <tr>
+        <td>${m.id}</td>
+        <td>${m.name}</td>
+        <td>${m.village}</td>
+        <td>${m.occupation}</td>
+        <td>${m.cell}</td>
+        <td><a class="wa" target="_blank" href="https://wa.me/91${m.cell}">WhatsApp</a></td>
+        <td><button class="green" onclick="printID(${index})">Print ID</button></td>
+        <td><button class="red" onclick="deleteMember(${index})">Delete</button></td>
+      </tr>`;
+    }
   });
 
   updateDashboard();
@@ -240,7 +197,6 @@ function deleteMember(index){
 function printID(index){
   let m = members[index];
   let w = window.open("");
-
   w.document.write(`
   <html>
   <head>
@@ -248,24 +204,23 @@ function printID(index){
   <style>
   body{font-family:Arial;display:flex;justify-content:center;align-items:center;height:100vh;background:#eee}
   .card{width:350px;background:linear-gradient(135deg,#073b8e,#0aa6a6);color:white;padding:25px;border-radius:22px;text-align:center;border:5px solid white}
-  .photo{width:120px;height:120px;border-radius:50%;background:white;margin:10px auto}
+  .photo{width:120px;height:120px;background:white;border-radius:50%;margin:10px auto}
   </style>
   </head>
   <body>
   <div class="card">
-  <h1>🕊️ HFGM</h1>
-  <h2>MEMBER ID CARD</h2>
-  <div class="photo"></div>
-  <p><b>ID:</b> ${m.id}</p>
-  <p><b>Name:</b> ${m.name}</p>
-  <p><b>Village:</b> ${m.village}</p>
-  <p><b>Cell:</b> ${m.cell}</p>
-  <p>Holy Spirit Fellowship Global Ministry</p>
+    <h1>🕊️ HFGM</h1>
+    <h2>MEMBER ID CARD</h2>
+    <div class="photo"></div>
+    <p><b>ID:</b> ${m.id}</p>
+    <p><b>Name:</b> ${m.name}</p>
+    <p><b>Village:</b> ${m.village}</p>
+    <p><b>Cell:</b> ${m.cell}</p>
+    <p>Holy Spirit Fellowship Global Ministry</p>
   </div>
   <script>window.print();<\/script>
   </body>
   </html>`);
-
   w.document.close();
 }
 
@@ -300,7 +255,7 @@ function renderAttendance(){
       <td>${a.name}</td>
       <td>${a.date}</td>
       <td>${a.status}</td>
-      <td><button class="delete" onclick="deleteAttendance(${i})">Delete</button></td>
+      <td><button class="red" onclick="deleteAttendance(${i})">Delete</button></td>
     </tr>`;
   });
 
@@ -345,7 +300,6 @@ function renderDonations(){
 
   donations.forEach((d,i)=>{
     total += Number(d.amount || 0);
-
     tbody.innerHTML += `
     <tr>
       <td>${i+1}</td>
@@ -353,7 +307,7 @@ function renderDonations(){
       <td>₹${d.amount}</td>
       <td>${d.purpose}</td>
       <td>${d.date}</td>
-      <td><button class="delete" onclick="deleteDonation(${i})">Delete</button></td>
+      <td><button class="red" onclick="deleteDonation(${i})">Delete</button></td>
     </tr>`;
   });
 
@@ -370,13 +324,10 @@ function deleteDonation(index){
 }
 
 function updateDashboard(){
-  let villages = new Set(members.map(m => (m.village || "").toLowerCase()));
-  let totalDonation = donations.reduce((sum,d)=>sum+Number(d.amount || 0),0);
-
   document.getElementById("dashMembers").innerText = members.length;
-  document.getElementById("dashVillages").innerText = villages.size;
+  document.getElementById("dashVillages").innerText = new Set(members.map(m => (m.village || "").toLowerCase())).size;
   document.getElementById("dashAttendance").innerText = attendance.length;
-  document.getElementById("dashDonations").innerText = totalDonation;
+  document.getElementById("dashDonations").innerText = donations.reduce((sum,d)=>sum+Number(d.amount || 0),0);
 }
 
 renderMembers();
@@ -386,4 +337,4 @@ updateDashboard();
 </script>
 
 </body>
-</html>
+</html> 
