@@ -164,34 +164,38 @@ let attendance = JSON.parse(localStorage.getItem("hfgm_attendance") || "[]");
 let donations = JSON.parse(localStorage.getItem("hfgm_donations") || "[]");
 
 function saveMember(){
-  let name = document.getElementById("name").value.trim();
-  let village = document.getElementById("village").value.trim();
-  let occupation = document.getElementById("occupation").value.trim();
-  let cell = document.getElementById("cell").value.trim();
 
-  if(!name || !village || !cell){
-    alert("Name, Village, Cell fill cheyandi");
-    return;
-  }
+let name = document.getElementById("name").value.trim();
+let village = document.getElementById("village").value.trim();
+let occupation = document.getElementById("occupation").value.trim();
+let cell = document.getElementById("cell").value.trim();
 
-  let member = {
-    id:"HFGM" + (members.length + 1),
+if(!name || !village || !cell){
+   alert("Name, Village, Cell fill cheyandi");
+   return;
+}
+
+let id = "HFGM" + (members.length + 1);
+
+members.push({
+    id:id,
     name:name,
     village:village,
     occupation:occupation,
     cell:cell
-  };
+});
 
-  members.push(member);
-  localStorage.setItem("hfgm_members", JSON.stringify(members));
+localStorage.setItem("hfgm_members", JSON.stringify(members));
 
-  document.getElementById("name").value="";
-  document.getElementById("village").value="";
-  document.getElementById("occupation").value="";
-  document.getElementById("cell").value="";
+renderMembers();
 
-  renderMembers();
-  alert("Member Saved ✅");
+document.getElementById("name").value="";
+document.getElementById("village").value="";
+document.getElementById("occupation").value="";
+document.getElementById("cell").value="";
+
+alert("Member Saved");
+
 }
 
 function renderMembers(){
