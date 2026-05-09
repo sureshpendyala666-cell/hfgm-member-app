@@ -144,7 +144,21 @@ td{padding:10px;border-bottom:1px solid #ddd;text-align:center}
 
 </div>
 
-<script>
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBLyi5hI-jSSyIf-H9rnpP_4Ldj6Cfpqu8",
+  authDomain: "hfgm-ministry.firebaseapp.com",
+  projectId: "hfgm-ministry",
+  storageBucket: "hfgm-ministry.firebasestorage.app",
+  messagingSenderId: "1079389581104",
+  appId: "1:1079389581104:web:3830dc23c81389cb7fe2f5",
+  measurementId: "G-2L8ZX8BJKM"
+};
+
+const app = initializeApp(firebaseConfig);
 let members = JSON.parse(localStorage.getItem("hfgm_members") || "[]");
 let attendance = JSON.parse(localStorage.getItem("hfgm_attendance") || "[]");
 let donations = JSON.parse(localStorage.getItem("hfgm_donations") || "[]");
