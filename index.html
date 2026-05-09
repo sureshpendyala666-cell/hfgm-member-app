@@ -274,7 +274,7 @@ window.saveMember = async function(){
       return;
     }
 
-    let customId = makeMemberId(members.length);
+  let customId = "HFGM" + Date.now();
 
     await addDoc(collection(db,"members"),{
       customId: customId,
