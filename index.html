@@ -239,7 +239,7 @@ function printID(index){
   <div class="card">
     <h1>🕊️ HFGM</h1>
     <h2>MEMBER ID CARD</h2>
-    <div class="photo"></div>
+   ${m.photo ? <img src="${m.photo}" style="width:120px;height:120px;border-radius:50%;object-fit:cover;border:4px solid white"> : <div class="photo"></div>}
     <p><b>ID:</b> ${m.id}</p>
     <p><b>Name:</b> ${m.name}</p>
     <p><b>Village:</b> ${m.village}</p>
