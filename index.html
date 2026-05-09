@@ -16,7 +16,22 @@ body{
   min-height:100vh;
   padding:18px;
 }
-.app{max-width:1200px;margin:auto}
+.login-screen{
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+.login-box{
+  width:360px;
+  background:white;
+  padding:28px;
+  border-radius:25px;
+  box-shadow:0 12px 35px rgba(0,0,0,.35);
+  text-align:center;
+}
+.login-box h1{color:#0b4da2}
+.app{max-width:1200px;margin:auto;display:none}
 .hero,.card,.dash{
   background:white;
   border-radius:22px;
@@ -39,7 +54,7 @@ body{
   overflow:auto;
   margin-bottom:15px;
 }
-.menu a{
+.menu a,.logout-btn{
   background:#0b4da2;
   color:white;
   padding:10px 15px;
@@ -47,7 +62,10 @@ body{
   text-decoration:none;
   font-weight:bold;
   white-space:nowrap;
+  border:none;
+  width:auto;
 }
+.logout-btn{background:#d93025;margin-left:auto}
 .dashboard{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
 .dash{text-align:center;font-weight:bold}
 .dash b{font-size:32px;color:#0b4da2}
@@ -113,18 +131,32 @@ td{padding:12px;border-bottom:1px solid #ddd;text-align:center}
 @media(max-width:850px){
   .grid,.dashboard{grid-template-columns:1fr}
   body{padding:10px}
+  .menu{align-items:center}
 }
 </style>
 </head>
 
 <body>
-<div class="app">
+
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <h1>🕊️ HFGM Admin Login</h1>
+    <p>Holy Spirit Fellowship Global Ministry</p>
+    <input id="loginUser" placeholder="Username">
+    <input id="loginPass" type="password" placeholder="Password">
+    <button onclick="login()">Login</button>
+    <p class="small">Username: admin | Password: hfgm123</p>
+  </div>
+</div>
+
+<div class="app" id="mainApp">
 
 <div class="menu">
 <a href="#dashboard">Dashboard</a>
 <a href="#members">Members</a>
 <a href="#attendance">Attendance</a>
 <a href="#donations">Donations</a>
+<button class="logout-btn" onclick="logout()">Logout</button>
 </div>
 
 <div class="hero">
@@ -144,7 +176,7 @@ td{padding:12px;border-bottom:1px solid #ddd;text-align:center}
 
 <div class="card">
 <h2>Add Member</h2>
-<div class="badge">New: Photo + Unique ID + QR Card</div>
+<div class="badge">Photo + Unique ID + QR Card</div>
 <input id="name" placeholder="Name">
 <input id="age" type="number" placeholder="Age">
 <input id="village" placeholder="Village">
@@ -280,6 +312,33 @@ let attendance = [];
 let donations = [];
 
 const $ = (id) => document.getElementById(id);
+
+window.login = function(){
+  let user = $("loginUser").value.trim();
+  let pass = $("loginPass").value.trim();
+
+  if(user === "admin" && pass === "hfgm123"){
+    localStorage.setItem("hfgm_logged_in","yes");
+    $("loginScreen").style.display = "none";
+    $("mainApp").style.display = "block";
+    renderMembers();
+    renderAttendance();
+    renderDonations();
+  }else{
+    alert("Wrong username or password");
+  }
+}
+
+window.logout = function(){
+  localStorage.removeItem("hfgm_logged_in");
+  $("mainApp").style.display = "none";
+  $("loginScreen").style.display = "flex";
+}
+
+if(localStorage.getItem("hfgm_logged_in") === "yes"){
+  $("loginScreen").style.display = "none";
+  $("mainApp").style.display = "block";
+}
 
 function makeUniqueId(){
   return "HFGM-" + Date.now().toString().slice(-7);
@@ -631,10 +690,13 @@ function updateDashboard(){
   $("dashDonations").innerText = donations.reduce((s,d)=>s+Number(d.amount||0),0);
 }
 
-renderMembers();
-renderAttendance();
-renderDonations();
+if(localStorage.getItem("hfgm_logged_in") === "yes"){
+  renderMembers();
+  renderAttendance();
+  renderDonations();
+}
 </script>
 
 </body>
 </html>
+
