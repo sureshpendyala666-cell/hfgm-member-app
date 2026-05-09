@@ -308,18 +308,30 @@ let donations = JSON.parse(localStorage.getItem("hfgm_donations") || "[]");
 let selectedPhoto = "";
 
 function login(){
-  let u = document.getElementById("loginUser").value.trim();
-  let p = document.getElementById("loginPass").value.trim();
 
-  if(u === "admin" && p === "hfgm123"){
-    localStorage.setItem("hfgm_login","yes");
-    document.getElementById("loginBox").style.display="none";
-    document.getElementById("mainApp").style.display="block";
-  }else{
-    alert("Wrong username or password");
-  }
+let u = document.getElementById("loginUser").value.trim();
+let p = document.getElementById("loginPass").value.trim();
+
+if(u=="admin" && p=="hfgm123"){
+
+document.getElementById("loginBox").style.display="none";
+document.getElementById("mainApp").style.display="block";
+
+localStorage.setItem("hfgm_login","yes");
+
+}else{
+
+alert("Wrong Username or Password");
+
 }
 
+}
+if(localStorage.getItem("hfgm_login")=="yes"){
+
+document.getElementById("loginBox").style.display="none";
+document.getElementById("mainApp").style.display="block";
+
+}
 function logout(){
   localStorage.removeItem("hfgm_login");
   location.reload();
