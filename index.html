@@ -56,7 +56,8 @@ td{padding:10px;border-bottom:1px solid #ddd;text-align:center}
 <input id="name" placeholder="Name">
 <input id="village" placeholder="Village">
 <input id="occupation" placeholder="Occupation">
-<input id="cell" placeholder="Cell Number">
+<input id="cell" placeholder="Cell Number"> 
+  <input type="file" id="photo" accept="image/*">
 <button onclick="saveMember()">Save Member</button>
 </div>
 
@@ -131,7 +132,8 @@ function saveMember(){
   let village = document.getElementById("village").value.trim();
   let occupation = document.getElementById("occupation").value.trim();
   let cell = document.getElementById("cell").value.trim();
-
+let photoInput = document.getElementById("photo");
+let file = photoInput.files[0];
   if(!name || !village || !cell){
     alert("Name, Village, Cell fill cheyandi");
     return;
@@ -145,16 +147,44 @@ function saveMember(){
     cell:cell
   };
 
-  members.push(member);
-  localStorage.setItem("hfgm_members", JSON.stringify(members));
+ if(file){
 
-  document.getElementById("name").value="";
-  document.getElementById("village").value="";
-  document.getElementById("occupation").value="";
-  document.getElementById("cell").value="";
+let reader = new FileReader();
 
-  renderMembers();
-  alert("Member Saved ✅");
+reader.onload = function(e){
+
+members.push({
+   id:id,
+   name:name,
+   village:village,
+   occupation:occupation,
+   cell:cell,
+   photo:e.target.result
+});
+
+localStorage.setItem("hfgm_members", JSON.stringify(members));
+
+location.reload();
+
+};
+
+reader.readAsDataURL(file);
+
+}else{
+
+members.push({
+   id:id,
+   name:name,
+   village:village,
+   occupation:occupation,
+   cell:cell,
+   photo:""
+});
+
+localStorage.setItem("hfgm_members", JSON.stringify(members));
+
+location.reload();
+
 }
 
 function renderMembers(){
@@ -172,7 +202,7 @@ function renderMembers(){
       tbody.innerHTML += `
       <tr>
         <td>${m.id}</td>
-        <td>${m.name}</td>
+        <td>${m.name}</td><td><img src="${m.photo}" width="50" height="50" style="border-radius:50%"></td>
         <td>${m.village}</td>
         <td>${m.occupation}</td>
         <td>${m.cell}</td>
