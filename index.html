@@ -15,8 +15,8 @@ body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(135deg,#03
 .hero,.card,.dash{background:white;border-radius:22px;padding:20px;margin:15px 0;box-shadow:0 8px 25px rgba(0,0,0,.25)}
 .hero{background:linear-gradient(135deg,#073b8e,#0aa6a6);color:white;text-align:center}
 .menu{display:flex;gap:10px;background:#ffffffdd;padding:12px;border-radius:18px;overflow:auto;margin-bottom:15px;position:sticky;top:0;z-index:5}
-.menu a,.logout-btn,.install-btn,.lang-btn{background:#0b4da2;color:white;padding:10px 15px;border-radius:10px;text-decoration:none;font-weight:bold;white-space:nowrap;border:none;width:auto}
-.logout-btn{background:#d93025;margin-left:auto}.install-btn{background:#0b8f68}.lang-btn{background:#f59e0b}
+.menu a,.logout-btn,.install-btn{background:#0b4da2;color:white;padding:10px 15px;border-radius:10px;text-decoration:none;font-weight:bold;white-space:nowrap;border:none;width:auto}
+.logout-btn{background:#d93025;margin-left:auto}.install-btn{background:#0b8f68}
 .dashboard{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
 .dash{text-align:center;font-weight:bold}.dash b{font-size:30px;color:#0b4da2}
 .grid{display:grid;grid-template-columns:360px 1fr;gap:20px}
@@ -57,6 +57,7 @@ td{padding:12px;border-bottom:1px solid #ddd;text-align:center}
 <div class="menu">
 <a href="#dashboard">Dashboard</a>
 <a href="#promise">Promise</a>
+<a href="#bulk">Bulk WhatsApp</a>
 <a href="#members">Members</a>
 <a href="#visitors">Visitors</a>
 <a href="#attendance">Attendance</a>
@@ -89,11 +90,20 @@ td{padding:12px;border-bottom:1px solid #ddd;text-align:center}
 </div>
 
 <div class="card promise" id="promise">
-<h2>📖 Daily Promise Word</h2>
-<h3 id="promiseVerse"></h3>
+<h2>📖 Daily Promise Word / రోజువారి వాగ్దాన వాక్యం</h2>
+<h3 id="promiseVerseEn"></h3>
+<h3 id="promiseVerseTe"></h3>
 <p id="promiseRef"></p>
 <button onclick="newPromise()" class="orange">New Promise</button>
-<button onclick="sharePromise()" class="green">Share on WhatsApp</button>
+<button onclick="sharePromise()" class="green">Share Promise WhatsApp</button>
+</div>
+
+<div class="card" id="bulk">
+<h2>📲 Send Message to All Members</h2>
+<textarea id="bulkMessage" placeholder="Write message here..."></textarea>
+<button onclick="prepareDailyPromiseMessage()" class="orange">Use Daily Promise Telugu + English</button>
+<button onclick="sendToAllMembers()" class="green">Send to All Members WhatsApp</button>
+<p class="small">Note: Browser opens WhatsApp one-by-one for each member. WhatsApp bulk automation direct ga browser lo allowed kaadu.</p>
 </div>
 
 <div class="grid" id="members">
@@ -256,16 +266,18 @@ import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https
 
 const firebaseConfig={apiKey:"AIzaSyBLyi5hI-jSSyIf-H9rnpP_4Ldj6Cfpqu8",authDomain:"hfgm-ministry.firebaseapp.com",projectId:"hfgm-ministry",storageBucket:"hfgm-ministry.firebasestorage.app",messagingSenderId:"1079389581104",appId:"1:1079389581104:web:3830dc23c81389cb7fe2f5",measurementId:"G-2L8ZX8BJKM"};
 const app=initializeApp(firebaseConfig); const db=getFirestore(app);
-let members=[],attendance=[],donations=[],expenses=[],sponsors=[],prayers=[],families=[],visitors=[],deferredPrompt=null,chart=null;
+let members=[],attendance=[],donations=[],expenses=[],sponsors=[],prayers=[],families=[],visitors=[],deferredPrompt=null,chart=null,currentPromise=null;
 const $=(id)=>document.getElementById(id);
 
 const promises=[
-["The Lord will fight for you; you need only to be still.","Exodus 14:14"],
-["I can do all things through Christ who strengthens me.","Philippians 4:13"],
-["The Lord is my shepherd; I shall not want.","Psalm 23:1"],
-["By His wounds we are healed.","Isaiah 53:5"],
-["Cast all your anxiety on Him because He cares for you.","1 Peter 5:7"],
-["With God all things are possible.","Matthew 19:26"]
+{en:"The Lord will fight for you; you need only to be still.",te:"యెహోవా మీ కొరకు యుద్ధము చేయును; మీరు మౌనముగా ఉండుడి.",ref:"Exodus 14:14"},
+{en:"I can do all things through Christ who strengthens me.",te:"నన్ను బలపరచు క్రీస్తు ద్వారా నేను సమస్తమును చేయగలను.",ref:"Philippians 4:13"},
+{en:"The Lord is my shepherd; I shall not want.",te:"యెహోవా నా కాపరి; నాకు కొదువ ఉండదు.",ref:"Psalm 23:1"},
+{en:"By His wounds we are healed.",te:"ఆయన గాయములచేత మనకు స్వస్థత కలిగెను.",ref:"Isaiah 53:5"},
+{en:"Cast all your anxiety on Him because He cares for you.",te:"ఆయన మీ విషయమై జాగ్రత్తపడుచున్నాడు గనుక మీ చింత యావత్తు ఆయనమీద వేయుడి.",ref:"1 Peter 5:7"},
+{en:"With God all things are possible.",te:"దేవునితో సమస్తమును సాధ్యమే.",ref:"Matthew 19:26"},
+{en:"Do not fear, for I am with you.",te:"భయపడకుము, నేను నీతో ఉన్నాను.",ref:"Isaiah 41:10"},
+{en:"Ask and it will be given to you.",te:"అడుగుడి, మీకియ్యబడును.",ref:"Matthew 7:7"}
 ];
 
 window.addEventListener("beforeinstallprompt",(e)=>{e.preventDefault();deferredPrompt=e;});
@@ -274,8 +286,11 @@ window.login=function(){let u=$("loginUser").value.trim(),p=$("loginPass").value
 window.logout=function(){localStorage.removeItem("hfgm_logged_in");$("mainApp").style.display="none";$("loginScreen").style.display="flex"}
 if(localStorage.getItem("hfgm_logged_in")==="yes"){$("loginScreen").style.display="none";$("mainApp").style.display="block"}
 
-window.newPromise=function(){let p=promises[Math.floor(Math.random()*promises.length)];$("promiseVerse").innerText=p[0];$("promiseRef").innerText=p[1];}
-window.sharePromise=function(){let text=encodeURIComponent($("promiseVerse").innerText+" - "+$("promiseRef").innerText+"\\nHOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES");window.open("https://wa.me/?text="+text,"_blank")}
+window.newPromise=function(){currentPromise=promises[Math.floor(Math.random()*promises.length)];$("promiseVerseEn").innerText="English: "+currentPromise.en;$("promiseVerseTe").innerText="తెలుగు: "+currentPromise.te;$("promiseRef").innerText=currentPromise.ref;}
+function promiseMessage(){if(!currentPromise)newPromise();return `🕊️ HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES\\n\\n📖 Daily Promise Word\\n\\nEnglish: ${currentPromise.en}\\nతెలుగు: ${currentPromise.te}\\nReference: ${currentPromise.ref}\\n\\nGod bless you 🙏`;}
+window.sharePromise=function(){window.open("https://wa.me/?text="+encodeURIComponent(promiseMessage()),"_blank")}
+window.prepareDailyPromiseMessage=function(){$("bulkMessage").value=promiseMessage();}
+window.sendToAllMembers=function(){let msg=$("bulkMessage").value.trim();if(!msg){alert("Message type cheyandi");return}let valid=members.filter(m=>m.cell);if(valid.length===0){alert("Members phone numbers levu");return}valid.forEach((m,i)=>{setTimeout(()=>{window.open("https://wa.me/91"+m.cell+"?text="+encodeURIComponent(msg),"_blank")},i*900)});alert("WhatsApp windows open avuthayi one by one. Pop-up allow cheyandi.");}
 
 function makeUniqueId(){return "HFGM-"+Date.now().toString().slice(-7)}
 function resizeImage(file){return new Promise((resolve)=>{if(!file){resolve("");return}const r=new FileReader();r.onload=e=>{const img=new Image();img.onload=()=>{const c=document.createElement("canvas");const max=420;let w=img.width,h=img.height;if(w>h){if(w>max){h=Math.round(h*max/w);w=max}}else{if(h>max){w=Math.round(w*max/h);h=max}}c.width=w;c.height=h;c.getContext("2d").drawImage(img,0,0,w,h);resolve(c.toDataURL("image/jpeg",0.7))};img.src=e.target.result};r.readAsDataURL(file)})}
