@@ -1,141 +1,38 @@
-from pathlib import Path
-
-code = r'''<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>HFGM Ministry Pro App</title>
-
 <style>
 *{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:Arial,sans-serif;
-  background:linear-gradient(135deg,#031b55,#006cb5,#09b5a5);
-  min-height:100vh;
-  padding:18px;
-}
-.login-screen{
-  min-height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-}
-.login-box{
-  width:360px;
-  background:white;
-  padding:28px;
-  border-radius:25px;
-  box-shadow:0 12px 35px rgba(0,0,0,.35);
-  text-align:center;
-}
+body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(135deg,#031b55,#006cb5,#09b5a5);min-height:100vh;padding:18px}
+.login-screen{min-height:100vh;display:flex;justify-content:center;align-items:center}
+.login-box{width:360px;background:white;padding:28px;border-radius:25px;box-shadow:0 12px 35px rgba(0,0,0,.35);text-align:center}
 .login-box h1{color:#0b4da2}
 .app{max-width:1200px;margin:auto;display:none}
-.hero,.card,.dash{
-  background:white;
-  border-radius:22px;
-  padding:20px;
-  margin:15px 0;
-  box-shadow:0 8px 25px rgba(0,0,0,.25);
-}
-.hero{
-  background:linear-gradient(135deg,#073b8e,#0aa6a6);
-  color:white;
-  text-align:center;
-}
+.hero,.card,.dash{background:white;border-radius:22px;padding:20px;margin:15px 0;box-shadow:0 8px 25px rgba(0,0,0,.25)}
+.hero{background:linear-gradient(135deg,#073b8e,#0aa6a6);color:white;text-align:center}
 .hero h1{margin:8px 0}
-.menu{
-  display:flex;
-  gap:10px;
-  background:#ffffffdd;
-  padding:12px;
-  border-radius:18px;
-  overflow:auto;
-  margin-bottom:15px;
-}
-.menu a,.logout-btn{
-  background:#0b4da2;
-  color:white;
-  padding:10px 15px;
-  border-radius:10px;
-  text-decoration:none;
-  font-weight:bold;
-  white-space:nowrap;
-  border:none;
-  width:auto;
-}
+.menu{display:flex;gap:10px;background:#ffffffdd;padding:12px;border-radius:18px;overflow:auto;margin-bottom:15px}
+.menu a,.logout-btn{background:#0b4da2;color:white;padding:10px 15px;border-radius:10px;text-decoration:none;font-weight:bold;white-space:nowrap;border:none;width:auto}
 .logout-btn{background:#d93025;margin-left:auto}
 .dashboard{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
-.dash{text-align:center;font-weight:bold}
-.dash b{font-size:32px;color:#0b4da2}
+.dash{text-align:center;font-weight:bold}.dash b{font-size:32px;color:#0b4da2}
 .grid{display:grid;grid-template-columns:360px 1fr;gap:20px}
-input,select,button{
-  width:100%;
-  padding:13px;
-  margin:8px 0;
-  border-radius:12px;
-  border:1px solid #ccc;
-  font-size:15px;
-}
-button{
-  background:#0b4da2;
-  color:white;
-  border:none;
-  font-weight:bold;
-  cursor:pointer;
-}
-.green{background:#087b5b}
-.red{background:#d93025}
-.wa{
-  background:#25D366;
-  color:white;
-  padding:8px 12px;
-  border-radius:10px;
-  text-decoration:none;
-  font-weight:bold;
-  display:inline-block;
-}
-.table-wrap{overflow:auto}
-table{width:100%;border-collapse:collapse;min-width:1080px}
-th{background:#0b4da2;color:white;padding:12px}
-td{padding:12px;border-bottom:1px solid #ddd;text-align:center}
-.photo-mini{
-  width:48px;
-  height:48px;
-  border-radius:50%;
-  object-fit:cover;
-  border:2px solid #0b4da2;
-  background:#eee;
-}
-.total{
-  background:#eef5ff;
-  padding:15px;
-  border-radius:15px;
-  text-align:center;
-  font-size:22px;
-  color:#0b4da2;
-  font-weight:bold;
-}
+input,select,button{width:100%;padding:13px;margin:8px 0;border-radius:12px;border:1px solid #ccc;font-size:15px}
+button{background:#0b4da2;color:white;border:none;font-weight:bold;cursor:pointer}
+.green{background:#087b5b}.red{background:#d93025}.orange{background:#f59e0b}
+.wa{background:#25D366;color:white;padding:8px 12px;border-radius:10px;text-decoration:none;font-weight:bold;display:inline-block}
+.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:1080px}
+th{background:#0b4da2;color:white;padding:12px}td{padding:12px;border-bottom:1px solid #ddd;text-align:center}
+.photo-mini{width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid #0b4da2;background:#eee}
+.total{background:#eef5ff;padding:15px;border-radius:15px;text-align:center;font-size:22px;color:#0b4da2;font-weight:bold}
 .small{font-size:12px;color:#666;margin-top:6px}
-.badge{
-  background:#eef5ff;
-  color:#0b4da2;
-  padding:7px 10px;
-  border-radius:20px;
-  font-size:12px;
-  font-weight:bold;
-  display:inline-block;
-  margin-bottom:8px;
-}
-@media(max-width:850px){
-  .grid,.dashboard{grid-template-columns:1fr}
-  body{padding:10px}
-  .menu{align-items:center}
-}
+.badge{background:#eef5ff;color:#0b4da2;padding:7px 10px;border-radius:20px;font-size:12px;font-weight:bold;display:inline-block;margin-bottom:8px}
+@media(max-width:850px){.grid,.dashboard{grid-template-columns:1fr}body{padding:10px}.menu{align-items:center}}
 </style>
 </head>
-
 <body>
 
 <div class="login-screen" id="loginScreen">
@@ -150,12 +47,12 @@ td{padding:12px;border-bottom:1px solid #ddd;text-align:center}
 </div>
 
 <div class="app" id="mainApp">
-
 <div class="menu">
 <a href="#dashboard">Dashboard</a>
 <a href="#members">Members</a>
 <a href="#attendance">Attendance</a>
 <a href="#donations">Donations</a>
+<a href="#expenses">Expenses</a>
 <button class="logout-btn" onclick="logout()">Logout</button>
 </div>
 
@@ -170,10 +67,13 @@ td{padding:12px;border-bottom:1px solid #ddd;text-align:center}
 <div class="dash"><b id="dashVillages">0</b><br>🏘️ Villages</div>
 <div class="dash"><b id="dashAttendance">0</b><br>🙏 Attendance</div>
 <div class="dash"><b>₹<span id="dashDonations">0</span></b><br>💰 Donations</div>
+<div class="dash"><b>₹<span id="dashIncome">0</span></b><br>💵 Income</div>
+<div class="dash"><b>₹<span id="dashExpense">0</span></b><br>🧾 Expenses</div>
+<div class="dash"><b>₹<span id="dashBalance">0</span></b><br>🏦 Balance</div>
+<div class="dash"><b id="dashReports">OK</b><br>📊 Reports</div>
 </div>
 
 <div class="grid" id="members">
-
 <div class="card">
 <h2>Add Member</h2>
 <div class="badge">Photo + Unique ID + QR Card</div>
@@ -193,58 +93,31 @@ td{padding:12px;border-bottom:1px solid #ddd;text-align:center}
 <input id="search" placeholder="Search member..." oninput="renderMembers()">
 <div class="table-wrap">
 <table>
-<thead>
-<tr>
-<th>ID</th>
-<th>Photo</th>
-<th>Name</th>
-<th>Age</th>
-<th>Village</th>
-<th>Occupation</th>
-<th>Cell</th>
-<th>WhatsApp</th>
-<th>QR ID Card</th>
-<th>Delete</th>
-</tr>
-</thead>
+<thead><tr><th>ID</th><th>Photo</th><th>Name</th><th>Age</th><th>Village</th><th>Occupation</th><th>Cell</th><th>WhatsApp</th><th>QR ID Card</th><th>Delete</th></tr></thead>
 <tbody id="memberTable"></tbody>
 </table>
 </div>
 </div>
-
 </div>
 
 <div class="card" id="attendance">
 <h2>Attendance</h2>
 <input id="attName" placeholder="Member Name">
 <input id="attDate" type="date">
-<select id="attStatus">
-<option>Present</option>
-<option>Absent</option>
-</select>
+<select id="attStatus"><option>Present</option><option>Absent</option></select>
 <button onclick="saveAttendance()">Save Attendance</button>
-
 <div class="table-wrap">
 <table>
-<thead>
-<tr>
-<th>S.No</th>
-<th>Name</th>
-<th>Date</th>
-<th>Status</th>
-<th>Delete</th>
-</tr>
-</thead>
+<thead><tr><th>S.No</th><th>Name</th><th>Date</th><th>Status</th><th>Delete</th></tr></thead>
 <tbody id="attendanceTable"></tbody>
 </table>
 </div>
 </div>
 
 <div class="card" id="donations">
-<h2>Donations</h2>
+<h2>Donations / Income</h2>
 <input id="donorName" placeholder="Donor Name">
 <input id="donationAmount" type="number" placeholder="Amount">
-
 <select id="donationPurpose">
 <option value="">Select Purpose / Service</option>
 <option>Church Construction</option>
@@ -258,25 +131,41 @@ td{padding:12px;border-bottom:1px solid #ddd;text-align:center}
 <option>Children Ministry</option>
 <option>General Offering</option>
 </select>
-
 <input id="donationDate" type="date">
 <button onclick="saveDonation()">Save Donation</button>
-
 <div class="total">Total Donations: ₹<span id="donationTotal">0</span></div>
-
 <div class="table-wrap">
 <table>
-<thead>
-<tr>
-<th>S.No</th>
-<th>Name</th>
-<th>Amount</th>
-<th>Purpose</th>
-<th>Date</th>
-<th>Delete</th>
-</tr>
-</thead>
+<thead><tr><th>S.No</th><th>Name</th><th>Amount</th><th>Purpose</th><th>Date</th><th>Delete</th></tr></thead>
 <tbody id="donationTable"></tbody>
+</table>
+</div>
+</div>
+
+<div class="card" id="expenses">
+<h2>Expenses</h2>
+<input id="expenseName" placeholder="Expense Name">
+<input id="expenseAmount" type="number" placeholder="Amount">
+<select id="expenseType">
+<option value="">Select Expense Type</option>
+<option>Electricity</option>
+<option>Church Rent</option>
+<option>Sound System</option>
+<option>Food</option>
+<option>Travel</option>
+<option>Pastor Support</option>
+<option>Ministry Expense</option>
+<option>Repairs</option>
+<option>Events</option>
+<option>Other</option>
+</select>
+<input id="expenseDate" type="date">
+<button onclick="saveExpense()">Save Expense</button>
+<div class="total">Total Expenses: ₹<span id="expenseTotal">0</span></div>
+<div class="table-wrap">
+<table>
+<thead><tr><th>S.No</th><th>Name</th><th>Amount</th><th>Type</th><th>Date</th><th>Delete</th></tr></thead>
+<tbody id="expenseTable"></tbody>
 </table>
 </div>
 </div>
@@ -285,14 +174,7 @@ td{padding:12px;border-bottom:1px solid #ddd;text-align:center}
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import {
-  getFirestore,
-  collection,
-  addDoc,
-  getDocs,
-  deleteDoc,
-  doc
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBLyi5hI-jSSyIf-H9rnpP_4Ldj6Cfpqu8",
@@ -310,23 +192,19 @@ const db = getFirestore(app);
 let members = [];
 let attendance = [];
 let donations = [];
+let expenses = [];
 
 const $ = (id) => document.getElementById(id);
 
 window.login = function(){
   let user = $("loginUser").value.trim();
   let pass = $("loginPass").value.trim();
-
   if(user === "admin" && pass === "hfgm123"){
     localStorage.setItem("hfgm_logged_in","yes");
     $("loginScreen").style.display = "none";
     $("mainApp").style.display = "block";
-    renderMembers();
-    renderAttendance();
-    renderDonations();
-  }else{
-    alert("Wrong username or password");
-  }
+    renderAll();
+  }else{ alert("Wrong username or password"); }
 }
 
 window.logout = function(){
@@ -340,33 +218,22 @@ if(localStorage.getItem("hfgm_logged_in") === "yes"){
   $("mainApp").style.display = "block";
 }
 
-function makeUniqueId(){
-  return "HFGM-" + Date.now().toString().slice(-7);
-}
+function makeUniqueId(){ return "HFGM-" + Date.now().toString().slice(-7); }
 
 function resizeImage(file){
   return new Promise((resolve)=>{
     if(!file){ resolve(""); return; }
-
     const reader = new FileReader();
     reader.onload = function(e){
       const img = new Image();
       img.onload = function(){
         const canvas = document.createElement("canvas");
         const maxSize = 420;
-        let w = img.width;
-        let h = img.height;
-
-        if(w > h){
-          if(w > maxSize){ h = Math.round(h * maxSize / w); w = maxSize; }
-        }else{
-          if(h > maxSize){ w = Math.round(w * maxSize / h); h = maxSize; }
-        }
-
-        canvas.width = w;
-        canvas.height = h;
-        const ctx = canvas.getContext("2d");
-        ctx.drawImage(img,0,0,w,h);
+        let w = img.width, h = img.height;
+        if(w > h){ if(w > maxSize){ h = Math.round(h * maxSize / w); w = maxSize; } }
+        else{ if(h > maxSize){ w = Math.round(w * maxSize / h); h = maxSize; } }
+        canvas.width = w; canvas.height = h;
+        canvas.getContext("2d").drawImage(img,0,0,w,h);
         resolve(canvas.toDataURL("image/jpeg",0.7));
       };
       img.src = e.target.result;
@@ -377,326 +244,123 @@ function resizeImage(file){
 
 window.saveMember = async function(){
   try{
-    let name = $("name").value.trim();
-    let age = $("age").value.trim();
-    let village = $("village").value.trim();
-    let occupation = $("occupation").value.trim();
-    let cell = $("cell").value.trim();
+    let name = $("name").value.trim(), age = $("age").value.trim(), village = $("village").value.trim(), occupation = $("occupation").value.trim(), cell = $("cell").value.trim();
     let file = $("photo").files[0];
-
-    if(!name || !village || !cell){
-      alert("Name, Village, Cell fill cheyandi");
-      return;
-    }
-
+    if(!name || !village || !cell){ alert("Name, Village, Cell fill cheyandi"); return; }
     let customId = makeUniqueId();
     let photoData = await resizeImage(file);
-
-    await addDoc(collection(db,"members"),{
-      customId: customId,
-      name: name,
-      age: age,
-      village: village,
-      occupation: occupation,
-      cell: cell,
-      photo: photoData,
-      createdAt: new Date().toISOString()
-    });
-
-    $("name").value = "";
-    $("age").value = "";
-    $("village").value = "";
-    $("occupation").value = "";
-    $("cell").value = "";
-    $("photo").value = "";
-
-    alert("Member Saved ✅");
-    await renderMembers();
-  }catch(error){
-    alert("Save Error: " + error.message);
-    console.error(error);
-  }
+    await addDoc(collection(db,"members"),{ customId, name, age, village, occupation, cell, photo: photoData, createdAt: new Date().toISOString() });
+    $("name").value=""; $("age").value=""; $("village").value=""; $("occupation").value=""; $("cell").value=""; $("photo").value="";
+    alert("Member Saved ✅"); await renderMembers();
+  }catch(error){ alert("Save Error: " + error.message); console.error(error); }
 }
 
 window.renderMembers = async function(){
   try{
-    let tbody = $("memberTable");
-    let search = $("search").value.toLowerCase();
-    tbody.innerHTML = "";
-    members = [];
-
+    let tbody = $("memberTable"), search = $("search").value.toLowerCase();
+    tbody.innerHTML=""; members=[];
     let snap = await getDocs(collection(db,"members"));
-
     snap.forEach(d=>{
-      let m = d.data();
-      m.fireId = d.id;
-      m.customId = m.customId || d.id;
-      members.push(m);
-
-      if(
-        (m.name||"").toLowerCase().includes(search) ||
-        (m.village||"").toLowerCase().includes(search) ||
-        (m.occupation||"").toLowerCase().includes(search) ||
-        (m.cell||"").includes(search) ||
-        (m.customId||"").toLowerCase().includes(search)
-      ){
+      let m=d.data(); m.fireId=d.id; m.customId=m.customId || d.id; members.push(m);
+      if((m.name||"").toLowerCase().includes(search)||(m.village||"").toLowerCase().includes(search)||(m.occupation||"").toLowerCase().includes(search)||(m.cell||"").includes(search)||(m.customId||"").toLowerCase().includes(search)){
         let photoHtml = m.photo ? `<img class="photo-mini" src="${m.photo}">` : `<div class="photo-mini"></div>`;
-
-        tbody.innerHTML += `
-        <tr>
-        <td>${m.customId}</td>
-        <td>${photoHtml}</td>
-        <td>${m.name||""}</td>
-        <td>${m.age||""}</td>
-        <td>${m.village||""}</td>
-        <td>${m.occupation||""}</td>
-        <td>${m.cell||""}</td>
-        <td><a class="wa" target="_blank" href="https://wa.me/91${m.cell}">WhatsApp</a></td>
-        <td><button class="green" onclick="printID('${d.id}')">QR ID</button></td>
-        <td><button class="red" onclick="deleteMember('${d.id}')">Delete</button></td>
-        </tr>`;
+        tbody.innerHTML += `<tr><td>${m.customId}</td><td>${photoHtml}</td><td>${m.name||""}</td><td>${m.age||""}</td><td>${m.village||""}</td><td>${m.occupation||""}</td><td>${m.cell||""}</td><td><a class="wa" target="_blank" href="https://wa.me/91${m.cell}">WhatsApp</a></td><td><button class="green" onclick="printID('${d.id}')">QR ID</button></td><td><button class="red" onclick="deleteMember('${d.id}')">Delete</button></td></tr>`;
       }
     });
-
     updateDashboard();
-  }catch(error){
-    console.error(error);
-  }
+  }catch(error){ console.error(error); }
 }
 
-window.deleteMember = async function(id){
-  if(confirm("Delete member?")){
-    await deleteDoc(doc(db,"members",id));
-    await renderMembers();
-  }
-}
+window.deleteMember = async function(id){ if(confirm("Delete member?")){ await deleteDoc(doc(db,"members",id)); await renderMembers(); } }
 
 window.printID = function(id){
-  let m = members.find(x=>x.fireId === id);
-  if(!m){
-    alert("Member not found");
-    return;
-  }
-
-  let qrText =
-`ID: ${m.customId}
-Name: ${m.name}
-Age: ${m.age || ""}
-Village: ${m.village}
-Occupation: ${m.occupation || ""}
-Cell: ${m.cell}`;
-
+  let m = members.find(x=>x.fireId===id);
+  if(!m){ alert("Member not found"); return; }
+  let qrText = `ID: ${m.customId}\nName: ${m.name}\nAge: ${m.age||""}\nVillage: ${m.village}\nOccupation: ${m.occupation||""}\nCell: ${m.cell}`;
   let qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=130x130&data=" + encodeURIComponent(qrText);
   let photo = m.photo ? `<img src="${m.photo}" class="photo">` : `<div class="photo"></div>`;
-
   let w = window.open("");
-  w.document.write(`
-  <html>
-  <head>
-  <title>HFGM ID Card</title>
-  <style>
-  body{
-    font-family:Arial;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    min-height:100vh;
-    background:#eee;
-  }
-  .card{
-    width:370px;
-    background:linear-gradient(135deg,#073b8e,#0aa6a6);
-    color:white;
-    padding:25px;
-    border-radius:24px;
-    text-align:center;
-    border:5px solid white;
-    box-shadow:0 10px 35px #0005;
-  }
-  .photo{
-    width:115px;
-    height:115px;
-    border-radius:50%;
-    background:white;
-    margin:10px auto;
-    object-fit:cover;
-    border:4px solid white;
-  }
-  .qr{
-    background:white;
-    padding:10px;
-    border-radius:15px;
-    display:inline-block;
-    margin-top:10px;
-  }
-  p{margin:7px 0;font-size:16px}
-  </style>
-  </head>
-  <body>
-  <div class="card">
-    <h1>🕊️ HFGM</h1>
-    <h2>MEMBER ID CARD</h2>
-    ${photo}
-    <p><b>ID:</b> ${m.customId}</p>
-    <p><b>Name:</b> ${m.name}</p>
-    <p><b>Age:</b> ${m.age || ""}</p>
-    <p><b>Village:</b> ${m.village}</p>
-    <p><b>Cell:</b> ${m.cell}</p>
-    <div class="qr"><img src="${qrUrl}" width="130" height="130"></div>
-    <p>Holy Spirit Fellowship Global Ministry</p>
-  </div>
-  <script>
-  setTimeout(function(){ window.print(); }, 1000);
-  <\/script>
-  </body>
-  </html>`);
+  w.document.write(`<html><head><title>HFGM ID Card</title><style>body{font-family:Arial;display:flex;justify-content:center;align-items:center;min-height:100vh;background:#eee}.card{width:370px;background:linear-gradient(135deg,#073b8e,#0aa6a6);color:white;padding:25px;border-radius:24px;text-align:center;border:5px solid white;box-shadow:0 10px 35px #0005}.photo{width:115px;height:115px;border-radius:50%;background:white;margin:10px auto;object-fit:cover;border:4px solid white}.qr{background:white;padding:10px;border-radius:15px;display:inline-block;margin-top:10px}p{margin:7px 0;font-size:16px}</style></head><body><div class="card"><h1>🕊️ HFGM</h1><h2>MEMBER ID CARD</h2>${photo}<p><b>ID:</b> ${m.customId}</p><p><b>Name:</b> ${m.name}</p><p><b>Age:</b> ${m.age||""}</p><p><b>Village:</b> ${m.village}</p><p><b>Cell:</b> ${m.cell}</p><div class="qr"><img src="${qrUrl}" width="130" height="130"></div><p>Holy Spirit Fellowship Global Ministry</p></div><script>setTimeout(function(){ window.print(); }, 1000);<\/script></body></html>`);
   w.document.close();
 }
 
 window.saveAttendance = async function(){
   try{
-    let name = $("attName").value.trim();
-    let date = $("attDate").value;
-    let status = $("attStatus").value;
-
-    if(!name || !date){
-      alert("Name and Date fill cheyandi");
-      return;
-    }
-
-    await addDoc(collection(db,"attendance"),{
-      name,
-      date,
-      status,
-      createdAt:new Date().toISOString()
-    });
-
-    $("attName").value = "";
-    $("attDate").value = "";
-
-    alert("Attendance Saved ✅");
-    await renderAttendance();
-  }catch(error){
-    alert("Attendance Error: " + error.message);
-    console.error(error);
-  }
+    let name=$("attName").value.trim(), date=$("attDate").value, status=$("attStatus").value;
+    if(!name||!date){ alert("Name and Date fill cheyandi"); return; }
+    await addDoc(collection(db,"attendance"),{name,date,status,createdAt:new Date().toISOString()});
+    $("attName").value=""; $("attDate").value="";
+    alert("Attendance Saved ✅"); await renderAttendance();
+  }catch(error){ alert("Attendance Error: " + error.message); console.error(error); }
 }
 
 async function renderAttendance(){
   try{
-    attendance = [];
-    $("attendanceTable").innerHTML = "";
-    let snap = await getDocs(collection(db,"attendance"));
-    let i = 1;
-
-    snap.forEach(d=>{
-      let a = d.data();
-      attendance.push(a);
-      $("attendanceTable").innerHTML += `
-      <tr>
-      <td>${i++}</td>
-      <td>${a.name||""}</td>
-      <td>${a.date||""}</td>
-      <td>${a.status||""}</td>
-      <td><button class="red" onclick="deleteAttendance('${d.id}')">Delete</button></td>
-      </tr>`;
-    });
-
+    attendance=[]; $("attendanceTable").innerHTML="";
+    let snap = await getDocs(collection(db,"attendance")), i=1;
+    snap.forEach(d=>{ let a=d.data(); attendance.push(a); $("attendanceTable").innerHTML += `<tr><td>${i++}</td><td>${a.name||""}</td><td>${a.date||""}</td><td>${a.status||""}</td><td><button class="red" onclick="deleteAttendance('${d.id}')">Delete</button></td></tr>`; });
     updateDashboard();
-  }catch(error){
-    console.error(error);
-  }
+  }catch(error){ console.error(error); }
 }
 
-window.deleteAttendance = async function(id){
-  await deleteDoc(doc(db,"attendance",id));
-  await renderAttendance();
-}
+window.deleteAttendance = async function(id){ await deleteDoc(doc(db,"attendance",id)); await renderAttendance(); }
 
 window.saveDonation = async function(){
   try{
-    let donorName = $("donorName").value.trim();
-    let amount = Number($("donationAmount").value || 0);
-    let purpose = $("donationPurpose").value;
-    let date = $("donationDate").value;
-
-    if(!donorName || !amount || !purpose){
-      alert("Donor name, amount, purpose select cheyandi");
-      return;
-    }
-
-    await addDoc(collection(db,"donations"),{
-      donorName,
-      amount,
-      purpose,
-      date,
-      createdAt:new Date().toISOString()
-    });
-
-    $("donorName").value = "";
-    $("donationAmount").value = "";
-    $("donationPurpose").value = "";
-    $("donationDate").value = "";
-
-    alert("Donation Saved ✅");
-    await renderDonations();
-  }catch(error){
-    alert("Donation Error: " + error.message);
-    console.error(error);
-  }
+    let donorName=$("donorName").value.trim(), amount=Number($("donationAmount").value||0), purpose=$("donationPurpose").value, date=$("donationDate").value;
+    if(!donorName||!amount||!purpose){ alert("Donor name, amount, purpose select cheyandi"); return; }
+    await addDoc(collection(db,"donations"),{donorName,amount,purpose,date,createdAt:new Date().toISOString()});
+    $("donorName").value=""; $("donationAmount").value=""; $("donationPurpose").value=""; $("donationDate").value="";
+    alert("Donation Saved ✅"); await renderDonations();
+  }catch(error){ alert("Donation Error: " + error.message); console.error(error); }
 }
 
 async function renderDonations(){
   try{
-    donations = [];
-    $("donationTable").innerHTML = "";
-    let total = 0;
-    let i = 1;
-
+    donations=[]; $("donationTable").innerHTML=""; let total=0, i=1;
     let snap = await getDocs(collection(db,"donations"));
-
-    snap.forEach(d=>{
-      let x = d.data();
-      donations.push(x);
-      total += Number(x.amount || 0);
-
-      $("donationTable").innerHTML += `
-      <tr>
-      <td>${i++}</td>
-      <td>${x.donorName||""}</td>
-      <td>₹${x.amount||0}</td>
-      <td>${x.purpose||""}</td>
-      <td>${x.date||""}</td>
-      <td><button class="red" onclick="deleteDonation('${d.id}')">Delete</button></td>
-      </tr>`;
-    });
-
-    $("donationTotal").innerText = total;
-    updateDashboard();
-  }catch(error){
-    console.error(error);
-  }
+    snap.forEach(d=>{ let x=d.data(); donations.push(x); total += Number(x.amount||0); $("donationTable").innerHTML += `<tr><td>${i++}</td><td>${x.donorName||""}</td><td>₹${x.amount||0}</td><td>${x.purpose||""}</td><td>${x.date||""}</td><td><button class="red" onclick="deleteDonation('${d.id}')">Delete</button></td></tr>`; });
+    $("donationTotal").innerText=total; updateDashboard();
+  }catch(error){ console.error(error); }
 }
 
-window.deleteDonation = async function(id){
-  await deleteDoc(doc(db,"donations",id));
-  await renderDonations();
+window.deleteDonation = async function(id){ await deleteDoc(doc(db,"donations",id)); await renderDonations(); }
+
+window.saveExpense = async function(){
+  try{
+    let expenseName=$("expenseName").value.trim(), expenseAmount=Number($("expenseAmount").value||0), expenseType=$("expenseType").value, expenseDate=$("expenseDate").value;
+    if(!expenseName||!expenseAmount||!expenseType){ alert("Expense name, amount, type fill cheyandi"); return; }
+    await addDoc(collection(db,"expenses"),{expenseName,expenseAmount,expenseType,expenseDate,createdAt:new Date().toISOString()});
+    $("expenseName").value=""; $("expenseAmount").value=""; $("expenseType").value=""; $("expenseDate").value="";
+    alert("Expense Saved ✅"); await renderExpenses();
+  }catch(error){ alert("Expense Error: " + error.message); console.error(error); }
 }
+
+async function renderExpenses(){
+  try{
+    expenses=[]; $("expenseTable").innerHTML=""; let total=0, i=1;
+    let snap = await getDocs(collection(db,"expenses"));
+    snap.forEach(d=>{ let x=d.data(); expenses.push(x); total += Number(x.expenseAmount||0); $("expenseTable").innerHTML += `<tr><td>${i++}</td><td>${x.expenseName||""}</td><td>₹${x.expenseAmount||0}</td><td>${x.expenseType||""}</td><td>${x.expenseDate||""}</td><td><button class="red" onclick="deleteExpense('${d.id}')">Delete</button></td></tr>`; });
+    $("expenseTotal").innerText=total; updateDashboard();
+  }catch(error){ console.error(error); }
+}
+
+window.deleteExpense = async function(id){ await deleteDoc(doc(db,"expenses",id)); await renderExpenses(); }
 
 function updateDashboard(){
+  let income = donations.reduce((s,d)=>s+Number(d.amount||0),0);
+  let expense = expenses.reduce((s,d)=>s+Number(d.expenseAmount||0),0);
   $("dashMembers").innerText = members.length;
   $("dashVillages").innerText = new Set(members.map(m=>(m.village||"").toLowerCase()).filter(Boolean)).size;
   $("dashAttendance").innerText = attendance.length;
-  $("dashDonations").innerText = donations.reduce((s,d)=>s+Number(d.amount||0),0);
+  $("dashDonations").innerText = income;
+  $("dashIncome").innerText = income;
+  $("dashExpense").innerText = expense;
+  $("dashBalance").innerText = income - expense;
 }
 
-if(localStorage.getItem("hfgm_logged_in") === "yes"){
-  renderMembers();
-  renderAttendance();
-  renderDonations();
-}
+async function renderAll(){ await renderMembers(); await renderAttendance(); await renderDonations(); await renderExpenses(); }
+if(localStorage.getItem("hfgm_logged_in") === "yes"){ renderAll(); }
 </script>
-
 </body>
 </html>
-
