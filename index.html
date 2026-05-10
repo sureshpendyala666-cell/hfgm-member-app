@@ -21,9 +21,9 @@ body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(135deg,#03
 .dash{text-align:center;font-weight:bold}.dash b{font-size:30px;color:#0b4da2}
 .grid{display:grid;grid-template-columns:360px 1fr;gap:20px}
 input,select,textarea,button{width:100%;padding:13px;margin:8px 0;border-radius:12px;border:1px solid #ccc;font-size:15px}
-textarea{min-height:90px}
+textarea{min-height:110px}
 button{background:#0b4da2;color:white;border:none;font-weight:bold;cursor:pointer}
-.green{background:#087b5b}.red{background:#d93025}.orange{background:#f59e0b}
+.green{background:#087b5b}.red{background:#d93025}.orange{background:#f59e0b}.purple{background:#6d28d9}
 .wa{background:#25D366;color:white;padding:8px 12px;border-radius:10px;text-decoration:none;font-weight:bold;display:inline-block}
 .table-wrap{overflow:auto}
 table{width:100%;border-collapse:collapse;min-width:1050px}
@@ -31,10 +31,11 @@ th{background:#0b4da2;color:white;padding:12px}
 td{padding:12px;border-bottom:1px solid #ddd;text-align:center}
 .photo-mini{width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid #0b4da2;background:#eee}
 .total{background:#eef5ff;padding:15px;border-radius:15px;text-align:center;font-size:22px;color:#0b4da2;font-weight:bold}
-.small{font-size:12px;color:#666;margin-top:6px}
+.small{font-size:12px;color:#666;margin-top:6px;line-height:1.5}
 .badge{background:#eef5ff;color:#0b4da2;padding:7px 10px;border-radius:20px;font-size:12px;font-weight:bold;display:inline-block;margin-bottom:8px}
 .chartBox{height:330px}
 .promise{background:linear-gradient(135deg,#fff7d6,#ffffff);border-left:6px solid #f59e0b}
+.invite{background:linear-gradient(135deg,#ecfeff,#ffffff);border-left:6px solid #0b8f68}
 .videoBox{position:relative;padding-top:56.25%;border-radius:18px;overflow:hidden;background:#000}
 .videoBox iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0}
 @media(max-width:850px){.grid,.dashboard{grid-template-columns:1fr}body{padding:8px}.menu{align-items:center}}
@@ -57,6 +58,7 @@ td{padding:12px;border-bottom:1px solid #ddd;text-align:center}
 <div class="menu">
 <a href="#dashboard">Dashboard</a>
 <a href="#promise">Promise</a>
+<a href="#meetingInvite">Prayer Invitation</a>
 <a href="#bulk">Bulk WhatsApp</a>
 <a href="#members">Members</a>
 <a href="#visitors">Visitors</a>
@@ -80,8 +82,8 @@ td{padding:12px;border-bottom:1px solid #ddd;text-align:center}
 
 <div class="dashboard" id="dashboard">
 <div class="dash"><b id="dashMembers">0</b><br>👥 Members</div>
+<div class="dash"><b id="dashUnique">0</b><br>📲 Unique Numbers</div>
 <div class="dash"><b id="dashVisitors">0</b><br>👤 Visitors</div>
-<div class="dash"><b id="dashBirthdays">0</b><br>🎂 Birthdays</div>
 <div class="dash"><b id="dashAttendance">0</b><br>🙏 Attendance</div>
 <div class="dash"><b>₹<span id="dashIncome">0</span></b><br>💵 Income</div>
 <div class="dash"><b>₹<span id="dashExpense">0</span></b><br>🧾 Expenses</div>
@@ -98,12 +100,32 @@ td{padding:12px;border-bottom:1px solid #ddd;text-align:center}
 <button onclick="sharePromise()" class="green">Share Promise WhatsApp</button>
 </div>
 
+<div class="card invite" id="meetingInvite">
+<h2>🙏 Prayer Meeting Invitation</h2>
+<input id="meetTitle" placeholder="Meeting Title" value="Prayer Meeting">
+<input id="meetDate" type="date">
+<input id="meetTime" type="time">
+<input id="meetPlace" placeholder="Place / Address">
+<textarea id="meetSpecial" placeholder="Special Message">Please join with your family. God bless you.</textarea>
+<select id="meetVerse">
+<option value="Matthew 21:13|My house shall be called a house of prayer.|నా మందిరము ప్రార్థన మందిరమని పిలువబడును.">Matthew 21:13</option>
+<option value="Jeremiah 33:3|Call to me and I will answer you.|నన్ను ప్రార్థించుము, నేను నీకు ఉత్తరమిచ్చెదను.">Jeremiah 33:3</option>
+<option value="Matthew 18:20|Where two or three gather in my name, there am I with them.|ఇద్దరు ముగ్గురు నా నామమున కూడినచోట నేను వారి మధ్య ఉన్నాను.">Matthew 18:20</option>
+</select>
+<button onclick="prepareInvitation()" class="orange">Prepare Telugu + English Invitation</button>
+<button onclick="sendInvitationToAll()" class="green">One Click Open All Members WhatsApp</button>
+<textarea id="inviteMessage" placeholder="Invitation message will come here..."></textarea>
+<p class="small">Note: App duplicate numbers remove chestundi. WhatsApp tabs open avuthayi. Final Send button manual ga press cheyali.</p>
+</div>
+
 <div class="card" id="bulk">
 <h2>📲 Send Message to All Members</h2>
 <textarea id="bulkMessage" placeholder="Write message here..."></textarea>
 <button onclick="prepareDailyPromiseMessage()" class="orange">Use Daily Promise Telugu + English</button>
-<button onclick="sendToAllMembers()" class="green">Send to All Members WhatsApp</button>
-<p class="small">Note: Browser opens WhatsApp one-by-one for each member. WhatsApp bulk automation direct ga browser lo allowed kaadu.</p>
+<button onclick="sendToAllMembers()" class="green">Open All Members WhatsApp</button>
+<button onclick="showUniqueNumbers()" class="purple">Show Unique Numbers</button>
+<div id="uniqueList" class="small"></div>
+<p class="small">Browser security valla automatic final send possible kaadu. Message ready ga open avutundi; Send manual ga press cheyali.</p>
 </div>
 
 <div class="grid" id="members">
@@ -131,14 +153,6 @@ td{padding:12px;border-bottom:1px solid #ddd;text-align:center}
 </div>
 </div>
 
-<div class="card" id="birthdaySection">
-<h2>🎂 Birthday Reminders</h2>
-<div class="table-wrap"><table>
-<thead><tr><th>S.No</th><th>Name</th><th>Birthday</th><th>Cell</th><th>WhatsApp Blessing</th></tr></thead>
-<tbody id="birthdayTable"></tbody>
-</table></div>
-</div>
-
 <div class="card" id="visitors">
 <h2>👤 Visitor Register + Follow-up</h2>
 <input id="visitorName" placeholder="Visitor Name">
@@ -146,9 +160,7 @@ td{padding:12px;border-bottom:1px solid #ddd;text-align:center}
 <input id="visitorVillage" placeholder="Village">
 <textarea id="visitorPrayer" placeholder="Prayer Request"></textarea>
 <input id="visitorDate" type="date">
-<select id="visitorStatus">
-<option>New Visitor</option><option>Follow-up Pending</option><option>Prayer Done</option><option>Regular Attending</option>
-</select>
+<select id="visitorStatus"><option>New Visitor</option><option>Follow-up Pending</option><option>Prayer Done</option><option>Regular Attending</option></select>
 <button onclick="saveVisitor()">Save Visitor</button>
 <div class="table-wrap"><table>
 <thead><tr><th>S.No</th><th>Name</th><th>Phone</th><th>Village</th><th>Prayer</th><th>Date</th><th>Status</th><th>WhatsApp Follow-up</th><th>Delete</th></tr></thead>
@@ -248,7 +260,7 @@ td{padding:12px;border-bottom:1px solid #ddd;text-align:center}
 <h2>🎥 Live Service / YouTube</h2>
 <input id="youtubeLink" placeholder="Paste YouTube Embed Link">
 <button onclick="saveYouTube()">Save Live Link</button>
-<div class="videoBox"><iframe id="youtubeFrame" src="" allowfullscreen></iframe></div>
+<div style="position:relative;padding-top:56.25%;border-radius:18px;overflow:hidden;background:#000"><iframe id="youtubeFrame" src="" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;border:0"></iframe></div>
 </div>
 
 <div class="card" id="reports">
@@ -286,25 +298,87 @@ window.login=function(){let u=$("loginUser").value.trim(),p=$("loginPass").value
 window.logout=function(){localStorage.removeItem("hfgm_logged_in");$("mainApp").style.display="none";$("loginScreen").style.display="flex"}
 if(localStorage.getItem("hfgm_logged_in")==="yes"){$("loginScreen").style.display="none";$("mainApp").style.display="block"}
 
+function cleanPhone(phone){return String(phone||"").replace(/\D/g,"").replace(/^91/,"").slice(-10)}
+function getUniqueMemberPhones(){
+  const map=new Map();
+  members.forEach(m=>{
+    const p=cleanPhone(m.cell);
+    if(p.length===10 && !map.has(p)) map.set(p,m.name||"Member");
+  });
+  return [...map.entries()].map(([phone,name])=>({phone,name}));
+}
+function openWhatsAppForUnique(message){
+  const nums=getUniqueMemberPhones();
+  if(!message.trim()){alert("Message empty");return}
+  if(nums.length===0){alert("Valid 10 digit phone numbers levu");return}
+  $("dashUnique").innerText=nums.length;
+  nums.forEach((item,i)=>{
+    setTimeout(()=>{ window.open("https://web.whatsapp.com/send?phone=91"+item.phone+"&text="+encodeURIComponent(message), "_blank"); }, i*1800);
+  });
+  alert(nums.length+" unique numbers ki WhatsApp tabs open avuthayi. Pop-up Allow cheyandi. Final Send button manual ga press cheyali.");
+}
+window.showUniqueNumbers=function(){
+  const nums=getUniqueMemberPhones();
+  $("uniqueList").innerHTML="<b>Unique Numbers: "+nums.length+"</b><br>"+nums.map(x=>x.name+" - "+x.phone).join("<br>");
+  $("dashUnique").innerText=nums.length;
+}
+
 window.newPromise=function(){currentPromise=promises[Math.floor(Math.random()*promises.length)];$("promiseVerseEn").innerText="English: "+currentPromise.en;$("promiseVerseTe").innerText="తెలుగు: "+currentPromise.te;$("promiseRef").innerText=currentPromise.ref;}
-function promiseMessage(){if(!currentPromise)newPromise();return `🕊️ HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES\\n\\n📖 Daily Promise Word\\n\\nEnglish: ${currentPromise.en}\\nతెలుగు: ${currentPromise.te}\\nReference: ${currentPromise.ref}\\n\\nGod bless you 🙏`;}
+function promiseMessage(){if(!currentPromise)newPromise();return `🕊️ HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES
+
+📖 Daily Promise Word / రోజువారి వాగ్దాన వాక్యం
+
+English: ${currentPromise.en}
+తెలుగు: ${currentPromise.te}
+Reference: ${currentPromise.ref}
+
+God bless you 🙏`;}
 window.sharePromise=function(){window.open("https://wa.me/?text="+encodeURIComponent(promiseMessage()),"_blank")}
 window.prepareDailyPromiseMessage=function(){$("bulkMessage").value=promiseMessage();}
-window.sendToAllMembers=function(){let msg=$("bulkMessage").value.trim();if(!msg){alert("Message type cheyandi");return}let valid=members.filter(m=>m.cell);if(valid.length===0){alert("Members phone numbers levu");return}valid.forEach((m,i)=>{setTimeout(()=>{window.open("https://wa.me/91"+m.cell+"?text="+encodeURIComponent(msg),"_blank")},i*900)});alert("WhatsApp windows open avuthayi one by one. Pop-up allow cheyandi.");}
+window.sendToAllMembers=function(){openWhatsAppForUnique($("bulkMessage").value);}
+window.prepareInvitation=function(){
+  const title=$("meetTitle").value || "Prayer Meeting";
+  const date=$("meetDate").value || "";
+  const time=$("meetTime").value || "";
+  const place=$("meetPlace").value || "";
+  const special=$("meetSpecial").value || "";
+  const [ref,enVerse,teVerse]=$("meetVerse").value.split("|");
+  const msg=`🙏 HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES
+
+${title} Invitation / ప్రార్థనా కూడిక ఆహ్వానం
+
+ప్రియమైనవారికి ప్రేమపూర్వక ఆహ్వానం.
+You are warmly invited to join our prayer meeting.
+
+📅 Date: ${date}
+⏰ Time: ${time}
+📍 Place: ${place}
+
+📖 Bible Verse:
+English: ${enVerse}
+తెలుగు: ${teVerse}
+Reference: ${ref}
+
+${special}
+
+Please join with your family.
+God bless you 🙏`;
+  $("inviteMessage").value=msg;
+}
+window.sendInvitationToAll=function(){ if(!$("inviteMessage").value.trim()) prepareInvitation(); openWhatsAppForUnique($("inviteMessage").value); }
 
 function makeUniqueId(){return "HFGM-"+Date.now().toString().slice(-7)}
 function resizeImage(file){return new Promise((resolve)=>{if(!file){resolve("");return}const r=new FileReader();r.onload=e=>{const img=new Image();img.onload=()=>{const c=document.createElement("canvas");const max=420;let w=img.width,h=img.height;if(w>h){if(w>max){h=Math.round(h*max/w);w=max}}else{if(h>max){w=Math.round(w*max/h);h=max}}c.width=w;c.height=h;c.getContext("2d").drawImage(img,0,0,w,h);resolve(c.toDataURL("image/jpeg",0.7))};img.src=e.target.result};r.readAsDataURL(file)})}
 async function getAll(col){let arr=[];let snap=await getDocs(collection(db,col));snap.forEach(d=>{let x=d.data();x.fireId=d.id;arr.push(x)});return arr}
 async function removeDoc(col,id,render){if(confirm("Delete?")){await deleteDoc(doc(db,col,id));await render()}}
 
-window.saveMember=async function(){try{let name=$("name").value.trim(),age=$("age").value.trim(),birthday=$("birthday").value,village=$("village").value.trim(),occupation=$("occupation").value.trim(),cell=$("cell").value.trim(),file=$("photo").files[0];if(!name||!village||!cell){alert("Name, Village, Cell fill cheyandi");return}let photo=await resizeImage(file);await addDoc(collection(db,"members"),{customId:makeUniqueId(),name,age,birthday,village,occupation,cell,photo,createdAt:new Date().toISOString()});["name","age","birthday","village","occupation","cell","photo"].forEach(id=>$(id).value="");alert("Member Saved ✅");await renderMembers()}catch(e){alert("Save Error: "+e.message)}}
-window.renderMembers=async function(){let tb=$("memberTable"),s=$("search").value.toLowerCase();tb.innerHTML="";members=await getAll("members");members.forEach(m=>{m.customId=m.customId||m.fireId;if((m.name||"").toLowerCase().includes(s)||(m.village||"").toLowerCase().includes(s)||(m.cell||"").includes(s)||(m.customId||"").toLowerCase().includes(s)){let ph=m.photo?`<img class="photo-mini" src="${m.photo}">`:`<div class="photo-mini"></div>`;tb.innerHTML+=`<tr><td>${m.customId}</td><td>${ph}</td><td>${m.name||""}</td><td>${m.age||""}</td><td>${m.birthday||""}</td><td>${m.village||""}</td><td>${m.occupation||""}</td><td>${m.cell||""}</td><td><a class="wa" target="_blank" href="https://wa.me/91${m.cell}">WhatsApp</a></td><td><button class="green" onclick="printID('${m.fireId}')">QR ID</button></td><td><button class="red" onclick="deleteMember('${m.fireId}')">Delete</button></td></tr>`}});renderBirthdays();updateDashboard()}
+window.saveMember=async function(){try{let name=$("name").value.trim(),age=$("age").value.trim(),birthday=$("birthday").value,village=$("village").value.trim(),occupation=$("occupation").value.trim(),cell=cleanPhone($("cell").value),file=$("photo").files[0];if(!name||!village||cell.length!==10){alert("Name, Village, valid 10 digit Cell fill cheyandi");return}let photo=await resizeImage(file);await addDoc(collection(db,"members"),{customId:makeUniqueId(),name,age,birthday,village,occupation,cell,photo,createdAt:new Date().toISOString()});["name","age","birthday","village","occupation","cell","photo"].forEach(id=>$(id).value="");alert("Member Saved ✅");await renderMembers()}catch(e){alert("Save Error: "+e.message)}}
+window.renderMembers=async function(){let tb=$("memberTable"),s=$("search").value.toLowerCase();tb.innerHTML="";members=await getAll("members");members.forEach(m=>{m.customId=m.customId||m.fireId;if((m.name||"").toLowerCase().includes(s)||(m.village||"").toLowerCase().includes(s)||(m.cell||"").includes(s)||(m.customId||"").toLowerCase().includes(s)){let ph=m.photo?`<img class="photo-mini" src="${m.photo}">`:`<div class="photo-mini"></div>`;let phone=cleanPhone(m.cell);tb.innerHTML+=`<tr><td>${m.customId}</td><td>${ph}</td><td>${m.name||""}</td><td>${m.age||""}</td><td>${m.birthday||""}</td><td>${m.village||""}</td><td>${m.occupation||""}</td><td>${phone}</td><td><a class="wa" target="_blank" href="https://wa.me/91${phone}">WhatsApp</a></td><td><button class="green" onclick="printID('${m.fireId}')">QR ID</button></td><td><button class="red" onclick="deleteMember('${m.fireId}')">Delete</button></td></tr>`}});updateDashboard()}
 window.deleteMember=id=>removeDoc("members",id,renderMembers)
-window.printID=function(id){let m=members.find(x=>x.fireId===id);if(!m)return;let qrText=`ID: ${m.customId}\\nName: ${m.name}\\nBirthday: ${m.birthday||""}\\nVillage: ${m.village}\\nCell: ${m.cell}`;let qrUrl="https://api.qrserver.com/v1/create-qr-code/?size=130x130&data="+encodeURIComponent(qrText);let photo=m.photo?`<img src="${m.photo}" class="photo">`:`<div class="photo"></div>`;let w=window.open("");w.document.write(`<html><head><title>ID Card</title><style>body{font-family:Arial;display:flex;justify-content:center;align-items:center;min-height:100vh;background:#eee}.card{width:370px;background:linear-gradient(135deg,#073b8e,#0aa6a6);color:white;padding:25px;border-radius:24px;text-align:center;border:5px solid white}.photo{width:115px;height:115px;border-radius:50%;background:white;margin:10px auto;object-fit:cover;border:4px solid white}.qr{background:white;padding:10px;border-radius:15px;display:inline-block}</style></head><body><div class="card"><h1>🕊️ HFGM</h1><h2>MEMBER ID CARD</h2>${photo}<p><b>ID:</b> ${m.customId}</p><p><b>Name:</b> ${m.name}</p><p><b>Village:</b> ${m.village}</p><p><b>Cell:</b> ${m.cell}</p><div class="qr"><img src="${qrUrl}"></div><p>HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES</p></div><script>setTimeout(()=>window.print(),1000)<\\/script></body></html>`);w.document.close()}
-function renderBirthdays(){let tb=$("birthdayTable");tb.innerHTML="";let today=new Date(),mth=String(today.getMonth()+1).padStart(2,"0"),day=String(today.getDate()).padStart(2,"0");let count=0,i=1;members.forEach(m=>{if(m.birthday&&m.birthday.slice(5)===`${mth}-${day}`){count++;let msg=encodeURIComponent(`Happy Birthday ${m.name}! God bless you from HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES`);tb.innerHTML+=`<tr><td>${i++}</td><td>${m.name}</td><td>${m.birthday}</td><td>${m.cell}</td><td><a class="wa" target="_blank" href="https://wa.me/91${m.cell}?text=${msg}">Send Blessing</a></td></tr>`}});$("dashBirthdays").innerText=count}
+window.printID=function(id){let m=members.find(x=>x.fireId===id);if(!m)return;let phone=cleanPhone(m.cell);let qrText=`ID: ${m.customId}\nName: ${m.name}\nVillage: ${m.village}\nCell: ${phone}`;let qrUrl="https://api.qrserver.com/v1/create-qr-code/?size=130x130&data="+encodeURIComponent(qrText);let photo=m.photo?`<img src="${m.photo}" class="photo">`:`<div class="photo"></div>`;let w=window.open("");w.document.write(`<html><head><title>ID Card</title><style>body{font-family:Arial;display:flex;justify-content:center;align-items:center;min-height:100vh;background:#eee}.card{width:370px;background:linear-gradient(135deg,#073b8e,#0aa6a6);color:white;padding:25px;border-radius:24px;text-align:center;border:5px solid white}.photo{width:115px;height:115px;border-radius:50%;background:white;margin:10px auto;object-fit:cover;border:4px solid white}.qr{background:white;padding:10px;border-radius:15px;display:inline-block}</style></head><body><div class="card"><h1>🕊️ HFGM</h1><h2>MEMBER ID CARD</h2>${photo}<p><b>ID:</b> ${m.customId}</p><p><b>Name:</b> ${m.name}</p><p><b>Village:</b> ${m.village}</p><p><b>Cell:</b> ${phone}</p><div class="qr"><img src="${qrUrl}"></div><p>HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES</p></div><script>setTimeout(()=>window.print(),1000)<\/script></body></html>`);w.document.close()}
 
-window.saveVisitor=async function(){let name=$("visitorName").value.trim(),phone=$("visitorPhone").value.trim(),village=$("visitorVillage").value.trim(),prayer=$("visitorPrayer").value.trim(),date=$("visitorDate").value,status=$("visitorStatus").value;if(!name||!phone){alert("Visitor name and phone fill cheyandi");return}await addDoc(collection(db,"visitors"),{name,phone,village,prayer,date,status,createdAt:new Date().toISOString()});["visitorName","visitorPhone","visitorVillage","visitorPrayer","visitorDate"].forEach(id=>$(id).value="");await renderVisitors()}
-async function renderVisitors(){visitors=await getAll("visitors");$("visitorTable").innerHTML="";let i=1;visitors.forEach(v=>{let msg=encodeURIComponent(`Praise the Lord ${v.name}, thank you for visiting HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES. We are praying for you.`);$("visitorTable").innerHTML+=`<tr><td>${i++}</td><td>${v.name||""}</td><td>${v.phone||""}</td><td>${v.village||""}</td><td>${v.prayer||""}</td><td>${v.date||""}</td><td>${v.status||""}</td><td><a class="wa" target="_blank" href="https://wa.me/91${v.phone}?text=${msg}">Follow-up</a></td><td><button class="red" onclick="deleteVisitor('${v.fireId}')">Delete</button></td></tr>`});updateDashboard()}
+window.saveVisitor=async function(){let name=$("visitorName").value.trim(),phone=cleanPhone($("visitorPhone").value),village=$("visitorVillage").value.trim(),prayer=$("visitorPrayer").value.trim(),date=$("visitorDate").value,status=$("visitorStatus").value;if(!name||phone.length!==10){alert("Visitor name and valid phone fill cheyandi");return}await addDoc(collection(db,"visitors"),{name,phone,village,prayer,date,status,createdAt:new Date().toISOString()});["visitorName","visitorPhone","visitorVillage","visitorPrayer","visitorDate"].forEach(id=>$(id).value="");await renderVisitors()}
+async function renderVisitors(){visitors=await getAll("visitors");$("visitorTable").innerHTML="";let i=1;visitors.forEach(v=>{let phone=cleanPhone(v.phone);let msg=encodeURIComponent(`Praise the Lord ${v.name}, thank you for visiting HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES. We are praying for you.`);$("visitorTable").innerHTML+=`<tr><td>${i++}</td><td>${v.name||""}</td><td>${phone}</td><td>${v.village||""}</td><td>${v.prayer||""}</td><td>${v.date||""}</td><td>${v.status||""}</td><td><a class="wa" target="_blank" href="https://wa.me/91${phone}?text=${msg}">Follow-up</a></td><td><button class="red" onclick="deleteVisitor('${v.fireId}')">Delete</button></td></tr>`});updateDashboard()}
 window.deleteVisitor=id=>removeDoc("visitors",id,renderVisitors)
 
 window.saveAttendance=async function(){let name=$("attName").value.trim(),date=$("attDate").value,status=$("attStatus").value;if(!name||!date){alert("Name and Date fill cheyandi");return}await addDoc(collection(db,"attendance"),{name,date,status,createdAt:new Date().toISOString()});$("attName").value="";$("attDate").value="";await renderAttendance()}
@@ -329,19 +403,19 @@ window.savePrayer=async function(){let name=$("prayerName").value.trim(),request
 async function renderPrayers(){prayers=await getAll("prayers");$("prayerTable").innerHTML="";let i=1;prayers.forEach(p=>$("prayerTable").innerHTML+=`<tr><td>${i++}</td><td>${p.name}</td><td>${p.request}</td><td>${p.status}</td><td><button class="red" onclick="deletePrayer('${p.fireId}')">Delete</button></td></tr>`);updateDashboard()}
 window.deletePrayer=id=>removeDoc("prayers",id,renderPrayers)
 
-window.saveFamily=async function(){let head=$("familyHead").value.trim(),membersNames=$("familyMembers").value.trim(),village=$("familyVillage").value.trim(),cell=$("familyCell").value.trim();if(!head||!membersNames){alert("Family details fill cheyandi");return}await addDoc(collection(db,"families"),{head,membersNames,village,cell,createdAt:new Date().toISOString()});["familyHead","familyMembers","familyVillage","familyCell"].forEach(id=>$(id).value="");await renderFamilies()}
-async function renderFamilies(){families=await getAll("families");$("familyTable").innerHTML="";let i=1;families.forEach(f=>$("familyTable").innerHTML+=`<tr><td>${i++}</td><td>${f.head}</td><td>${f.membersNames}</td><td>${f.village}</td><td>${f.cell}</td><td><button class="red" onclick="deleteFamily('${f.fireId}')">Delete</button></td></tr>`)}
+window.saveFamily=async function(){let head=$("familyHead").value.trim(),membersNames=$("familyMembers").value.trim(),village=$("familyVillage").value.trim(),cell=cleanPhone($("familyCell").value);if(!head||!membersNames){alert("Family details fill cheyandi");return}await addDoc(collection(db,"families"),{head,membersNames,village,cell,createdAt:new Date().toISOString()});["familyHead","familyMembers","familyVillage","familyCell"].forEach(id=>$(id).value="");await renderFamilies()}
+async function renderFamilies(){families=await getAll("families");$("familyTable").innerHTML="";let i=1;families.forEach(f=>$("familyTable").innerHTML+=`<tr><td>${i++}</td><td>${f.head}</td><td>${f.membersNames}</td><td>${f.village}</td><td>${cleanPhone(f.cell)}</td><td><button class="red" onclick="deleteFamily('${f.fireId}')">Delete</button></td></tr>`)}
 window.deleteFamily=id=>removeDoc("families",id,renderFamilies)
 
 window.saveYouTube=function(){localStorage.setItem("hfgm_youtube",$("youtubeLink").value.trim());loadYouTube()}
 function loadYouTube(){let link=localStorage.getItem("hfgm_youtube")||"";$("youtubeFrame").src=link;$("youtubeLink").value=link}
 
-window.printReceipt=function(title,name,amount,purpose,dateOrStatus){let w=window.open("");w.document.write(`<html><head><title>${title}</title><style>body{font-family:Arial;padding:30px;background:#eee}.receipt{max-width:520px;margin:auto;background:white;border:3px solid #0b4da2;padding:30px;border-radius:20px;text-align:center}h1{color:#0b4da2}.line{border-top:1px solid #ddd;margin:20px 0}</style></head><body><div class="receipt"><h1>🕊️ HFGM</h1><h2>${title}</h2><p><b>HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES</b></p><div class="line"></div><p><b>Name:</b> ${name}</p><p><b>Amount:</b> ₹${amount}</p><p><b>Purpose/Month:</b> ${purpose}</p><p><b>Date/Status:</b> ${dateOrStatus||""}</p><div class="line"></div><p>Thank you for supporting the ministry 🙏</p></div><script>setTimeout(()=>window.print(),800)<\\/script></body></html>`);w.document.close()}
-window.printMonthlyReport=function(){let income=donations.reduce((s,d)=>s+Number(d.amount||0),0),expense=expenses.reduce((s,d)=>s+Number(d.expenseAmount||0),0);let w=window.open("");w.document.write(`<html><head><title>Monthly Report</title><style>body{font-family:Arial;padding:30px}.box{border:3px solid #0b4da2;padding:25px;border-radius:20px}h1{color:#0b4da2}</style></head><body><div class="box"><h1>HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES</h1><h2>Monthly Report</h2><p>Members: ${members.length}</p><p>Visitors: ${visitors.length}</p><p>Attendance Records: ${attendance.length}</p><p>Income: ₹${income}</p><p>Expenses: ₹${expense}</p><p>Balance: ₹${income-expense}</p><p>Sponsors: ${sponsors.length}</p><p>Prayer Requests: ${prayers.length}</p></div><script>setTimeout(()=>window.print(),800)<\\/script></body></html>`);w.document.close()}
+window.printReceipt=function(title,name,amount,purpose,dateOrStatus){let w=window.open("");w.document.write(`<html><head><title>${title}</title><style>body{font-family:Arial;padding:30px;background:#eee}.receipt{max-width:520px;margin:auto;background:white;border:3px solid #0b4da2;padding:30px;border-radius:20px;text-align:center}h1{color:#0b4da2}.line{border-top:1px solid #ddd;margin:20px 0}</style></head><body><div class="receipt"><h1>🕊️ HFGM</h1><h2>${title}</h2><p><b>HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES</b></p><div class="line"></div><p><b>Name:</b> ${name}</p><p><b>Amount:</b> ₹${amount}</p><p><b>Purpose/Month:</b> ${purpose}</p><p><b>Date/Status:</b> ${dateOrStatus||""}</p><div class="line"></div><p>Thank you for supporting the ministry 🙏</p></div><script>setTimeout(()=>window.print(),800)<\/script></body></html>`);w.document.close()}
+window.printMonthlyReport=function(){let income=donations.reduce((s,d)=>s+Number(d.amount||0),0),expense=expenses.reduce((s,d)=>s+Number(d.expenseAmount||0),0);let w=window.open("");w.document.write(`<html><head><title>Monthly Report</title><style>body{font-family:Arial;padding:30px}.box{border:3px solid #0b4da2;padding:25px;border-radius:20px}h1{color:#0b4da2}</style></head><body><div class="box"><h1>HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES</h1><h2>Monthly Report</h2><p>Members: ${members.length}</p><p>Unique Numbers: ${getUniqueMemberPhones().length}</p><p>Visitors: ${visitors.length}</p><p>Attendance Records: ${attendance.length}</p><p>Income: ₹${income}</p><p>Expenses: ₹${expense}</p><p>Balance: ₹${income-expense}</p><p>Sponsors: ${sponsors.length}</p><p>Prayer Requests: ${prayers.length}</p></div><script>setTimeout(()=>window.print(),800)<\/script></body></html>`);w.document.close()}
 window.backupData=function(){let data={members,visitors,attendance,donations,expenses,sponsors,prayers,families,backupDate:new Date().toISOString()};let blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});let a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="hfgm-backup.json";a.click()}
 function renderChart(){let income=donations.reduce((s,d)=>s+Number(d.amount||0),0),expense=expenses.reduce((s,d)=>s+Number(d.expenseAmount||0),0);let ctx=$("financeChart");if(!ctx)return;if(chart)chart.destroy();chart=new Chart(ctx,{type:"bar",data:{labels:["Income","Expenses","Balance"],datasets:[{label:"Amount ₹",data:[income,expense,income-expense]}]}})}
-function updateDashboard(){let income=donations.reduce((s,d)=>s+Number(d.amount||0),0),expense=expenses.reduce((s,d)=>s+Number(d.expenseAmount||0),0);$("dashMembers").innerText=members.length;$("dashVisitors").innerText=visitors.length;$("dashAttendance").innerText=attendance.length;$("dashIncome").innerText=income;$("dashExpense").innerText=expense;$("dashBalance").innerText=income-expense;$("dashPrayers").innerText=prayers.length}
-async function renderAll(){newPromise();loadYouTube();await renderMembers();await renderVisitors();await renderAttendance();await renderDonations();await renderExpenses();await renderSponsors();await renderPrayers();await renderFamilies();renderChart();renderLedger()}
+function updateDashboard(){let income=donations.reduce((s,d)=>s+Number(d.amount||0),0),expense=expenses.reduce((s,d)=>s+Number(d.expenseAmount||0),0);$("dashMembers").innerText=members.length;$("dashUnique").innerText=getUniqueMemberPhones().length;$("dashVisitors").innerText=visitors.length;$("dashAttendance").innerText=attendance.length;$("dashIncome").innerText=income;$("dashExpense").innerText=expense;$("dashBalance").innerText=income-expense;$("dashPrayers").innerText=prayers.length}
+async function renderAll(){newPromise();loadYouTube();await renderMembers();await renderVisitors();await renderAttendance();await renderDonations();await renderExpenses();await renderSponsors();await renderPrayers();await renderFamilies();renderChart();renderLedger();showUniqueNumbers()}
 if(localStorage.getItem("hfgm_logged_in")==="yes"){renderAll()}
 </script>
 </body>
