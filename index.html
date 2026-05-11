@@ -3,420 +3,626 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<title>HFGM Global Believers App</title>
+
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(135deg,#031b55,#006cb5,#09b5a5);min-height:100vh;padding:16px}
-.login-screen{min-height:100vh;display:flex;justify-content:center;align-items:center}
-.login-box{width:380px;background:white;padding:28px;border-radius:25px;box-shadow:0 12px 35px rgba(0,0,0,.35);text-align:center}
-.login-box h1{color:#0b4da2}
-.app{max-width:1250px;margin:auto;display:none}
-.hero,.card,.dash{background:white;border-radius:22px;padding:20px;margin:15px 0;box-shadow:0 8px 25px rgba(0,0,0,.25)}
-.hero{background:linear-gradient(135deg,#073b8e,#0aa6a6);color:white;text-align:center}
-.menu{display:flex;gap:10px;background:#ffffffdd;padding:12px;border-radius:18px;overflow:auto;margin-bottom:15px;position:sticky;top:0;z-index:5}
-.menu a,.logout-btn,.install-btn{background:#0b4da2;color:white;padding:10px 15px;border-radius:10px;text-decoration:none;font-weight:bold;white-space:nowrap;border:none;width:auto}
-.logout-btn{background:#d93025;margin-left:auto}.install-btn{background:#0b8f68}
-.dashboard{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
-.dash{text-align:center;font-weight:bold}.dash b{font-size:30px;color:#0b4da2}
-.grid{display:grid;grid-template-columns:360px 1fr;gap:20px}
-input,select,textarea,button{width:100%;padding:13px;margin:8px 0;border-radius:12px;border:1px solid #ccc;font-size:15px}
-textarea{min-height:110px}
-button{background:#0b4da2;color:white;border:none;font-weight:bold;cursor:pointer}
-.green{background:#087b5b}.red{background:#d93025}.orange{background:#f59e0b}.purple{background:#6d28d9}
-.wa{background:#25D366;color:white;padding:8px 12px;border-radius:10px;text-decoration:none;font-weight:bold;display:inline-block}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:linear-gradient(135deg,#031b55,#006cb5,#06b6d4);
+  min-height:100vh;
+  padding:14px;
+}
+.wrap{max-width:1250px;margin:auto}
+.hero{
+  background:linear-gradient(135deg,#073b8e,#0aa6a6);
+  color:white;
+  text-align:center;
+  padding:28px 16px;
+  border-radius:25px;
+  box-shadow:0 8px 30px #0005;
+  margin-bottom:14px;
+}
+.hero h1{margin:0;font-size:30px}
+.hero p{margin:8px 0 0}
+.card,.dash{
+  background:white;
+  border-radius:22px;
+  padding:20px;
+  margin:14px 0;
+  box-shadow:0 8px 25px #0004;
+}
+.tabs{
+  display:flex;
+  gap:10px;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin:12px 0;
+}
+.tabs button,.menu a,.menu button{
+  width:auto;
+  background:#0b4da2;
+  color:white;
+  border:0;
+  border-radius:12px;
+  padding:11px 16px;
+  font-weight:bold;
+  text-decoration:none;
+}
+.menu{
+  display:flex;
+  gap:10px;
+  overflow:auto;
+  background:#ffffffdd;
+  padding:12px;
+  border-radius:18px;
+  position:sticky;
+  top:0;
+  z-index:20;
+}
+.menu .logout{background:#d93025;margin-left:auto}
+input,select,textarea,button{
+  width:100%;
+  padding:13px;
+  margin:8px 0;
+  border-radius:12px;
+  border:1px solid #ccc;
+  font-size:15px;
+}
+textarea{min-height:95px}
+button{background:#0b4da2;color:white;border:0;font-weight:bold;cursor:pointer}
+.green{background:#087b5b!important}
+.red{background:#d93025!important}
+.orange{background:#f59e0b!important}
+.purple{background:#6d28d9!important}
+.public-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.dashboard{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.dash{text-align:center;font-weight:bold}
+.dash b{font-size:30px;color:#0b4da2}
 .table-wrap{overflow:auto}
-table{width:100%;border-collapse:collapse;min-width:1050px}
-th{background:#0b4da2;color:white;padding:12px}
-td{padding:12px;border-bottom:1px solid #ddd;text-align:center}
-.photo-mini{width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid #0b4da2;background:#eee}
-.total{background:#eef5ff;padding:15px;border-radius:15px;text-align:center;font-size:22px;color:#0b4da2;font-weight:bold}
-.small{font-size:12px;color:#666;margin-top:6px;line-height:1.5}
-.badge{background:#eef5ff;color:#0b4da2;padding:7px 10px;border-radius:20px;font-size:12px;font-weight:bold;display:inline-block;margin-bottom:8px}
-.chartBox{height:330px}
-.promise{background:linear-gradient(135deg,#fff7d6,#ffffff);border-left:6px solid #f59e0b}
-.invite{background:linear-gradient(135deg,#ecfeff,#ffffff);border-left:6px solid #0b8f68}
-.videoBox{position:relative;padding-top:56.25%;border-radius:18px;overflow:hidden;background:#000}
-.videoBox iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0}
-@media(max-width:850px){.grid,.dashboard{grid-template-columns:1fr}body{padding:8px}.menu{align-items:center}}
+table{width:100%;border-collapse:collapse;min-width:1150px}
+th{background:#0b4da2;color:white;padding:11px}
+td{padding:10px;border-bottom:1px solid #ddd;text-align:center}
+.wa{background:#25D366;color:white;text-decoration:none;padding:8px 10px;border-radius:9px;font-weight:bold;display:inline-block}
+.note{font-size:12px;color:#555;line-height:1.5}
+.badge{display:inline-block;background:#eef5ff;color:#0b4da2;padding:6px 10px;border-radius:20px;font-weight:bold;font-size:12px;margin:4px}
+.admin{display:none}
+.login{display:none;max-width:420px;margin:auto}
+.lock{background:#fff7d6;border-left:6px solid #f59e0b}
+.public{display:block}
+.total{background:#eef5ff;padding:14px;border-radius:15px;text-align:center;font-size:20px;color:#0b4da2;font-weight:bold}
+@media(max-width:850px){
+  body{padding:8px}
+  .public-grid,.dashboard{grid-template-columns:1fr}
+  .hero h1{font-size:22px}
+}
 </style>
 </head>
 
 <body>
-<div class="login-screen" id="loginScreen">
-  <div class="login-box">
-    <h1>🕊️ Admin Login</h1>
-    <p><b>HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES</b></p>
-    <input id="loginUser" placeholder="Username">
-    <input id="loginPass" type="password" placeholder="Password">
-    <button onclick="login()">Login</button>
-    <p class="small">Username: admin | Password: hfgm123</p>
-  </div>
-</div>
-
-<div class="app" id="mainApp">
-<div class="menu">
-<a href="#dashboard">Dashboard</a>
-<a href="#promise">Promise</a>
-<a href="#meetingInvite">Prayer Invitation</a>
-<a href="#bulk">Bulk WhatsApp</a>
-<a href="#members">Members</a>
-<a href="#visitors">Visitors</a>
-<a href="#attendance">Attendance</a>
-<a href="#donations">Donations</a>
-<a href="#expenses">Expenses</a>
-<a href="#ledger">Ledger</a>
-<a href="#sponsors">Sponsors</a>
-<a href="#prayers">Prayers</a>
-<a href="#family">Family</a>
-<a href="#live">Live</a>
-<a href="#reports">Reports</a>
-<button class="install-btn" onclick="installApp()">Install App</button>
-<button class="logout-btn" onclick="logout()">Logout</button>
-</div>
+<div class="wrap">
 
 <div class="hero">
-<h1>🕊️ HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES</h1>
-<p>A Place of Prayer • Healing • Deliverance</p>
+  <h1>🕊️ HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES</h1>
+  <p>HFGM Global Believers App</p>
+  <p>India + International Believers • Prayer • Testimony • Follow-up</p>
 </div>
 
-<div class="dashboard" id="dashboard">
-<div class="dash"><b id="dashMembers">0</b><br>👥 Members</div>
-<div class="dash"><b id="dashUnique">0</b><br>📲 Unique Numbers</div>
-<div class="dash"><b id="dashVisitors">0</b><br>👤 Visitors</div>
-<div class="dash"><b id="dashAttendance">0</b><br>🙏 Attendance</div>
-<div class="dash"><b>₹<span id="dashIncome">0</span></b><br>💵 Income</div>
-<div class="dash"><b>₹<span id="dashExpense">0</span></b><br>🧾 Expenses</div>
-<div class="dash"><b>₹<span id="dashBalance">0</span></b><br>🏦 Balance</div>
-<div class="dash"><b id="dashPrayers">0</b><br>🔔 Prayer Requests</div>
+<div class="tabs">
+  <button onclick="showPublic()">🌍 Public Registration</button>
+  <button onclick="showLogin()" class="orange">🔐 Admin Login</button>
 </div>
 
-<div class="card promise" id="promise">
-<h2>📖 Daily Promise Word / రోజువారి వాగ్దాన వాక్యం</h2>
-<h3 id="promiseVerseEn"></h3>
-<h3 id="promiseVerseTe"></h3>
-<p id="promiseRef"></p>
-<button onclick="newPromise()" class="orange">New Promise</button>
-<button onclick="sharePromise()" class="green">Share Promise WhatsApp</button>
-</div>
+<!-- PUBLIC SECTION -->
+<div id="publicSection" class="public">
 
-<div class="card invite" id="meetingInvite">
-<h2>🙏 Prayer Meeting Invitation</h2>
-<input id="meetTitle" placeholder="Meeting Title" value="Prayer Meeting">
-<input id="meetDate" type="date">
-<input id="meetTime" type="time">
-<input id="meetPlace" placeholder="Place / Address">
-<textarea id="meetSpecial" placeholder="Special Message">Please join with your family. God bless you.</textarea>
-<select id="meetVerse">
-<option value="Matthew 21:13|My house shall be called a house of prayer.|నా మందిరము ప్రార్థన మందిరమని పిలువబడును.">Matthew 21:13</option>
-<option value="Jeremiah 33:3|Call to me and I will answer you.|నన్ను ప్రార్థించుము, నేను నీకు ఉత్తరమిచ్చెదను.">Jeremiah 33:3</option>
-<option value="Matthew 18:20|Where two or three gather in my name, there am I with them.|ఇద్దరు ముగ్గురు నా నామమున కూడినచోట నేను వారి మధ్య ఉన్నాను.">Matthew 18:20</option>
-</select>
-<button onclick="prepareInvitation()" class="orange">Prepare Telugu + English Invitation</button>
-<button onclick="sendInvitationToAll()" class="green">One Click Open All Members WhatsApp</button>
-<textarea id="inviteMessage" placeholder="Invitation message will come here..."></textarea>
-<p class="small">Note: App duplicate numbers remove chestundi. WhatsApp tabs open avuthayi. Final Send button manual ga press cheyali.</p>
-</div>
+<div class="public-grid">
 
-<div class="card" id="bulk">
-<h2>📲 Send Message to All Members</h2>
-<textarea id="bulkMessage" placeholder="Write message here..."></textarea>
-<button onclick="prepareDailyPromiseMessage()" class="orange">Use Daily Promise Telugu + English</button>
-<button onclick="sendToAllMembers()" class="green">Open All Members WhatsApp</button>
-<button onclick="showUniqueNumbers()" class="purple">Show Unique Numbers</button>
-<div id="uniqueList" class="small"></div>
-<p class="small">Browser security valla automatic final send possible kaadu. Message ready ga open avutundi; Send manual ga press cheyali.</p>
-</div>
-
-<div class="grid" id="members">
 <div class="card">
-<h2>Add Member</h2>
-<div class="badge">Photo + Birthday + QR Card</div>
-<input id="name" placeholder="Name">
-<input id="age" type="number" placeholder="Age">
-<input id="birthday" type="date">
-<input id="village" placeholder="Village">
-<input id="occupation" placeholder="Occupation">
-<input id="cell" placeholder="Cell Number">
-<label><b>Member Photo</b></label>
-<input id="photo" type="file" accept="image/*">
-<button onclick="saveMember()">Save Member</button>
+<h2>🌍 Global Believer Registration</h2>
+<span class="badge">India + Other Countries</span>
+<p class="note">Public people can register. They cannot see others data.</p>
+
+<input id="pubName" placeholder="Full Name">
+<select id="pubBelieverType">
+  <option>New Believer</option>
+  <option>Church Member</option>
+  <option>Prayer Partner</option>
+  <option>Sponsor / Donor</option>
+  <option>Volunteer</option>
+  <option>Pastor / Leader</option>
+</select>
+<select id="pubCountry">
+  <option>India</option><option>United States</option><option>United Kingdom</option><option>Canada</option><option>Australia</option><option>UAE</option><option>Saudi Arabia</option><option>Singapore</option><option>Malaysia</option><option>Other</option>
+</select>
+<input id="pubState" placeholder="State / Province">
+<input id="pubCity" placeholder="City / Village">
+<input id="pubPhone" placeholder="WhatsApp Number with country code e.g. 919876543210">
+<input id="pubEmail" placeholder="Email optional">
+<textarea id="pubPrayer" placeholder="Prayer Request / Message"></textarea>
+<button onclick="saveBeliever()" class="green">Submit Registration</button>
 </div>
 
 <div class="card">
-<h2>Members List</h2>
-<input id="search" placeholder="Search member..." oninput="renderMembers()">
-<div class="table-wrap"><table>
-<thead><tr><th>ID</th><th>Photo</th><th>Name</th><th>Age</th><th>Birthday</th><th>Village</th><th>Occupation</th><th>Cell</th><th>WhatsApp</th><th>QR ID</th><th>Delete</th></tr></thead>
-<tbody id="memberTable"></tbody>
-</table></div>
+<h2>🙏 Submit Prayer Request</h2>
+<input id="prayName" placeholder="Name">
+<input id="prayPhone" placeholder="WhatsApp Number with country code">
+<input id="prayCountry" placeholder="Country">
+<textarea id="prayText" placeholder="Prayer Request"></textarea>
+<button onclick="savePublicPrayer()" class="green">Submit Prayer</button>
+
+<h2>✨ Submit Testimony</h2>
+<input id="testName" placeholder="Name">
+<input id="testCountry" placeholder="Country">
+<textarea id="testText" placeholder="Your testimony"></textarea>
+<button onclick="saveTestimony()" class="purple">Submit Testimony</button>
+</div>
+
+</div>
+
+<div class="card lock">
+<h2>📲 Join Prayer Group</h2>
+<p>For prayer support, register above. Admin will contact/follow-up through WhatsApp.</p>
+<p class="note">Your number will not be shown publicly.</p>
+</div>
+
+</div>
+
+<!-- LOGIN -->
+<div id="loginSection" class="login">
+<div class="card">
+<h2>🔐 Admin Login</h2>
+<input id="adminUser" placeholder="Username">
+<input id="adminPass" type="password" placeholder="Password">
+<button onclick="adminLogin()">Login</button>
+<p class="note">Username: admin | Password: hfgm2026@admin</p>
 </div>
 </div>
 
-<div class="card" id="visitors">
-<h2>👤 Visitor Register + Follow-up</h2>
-<input id="visitorName" placeholder="Visitor Name">
-<input id="visitorPhone" placeholder="Phone Number">
-<input id="visitorVillage" placeholder="Village">
-<textarea id="visitorPrayer" placeholder="Prayer Request"></textarea>
-<input id="visitorDate" type="date">
-<select id="visitorStatus"><option>New Visitor</option><option>Follow-up Pending</option><option>Prayer Done</option><option>Regular Attending</option></select>
-<button onclick="saveVisitor()">Save Visitor</button>
-<div class="table-wrap"><table>
-<thead><tr><th>S.No</th><th>Name</th><th>Phone</th><th>Village</th><th>Prayer</th><th>Date</th><th>Status</th><th>WhatsApp Follow-up</th><th>Delete</th></tr></thead>
-<tbody id="visitorTable"></tbody>
-</table></div>
+<!-- ADMIN SECTION -->
+<div id="adminSection" class="admin">
+
+<div class="menu">
+<a href="#dash">Dashboard</a>
+<a href="#believers">Believers</a>
+<a href="#adminPrayer">Prayers</a>
+<a href="#adminTestimony">Testimonies</a>
+<a href="#whatsapp">WhatsApp</a>
+<a href="#finance">Finance</a>
+<a href="#reports">Reports</a>
+<button class="logout" onclick="logout()">Logout</button>
 </div>
 
-<div class="card" id="attendance">
-<h2>Attendance</h2>
-<input id="attName" placeholder="Member Name">
-<input id="attDate" type="date">
-<select id="attStatus"><option>Present</option><option>Absent</option></select>
-<button onclick="saveAttendance()">Save Attendance</button>
-<div class="table-wrap"><table>
-<thead><tr><th>S.No</th><th>Name</th><th>Date</th><th>Status</th><th>Delete</th></tr></thead>
-<tbody id="attendanceTable"></tbody>
-</table></div>
+<div class="dashboard" id="dash">
+<div class="dash"><b id="dBelievers">0</b><br>🌍 Believers</div>
+<div class="dash"><b id="dIndia">0</b><br>🇮🇳 India</div>
+<div class="dash"><b id="dIntl">0</b><br>🌎 International</div>
+<div class="dash"><b id="dPrayer">0</b><br>🙏 Prayers</div>
+<div class="dash"><b id="dTestimony">0</b><br>✨ Testimonies</div>
 </div>
 
-<div class="card" id="donations">
-<h2>Donations / Income</h2>
-<input id="donorName" placeholder="Donor Name">
-<input id="donationAmount" type="number" placeholder="Amount">
-<select id="donationPurpose">
-<option value="">Select Purpose / Service</option>
-<option>Church Construction</option><option>Monthly Ministry Support</option><option>Healing & Deliverance Meeting</option><option>Sunday Service</option><option>All Night Prayer</option><option>Pastor Support</option><option>Poor Feeding</option><option>Gospel Outreach</option><option>Children Ministry</option><option>General Offering</option>
-</select>
-<input id="donationDate" type="date">
-<button onclick="saveDonation()">Save Donation</button>
-<div class="total">Total Donations: ₹<span id="donationTotal">0</span></div>
-<div class="table-wrap"><table>
-<thead><tr><th>S.No</th><th>Name</th><th>Amount</th><th>Purpose</th><th>Date</th><th>Receipt</th><th>Delete</th></tr></thead>
-<tbody id="donationTable"></tbody>
-</table></div>
+<div class="card lock">
+<h3>🛡️ Admin Secure Dashboard</h3>
+<p class="note">Only admin can see full numbers, delete records, send WhatsApp follow-up, export backup and reports.</p>
 </div>
 
-<div class="card" id="expenses">
-<h2>Expenses</h2>
-<input id="expenseAmount" type="number" placeholder="Amount">
-<select id="expenseType"><option value="">Select Expense Type</option><option>Electricity</option><option>Church Rent</option><option>Sound System</option><option>Food</option><option>Travel</option><option>Pastor Support</option><option>Ministry Expense</option><option>Repairs</option><option>Events</option><option>Other</option></select>
-<input id="expenseDate" type="date">
-<button onclick="saveExpense()">Save Expense</button>
-<div class="total">Total Expenses: ₹<span id="expenseTotal">0</span></div>
-<div class="table-wrap"><table>
-<thead><tr><th>S.No</th><th>Amount</th><th>Type</th><th>Date</th><th>Delete</th></tr></thead>
-<tbody id="expenseTable"></tbody>
-</table></div>
+<div class="card" id="believers">
+<h2>🌍 Global Believers List</h2>
+<div class="public-grid">
+  <input id="searchBeliever" placeholder="Search name/country/city/type..." oninput="renderBelievers()">
+  <select id="countryFilter" onchange="renderBelievers()">
+    <option value="">All Countries</option>
+    <option>India</option><option>United States</option><option>United Kingdom</option><option>Canada</option><option>Australia</option><option>UAE</option><option>Saudi Arabia</option><option>Singapore</option><option>Malaysia</option><option>Other</option>
+  </select>
 </div>
 
-<div class="card" id="ledger">
-<h2>🏦 Full Accounting Ledger</h2>
-<div class="table-wrap"><table>
-<thead><tr><th>S.No</th><th>Date</th><th>Type</th><th>Name/Purpose</th><th>Income</th><th>Expense</th><th>Balance</th></tr></thead>
-<tbody id="ledgerTable"></tbody>
-</table></div>
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>S.No</th><th>Name</th><th>Type</th><th>Country</th><th>State</th><th>City</th><th>WhatsApp</th><th>Email</th><th>Prayer/Message</th><th>Status</th><th>Follow-up</th><th>Delete</th>
+</tr>
+</thead>
+<tbody id="believerTable"></tbody>
+</table>
+</div>
 </div>
 
-<div class="card" id="sponsors">
-<h2>Monthly Sponsors</h2>
-<input id="sponsorName" placeholder="Sponsor Name">
-<input id="sponsorAmount" type="number" placeholder="Monthly Amount">
-<select id="sponsorMonth"><option>January</option><option>February</option><option>March</option><option>April</option><option>May</option><option>June</option><option>July</option><option>August</option><option>September</option><option>October</option><option>November</option><option>December</option></select>
-<select id="sponsorStatus"><option>Paid</option><option>Pending</option></select>
-<button onclick="saveSponsor()">Save Sponsor</button>
-<div class="table-wrap"><table>
-<thead><tr><th>S.No</th><th>Name</th><th>Amount</th><th>Month</th><th>Status</th><th>Receipt</th><th>WhatsApp</th><th>Delete</th></tr></thead>
-<tbody id="sponsorTable"></tbody>
-</table></div>
-</div>
-
-<div class="card" id="prayers">
-<h2>🔔 Prayer Requests</h2>
-<input id="prayerName" placeholder="Name">
-<textarea id="prayerRequest" placeholder="Prayer Request"></textarea>
-<select id="prayerStatus"><option>Pending</option><option>Prayed</option><option>Answered</option></select>
-<button onclick="savePrayer()">Save Prayer Request</button>
-<div class="table-wrap"><table>
-<thead><tr><th>S.No</th><th>Name</th><th>Request</th><th>Status</th><th>Delete</th></tr></thead>
+<div class="card" id="adminPrayer">
+<h2>🙏 Prayer Requests</h2>
+<div class="table-wrap">
+<table>
+<thead><tr><th>S.No</th><th>Name</th><th>Phone</th><th>Country</th><th>Prayer</th><th>Status</th><th>WhatsApp</th><th>Delete</th></tr></thead>
 <tbody id="prayerTable"></tbody>
-</table></div>
+</table>
+</div>
 </div>
 
-<div class="card" id="family">
-<h2>👨‍👩‍👧 Family Member Records</h2>
-<input id="familyHead" placeholder="Family Head Name">
-<input id="familyMembers" placeholder="Family Members Names">
-<input id="familyVillage" placeholder="Village">
-<input id="familyCell" placeholder="Cell Number">
-<button onclick="saveFamily()">Save Family</button>
-<div class="table-wrap"><table>
-<thead><tr><th>S.No</th><th>Head</th><th>Members</th><th>Village</th><th>Cell</th><th>Delete</th></tr></thead>
-<tbody id="familyTable"></tbody>
-</table></div>
+<div class="card" id="adminTestimony">
+<h2>✨ Testimonies</h2>
+<div class="table-wrap">
+<table>
+<thead><tr><th>S.No</th><th>Name</th><th>Country</th><th>Testimony</th><th>Delete</th></tr></thead>
+<tbody id="testimonyTable"></tbody>
+</table>
+</div>
 </div>
 
-<div class="card" id="live">
-<h2>🎥 Live Service / YouTube</h2>
-<input id="youtubeLink" placeholder="Paste YouTube Embed Link">
-<button onclick="saveYouTube()">Save Live Link</button>
-<div style="position:relative;padding-top:56.25%;border-radius:18px;overflow:hidden;background:#000"><iframe id="youtubeFrame" src="" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;border:0"></iframe></div>
+<div class="card" id="whatsapp">
+<h2>📲 WhatsApp Ministry System</h2>
+<select id="messageType">
+<option value="welcome">Welcome New Believer</option>
+<option value="prayer">Prayer Meeting Invitation</option>
+<option value="promise">Daily Promise Word</option>
+<option value="follow">Follow-up Message</option>
+</select>
+<textarea id="bulkMessage" placeholder="Message"></textarea>
+<button onclick="prepareMessage()" class="orange">Prepare Message</button>
+<button onclick="openAllWhatsApp()" class="green">Open All Believers WhatsApp</button>
+<button onclick="showUniquePhones()" class="purple">Show Unique Numbers</button>
+<div id="uniqueList" class="note"></div>
+<p class="note">WhatsApp security: tabs open automatically, final Send button manual ga press cheyali.</p>
+</div>
+
+<div class="card" id="finance">
+<h2>💰 Global Ministry Finance</h2>
+<div class="public-grid">
+<input id="finName" placeholder="Name">
+<input id="finAmount" type="number" placeholder="Amount">
+<select id="finType"><option>Income</option><option>Expense</option></select>
+<input id="finPurpose" placeholder="Purpose">
+</div>
+<button onclick="saveFinance()">Save Finance</button>
+<div class="total">Income: ₹<span id="incomeTotal">0</span> | Expense: ₹<span id="expenseTotal">0</span> | Balance: ₹<span id="balanceTotal">0</span></div>
+<div class="table-wrap">
+<table>
+<thead><tr><th>S.No</th><th>Type</th><th>Name</th><th>Amount</th><th>Purpose</th><th>Date</th><th>Receipt</th><th>Delete</th></tr></thead>
+<tbody id="financeTable"></tbody>
+</table>
+</div>
 </div>
 
 <div class="card" id="reports">
-<h2>📊 Monthly Reports + Charts</h2>
-<button onclick="printMonthlyReport()">Print / Save PDF Report</button>
-<button onclick="backupData()" class="green">☁️ Backup Data Download</button>
-<div class="chartBox"><canvas id="financeChart"></canvas></div>
+<h2>📊 Reports & Backup</h2>
+<button onclick="printReport()">Print / Save PDF Report</button>
+<button onclick="downloadBackup()" class="green">Download Backup JSON</button>
+</div>
+
 </div>
 
 </div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-const firebaseConfig={apiKey:"AIzaSyBLyi5hI-jSSyIf-H9rnpP_4Ldj6Cfpqu8",authDomain:"hfgm-ministry.firebaseapp.com",projectId:"hfgm-ministry",storageBucket:"hfgm-ministry.firebasestorage.app",messagingSenderId:"1079389581104",appId:"1:1079389581104:web:3830dc23c81389cb7fe2f5",measurementId:"G-2L8ZX8BJKM"};
-const app=initializeApp(firebaseConfig); const db=getFirestore(app);
-let members=[],attendance=[],donations=[],expenses=[],sponsors=[],prayers=[],families=[],visitors=[],deferredPrompt=null,chart=null,currentPromise=null;
-const $=(id)=>document.getElementById(id);
+const firebaseConfig={
+  apiKey:"AIzaSyBLyi5hI-jSSyIf-H9rnpP_4Ldj6Cfpqu8",
+  authDomain:"hfgm-ministry.firebaseapp.com",
+  projectId:"hfgm-ministry",
+  storageBucket:"hfgm-ministry.firebasestorage.app",
+  messagingSenderId:"1079389581104",
+  appId:"1:1079389581104:web:3830dc23c81389cb7fe2f5",
+  measurementId:"G-2L8ZX8BJKM"
+};
 
-const promises=[
-{en:"The Lord will fight for you; you need only to be still.",te:"యెహోవా మీ కొరకు యుద్ధము చేయును; మీరు మౌనముగా ఉండుడి.",ref:"Exodus 14:14"},
-{en:"I can do all things through Christ who strengthens me.",te:"నన్ను బలపరచు క్రీస్తు ద్వారా నేను సమస్తమును చేయగలను.",ref:"Philippians 4:13"},
-{en:"The Lord is my shepherd; I shall not want.",te:"యెహోవా నా కాపరి; నాకు కొదువ ఉండదు.",ref:"Psalm 23:1"},
-{en:"By His wounds we are healed.",te:"ఆయన గాయములచేత మనకు స్వస్థత కలిగెను.",ref:"Isaiah 53:5"},
-{en:"Cast all your anxiety on Him because He cares for you.",te:"ఆయన మీ విషయమై జాగ్రత్తపడుచున్నాడు గనుక మీ చింత యావత్తు ఆయనమీద వేయుడి.",ref:"1 Peter 5:7"},
-{en:"With God all things are possible.",te:"దేవునితో సమస్తమును సాధ్యమే.",ref:"Matthew 19:26"},
-{en:"Do not fear, for I am with you.",te:"భయపడకుము, నేను నీతో ఉన్నాను.",ref:"Isaiah 41:10"},
-{en:"Ask and it will be given to you.",te:"అడుగుడి, మీకియ్యబడును.",ref:"Matthew 7:7"}
-];
+const app=initializeApp(firebaseConfig);
+const db=getFirestore(app);
 
-window.addEventListener("beforeinstallprompt",(e)=>{e.preventDefault();deferredPrompt=e;});
-window.installApp=async function(){if(deferredPrompt){deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null}else{alert("Use browser menu → Add to Home screen");}}
-window.login=function(){let u=$("loginUser").value.trim(),p=$("loginPass").value.trim();if(u==="admin"&&p==="hfgm123"){localStorage.setItem("hfgm_logged_in","yes");$("loginScreen").style.display="none";$("mainApp").style.display="block";renderAll()}else alert("Wrong username or password")}
-window.logout=function(){localStorage.removeItem("hfgm_logged_in");$("mainApp").style.display="none";$("loginScreen").style.display="flex"}
-if(localStorage.getItem("hfgm_logged_in")==="yes"){$("loginScreen").style.display="none";$("mainApp").style.display="block"}
+let believers=[], prayers=[], testimonies=[], finance=[];
+let isAdmin=false;
+const $=id=>document.getElementById(id);
+const ADMIN_USER="admin";
+const ADMIN_PASS="hfgm2026@admin";
 
-function cleanPhone(phone){return String(phone||"").replace(/\D/g,"").replace(/^91/,"").slice(-10)}
-function getUniqueMemberPhones(){
+function cleanPhone(p){
+  return String(p||"").replace(/\D/g,"");
+}
+function displayPhone(p){
+  p=cleanPhone(p);
+  if(p.length<6)return "";
+  return "****"+p.slice(-4);
+}
+function today(){
+  return new Date().toLocaleDateString();
+}
+async function getAll(col){
+  const arr=[];
+  const snap=await getDocs(collection(db,col));
+  snap.forEach(d=>{let x=d.data();x.id=d.id;arr.push(x)});
+  return arr;
+}
+async function deleteRecord(col,id,callback){
+  if(!isAdmin){alert("Admin only");return}
+  if(confirm("Delete this record?")){
+    await deleteDoc(doc(db,col,id));
+    await callback();
+  }
+}
+function uniqueBelieverPhones(){
   const map=new Map();
-  members.forEach(m=>{
-    const p=cleanPhone(m.cell);
-    if(p.length===10 && !map.has(p)) map.set(p,m.name||"Member");
+  believers.forEach(b=>{
+    const p=cleanPhone(b.phone);
+    if(p.length>=10 && !map.has(p))map.set(p,b.name||"Believer");
   });
   return [...map.entries()].map(([phone,name])=>({phone,name}));
 }
-function openWhatsAppForUnique(message){
-  const nums=getUniqueMemberPhones();
-  if(!message.trim()){alert("Message empty");return}
-  if(nums.length===0){alert("Valid 10 digit phone numbers levu");return}
-  $("dashUnique").innerText=nums.length;
-  nums.forEach((item,i)=>{
-    setTimeout(()=>{ window.open("https://web.whatsapp.com/send?phone=91"+item.phone+"&text="+encodeURIComponent(message), "_blank"); }, i*1800);
+
+window.showPublic=function(){
+  $("publicSection").style.display="block";
+  $("loginSection").style.display="none";
+}
+window.showLogin=function(){
+  $("publicSection").style.display="none";
+  $("loginSection").style.display="block";
+}
+window.adminLogin=function(){
+  if($("adminUser").value===ADMIN_USER && $("adminPass").value===ADMIN_PASS){
+    isAdmin=true;
+    sessionStorage.setItem("hfgm_global_admin","yes");
+    $("publicSection").style.display="none";
+    $("loginSection").style.display="none";
+    $("adminSection").style.display="block";
+    loadAdmin();
+  }else{
+    alert("Wrong username or password");
+  }
+}
+window.logout=function(){
+  sessionStorage.removeItem("hfgm_global_admin");
+  location.reload();
+}
+if(sessionStorage.getItem("hfgm_global_admin")==="yes"){
+  isAdmin=true;
+  $("publicSection").style.display="none";
+  $("loginSection").style.display="none";
+  $("adminSection").style.display="block";
+  loadAdmin();
+}
+
+window.saveBeliever=async function(){
+  const name=$("pubName").value.trim();
+  const phone=cleanPhone($("pubPhone").value);
+  if(!name || phone.length<10){alert("Name and valid WhatsApp number required");return}
+  await addDoc(collection(db,"global_believers"),{
+    name,
+    type:$("pubBelieverType").value,
+    country:$("pubCountry").value,
+    state:$("pubState").value,
+    city:$("pubCity").value,
+    phone,
+    email:$("pubEmail").value,
+    prayer:$("pubPrayer").value,
+    status:"New",
+    createdAt:new Date().toISOString()
   });
-  alert(nums.length+" unique numbers ki WhatsApp tabs open avuthayi. Pop-up Allow cheyandi. Final Send button manual ga press cheyali.");
-}
-window.showUniqueNumbers=function(){
-  const nums=getUniqueMemberPhones();
-  $("uniqueList").innerHTML="<b>Unique Numbers: "+nums.length+"</b><br>"+nums.map(x=>x.name+" - "+x.phone).join("<br>");
-  $("dashUnique").innerText=nums.length;
+  ["pubName","pubState","pubCity","pubPhone","pubEmail","pubPrayer"].forEach(id=>$(id).value="");
+  alert("Registration submitted. God bless you 🙏");
 }
 
-window.newPromise=function(){currentPromise=promises[Math.floor(Math.random()*promises.length)];$("promiseVerseEn").innerText="English: "+currentPromise.en;$("promiseVerseTe").innerText="తెలుగు: "+currentPromise.te;$("promiseRef").innerText=currentPromise.ref;}
-function promiseMessage(){if(!currentPromise)newPromise();return `🕊️ HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES
+window.savePublicPrayer=async function(){
+  const name=$("prayName").value.trim();
+  const text=$("prayText").value.trim();
+  if(!name||!text){alert("Name and prayer request required");return}
+  await addDoc(collection(db,"global_prayers"),{
+    name,
+    phone:cleanPhone($("prayPhone").value),
+    country:$("prayCountry").value,
+    text,
+    status:"Pending",
+    createdAt:new Date().toISOString()
+  });
+  ["prayName","prayPhone","prayCountry","prayText"].forEach(id=>$(id).value="");
+  alert("Prayer request submitted 🙏");
+}
 
-📖 Daily Promise Word / రోజువారి వాగ్దాన వాక్యం
+window.saveTestimony=async function(){
+  const name=$("testName").value.trim();
+  const text=$("testText").value.trim();
+  if(!name||!text){alert("Name and testimony required");return}
+  await addDoc(collection(db,"global_testimonies"),{
+    name,
+    country:$("testCountry").value,
+    text,
+    createdAt:new Date().toISOString()
+  });
+  ["testName","testCountry","testText"].forEach(id=>$(id).value="");
+  alert("Testimony submitted. Praise God ✨");
+}
 
-English: ${currentPromise.en}
-తెలుగు: ${currentPromise.te}
-Reference: ${currentPromise.ref}
+async function renderBelievers(){
+  believers=await getAll("global_believers");
+  const q=($("searchBeliever").value||"").toLowerCase();
+  const cf=$("countryFilter").value;
+  $("believerTable").innerHTML="";
+  let i=1;
+  believers
+  .filter(b=>!cf || b.country===cf)
+  .filter(b=>{
+    const s=`${b.name} ${b.country} ${b.state} ${b.city} ${b.type}`.toLowerCase();
+    return s.includes(q);
+  })
+  .forEach(b=>{
+    const phone=cleanPhone(b.phone);
+    const msg=encodeURIComponent(`Praise the Lord ${b.name}, welcome to HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES. We are praying for you.`);
+    $("believerTable").innerHTML+=`
+    <tr>
+      <td>${i++}</td>
+      <td>${b.name||""}</td>
+      <td>${b.type||""}</td>
+      <td>${b.country||""}</td>
+      <td>${b.state||""}</td>
+      <td>${b.city||""}</td>
+      <td>${phone}</td>
+      <td>${b.email||""}</td>
+      <td>${b.prayer||""}</td>
+      <td>${b.status||"New"}</td>
+      <td><a class="wa" target="_blank" href="https://wa.me/${phone}?text=${msg}">Follow-up</a></td>
+      <td><button class="red" onclick="deleteBeliever('${b.id}')">Delete</button></td>
+    </tr>`;
+  });
+  updateDashboard();
+}
+window.deleteBeliever=id=>deleteRecord("global_believers",id,renderBelievers);
 
-God bless you 🙏`;}
-window.sharePromise=function(){window.open("https://wa.me/?text="+encodeURIComponent(promiseMessage()),"_blank")}
-window.prepareDailyPromiseMessage=function(){$("bulkMessage").value=promiseMessage();}
-window.sendToAllMembers=function(){openWhatsAppForUnique($("bulkMessage").value);}
-window.prepareInvitation=function(){
-  const title=$("meetTitle").value || "Prayer Meeting";
-  const date=$("meetDate").value || "";
-  const time=$("meetTime").value || "";
-  const place=$("meetPlace").value || "";
-  const special=$("meetSpecial").value || "";
-  const [ref,enVerse,teVerse]=$("meetVerse").value.split("|");
-  const msg=`🙏 HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES
+async function renderPrayers(){
+  prayers=await getAll("global_prayers");
+  $("prayerTable").innerHTML="";
+  let i=1;
+  prayers.forEach(p=>{
+    const phone=cleanPhone(p.phone);
+    const msg=encodeURIComponent(`Praise the Lord ${p.name}, we received your prayer request. HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES is praying for you.`);
+    $("prayerTable").innerHTML+=`
+    <tr>
+      <td>${i++}</td><td>${p.name||""}</td><td>${phone}</td><td>${p.country||""}</td><td>${p.text||""}</td><td>${p.status||""}</td>
+      <td>${phone?`<a class="wa" target="_blank" href="https://wa.me/${phone}?text=${msg}">WhatsApp</a>`:""}</td>
+      <td><button class="red" onclick="deletePrayer('${p.id}')">Delete</button></td>
+    </tr>`;
+  });
+  updateDashboard();
+}
+window.deletePrayer=id=>deleteRecord("global_prayers",id,renderPrayers);
 
-${title} Invitation / ప్రార్థనా కూడిక ఆహ్వానం
+async function renderTestimonies(){
+  testimonies=await getAll("global_testimonies");
+  $("testimonyTable").innerHTML="";
+  let i=1;
+  testimonies.forEach(t=>{
+    $("testimonyTable").innerHTML+=`
+    <tr><td>${i++}</td><td>${t.name||""}</td><td>${t.country||""}</td><td>${t.text||""}</td><td><button class="red" onclick="deleteTestimony('${t.id}')">Delete</button></td></tr>`;
+  });
+  updateDashboard();
+}
+window.deleteTestimony=id=>deleteRecord("global_testimonies",id,renderTestimonies);
 
-ప్రియమైనవారికి ప్రేమపూర్వక ఆహ్వానం.
+window.prepareMessage=function(){
+  const type=$("messageType").value;
+  let msg="";
+  if(type==="welcome"){
+    msg=`🕊️ HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES
+
+Praise the Lord!
+Welcome to HFGM Global Believers Family.
+
+We are praying for you and your family.
+God bless you 🙏`;
+  }else if(type==="prayer"){
+    msg=`🙏 HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES
+
+Prayer Meeting Invitation / ప్రార్థనా కూడిక ఆహ్వానం
+
 You are warmly invited to join our prayer meeting.
 
-📅 Date: ${date}
-⏰ Time: ${time}
-📍 Place: ${place}
-
-📖 Bible Verse:
-English: ${enVerse}
-తెలుగు: ${teVerse}
-Reference: ${ref}
-
-${special}
+📖 “My house shall be called a house of prayer.” — Matthew 21:13
 
 Please join with your family.
 God bless you 🙏`;
-  $("inviteMessage").value=msg;
+  }else if(type==="promise"){
+    msg=`📖 Daily Promise Word
+
+English: Do not fear, for I am with you.
+తెలుగు: భయపడకుము, నేను నీతో ఉన్నాను.
+Reference: Isaiah 41:10
+
+HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES
+God bless you 🙏`;
+  }else{
+    msg=`Praise the Lord!
+
+This is a follow-up message from HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES.
+We are praying for you and your family.
+
+God bless you 🙏`;
+  }
+  $("bulkMessage").value=msg;
 }
-window.sendInvitationToAll=function(){ if(!$("inviteMessage").value.trim()) prepareInvitation(); openWhatsAppForUnique($("inviteMessage").value); }
+window.openAllWhatsApp=function(){
+  const msg=$("bulkMessage").value.trim();
+  if(!msg){alert("Message required");return}
+  const nums=uniqueBelieverPhones();
+  if(!nums.length){alert("No valid phone numbers");return}
+  nums.forEach((x,i)=>{
+    setTimeout(()=>window.open(`https://web.whatsapp.com/send?phone=${x.phone}&text=${encodeURIComponent(msg)}`,"_blank"),i*1600);
+  });
+  alert(nums.length+" unique believers ki WhatsApp open avuthayi. Final Send manual.");
+}
+window.showUniquePhones=function(){
+  const nums=uniqueBelieverPhones();
+  $("uniqueList").innerHTML="<b>Unique Numbers: "+nums.length+"</b><br>"+nums.map(x=>x.name+" - "+x.phone).join("<br>");
+}
 
-function makeUniqueId(){return "HFGM-"+Date.now().toString().slice(-7)}
-function resizeImage(file){return new Promise((resolve)=>{if(!file){resolve("");return}const r=new FileReader();r.onload=e=>{const img=new Image();img.onload=()=>{const c=document.createElement("canvas");const max=420;let w=img.width,h=img.height;if(w>h){if(w>max){h=Math.round(h*max/w);w=max}}else{if(h>max){w=Math.round(w*max/h);h=max}}c.width=w;c.height=h;c.getContext("2d").drawImage(img,0,0,w,h);resolve(c.toDataURL("image/jpeg",0.7))};img.src=e.target.result};r.readAsDataURL(file)})}
-async function getAll(col){let arr=[];let snap=await getDocs(collection(db,col));snap.forEach(d=>{let x=d.data();x.fireId=d.id;arr.push(x)});return arr}
-async function removeDoc(col,id,render){if(confirm("Delete?")){await deleteDoc(doc(db,col,id));await render()}}
+window.saveFinance=async function(){
+  const amount=Number($("finAmount").value||0);
+  if(!amount){alert("Amount required");return}
+  await addDoc(collection(db,"global_finance"),{
+    name:$("finName").value,
+    amount,
+    type:$("finType").value,
+    purpose:$("finPurpose").value,
+    date:today(),
+    createdAt:new Date().toISOString()
+  });
+  ["finName","finAmount","finPurpose"].forEach(id=>$(id).value="");
+  await renderFinance();
+}
+async function renderFinance(){
+  finance=await getAll("global_finance");
+  $("financeTable").innerHTML="";
+  let income=0,expense=0,i=1;
+  finance.forEach(f=>{
+    if(f.type==="Income")income+=Number(f.amount||0);else expense+=Number(f.amount||0);
+    $("financeTable").innerHTML+=`
+    <tr>
+      <td>${i++}</td><td>${f.type}</td><td>${f.name||""}</td><td>₹${f.amount||0}</td><td>${f.purpose||""}</td><td>${f.date||""}</td>
+      <td><button onclick="printReceipt('${f.id}')">Receipt</button></td>
+      <td><button class="red" onclick="deleteFinance('${f.id}')">Delete</button></td>
+    </tr>`;
+  });
+  $("incomeTotal").innerText=income;
+  $("expenseTotal").innerText=expense;
+  $("balanceTotal").innerText=income-expense;
+}
+window.deleteFinance=id=>deleteRecord("global_finance",id,renderFinance);
 
-window.saveMember=async function(){try{let name=$("name").value.trim(),age=$("age").value.trim(),birthday=$("birthday").value,village=$("village").value.trim(),occupation=$("occupation").value.trim(),cell=cleanPhone($("cell").value),file=$("photo").files[0];if(!name||!village||cell.length!==10){alert("Name, Village, valid 10 digit Cell fill cheyandi");return}let photo=await resizeImage(file);await addDoc(collection(db,"members"),{customId:makeUniqueId(),name,age,birthday,village,occupation,cell,photo,createdAt:new Date().toISOString()});["name","age","birthday","village","occupation","cell","photo"].forEach(id=>$(id).value="");alert("Member Saved ✅");await renderMembers()}catch(e){alert("Save Error: "+e.message)}}
-window.renderMembers=async function(){let tb=$("memberTable"),s=$("search").value.toLowerCase();tb.innerHTML="";members=await getAll("members");members.forEach(m=>{m.customId=m.customId||m.fireId;if((m.name||"").toLowerCase().includes(s)||(m.village||"").toLowerCase().includes(s)||(m.cell||"").includes(s)||(m.customId||"").toLowerCase().includes(s)){let ph=m.photo?`<img class="photo-mini" src="${m.photo}">`:`<div class="photo-mini"></div>`;let phone=cleanPhone(m.cell);tb.innerHTML+=`<tr><td>${m.customId}</td><td>${ph}</td><td>${m.name||""}</td><td>${m.age||""}</td><td>${m.birthday||""}</td><td>${m.village||""}</td><td>${m.occupation||""}</td><td>${phone}</td><td><a class="wa" target="_blank" href="https://wa.me/91${phone}">WhatsApp</a></td><td><button class="green" onclick="printID('${m.fireId}')">QR ID</button></td><td><button class="red" onclick="deleteMember('${m.fireId}')">Delete</button></td></tr>`}});updateDashboard()}
-window.deleteMember=id=>removeDoc("members",id,renderMembers)
-window.printID=function(id){let m=members.find(x=>x.fireId===id);if(!m)return;let phone=cleanPhone(m.cell);let qrText=`ID: ${m.customId}\nName: ${m.name}\nVillage: ${m.village}\nCell: ${phone}`;let qrUrl="https://api.qrserver.com/v1/create-qr-code/?size=130x130&data="+encodeURIComponent(qrText);let photo=m.photo?`<img src="${m.photo}" class="photo">`:`<div class="photo"></div>`;let w=window.open("");w.document.write(`<html><head><title>ID Card</title><style>body{font-family:Arial;display:flex;justify-content:center;align-items:center;min-height:100vh;background:#eee}.card{width:370px;background:linear-gradient(135deg,#073b8e,#0aa6a6);color:white;padding:25px;border-radius:24px;text-align:center;border:5px solid white}.photo{width:115px;height:115px;border-radius:50%;background:white;margin:10px auto;object-fit:cover;border:4px solid white}.qr{background:white;padding:10px;border-radius:15px;display:inline-block}</style></head><body><div class="card"><h1>🕊️ HFGM</h1><h2>MEMBER ID CARD</h2>${photo}<p><b>ID:</b> ${m.customId}</p><p><b>Name:</b> ${m.name}</p><p><b>Village:</b> ${m.village}</p><p><b>Cell:</b> ${phone}</p><div class="qr"><img src="${qrUrl}"></div><p>HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES</p></div><script>setTimeout(()=>window.print(),1000)<\/script></body></html>`);w.document.close()}
+window.printReceipt=function(id){
+  const f=finance.find(x=>x.id===id);
+  if(!f)return;
+  const w=window.open("");
+  w.document.write(`<html><head><title>Receipt</title><style>body{font-family:Arial;padding:30px}.box{border:3px solid #0b4da2;padding:25px;text-align:center;border-radius:20px}</style></head><body><div class="box"><h1>🕊️ HFGM Receipt</h1><h2>HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES</h2><p><b>Name:</b> ${f.name}</p><p><b>Type:</b> ${f.type}</p><p><b>Amount:</b> ₹${f.amount}</p><p><b>Purpose:</b> ${f.purpose||""}</p><p><b>Date:</b> ${f.date||""}</p></div><script>setTimeout(()=>window.print(),800)<\/script></body></html>`);
+}
 
-window.saveVisitor=async function(){let name=$("visitorName").value.trim(),phone=cleanPhone($("visitorPhone").value),village=$("visitorVillage").value.trim(),prayer=$("visitorPrayer").value.trim(),date=$("visitorDate").value,status=$("visitorStatus").value;if(!name||phone.length!==10){alert("Visitor name and valid phone fill cheyandi");return}await addDoc(collection(db,"visitors"),{name,phone,village,prayer,date,status,createdAt:new Date().toISOString()});["visitorName","visitorPhone","visitorVillage","visitorPrayer","visitorDate"].forEach(id=>$(id).value="");await renderVisitors()}
-async function renderVisitors(){visitors=await getAll("visitors");$("visitorTable").innerHTML="";let i=1;visitors.forEach(v=>{let phone=cleanPhone(v.phone);let msg=encodeURIComponent(`Praise the Lord ${v.name}, thank you for visiting HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES. We are praying for you.`);$("visitorTable").innerHTML+=`<tr><td>${i++}</td><td>${v.name||""}</td><td>${phone}</td><td>${v.village||""}</td><td>${v.prayer||""}</td><td>${v.date||""}</td><td>${v.status||""}</td><td><a class="wa" target="_blank" href="https://wa.me/91${phone}?text=${msg}">Follow-up</a></td><td><button class="red" onclick="deleteVisitor('${v.fireId}')">Delete</button></td></tr>`});updateDashboard()}
-window.deleteVisitor=id=>removeDoc("visitors",id,renderVisitors)
-
-window.saveAttendance=async function(){let name=$("attName").value.trim(),date=$("attDate").value,status=$("attStatus").value;if(!name||!date){alert("Name and Date fill cheyandi");return}await addDoc(collection(db,"attendance"),{name,date,status,createdAt:new Date().toISOString()});$("attName").value="";$("attDate").value="";await renderAttendance()}
-async function renderAttendance(){attendance=await getAll("attendance");$("attendanceTable").innerHTML="";let i=1;attendance.forEach(a=>$("attendanceTable").innerHTML+=`<tr><td>${i++}</td><td>${a.name||""}</td><td>${a.date||""}</td><td>${a.status||""}</td><td><button class="red" onclick="deleteAttendance('${a.fireId}')">Delete</button></td></tr>`);updateDashboard()}
-window.deleteAttendance=id=>removeDoc("attendance",id,renderAttendance)
-
-window.saveDonation=async function(){let donorName=$("donorName").value.trim(),amount=Number($("donationAmount").value||0),purpose=$("donationPurpose").value,date=$("donationDate").value;if(!donorName||!amount||!purpose){alert("Donor name, amount, purpose select cheyandi");return}await addDoc(collection(db,"donations"),{donorName,amount,purpose,date,createdAt:new Date().toISOString()});["donorName","donationAmount","donationPurpose","donationDate"].forEach(id=>$(id).value="");await renderDonations()}
-async function renderDonations(){donations=await getAll("donations");$("donationTable").innerHTML="";let total=0,i=1;donations.forEach(d=>{total+=Number(d.amount||0);$("donationTable").innerHTML+=`<tr><td>${i++}</td><td>${d.donorName||""}</td><td>₹${d.amount||0}</td><td>${d.purpose||""}</td><td>${d.date||""}</td><td><button class="green" onclick="printReceipt('Donation Receipt','${d.donorName}',${d.amount},'${d.purpose}','${d.date||""}')">Receipt</button></td><td><button class="red" onclick="deleteDonation('${d.fireId}')">Delete</button></td></tr>`});$("donationTotal").innerText=total;updateDashboard();renderChart();renderLedger()}
-window.deleteDonation=id=>removeDoc("donations",id,renderDonations)
-
-window.saveExpense=async function(){let expenseAmount=Number($("expenseAmount").value||0),expenseType=$("expenseType").value,expenseDate=$("expenseDate").value;if(!expenseAmount||!expenseType){alert("Expense amount and type fill cheyandi");return}await addDoc(collection(db,"expenses"),{expenseAmount,expenseType,expenseDate,createdAt:new Date().toISOString()});["expenseAmount","expenseType","expenseDate"].forEach(id=>$(id).value="");await renderExpenses()}
-async function renderExpenses(){expenses=await getAll("expenses");$("expenseTable").innerHTML="";let total=0,i=1;expenses.forEach(x=>{total+=Number(x.expenseAmount||0);$("expenseTable").innerHTML+=`<tr><td>${i++}</td><td>₹${x.expenseAmount||0}</td><td>${x.expenseType||""}</td><td>${x.expenseDate||""}</td><td><button class="red" onclick="deleteExpense('${x.fireId}')">Delete</button></td></tr>`});$("expenseTotal").innerText=total;updateDashboard();renderChart();renderLedger()}
-window.deleteExpense=id=>removeDoc("expenses",id,renderExpenses)
-
-function renderLedger(){let rows=[];donations.forEach(d=>rows.push({date:d.date||"",type:"Income",name:d.purpose||d.donorName,income:Number(d.amount||0),expense:0}));expenses.forEach(e=>rows.push({date:e.expenseDate||"",type:"Expense",name:e.expenseType||"",income:0,expense:Number(e.expenseAmount||0)}));rows.sort((a,b)=>(a.date||"").localeCompare(b.date||""));let bal=0,i=1;$("ledgerTable").innerHTML="";rows.forEach(r=>{bal+=r.income-r.expense;$("ledgerTable").innerHTML+=`<tr><td>${i++}</td><td>${r.date}</td><td>${r.type}</td><td>${r.name}</td><td>₹${r.income}</td><td>₹${r.expense}</td><td>₹${bal}</td></tr>`})}
-
-window.saveSponsor=async function(){let sponsorName=$("sponsorName").value.trim(),sponsorAmount=Number($("sponsorAmount").value||0),sponsorMonth=$("sponsorMonth").value,sponsorStatus=$("sponsorStatus").value;if(!sponsorName||!sponsorAmount){alert("Sponsor name and amount fill cheyandi");return}await addDoc(collection(db,"sponsors"),{sponsorName,sponsorAmount,sponsorMonth,sponsorStatus,createdAt:new Date().toISOString()});$("sponsorName").value="";$("sponsorAmount").value="";await renderSponsors()}
-async function renderSponsors(){sponsors=await getAll("sponsors");$("sponsorTable").innerHTML="";let i=1;sponsors.forEach(s=>{let msg=encodeURIComponent(`Thank you ${s.sponsorName} for supporting HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES. Month: ${s.sponsorMonth}, Amount: ₹${s.sponsorAmount}. God bless you!`);$("sponsorTable").innerHTML+=`<tr><td>${i++}</td><td>${s.sponsorName||""}</td><td>₹${s.sponsorAmount||0}</td><td>${s.sponsorMonth||""}</td><td>${s.sponsorStatus||""}</td><td><button class="green" onclick="printReceipt('Monthly Sponsor Receipt','${s.sponsorName}',${s.sponsorAmount},'${s.sponsorMonth}','${s.sponsorStatus}')">Receipt</button></td><td><a class="wa" target="_blank" href="https://wa.me/?text=${msg}">Thanks</a></td><td><button class="red" onclick="deleteSponsor('${s.fireId}')">Delete</button></td></tr>`});updateDashboard()}
-window.deleteSponsor=id=>removeDoc("sponsors",id,renderSponsors)
-
-window.savePrayer=async function(){let name=$("prayerName").value.trim(),request=$("prayerRequest").value.trim(),status=$("prayerStatus").value;if(!name||!request){alert("Name and prayer request fill cheyandi");return}await addDoc(collection(db,"prayers"),{name,request,status,createdAt:new Date().toISOString()});$("prayerName").value="";$("prayerRequest").value="";await renderPrayers()}
-async function renderPrayers(){prayers=await getAll("prayers");$("prayerTable").innerHTML="";let i=1;prayers.forEach(p=>$("prayerTable").innerHTML+=`<tr><td>${i++}</td><td>${p.name}</td><td>${p.request}</td><td>${p.status}</td><td><button class="red" onclick="deletePrayer('${p.fireId}')">Delete</button></td></tr>`);updateDashboard()}
-window.deletePrayer=id=>removeDoc("prayers",id,renderPrayers)
-
-window.saveFamily=async function(){let head=$("familyHead").value.trim(),membersNames=$("familyMembers").value.trim(),village=$("familyVillage").value.trim(),cell=cleanPhone($("familyCell").value);if(!head||!membersNames){alert("Family details fill cheyandi");return}await addDoc(collection(db,"families"),{head,membersNames,village,cell,createdAt:new Date().toISOString()});["familyHead","familyMembers","familyVillage","familyCell"].forEach(id=>$(id).value="");await renderFamilies()}
-async function renderFamilies(){families=await getAll("families");$("familyTable").innerHTML="";let i=1;families.forEach(f=>$("familyTable").innerHTML+=`<tr><td>${i++}</td><td>${f.head}</td><td>${f.membersNames}</td><td>${f.village}</td><td>${cleanPhone(f.cell)}</td><td><button class="red" onclick="deleteFamily('${f.fireId}')">Delete</button></td></tr>`)}
-window.deleteFamily=id=>removeDoc("families",id,renderFamilies)
-
-window.saveYouTube=function(){localStorage.setItem("hfgm_youtube",$("youtubeLink").value.trim());loadYouTube()}
-function loadYouTube(){let link=localStorage.getItem("hfgm_youtube")||"";$("youtubeFrame").src=link;$("youtubeLink").value=link}
-
-window.printReceipt=function(title,name,amount,purpose,dateOrStatus){let w=window.open("");w.document.write(`<html><head><title>${title}</title><style>body{font-family:Arial;padding:30px;background:#eee}.receipt{max-width:520px;margin:auto;background:white;border:3px solid #0b4da2;padding:30px;border-radius:20px;text-align:center}h1{color:#0b4da2}.line{border-top:1px solid #ddd;margin:20px 0}</style></head><body><div class="receipt"><h1>🕊️ HFGM</h1><h2>${title}</h2><p><b>HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES</b></p><div class="line"></div><p><b>Name:</b> ${name}</p><p><b>Amount:</b> ₹${amount}</p><p><b>Purpose/Month:</b> ${purpose}</p><p><b>Date/Status:</b> ${dateOrStatus||""}</p><div class="line"></div><p>Thank you for supporting the ministry 🙏</p></div><script>setTimeout(()=>window.print(),800)<\/script></body></html>`);w.document.close()}
-window.printMonthlyReport=function(){let income=donations.reduce((s,d)=>s+Number(d.amount||0),0),expense=expenses.reduce((s,d)=>s+Number(d.expenseAmount||0),0);let w=window.open("");w.document.write(`<html><head><title>Monthly Report</title><style>body{font-family:Arial;padding:30px}.box{border:3px solid #0b4da2;padding:25px;border-radius:20px}h1{color:#0b4da2}</style></head><body><div class="box"><h1>HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES</h1><h2>Monthly Report</h2><p>Members: ${members.length}</p><p>Unique Numbers: ${getUniqueMemberPhones().length}</p><p>Visitors: ${visitors.length}</p><p>Attendance Records: ${attendance.length}</p><p>Income: ₹${income}</p><p>Expenses: ₹${expense}</p><p>Balance: ₹${income-expense}</p><p>Sponsors: ${sponsors.length}</p><p>Prayer Requests: ${prayers.length}</p></div><script>setTimeout(()=>window.print(),800)<\/script></body></html>`);w.document.close()}
-window.backupData=function(){let data={members,visitors,attendance,donations,expenses,sponsors,prayers,families,backupDate:new Date().toISOString()};let blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});let a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="hfgm-backup.json";a.click()}
-function renderChart(){let income=donations.reduce((s,d)=>s+Number(d.amount||0),0),expense=expenses.reduce((s,d)=>s+Number(d.expenseAmount||0),0);let ctx=$("financeChart");if(!ctx)return;if(chart)chart.destroy();chart=new Chart(ctx,{type:"bar",data:{labels:["Income","Expenses","Balance"],datasets:[{label:"Amount ₹",data:[income,expense,income-expense]}]}})}
-function updateDashboard(){let income=donations.reduce((s,d)=>s+Number(d.amount||0),0),expense=expenses.reduce((s,d)=>s+Number(d.expenseAmount||0),0);$("dashMembers").innerText=members.length;$("dashUnique").innerText=getUniqueMemberPhones().length;$("dashVisitors").innerText=visitors.length;$("dashAttendance").innerText=attendance.length;$("dashIncome").innerText=income;$("dashExpense").innerText=expense;$("dashBalance").innerText=income-expense;$("dashPrayers").innerText=prayers.length}
-async function renderAll(){newPromise();loadYouTube();await renderMembers();await renderVisitors();await renderAttendance();await renderDonations();await renderExpenses();await renderSponsors();await renderPrayers();await renderFamilies();renderChart();renderLedger();showUniqueNumbers()}
-if(localStorage.getItem("hfgm_logged_in")==="yes"){renderAll()}
+window.printReport=function(){
+  const india=believers.filter(b=>b.country==="India").length;
+  const intl=believers.length-india;
+  const income=Number($("incomeTotal").innerText||0);
+  const expense=Number($("expenseTotal").innerText||0);
+  const w=window.open("");
+  w.document.write(`<html><body style="font-family:Arial;padding:30px"><h1>HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES</h1><h2>Global Believers Report</h2><p>Total Believers: ${believers.length}</p><p>India: ${india}</p><p>International: ${intl}</p><p>Prayer Requests: ${prayers.length}</p><p>Testimonies: ${testimonies.length}</p><p>Income: ₹${income}</p><p>Expense: ₹${expense}</p><p>Balance: ₹${income-expense}</p><script>setTimeout(()=>window.print(),800)<\/script></body></html>`);
+}
+window.downloadBackup=function(){
+  const data={believers,prayers,testimonies,finance,backupDate:new Date().toISOString()};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download="hfgm-global-believers-backup.json";
+  a.click();
+}
+function updateDashboard(){
+  const india=believers.filter(b=>b.country==="India").length;
+  $("dBelievers").innerText=believers.length;
+  $("dIndia").innerText=india;
+  $("dIntl").innerText=believers.length-india;
+  $("dPrayer").innerText=prayers.length;
+  $("dTestimony").innerText=testimonies.length;
+}
+async function loadAdmin(){
+  await renderBelievers();
+  await renderPrayers();
+  await renderTestimonies();
+  await renderFinance();
+  showUniquePhones();
+}
 </script>
 </body>
 </html>
