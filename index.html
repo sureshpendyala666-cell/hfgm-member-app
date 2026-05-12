@@ -2,441 +2,389 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>HFGM Global Believers App</title>
-
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#061b52">
+<title>HFGM Public + Admin Firebase App</title>
 <style>
 *{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:Arial,sans-serif;
-  background:linear-gradient(135deg,#031b55,#006cb5,#06b6d4);
-  min-height:100vh;
-  padding:14px;
-}
-.wrap{max-width:1250px;margin:auto}
-.hero{
-  background:linear-gradient(135deg,#073b8e,#0aa6a6);
-  color:white;
-  text-align:center;
-  padding:28px 16px;
-  border-radius:25px;
-  box-shadow:0 8px 30px #0005;
-  margin-bottom:14px;
-}
-.hero h1{margin:0;font-size:30px}
-.hero p{margin:8px 0 0}
-.card,.dash{
-  background:white;
-  border-radius:22px;
-  padding:20px;
-  margin:14px 0;
-  box-shadow:0 8px 25px #0004;
-}
-.tabs{
-  display:flex;
-  gap:10px;
-  justify-content:center;
-  flex-wrap:wrap;
-  margin:12px 0;
-}
-.tabs button,.menu a,.menu button{
-  width:auto;
-  background:#0b4da2;
-  color:white;
-  border:0;
-  border-radius:12px;
-  padding:11px 16px;
-  font-weight:bold;
-  text-decoration:none;
-}
-.menu{
-  display:flex;
-  gap:10px;
-  overflow:auto;
-  background:#ffffffdd;
-  padding:12px;
-  border-radius:18px;
-  position:sticky;
-  top:0;
-  z-index:20;
-}
-.menu .logout{background:#d93025;margin-left:auto}
-input,select,textarea,button{
-  width:100%;
-  padding:13px;
-  margin:8px 0;
-  border-radius:12px;
-  border:1px solid #ccc;
-  font-size:15px;
-}
-textarea{min-height:95px}
-button{background:#0b4da2;color:white;border:0;font-weight:bold;cursor:pointer}
-.green{background:#087b5b!important}
-.red{background:#d93025!important}
-.orange{background:#f59e0b!important}
-.purple{background:#6d28d9!important}
-.public-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}
-.dashboard{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
-.dash{text-align:center;font-weight:bold}
-.dash b{font-size:30px;color:#0b4da2}
-.table-wrap{overflow:auto}
-table{width:100%;border-collapse:collapse;min-width:1350px}
-th{background:#0b4da2;color:white;padding:11px}
-td{padding:10px;border-bottom:1px solid #ddd;text-align:center}
-.person-photo{width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid #0b4da2;background:#eee}.wa{background:#25D366;color:white;text-decoration:none;padding:8px 10px;border-radius:9px;font-weight:bold;display:inline-block}
-.note{font-size:12px;color:#555;line-height:1.5}
-.badge{display:inline-block;background:#eef5ff;color:#0b4da2;padding:6px 10px;border-radius:20px;font-weight:bold;font-size:12px;margin:4px}
-.admin{display:none}
-.login{display:none;max-width:420px;margin:auto}
-.lock{background:#fff7d6;border-left:6px solid #f59e0b}
-.public{display:block}
-.total{background:#eef5ff;padding:14px;border-radius:15px;text-align:center;font-size:20px;color:#0b4da2;font-weight:bold}
-@media(max-width:850px){
-  body{padding:8px}
-  .public-grid,.dashboard{grid-template-columns:1fr}
-  .hero h1{font-size:22px}
-}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Arial,sans-serif;background:#03122f;color:white}
+a{text-decoration:none;color:inherit}
+.hero{min-height:90vh;padding:18px;display:flex;align-items:center;justify-content:center;text-align:center;background:radial-gradient(circle at top,#1d9bf0aa,transparent 35%),linear-gradient(135deg,#020817,#061b52,#075985);position:relative;overflow:hidden}
+.hero:before{content:"";position:absolute;width:450px;height:450px;background:#22d3ee33;border-radius:50%;filter:blur(20px);top:-120px;right:-120px}
+.hero-box{max-width:980px;position:relative;z-index:2}
+.logo{width:105px;height:105px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:52px;background:linear-gradient(135deg,#ffffff,#dbeafe);color:#0b4da2;box-shadow:0 0 35px #38bdf8;margin-bottom:18px}
+.hero h1{font-size:42px;margin:8px 0;line-height:1.1}
+.hero h2{font-size:22px;margin:10px 0;color:#dff7ff}
+.hero p{font-size:18px;line-height:1.6;color:#e0f2fe}
+.btns{display:flex;justify-content:center;flex-wrap:wrap;gap:12px;margin-top:24px}
+.btn,button{padding:14px 20px;border-radius:50px;font-weight:bold;display:inline-block;background:#0ea5e9;color:white;border:0;cursor:pointer}
+.btn.green,button.green{background:#16a34a}.btn.gold,button.gold{background:#f59e0b;color:#111}.btn.purple,button.purple{background:#7c3aed}.btn.red,button.red{background:#dc2626}
+.nav{position:sticky;top:0;z-index:50;background:#020817e8;backdrop-filter:blur(14px);display:flex;gap:8px;overflow:auto;padding:10px;border-bottom:1px solid #38bdf855}
+.nav a{padding:10px 14px;border-radius:25px;background:#0b4da255;white-space:nowrap;font-size:14px;font-weight:bold}
+.section{padding:45px 16px}.wrap{max-width:1180px;margin:auto}.title{text-align:center;margin-bottom:22px}.title h2{font-size:30px;margin:0 0 8px}.title p{color:#bae6fd;margin:0}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.card{background:linear-gradient(180deg,#ffffff12,#ffffff08);border:1px solid #38bdf844;border-radius:24px;padding:22px;box-shadow:0 10px 30px #0004;backdrop-filter:blur(10px)}
+.card.light{background:white;color:#111827}
+input,select,textarea{width:100%;padding:14px;margin:8px 0;border-radius:14px;font-size:15px;background:#f8fafc;border:1px solid #cbd5e1}
+textarea{min-height:100px}
+.promise{background:linear-gradient(135deg,#082f49,#0e7490);border-radius:26px;padding:25px;text-align:center;box-shadow:0 0 30px #38bdf855}
+.promise h3{font-size:26px;margin:0 0 12px}.promise p{font-size:18px;line-height:1.6}
+.counter-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.counter{background:white;color:#0b4da2;border-radius:22px;padding:18px;text-align:center;font-weight:bold}.counter b{font-size:32px;display:block}
+.video-box{aspect-ratio:16/9;border-radius:24px;overflow:hidden;box-shadow:0 10px 35px #0007;background:#000}.video-box iframe{width:100%;height:100%;border:0}
+.wall{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.wall-item{background:#ffffff12;border:1px solid #ffffff22;border-radius:18px;padding:16px}
+.footer{background:#020817;padding:30px 16px;text-align:center;color:#cbd5e1}
+.float-wa{position:fixed;right:16px;bottom:16px;z-index:100;width:62px;height:62px;border-radius:50%;background:#25D366;display:flex;align-items:center;justify-content:center;font-size:32px;box-shadow:0 8px 25px #0007}
+.success{display:none;background:#dcfce7;color:#166534;padding:12px;border-radius:14px;margin-top:10px;font-weight:bold}
+.small{font-size:12px;color:#64748b}
+.admin-panel,.admin-login{display:none}.admin-login{max-width:430px;margin:25px auto}
+.admin-table{overflow:auto}.admin-table table{width:100%;border-collapse:collapse;min-width:1150px;background:white;color:#111;border-radius:16px;overflow:hidden}.admin-table th{background:#0b4da2;color:white;padding:10px}.admin-table td{padding:9px;border-bottom:1px solid #e5e7eb;text-align:center}
+.private-badge{background:#dc2626;color:white;padding:6px 10px;border-radius:20px;font-size:12px;font-weight:bold}.admin-note{background:#fff7ed;color:#7c2d12;border-left:5px solid #f59e0b;padding:12px;border-radius:14px;margin:12px 0;font-weight:bold}
+.person-photo{width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid #0b4da2;background:#eee}
+.action-row{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}.action-row button{width:auto;padding:8px 10px;font-size:12px;border-radius:10px}
+.id-card{max-width:390px;margin:15px auto;padding:20px;border-radius:24px;background:linear-gradient(135deg,#071b52,#0b4da2,#06b6d4);color:white;text-align:center;box-shadow:0 10px 30px #0005}.id-card .photo{width:90px;height:90px;border-radius:50%;object-fit:cover;border:4px solid white;background:#eee}.id-card .qr{background:white;padding:8px;border-radius:12px;margin-top:10px;width:100px;height:100px}
+#idCardModal{display:none;position:fixed;inset:0;background:#0009;z-index:9999;padding:20px;overflow:auto}
+@media(max-width:850px){.hero h1{font-size:28px}.hero h2{font-size:18px}.hero p{font-size:15px}.grid,.counter-grid,.wall{grid-template-columns:1fr}.section{padding:32px 12px}}
 
-/* ===== HFGM FIREBASE OLD DATA ACTIONS FIX ===== */
-.login .note{display:none!important}
-.believer-cards{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-  gap:14px;
-  margin:14px 0;
+/* ===== PREMIUM GLOBAL BELIEVERS LIST UPGRADE ===== */
+.premium-believers-wrap{
+  background:linear-gradient(135deg,#e0f2fe,#ffffff,#dbeafe);
+  border-radius:28px;
+  padding:22px;
+  box-shadow:0 14px 45px #00000022;
+  color:#0f172a;
 }
-.believer-card{
-  background:#fff;
-  border-radius:20px;
-  padding:15px;
-  box-shadow:0 6px 20px #0002;
-  border:1px solid #dbeafe;
-}
-.believer-top{
+.premium-believers-head{
   display:flex;
-  gap:12px;
+  justify-content:space-between;
   align-items:center;
-  margin-bottom:10px;
+  gap:14px;
+  flex-wrap:wrap;
+  margin-bottom:16px;
 }
-.believer-top img,.avatar-fallback{
-  width:62px;
-  height:62px;
+.premium-believers-head h2{
+  margin:0;
+  color:#0b4da2;
+  font-size:30px;
+}
+.premium-mini-stats{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.premium-stat{
+  background:linear-gradient(135deg,#0b4da2,#06b6d4);
+  color:white;
+  border-radius:18px;
+  padding:12px 15px;
+  min-width:120px;
+  text-align:center;
+  box-shadow:0 8px 22px #0b4da244;
+}
+.premium-stat b{
+  display:block;
+  font-size:24px;
+}
+.premium-controls{
+  display:grid;
+  grid-template-columns:1.6fr 1fr 1fr;
+  gap:12px;
+  margin-bottom:16px;
+}
+.premium-controls input,.premium-controls select{
+  margin:0!important;
+  border:2px solid #bfdbfe!important;
+  box-shadow:0 5px 18px #00000010;
+}
+.premium-card-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:18px;
+}
+.premium-member-card{
+  position:relative;
+  overflow:hidden;
+  background:rgba(255,255,255,.88);
+  border:1px solid #bfdbfe;
+  border-radius:28px;
+  padding:18px;
+  box-shadow:0 12px 30px #0f172a22;
+  transition:.25s ease;
+}
+.premium-member-card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 18px 45px #0b4da233;
+}
+.premium-member-card:before{
+  content:"";
+  position:absolute;
+  inset:-80px auto auto -80px;
+  width:180px;height:180px;
+  background:#38bdf833;
+  border-radius:50%;
+  filter:blur(8px);
+}
+.member-top{
+  position:relative;
+  display:flex;
+  gap:13px;
+  align-items:center;
+}
+.member-photo{
+  width:78px;
+  height:78px;
   border-radius:50%;
   object-fit:cover;
-  border:3px solid #0b4da2;
+  border:4px solid #0b4da2;
+  box-shadow:0 0 0 5px #dbeafe;
+  background:#eef5ff;
+}
+.member-avatar{
+  width:78px;height:78px;border-radius:50%;
+  border:4px solid #0b4da2;
+  box-shadow:0 0 0 5px #dbeafe;
   background:#eef5ff;
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:28px;
+  font-size:34px;
 }
-.believer-card h3{margin:0;color:#0b4da2;font-size:18px}
-.believer-card p{margin:4px 0;font-size:13px;color:#333}
-.believer-actions{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:7px;
-  margin-top:12px;
+.member-info h3{
+  margin:0;
+  color:#0b4da2;
+  font-size:21px;
+  line-height:1.2;
 }
-.believer-actions button{
-  width:100%!important;
-  margin:0!important;
-  padding:10px 8px!important;
-  font-size:13px!important;
-  border-radius:11px!important;
-}
-.edit-action{background:#2563eb!important}
-.id-action{background:#7c3aed!important}
-.wa-action{background:#16a34a!important}
-.prayer-action{background:#f59e0b!important}
-.delete-action{background:#dc2626!important}
-.firebase-note{
-  background:#ecfeff;
-  border-left:6px solid #0891b2;
-  padding:12px;
-  border-radius:14px;
-  margin:12px 0;
-  color:#075985;
+.member-info p{
+  margin:5px 0 0;
+  color:#475569;
+  font-size:13px;
   font-weight:bold;
 }
-.card-preview{
-  max-width:390px;margin:15px auto;padding:20px;border-radius:24px;
-  background:linear-gradient(135deg,#071b52,#0b4da2,#06b6d4);
-  color:white;text-align:center;box-shadow:0 10px 30px #0005
+.member-badges{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  margin-top:12px;
 }
-.card-preview .photo{width:90px;height:90px;border-radius:50%;object-fit:cover;border:4px solid white;background:#eee}
-.card-preview h2{margin:8px 0 4px;font-size:22px}
-.card-preview p{margin:5px 0;font-size:14px}
-.card-preview .qr{background:white;padding:8px;border-radius:12px;margin-top:10px;width:100px;height:100px}
+.member-badge{
+  padding:6px 9px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:bold;
+  background:#e0f2fe;
+  color:#075985;
+}
+.member-badge.green{background:#dcfce7;color:#166534}
+.member-badge.gold{background:#fef3c7;color:#92400e}
+.member-details{
+  margin-top:14px;
+  background:#f8fafc;
+  border-radius:18px;
+  padding:12px;
+  border:1px solid #e2e8f0;
+}
+.member-details p{
+  margin:7px 0;
+  color:#334155;
+  font-size:14px;
+}
+.member-actions-premium{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:9px;
+  margin-top:14px;
+}
+.member-actions-premium button,.member-actions-premium a{
+  width:100%;
+  padding:11px 10px!important;
+  border-radius:14px!important;
+  color:white!important;
+  font-size:13px!important;
+  font-weight:bold!important;
+  text-align:center;
+  box-shadow:0 8px 18px #00000020;
+}
+.btn-edit{background:linear-gradient(135deg,#2563eb,#0ea5e9)!important}
+.btn-id{background:linear-gradient(135deg,#7c3aed,#a855f7)!important}
+.btn-wa{background:linear-gradient(135deg,#16a34a,#22c55e)!important}
+.btn-prayer{background:linear-gradient(135deg,#f59e0b,#f97316)!important;color:#111!important}
+.btn-delete{background:linear-gradient(135deg,#dc2626,#ef4444)!important;grid-column:1/3}
+.premium-note{
+  background:#ecfeff;
+  border-left:7px solid #06b6d4;
+  color:#075985;
+  padding:13px;
+  border-radius:16px;
+  margin:12px 0 18px;
+  font-weight:bold;
+}
+.admin-table-toggle{
+  margin-top:18px;
+}
+#classicTableBox{display:none;margin-top:14px}
+@media(max-width:850px){
+  .premium-controls{grid-template-columns:1fr}
+  .premium-believers-head h2{font-size:24px}
+  .premium-stat{flex:1}
+}
 
 </style>
 </head>
-
 <body>
-<div class="wrap">
+<a class="float-wa" target="_blank" href="https://wa.me/919848131687?text=Praise%20the%20Lord%20HFGM%2C%20I%20need%20prayer%20support">💬</a>
 
-<div class="hero">
-  <h1>🕊️ HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES</h1>
-  <p>HFGM Global Believers App</p>
-  <p>India + International Believers • Prayer • Testimony • Follow-up</p>
-</div>
-
-<div class="tabs">
-  <button onclick="showPublic()">🌍 Public Registration</button>
-  <button onclick="showLogin()" class="orange">🔐 Admin Login</button>
-</div>
-
-
-<div id="idCardModal" style="display:none;position:fixed;inset:0;background:#0009;z-index:9999;padding:20px;overflow:auto">
-  <div class="card" style="max-width:520px;margin:30px auto">
-    <button onclick="closeIdCard()" class="red" style="float:right;width:auto">Close</button>
+<div id="idCardModal">
+  <div class="card light" style="max-width:520px;margin:30px auto">
+    <button onclick="closeIdCard()" class="red" style="float:right">Close</button>
     <h2>🪪 Professional Member ID Card</h2>
     <div id="idCardContent"></div>
     <button onclick="printIdCard()" class="purple">Print / Save ID Card PDF</button>
   </div>
 </div>
 
-<!-- PUBLIC SECTION -->
-<div id="publicSection" class="public">
-
-<div class="public-grid">
-
-<div class="card">
-<h2>🌍 Global Believer Registration</h2>
-<span class="badge">India + Other Countries</span>
-<p class="note">Public people can register. They cannot see others data.</p>
-
-<input id="pubName" placeholder="Full Name">
-<input id="pubAge" type="number" placeholder="Age">
-<select id="pubBelieverType">
-  <option>New Believer</option>
-  <option>Church Member</option>
-  <option>Prayer Partner</option>
-  <option>Sponsor / Donor</option>
-  <option>Volunteer</option>
-  <option>Pastor / Leader</option>
-</select>
-<select id="pubCountry" onchange="setCountryCode()">
-  <option value="India" data-code="91">India (+91)</option>
-  <option value="United States" data-code="1">United States (+1)</option>
-  <option value="United Kingdom" data-code="44">United Kingdom (+44)</option>
-  <option value="Canada" data-code="1">Canada (+1)</option>
-  <option value="Australia" data-code="61">Australia (+61)</option>
-  <option value="UAE" data-code="971">UAE (+971)</option>
-  <option value="Saudi Arabia" data-code="966">Saudi Arabia (+966)</option>
-  <option value="Singapore" data-code="65">Singapore (+65)</option>
-  <option value="Malaysia" data-code="60">Malaysia (+60)</option>
-  <option value="Other" data-code="">Other</option>
-</select>
-
-<select id="pubState">
-  <option value="">Select State / Province</option>
-  <option>Andhra Pradesh</option><option>Telangana</option><option>Tamil Nadu</option><option>Karnataka</option><option>Kerala</option><option>Maharashtra</option><option>Odisha</option><option>West Bengal</option><option>Delhi</option><option>Other</option>
-</select>
-
-<select id="pubDistrict">
-  <option value="">Select District</option>
-  <option>West Godavari</option><option>East Godavari</option><option>Eluru</option><option>Krishna</option><option>NTR</option><option>Guntur</option><option>Palnadu</option><option>Visakhapatnam</option><option>Kakinada</option><option>Konaseema</option><option>Hyderabad</option><option>Ranga Reddy</option><option>Other</option>
-</select>
-
-<input id="pubCity" placeholder="City / Village">
-<div style="display:grid;grid-template-columns:100px 1fr;gap:8px">
-  <input id="pubCode" placeholder="+91" value="91">
-  <input id="pubPhone" placeholder="WhatsApp Number">
-</div>
-<label><b>Photo / Selfie optional</b></label>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-  <div>
-    <label class="badge">📷 Take Selfie</label>
-    <input id="pubSelfie" type="file" accept="image/*" capture="user">
+<section class="hero" id="home">
+  <div class="hero-box">
+    <div class="logo">🕊️</div>
+    <h1>HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES</h1>
+    <h2>Global Prayer • Healing • Deliverance • Fellowship</h2>
+    <p>Jesus loves you. Submit your prayer request, join our prayer family, watch sermons, and receive daily promise word.</p>
+    <div class="btns">
+      <a href="#register" class="btn">🌍 Register Now</a>
+      <a href="#prayer" class="btn green">🙏 Prayer Request</a>
+      <a href="#sermons" class="btn gold">📺 Watch Sermons</a>
+      <a href="#admin" class="btn purple">🔐 Admin Login</a>
+    </div>
   </div>
-  <div>
-    <label class="badge">🖼️ Choose File</label>
-    <input id="pubPhoto" type="file" accept="image/*">
+</section>
+
+<div class="nav">
+  <a href="#home">Home</a><a href="#register">Register</a><a href="#prayer">Prayer</a><a href="#promise">Promise</a><a href="#sermons">Sermons</a><a href="#testimony">Testimony</a><a href="#contact">Contact</a><a href="#admin">Admin</a>
+</div>
+
+<section class="section">
+  <div class="wrap">
+    <div class="counter-grid">
+      <div class="counter"><b id="cBelievers">0</b>Believers</div>
+      <div class="counter"><b id="cCountries">0</b>Countries</div>
+      <div class="counter"><b id="cPrayers">0</b>Prayers</div>
+      <div class="counter"><b id="cTestimonies">0</b>Testimonies</div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="register">
+  <div class="wrap">
+    <div class="title"><h2>🌍 Join HFGM Global Believers Family</h2><p>Register and receive prayer support.</p></div>
+    <div class="grid">
+      <div class="card light">
+        <h2>Public Registration</h2>
+        <input id="regName" placeholder="Full Name">
+        <input id="regAge" type="number" placeholder="Age">
+        <select id="regType"><option>New Believer</option><option>Church Member</option><option>Prayer Partner</option><option>Volunteer</option><option>Sponsor / Donor</option><option>Pastor / Leader</option></select>
+        <select id="regCountry" onchange="setCode()"><option value="India" data-code="91">India (+91)</option><option value="United States" data-code="1">United States (+1)</option><option value="United Kingdom" data-code="44">United Kingdom (+44)</option><option value="Canada" data-code="1">Canada (+1)</option><option value="Australia" data-code="61">Australia (+61)</option><option value="UAE" data-code="971">UAE (+971)</option><option value="Other" data-code="">Other</option></select>
+        <div style="display:grid;grid-template-columns:90px 1fr;gap:8px"><input id="regCode" value="91" placeholder="+91"><input id="regPhone" placeholder="WhatsApp Number"></div>
+        <select id="regState"><option value="">Select State</option><option>Andhra Pradesh</option><option>Telangana</option><option>Tamil Nadu</option><option>Karnataka</option><option>Kerala</option><option>Other</option></select>
+        <input id="regDistrict" placeholder="District">
+        <input id="regCity" placeholder="Village / City">
+        <input id="regEmail" placeholder="Email optional">
+        <textarea id="regPrayer" placeholder="Prayer request / message"></textarea>
+        <button class="green" onclick="saveRegistration()">Submit Registration</button>
+        <div id="regSuccess" class="success">Registration submitted successfully. God bless you 🙏</div>
+      </div>
+      <div class="card">
+        <h2>💙 Why Join?</h2><p>✅ Daily prayer support</p><p>✅ Telugu & English promise word</p><p>✅ Healing and deliverance prayer</p><p>✅ WhatsApp follow-up</p>
+        <div class="promise"><h3>“Fear not, for I am with you.”</h3><p>భయపడకుము, నేను నీతో ఉన్నాను.</p><p><b>Isaiah 41:10</b></p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="prayer">
+  <div class="wrap">
+    <div class="title"><h2>🙏 Submit Prayer Request</h2><p>Our team will pray for you.</p></div>
+    <div class="grid">
+      <div class="card light">
+        <input id="prayName" placeholder="Your Name"><input id="prayPhone" placeholder="WhatsApp Number"><input id="prayPlace" placeholder="Village / Country">
+        <select id="prayType"><option>Family Prayer</option><option>Healing Prayer</option><option>Deliverance Prayer</option><option>Job / Financial Breakthrough</option><option>Emergency Prayer</option></select>
+        <textarea id="prayText" placeholder="Write your prayer request"></textarea><button class="green" onclick="savePrayer()">Submit Prayer</button><div id="praySuccess" class="success">Prayer request submitted 🙏</div>
+      </div>
+      <div class="card"><h2>🔥 Prayer Wall</h2><div class="wall" id="prayerWall"></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="promise"><div class="wrap"><div class="title"><h2>📖 Daily Promise Word</h2><p>Today’s blessing word.</p></div><div class="promise" id="promiseBox"></div></div></section>
+
+<section class="section" id="sermons"><div class="wrap"><div class="title"><h2>📺 HFGM Sermons & Live Messages</h2><p>Watch latest ministry messages.</p></div><div class="video-box"><iframe src="https://www.youtube.com/embed?listType=user_uploads&list=hfgmministry" allowfullscreen></iframe></div><div class="btns"><a class="btn gold" target="_blank" href="https://www.youtube.com/@hfgmministry">Open YouTube Channel</a></div></div></section>
+
+<section class="section" id="testimony">
+  <div class="wrap"><div class="title"><h2>✨ Share Your Testimony</h2><p>Let others know what God has done.</p></div>
+    <div class="grid"><div class="card light"><input id="testName" placeholder="Name"><input id="testPlace" placeholder="Place / Country"><textarea id="testText" placeholder="Your testimony"></textarea><button class="purple" onclick="saveTestimony()">Submit Testimony</button><div id="testSuccess" class="success">Testimony submitted ✨</div></div><div class="card"><h2>Recent Testimonies</h2><div class="wall" id="testimonyWall"></div></div></div>
+  </div>
+</section>
+
+<section class="section" id="contact"><div class="wrap"><div class="title"><h2>📲 Connect With HFGM</h2><p>Need prayer support?</p></div><div class="grid"><div class="card"><h2>Prayer Support</h2><p>WhatsApp: +91 98481 31687</p><p>Location: Tadepalligudem, Andhra Pradesh, India</p><div class="btns"><a class="btn green" target="_blank" href="https://wa.me/919848131687?text=Praise%20the%20Lord%20HFGM%2C%20I%20need%20prayer">WhatsApp Prayer</a></div></div><div class="card"><h2>Sunday Service</h2><p>Join with your family for worship, word, healing and deliverance prayer.</p><p><b>Matthew 21:13</b></p></div></div></div></section>
+
+<section class="section" id="admin">
+  <div class="wrap">
+    <div class="title"><h2>🔐 Admin Login</h2><p>Firebase old data + new public data private dashboard.</p></div>
+    <div id="adminLoginBox" class="card light admin-login" style="display:block">
+      <h2>Admin Secure Login</h2><input id="adminUser" placeholder="Username"><input id="adminPass" type="password" placeholder="Password"><button onclick="adminLogin()" class="purple">Login</button><p class="small">Admin access only.</p>
+    </div>
+    <div id="adminPanel" class="admin-panel">
+      <div class="card"><h2>🛡️ Admin Dashboard <span class="private-badge">FIREBASE DATA</span></h2><div class="admin-note">Old Firebase collections: global_believers + members. New public page data: global_believers + global_prayers + global_testimonies.</div><div class="btns"><button onclick="loadAdminData()" class="green">Refresh Firebase Data</button><button onclick="downloadBackup()" class="gold">Download Backup JSON</button><button onclick="adminLogout()" class="red">Logout</button></div></div>
+
+      <div class="premium-believers-wrap">
+  <div class="premium-believers-head">
+    <h2>🌍 Global Believers List</h2>
+    <div class="premium-mini-stats">
+      <div class="premium-stat"><b id="adminTotalBelievers">0</b>Total</div>
+      <div class="premium-stat"><b id="adminIndiaBelievers">0</b>India</div>
+      <div class="premium-stat"><b id="adminIntlBelievers">0</b>Intl</div>
+    </div>
+  </div>
+
+  <div class="premium-note">✅ Firebase old 22 numbers + new public registrations load avuthayi. Premium cards lo Edit, ID Card, WhatsApp, Prayer, Delete buttons clear ga untayi.</div>
+
+  <div class="premium-controls">
+    <input id="adminSearchBeliever" placeholder="Search name / phone / city / district..." oninput="renderAdminBelievers()">
+    <select id="adminCountryFilter" onchange="renderAdminBelievers()">
+      <option value="">All Countries</option>
+      <option>India</option>
+      <option>United States</option>
+      <option>United Kingdom</option>
+      <option>Canada</option>
+      <option>Australia</option>
+      <option>UAE</option>
+      <option>Other</option>
+    </select>
+    <select id="adminSourceFilter" onchange="renderAdminBelievers()">
+      <option value="">All Sources</option>
+      <option value="global_believers">New/Public</option>
+      <option value="members">Old Members</option>
+    </select>
+  </div>
+
+  <div id="premiumBelieverCards" class="premium-card-grid"></div>
+
+  <div class="admin-table-toggle">
+    <button class="purple" onclick="toggleClassicTable()">Show / Hide Full Table</button>
+    <div id="classicTableBox" class="admin-table">
+      <table>
+        <thead><tr><th>S.No</th><th>Photo</th><th>Name</th><th>Age</th><th>Type</th><th>Country</th><th>State</th><th>District</th><th>City</th><th>Phone</th><th>Email</th><th>Prayer</th><th>Source</th><th>Actions</th></tr></thead>
+        <tbody id="adminBelievers"></tbody>
+      </table>
+    </div>
   </div>
 </div>
-<input id="pubEmail" placeholder="Email optional">
-<textarea id="pubPrayer" placeholder="Prayer Request / Message"></textarea>
-<button onclick="saveBeliever()" class="green">Submit Registration</button>
-</div>
+      <div class="card light"><h2>🙏 Prayer Requests</h2><div class="admin-table"><table><thead><tr><th>S.No</th><th>Name</th><th>Phone</th><th>Country/Place</th><th>Prayer</th><th>WhatsApp</th><th>Delete</th></tr></thead><tbody id="adminPrayers"></tbody></table></div></div>
+      <div class="card light"><h2>✨ Testimonies</h2><div class="admin-table"><table><thead><tr><th>S.No</th><th>Name</th><th>Country/Place</th><th>Testimony</th><th>Delete</th></tr></thead><tbody id="adminTestimonies"></tbody></table></div></div>
+    </div>
+  </div>
+</section>
 
-<div class="card">
-<h2>🙏 Submit Prayer Request</h2>
-<input id="prayName" placeholder="Name">
-<input id="prayPhone" placeholder="WhatsApp Number with country code">
-<input id="prayCountry" placeholder="Country">
-<textarea id="prayText" placeholder="Prayer Request"></textarea>
-<button onclick="savePublicPrayer()" class="green">Submit Prayer</button>
-
-<h2>✨ Submit Testimony</h2>
-<input id="testName" placeholder="Name">
-<input id="testCountry" placeholder="Country">
-<textarea id="testText" placeholder="Your testimony"></textarea>
-<button onclick="saveTestimony()" class="purple">Submit Testimony</button>
-</div>
-
-</div>
-
-<div class="card lock">
-<h2>📲 Join Prayer Group</h2>
-<p>For prayer support, register above. Admin will contact/follow-up through WhatsApp.</p>
-<p class="note">Your number will not be shown publicly.</p>
-</div>
-
-</div>
-
-<!-- LOGIN -->
-<div id="loginSection" class="login">
-<div class="card">
-<h2>🔐 Admin Login</h2>
-<input id="adminUser" placeholder="Username">
-<input id="adminPass" type="password" placeholder="Password">
-<button onclick="adminLogin()">Login</button>
-<p class="note">Admin secure login</p>
-</div>
-</div>
-
-<!-- ADMIN SECTION -->
-<div id="adminSection" class="admin">
-
-<div class="menu">
-<a href="#dash">Dashboard</a>
-<a href="#believers">Believers</a>
-<a href="#adminPrayer">Prayers</a>
-<a href="#adminTestimony">Testimonies</a>
-<a href="#whatsapp">WhatsApp</a>
-<a href="#finance">Finance</a>
-<a href="#reports">Reports</a>
-<button class="logout" onclick="logout()">Logout</button>
-</div>
-
-<div class="dashboard" id="dash">
-<div class="dash"><b id="dBelievers">0</b><br>🌍 Believers</div>
-<div class="dash"><b id="dIndia">0</b><br>🇮🇳 India</div>
-<div class="dash"><b id="dIntl">0</b><br>🌎 International</div>
-<div class="dash"><b id="dPrayer">0</b><br>🙏 Prayers</div>
-<div class="dash"><b id="dTestimony">0</b><br>✨ Testimonies</div>
-</div>
-
-<div class="card lock">
-<h3>🛡️ Admin Secure Dashboard</h3>
-<p class="note">Only admin can see full numbers, delete records, send WhatsApp follow-up, export backup and reports.</p>
-</div>
-
-<div class="card" id="believers">
-<h2>🌍 Global Believers List</h2>
-<div class="public-grid">
-  <input id="searchBeliever" placeholder="Search name/country/city/type..." oninput="renderBelievers()">
-  <select id="countryFilter" onchange="renderBelievers()">
-    <option value="">All Countries</option>
-    <option>India</option><option>United States</option><option>United Kingdom</option><option>Canada</option><option>Australia</option><option>UAE</option><option>Saudi Arabia</option><option>Singapore</option><option>Malaysia</option><option>Other</option>
-  </select>
-</div>
-
-
-<div class="firebase-note">✅ Firebase believers list load avuthundi. Phone numbers visible. Old Member / Old Data / New text remove chesanu.</div>
-
-<div id="editBelieverBox" class="card" style="display:none;background:#eef5ff;border:2px dashed #0b4da2">
-<h2>✏️ Edit Believer Details</h2>
-<input id="editId" type="hidden">
-<input id="editSource" type="hidden">
-<div class="public-grid">
-  <input id="editName" placeholder="Name">
-  <input id="editAge" type="number" placeholder="Age">
-  <input id="editType" placeholder="Type">
-  <input id="editCountry" placeholder="Country">
-  <input id="editState" placeholder="State">
-  <input id="editDistrict" placeholder="District">
-  <input id="editCity" placeholder="City / Village">
-  <input id="editPhone" placeholder="WhatsApp Number">
-  <input id="editEmail" placeholder="Email">
-  <select id="editStatus"><option>New</option><option>Contacted</option><option>Praying</option><option>Member</option><option>Follow-up</option><option>Old Data</option></select>
-</div>
-<textarea id="editPrayer" placeholder="Prayer / Message"></textarea>
-<div class="public-grid">
-  <button onclick="updateBelieverRecord()" class="green">Update Details</button>
-  <button onclick="cancelEdit()" class="red">Cancel</button>
-</div>
-</div>
-
-<div id="believerCards" class="believer-cards"></div>
-
-<div class="table-wrap">
-<table>
-<thead>
-<tr>
-<th>S.No</th><th>Photo</th><th>Name</th><th>Age</th><th>Type</th><th>Country</th><th>State</th><th>District</th><th>City</th><th>WhatsApp</th><th>Email</th><th>Prayer/Message</th><th>Actions</th>
-</tr>
-</thead>
-<tbody id="believerTable"></tbody>
-</table>
-</div>
-</div>
-
-<div class="card" id="adminPrayer">
-<h2>🙏 Prayer Requests</h2>
-<div class="table-wrap">
-<table>
-<thead><tr><th>S.No</th><th>Name</th><th>Phone</th><th>Country</th><th>Prayer</th><th>Status</th><th>WhatsApp</th><th>Delete</th></tr></thead>
-<tbody id="prayerTable"></tbody>
-</table>
-</div>
-</div>
-
-<div class="card" id="adminTestimony">
-<h2>✨ Testimonies</h2>
-<div class="table-wrap">
-<table>
-<thead><tr><th>S.No</th><th>Name</th><th>Country</th><th>Testimony</th><th>Delete</th></tr></thead>
-<tbody id="testimonyTable"></tbody>
-</table>
-</div>
-</div>
-
-<div class="card" id="whatsapp">
-<h2>📲 WhatsApp Ministry System</h2>
-<select id="messageType">
-<option value="welcome">Welcome New Believer</option>
-<option value="prayer">Prayer Meeting Invitation</option>
-<option value="promise">Daily Promise Word</option>
-<option value="follow">Follow-up Message</option>
-</select>
-<textarea id="bulkMessage" placeholder="Message"></textarea>
-<button onclick="prepareMessage()" class="orange">Prepare Message</button>
-<button onclick="openAllWhatsApp()" class="green">Open All Believers WhatsApp</button>
-<button onclick="showUniquePhones()" class="purple">Show Unique Numbers</button>
-<div id="uniqueList" class="note"></div>
-<p class="note">WhatsApp security: tabs open automatically, final Send button manual ga press cheyali.</p>
-</div>
-
-<div class="card" id="finance">
-<h2>💰 Global Ministry Finance</h2>
-<div class="public-grid">
-<input id="finName" placeholder="Name">
-<input id="finAmount" type="number" placeholder="Amount">
-<select id="finType"><option>Income</option><option>Expense</option></select>
-<input id="finPurpose" placeholder="Purpose">
-</div>
-<button onclick="saveFinance()">Save Finance</button>
-<div class="total">Income: ₹<span id="incomeTotal">0</span> | Expense: ₹<span id="expenseTotal">0</span> | Balance: ₹<span id="balanceTotal">0</span></div>
-<div class="table-wrap">
-<table>
-<thead><tr><th>S.No</th><th>Type</th><th>Name</th><th>Amount</th><th>Purpose</th><th>Date</th><th>Receipt</th><th>Delete</th></tr></thead>
-<tbody id="financeTable"></tbody>
-</table>
-</div>
-</div>
-
-<div class="card" id="reports">
-<h2>📊 Reports & Backup</h2>
-<button onclick="printReport()">Print / Save PDF Report</button>
-<button onclick="downloadBackup()" class="green">Download Backup JSON</button>
-</div>
-
-</div>
-
-</div>
+<footer class="footer"><h3>HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES</h3><p>Prayer • Healing • Deliverance • Fellowship</p><p>© HFGM Public + Admin Firebase App</p></footer>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -451,589 +399,255 @@ const firebaseConfig={
   appId:"1:1079389581104:web:3830dc23c81389cb7fe2f5",
   measurementId:"G-2L8ZX8BJKM"
 };
-
 const app=initializeApp(firebaseConfig);
 const db=getFirestore(app);
 
-let believers=[], oldMembers=[], prayers=[], testimonies=[], finance=[];
-let isAdmin=false;
-const $=id=>document.getElementById(id);
 const ADMIN_USER="admin";
 const ADMIN_PASS="1234";
+let believers=[], oldMembers=[], prayers=[], testimonies=[];
 
-function cleanPhone(p){
-  return String(p||"").replace(/\D/g,"");
-}
-function displayPhone(p){
-  p=cleanPhone(p);
-  if(p.length<6)return "";
-  return "****"+p.slice(-4);
-}
-function today(){
-  return new Date().toLocaleDateString();
-}
-async function getAll(col){
-  const arr=[];
-  const snap=await getDocs(collection(db,col));
-  snap.forEach(d=>{let x=d.data();x.id=d.id;arr.push(x)});
-  return arr;
-}
-async function deleteRecord(col,id,callback){
-  if(!isAdmin){alert("Admin only");return}
-  if(confirm("Delete this record?")){
-    await deleteDoc(doc(db,col,id));
-    await callback();
-  }
-}
-function uniqueBelieverPhones(){
-  const map=new Map();
-  believers.forEach(b=>{
-    const p=cleanPhone(b.phone);
-    if(p.length>=10 && !map.has(p))map.set(p,b.name||"Believer");
-  });
-  oldMembers.forEach(m=>{
-    let p=cleanPhone(m.cell||m.phone);
-    if(p.length===10) p="91"+p;
-    if(p.length>=10 && !map.has(p))map.set(p,m.name||"Old Member");
-  });
-  return [...map.entries()].map(([phone,name])=>({phone,name}));
-}
+const $=id=>document.getElementById(id);
+function cleanPhone(v){return String(v||"").replace(/\D/g,"")}
+function esc(v){return String(v??"").replace(/[&<>"']/g,s=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[s]))}
+function setCode(){const s=$("regCountry");$("regCode").value=s.options[s.selectedIndex].dataset.code||""}
+function fullPhone(){let c=cleanPhone($("regCode").value),p=cleanPhone($("regPhone").value);return p.startsWith(c)?p:c+p}
+async function getAll(col){const arr=[];const snap=await getDocs(collection(db,col));snap.forEach(d=>{let x=d.data();x.id=d.id;arr.push(x)});return arr}
+function qrUrl(name,phone){return `https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${encodeURIComponent("HFGM Member: "+name+" Phone: "+phone)}`}
 
-window.showPublic=function(){
-  $("publicSection").style.display="block";
-  $("loginSection").style.display="none";
-}
-window.showLogin=function(){
-  $("publicSection").style.display="none";
-  $("loginSection").style.display="block";
-}
-window.adminLogin=function(){
-  if($("adminUser").value===ADMIN_USER && $("adminPass").value===ADMIN_PASS){
-    isAdmin=true;
-    sessionStorage.setItem("hfgm_global_admin","yes");
-    $("publicSection").style.display="none";
-    $("loginSection").style.display="none";
-    $("adminSection").style.display="block";
-    loadAdmin();
-  }else{
-    alert("Wrong username or password");
-  }
-}
-window.logout=function(){
-  sessionStorage.removeItem("hfgm_global_admin");
-  location.reload();
-}
-if(sessionStorage.getItem("hfgm_global_admin")==="yes"){
-  isAdmin=true;
-  $("publicSection").style.display="none";
-  $("loginSection").style.display="none";
-  $("adminSection").style.display="block";
-  loadAdmin();
-}
+window.setCode=setCode;
 
-
-window.setCountryCode=function(){
-  const sel=$("pubCountry");
-  const code=sel.options[sel.selectedIndex].dataset.code || "";
-  $("pubCode").value=code;
-}
-function fullPhone(code, phone){
-  code=cleanPhone(code);
-  phone=cleanPhone(phone);
-  if(phone.startsWith(code)) return phone;
-  return code + phone;
-}
-async function resizeImage(file){
-  return new Promise(resolve=>{
-    if(!file){resolve("");return}
-    const reader=new FileReader();
-    reader.onload=e=>{
-      const img=new Image();
-      img.onload=()=>{
-        const canvas=document.createElement("canvas");
-        const max=450;
-        let w=img.width,h=img.height;
-        if(w>h){if(w>max){h=Math.round(h*max/w);w=max}}
-        else{if(h>max){w=Math.round(w*max/h);h=max}}
-        canvas.width=w;canvas.height=h;
-        canvas.getContext("2d").drawImage(img,0,0,w,h);
-        resolve(canvas.toDataURL("image/jpeg",0.72));
-      };
-      img.src=e.target.result;
-    };
-    reader.readAsDataURL(file);
-  });
-}
-
-window.saveBeliever=async function(){
-  const name=$("pubName").value.trim();
-  const phone=fullPhone($("pubCode").value,$("pubPhone").value);
+window.saveRegistration=async function(){
+  const name=$("regName").value.trim();
+  const phone=fullPhone();
   if(!name || phone.length<10){alert("Name and valid WhatsApp number required");return}
-  const selectedPhoto = $("pubSelfie").files[0] || $("pubPhoto").files[0];
-  const photo=await resizeImage(selectedPhoto);
   await addDoc(collection(db,"global_believers"),{
-    name,
-    age:$("pubAge").value,
-    type:$("pubBelieverType").value,
-    country:$("pubCountry").value,
-    state:$("pubState").value,
-    district:$("pubDistrict").value,
-    city:$("pubCity").value,
-    phone,
-    email:$("pubEmail").value,
-    prayer:$("pubPrayer").value,
-    photo,
-    status:"New",
-    createdAt:new Date().toISOString()
+    name, age:$("regAge").value, type:$("regType").value, country:$("regCountry").value, state:$("regState").value,
+    district:$("regDistrict").value, city:$("regCity").value, phone, email:$("regEmail").value, prayer:$("regPrayer").value,
+    status:"New", source:"Public Page", createdAt:new Date().toISOString()
   });
-  ["pubName","pubAge","pubState","pubDistrict","pubCity","pubPhone","pubEmail","pubPrayer","pubPhoto","pubSelfie"].forEach(id=>$(id).value="");
-  setCountryCode();
-  alert("Registration submitted. God bless you 🙏");
+  ["regName","regAge","regDistrict","regCity","regPhone","regEmail","regPrayer"].forEach(x=>$(x).value="");
+  $("regSuccess").style.display="block";
+  await renderPublicStats();
 }
 
-window.savePublicPrayer=async function(){
-  const name=$("prayName").value.trim();
-  const text=$("prayText").value.trim();
+window.savePrayer=async function(){
+  const name=$("prayName").value.trim(), text=$("prayText").value.trim();
   if(!name||!text){alert("Name and prayer request required");return}
-  await addDoc(collection(db,"global_prayers"),{
-    name,
-    phone:cleanPhone($("prayPhone").value),
-    country:$("prayCountry").value,
-    text,
-    status:"Pending",
-    createdAt:new Date().toISOString()
-  });
-  ["prayName","prayPhone","prayCountry","prayText"].forEach(id=>$(id).value="");
-  alert("Prayer request submitted 🙏");
+  await addDoc(collection(db,"global_prayers"),{name,phone:cleanPhone($("prayPhone").value),country:$("prayPlace").value,type:$("prayType").value,text,status:"Pending",createdAt:new Date().toISOString()});
+  ["prayName","prayPhone","prayPlace","prayText"].forEach(x=>$(x).value="");
+  $("praySuccess").style.display="block";
+  await renderPrayerWall();
+  await renderPublicStats();
 }
 
 window.saveTestimony=async function(){
-  const name=$("testName").value.trim();
-  const text=$("testText").value.trim();
+  const name=$("testName").value.trim(), text=$("testText").value.trim();
   if(!name||!text){alert("Name and testimony required");return}
-  await addDoc(collection(db,"global_testimonies"),{
-    name,
-    country:$("testCountry").value,
-    text,
-    createdAt:new Date().toISOString()
-  });
-  ["testName","testCountry","testText"].forEach(id=>$(id).value="");
-  alert("Testimony submitted. Praise God ✨");
+  await addDoc(collection(db,"global_testimonies"),{name,country:$("testPlace").value,text,createdAt:new Date().toISOString()});
+  ["testName","testPlace","testText"].forEach(x=>$(x).value="");
+  $("testSuccess").style.display="block";
+  await renderTestimonyWall();
+  await renderPublicStats();
 }
 
+async function renderPublicStats(){
+  const b=await getAll("global_believers").catch(()=>[]);
+  const m=await getAll("members").catch(()=>[]);
+  const p=await getAll("global_prayers").catch(()=>[]);
+  const t=await getAll("global_testimonies").catch(()=>[]);
+  const countries=[...new Set([...b.map(x=>x.country),...m.map(x=>x.country||"India")].filter(Boolean))];
+  $("cBelievers").innerText=b.length+m.length;
+  $("cCountries").innerText=countries.length;
+  $("cPrayers").innerText=p.length;
+  $("cTestimonies").innerText=t.length;
+}
 
-function esc(v){
-  return String(v ?? "").replace(/[&<>"']/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
+async function renderPrayerWall(){
+  const arr=(await getAll("global_prayers").catch(()=>[])).slice(-6).reverse();
+  $("prayerWall").innerHTML=arr.length?arr.map(x=>`<div class="wall-item"><b>🙏 ${esc(x.type||"Prayer")}</b><p>${esc(x.text).slice(0,120)}</p><small>${esc(x.country||"")}</small></div>`).join(""):`<div class="wall-item">No public prayer requests yet.</div>`;
 }
-function qrUrl(name,phone){
-  return `https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${encodeURIComponent("HFGM Member: "+name+" Phone: "+phone)}`;
+async function renderTestimonyWall(){
+  const arr=(await getAll("global_testimonies").catch(()=>[])).slice(-6).reverse();
+  $("testimonyWall").innerHTML=arr.length?arr.map(x=>`<div class="wall-item"><b>✨ ${esc(x.name)}</b><p>${esc(x.text).slice(0,140)}</p><small>${esc(x.country||"")}</small></div>`).join(""):`<div class="wall-item">No testimonies yet.</div>`;
 }
-function combinedBelieversList(){
+
+const promises=[
+  {en:"Do not fear, for I am with you.",te:"భయపడకుము, నేను నీతో ఉన్నాను.",ref:"Isaiah 41:10"},
+  {en:"The Lord is my shepherd; I shall not want.",te:"యెహోవా నా కాపరి, నాకు కొదువలేదు.",ref:"Psalm 23:1"},
+  {en:"With God all things are possible.",te:"దేవునితో సమస్తమును సాధ్యమే.",ref:"Matthew 19:26"},
+  {en:"Ask, and it shall be given you.",te:"అడుగుడి, మీకు ఇవ్వబడును.",ref:"Matthew 7:7"}
+];
+function renderPromise(){const p=promises[Math.floor(Date.now()/86400000)%promises.length];$("promiseBox").innerHTML=`<h3>${p.en}</h3><p>${p.te}</p><p><b>${p.ref}</b></p>`}
+
+window.adminLogin=function(){
+  if($("adminUser").value.trim()===ADMIN_USER && $("adminPass").value.trim()===ADMIN_PASS){
+    sessionStorage.setItem("hfgm_firebase_admin","yes");
+    $("adminLoginBox").style.display="none";
+    $("adminPanel").style.display="block";
+    loadAdminData();
+  }else alert("Wrong username or password");
+}
+window.adminLogout=function(){sessionStorage.removeItem("hfgm_firebase_admin");$("adminPanel").style.display="none";$("adminLoginBox").style.display="block"}
+
+function combinedBelievers(){
   return [
-    ...believers.map(b=>({...b, source:"global"})),
+    ...believers.map(b=>({...b, sourceName:"global_believers", sourceCollection:"global_believers"})),
     ...oldMembers.map(m=>({
-      id:m.id, source:"old",
-      name:m.name||"", age:m.age||"", type:m.type||"Old Member", country:m.country||"India",
-      state:m.state||"", district:m.district||"", city:m.village||m.city||"",
-      phone:(cleanPhone(m.cell||m.phone).length===10 ? "91"+cleanPhone(m.cell||m.phone) : cleanPhone(m.cell||m.phone)),
+      id:m.id, sourceName:"members old data", sourceCollection:"members",
+      name:m.name||"", age:m.age||"", type:m.type||"Old Member", country:m.country||"India", state:m.state||"",
+      district:m.district||"", city:m.village||m.city||"", phone:(cleanPhone(m.cell||m.phone).length===10?"91"+cleanPhone(m.cell||m.phone):cleanPhone(m.cell||m.phone)),
       email:m.email||"", prayer:m.prayer||"", status:m.status||"Old Data", photo:m.photo||""
     }))
   ];
 }
-window.startEditBeliever=function(id,source){
-  const b=combinedBelieversList().find(x=>x.id===id && x.source===source);
-  if(!b){alert("Record not found");return}
-  $("editBelieverBox").style.display="block";
-  $("editId").value=b.id;
-  $("editSource").value=b.source;
-  $("editName").value=b.name||"";
-  $("editAge").value=b.age||"";
-  $("editType").value=b.type||"";
-  $("editCountry").value=b.country||"";
-  $("editState").value=b.state||"";
-  $("editDistrict").value=b.district||"";
-  $("editCity").value=b.city||"";
-  $("editPhone").value=cleanPhone(b.phone);
-  $("editEmail").value=b.email||"";
-  $("editStatus").value=b.status||"New";
-  $("editPrayer").value=b.prayer||"";
-  $("editBelieverBox").scrollIntoView({behavior:"smooth",block:"start"});
-}
-window.cancelEdit=function(){ $("editBelieverBox").style.display="none"; }
-window.updateBelieverRecord=async function(){
-  const id=$("editId").value;
-  const source=$("editSource").value;
-  if(!id){alert("No record selected");return}
-  const data={
-    name:$("editName").value.trim(),
-    age:$("editAge").value,
-    type:$("editType").value,
-    country:$("editCountry").value.trim(),
-    state:$("editState").value.trim(),
-    district:$("editDistrict").value.trim(),
-    city:$("editCity").value.trim(),
-    phone:cleanPhone($("editPhone").value),
-    email:$("editEmail").value.trim(),
-    prayer:$("editPrayer").value,
-    status:$("editStatus").value,
-    updatedAt:new Date().toISOString()
-  };
-  if(source==="old"){
-    data.cell=data.phone;
-    data.village=data.city;
-    await updateDoc(doc(db,"members",id),data);
-  }else{
-    await updateDoc(doc(db,"global_believers",id),data);
-  }
-  $("editBelieverBox").style.display="none";
-  await renderBelievers();
-  alert("Updated successfully ✅");
-}
-window.deleteAnyBeliever=async function(id,source){
-  if(!confirm("Delete this record permanently?"))return;
-  if(source==="old") await deleteDoc(doc(db,"members",id));
-  else await deleteDoc(doc(db,"global_believers",id));
-  await renderBelievers();
-}
-window.openIdCard=function(id,source){
-  const b=combinedBelieversList().find(x=>x.id===id && x.source===source);
-  if(!b){alert("Record not found");return}
-  const phone=cleanPhone(b.phone);
-  $("idCardContent").innerHTML=`
-    <div class="card-preview" id="printMemberCard">
-      <h3>🕊️ HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES</h3>
-      ${b.photo?`<img class="photo" src="${b.photo}">`:`<div class="photo" style="display:inline-flex;align-items:center;justify-content:center;color:#0b4da2;background:white;font-size:34px">👤</div>`}
-      <h2>${esc(b.name||"Member")}</h2>
-      <p><b>Type:</b> ${esc(b.type||"Believer")}</p>
-      <p><b>Age:</b> ${esc(b.age||"")}</p>
-      <p><b>Phone:</b> ${phone}</p>
-      <p><b>Place:</b> ${esc((b.city||"")+", "+(b.district||""))}</p>
-      <p><b>Country:</b> ${esc(b.country||"")}</p>
-      <img class="qr" src="${qrUrl(b.name||"HFGM Member",phone)}">
-      <p style="font-size:12px;margin-top:10px">HFGM-${String(b.id||"").slice(0,8).toUpperCase()}</p>
-    </div>`;
-  $("idCardModal").style.display="block";
-}
-window.closeIdCard=function(){ $("idCardModal").style.display="none"; }
-window.printIdCard=function(){
-  const html=$("idCardContent").innerHTML;
-  const w=window.open("");
-  w.document.write('<html><head><title>HFGM ID Card</title><style>body{font-family:Arial;padding:25px}.card-preview{max-width:390px;margin:auto;padding:20px;border-radius:24px;background:linear-gradient(135deg,#071b52,#0b4da2,#06b6d4);color:white;text-align:center}.photo{width:90px;height:90px;border-radius:50%;object-fit:cover;border:4px solid white}.qr{background:white;padding:8px;border-radius:12px;margin-top:10px;width:100px;height:100px}</style></head><body>'+html+'<script>setTimeout(()=>window.print(),800)<\/script></body></html>');
-  w.document.close();
-}
-window.sendAnyWhatsApp=function(id,source,type){
-  const b=combinedBelieversList().find(x=>x.id===id && x.source===source);
-  if(!b){alert("Record not found");return}
-  const phone=cleanPhone(b.phone);
-  if(!phone){alert("Phone missing");return}
-  const msg = type==="prayer"
-    ? `🙏 Prayer Meeting Invitation\n\nDear ${b.name}, please join our prayer meeting.\n\nHOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES`
-    : `Praise the Lord ${b.name} 🙏\n\nWelcome to HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES.\nWe are praying for you and your family.`;
-  window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`,"_blank");
-}
 
-async function renderBelievers(){
-  believers=await getAll("global_believers");
+window.loadAdminData=async function(){
+  believers=await getAll("global_believers").catch(()=>[]);
   oldMembers=await getAll("members").catch(()=>[]);
-  const q=($("searchBeliever").value||"").toLowerCase();
-  const cf=$("countryFilter").value;
-  $("believerTable").innerHTML="";
-  if($("believerCards")) $("believerCards").innerHTML="";
-  let i=1;
+  prayers=await getAll("global_prayers").catch(()=>[]);
+  testimonies=await getAll("global_testimonies").catch(()=>[]);
+  renderAdminBelievers();
+  renderAdminPrayers();
+  renderAdminTestimonies();
+  await renderPublicStats();
+}
 
-  const combined=combinedBelieversList()
-  .filter(b=>!cf || b.country===cf)
-  .filter(b=>{
-    const s=`${b.name} ${b.age} ${b.country} ${b.state} ${b.district} ${b.city} ${b.type} ${b.phone}`.toLowerCase();
-    return s.includes(q);
+function renderAdminBelievers(){
+  const q=($("adminSearchBeliever")?.value||"").toLowerCase();
+  const cf=$("adminCountryFilter")?.value||"";
+  const sf=$("adminSourceFilter")?.value||"";
+  let arr=combinedBelievers();
+
+  arr=arr.filter(b=>{
+    const s=`${b.name} ${b.phone} ${b.city} ${b.district} ${b.country} ${b.type}`.toLowerCase();
+    return (!q || s.includes(q)) && (!cf || b.country===cf) && (!sf || b.sourceCollection===sf);
   });
 
-  let cardHtml="";
-  let tableHtml="";
+  if($("adminTotalBelievers")) $("adminTotalBelievers").innerText=arr.length;
+  if($("adminIndiaBelievers")) $("adminIndiaBelievers").innerText=arr.filter(x=>x.country==="India").length;
+  if($("adminIntlBelievers")) $("adminIntlBelievers").innerText=arr.filter(x=>x.country!=="India").length;
 
-  combined.forEach(b=>{
+  $("premiumBelieverCards").innerHTML=arr.length?arr.map((b,i)=>{
     const phone=cleanPhone(b.phone);
-    const actionButtons=`
-      <button class="edit-action" onclick="startEditBeliever('${b.id}','${b.source}')">✏️ Edit</button>
-      <button class="id-action" onclick="openIdCard('${b.id}','${b.source}')">🪪 ID Card</button>
-      <button class="wa-action" onclick="sendAnyWhatsApp('${b.id}','${b.source}','welcome')">📲 WhatsApp</button>
-      <button class="prayer-action" onclick="sendAnyWhatsApp('${b.id}','${b.source}','prayer')">🙏 Prayer</button>
-      <button class="delete-action" onclick="deleteAnyBeliever('${b.id}','${b.source}')">🗑️ Delete</button>
-    `;
-
-    cardHtml+=`
-    <div class="believer-card">
-      <div class="believer-top">
-        ${b.photo?`<img src="${b.photo}">`:`<div class="avatar-fallback">👤</div>`}
-        <div>
+    const msg=encodeURIComponent(`Praise the Lord ${b.name}, welcome to HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES. We are praying for you.`);
+    const srcLabel=b.sourceCollection==="members"?"Old Member":"New/Public";
+    return `<div class="premium-member-card">
+      <div class="member-top">
+        ${b.photo?`<img class="member-photo" src="${b.photo}">`:`<div class="member-avatar">👤</div>`}
+        <div class="member-info">
           <h3>${esc(b.name||"No Name")}</h3>
           <p>📲 ${phone}</p>
         </div>
       </div>
-      <p>📍 ${esc(b.city||"")}, ${esc(b.district||"")} ${esc(b.country||"")}</p>
-      <p>🙏 ${esc(b.prayer||"")}</p>
-      <div class="believer-actions">${actionButtons}</div>
+
+      <div class="member-badges">
+        <span class="member-badge green">${esc(b.type||"Believer")}</span>
+        <span class="member-badge gold">${esc(srcLabel)}</span>
+        <span class="member-badge">#${i+1}</span>
+      </div>
+
+      <div class="member-details">
+        <p>📍 <b>Place:</b> ${esc(b.city||"")}, ${esc(b.district||"")} ${esc(b.country||"")}</p>
+        <p>📧 <b>Email:</b> ${esc(b.email||"-")}</p>
+        <p>🙏 <b>Prayer:</b> ${esc(b.prayer||"-")}</p>
+      </div>
+
+      <div class="member-actions-premium">
+        <button class="btn-edit" onclick="editBelieverPremium('${b.id}','${b.sourceCollection}')">✏️ Edit</button>
+        <button class="btn-id" onclick="openIdCard('${b.id}','${b.sourceCollection}')">🪪 ID Card</button>
+        <a class="btn-wa" target="_blank" href="https://wa.me/${phone}?text=${msg}">📲 WhatsApp</a>
+        <button class="btn-prayer" onclick="sendPrayerMessage('${b.id}','${b.sourceCollection}')">🙏 Prayer</button>
+        <button class="btn-delete" onclick="deleteBeliever('${b.id}','${b.sourceCollection}')">🗑️ Delete</button>
+      </div>
     </div>`;
+  }).join(""):`<div class="card light"><h3>No believers found</h3><p>Search/filter clear cheyandi.</p></div>`;
 
-    tableHtml+=`
-    <tr>
-      <td>${i++}</td>
+  $("adminBelievers").innerHTML=arr.map((b,i)=>{
+    const phone=cleanPhone(b.phone);
+    const msg=encodeURIComponent(`Praise the Lord ${b.name}, welcome to HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES. We are praying for you.`);
+    return `<tr>
+      <td>${i+1}</td>
       <td>${b.photo?`<img class="person-photo" src="${b.photo}">`:""}</td>
-      <td>${esc(b.name||"")}</td>
-      <td>${esc(b.age||"")}</td>
-      <td>${esc(b.type||"")}</td>
-      <td>${esc(b.country||"")}</td>
-      <td>${esc(b.state||"")}</td>
-      <td>${esc(b.district||"")}</td>
-      <td>${esc(b.city||"")}</td>
-      <td>${phone}</td>
-      <td>${esc(b.email||"")}</td>
-      <td>${esc(b.prayer||"")}</td>
-      <td><div class="action-row">${actionButtons}</div></td>
+      <td>${esc(b.name)}</td><td>${esc(b.age)}</td><td>${esc(b.type)}</td><td>${esc(b.country)}</td><td>${esc(b.state)}</td><td>${esc(b.district)}</td><td>${esc(b.city)}</td><td>${phone}</td><td>${esc(b.email)}</td><td>${esc(b.prayer)}</td><td>${esc(b.sourceName)}</td>
+      <td><div class="action-row">
+        <button class="purple" onclick="openIdCard('${b.id}','${b.sourceCollection}')">ID</button>
+        <a class="btn green" style="padding:8px 10px" target="_blank" href="https://wa.me/${phone}?text=${msg}">WA</a>
+        <button class="red" onclick="deleteBeliever('${b.id}','${b.sourceCollection}')">Delete</button>
+      </div></td>
     </tr>`;
-  });
-
-  if(!combined.length){
-    cardHtml=`<div class="card lock"><h3>No records found</h3><p>Firebase lo global_believers / members data ledu leda internet/firestore block ayindi.</p></div>`;
-  }
-
-  if($("believerCards")) $("believerCards").innerHTML=cardHtml;
-  $("believerTable").innerHTML=tableHtml;
-  updateDashboard();
+  }).join("");
 }
-window.deleteBeliever=id=>deleteRecord("global_believers",id,renderBelievers);
 
-async function renderPrayers(){
-  prayers=await getAll("global_prayers");
-  $("prayerTable").innerHTML="";
-  let i=1;
-  prayers.forEach(p=>{
+window.toggleClassicTable=function(){
+  const box=$("classicTableBox");
+  box.style.display=box.style.display==="none"||!box.style.display?"block":"none";
+}
+
+window.sendPrayerMessage=function(id,col){
+  const b=combinedBelievers().find(x=>x.id===id && x.sourceCollection===col);
+  if(!b)return;
+  const phone=cleanPhone(b.phone);
+  const msg=encodeURIComponent(`🙏 Praise the Lord ${b.name}, HFGM prayer team is praying for you and your family. God bless you.`);
+  window.open(`https://wa.me/${phone}?text=${msg}`,"_blank");
+}
+
+window.editBelieverPremium=function(id,col){
+  const b=combinedBelievers().find(x=>x.id===id && x.sourceCollection===col);
+  if(!b){alert("Record not found");return}
+  const newName=prompt("Name edit cheyandi:", b.name||"");
+  if(newName===null)return;
+  const newPhone=prompt("Phone number edit cheyandi:", cleanPhone(b.phone)||"");
+  if(newPhone===null)return;
+  updateDoc(doc(db,col,id),{
+    name:newName.trim(),
+    phone:cleanPhone(newPhone),
+    cell:cleanPhone(newPhone),
+    updatedAt:new Date().toISOString()
+  }).then(()=>loadAdminData()).then(()=>alert("Updated successfully ✅"));
+}
+
+function renderAdminPrayers(){
+  $("adminPrayers").innerHTML=prayers.map((p,i)=>{
     const phone=cleanPhone(p.phone);
-    const msg=encodeURIComponent(`Praise the Lord ${p.name}, we received your prayer request. HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES is praying for you.`);
-    $("prayerTable").innerHTML+=`
-    <tr>
-      <td>${i++}</td><td>${p.name||""}</td><td>${phone}</td><td>${p.country||""}</td><td>${p.text||""}</td><td>${p.status||""}</td>
-      <td>${phone?`<a class="wa" target="_blank" href="https://wa.me/${phone}?text=${msg}">WhatsApp</a>`:""}</td>
-      <td><button class="red" onclick="deletePrayer('${p.id}')">Delete</button></td>
-    </tr>`;
-  });
-  updateDashboard();
+    const msg=encodeURIComponent(`Praise the Lord ${p.name}, we received your prayer request. HFGM is praying for you.`);
+    return `<tr><td>${i+1}</td><td>${esc(p.name)}</td><td>${phone}</td><td>${esc(p.country)}</td><td>${esc(p.text)}</td><td>${phone?`<a class="btn green" style="padding:8px 10px" target="_blank" href="https://wa.me/${phone}?text=${msg}">WhatsApp</a>`:""}</td><td><button class="red" onclick="deletePrayer('${p.id}')">Delete</button></td></tr>`;
+  }).join("");
 }
-window.deletePrayer=id=>deleteRecord("global_prayers",id,renderPrayers);
-
-async function renderTestimonies(){
-  testimonies=await getAll("global_testimonies");
-  $("testimonyTable").innerHTML="";
-  let i=1;
-  testimonies.forEach(t=>{
-    $("testimonyTable").innerHTML+=`
-    <tr><td>${i++}</td><td>${t.name||""}</td><td>${t.country||""}</td><td>${t.text||""}</td><td><button class="red" onclick="deleteTestimony('${t.id}')">Delete</button></td></tr>`;
-  });
-  updateDashboard();
-}
-window.deleteTestimony=id=>deleteRecord("global_testimonies",id,renderTestimonies);
-
-window.prepareMessage=function(){
-  const type=$("messageType").value;
-  let msg="";
-  if(type==="welcome"){
-    msg=`🕊️ HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES
-
-Praise the Lord!
-Welcome to HFGM Global Believers Family.
-
-We are praying for you and your family.
-God bless you 🙏`;
-  }else if(type==="prayer"){
-    msg=`🙏 HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES
-
-Prayer Meeting Invitation / ప్రార్థనా కూడిక ఆహ్వానం
-
-You are warmly invited to join our prayer meeting.
-
-📖 “My house shall be called a house of prayer.” — Matthew 21:13
-
-Please join with your family.
-God bless you 🙏`;
-  }else if(type==="promise"){
-    msg=`📖 Daily Promise Word
-
-English: Do not fear, for I am with you.
-తెలుగు: భయపడకుము, నేను నీతో ఉన్నాను.
-Reference: Isaiah 41:10
-
-HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES
-God bless you 🙏`;
-  }else{
-    msg=`Praise the Lord!
-
-This is a follow-up message from HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES.
-We are praying for you and your family.
-
-God bless you 🙏`;
-  }
-  $("bulkMessage").value=msg;
-}
-window.openAllWhatsApp=function(){
-  const msg=$("bulkMessage").value.trim();
-  if(!msg){alert("Message required");return}
-  const nums=uniqueBelieverPhones();
-  if(!nums.length){alert("No valid phone numbers");return}
-  nums.forEach((x,i)=>{
-    setTimeout(()=>window.open(`https://web.whatsapp.com/send?phone=${x.phone}&text=${encodeURIComponent(msg)}`,"_blank"),i*1600);
-  });
-  alert(nums.length+" unique believers ki WhatsApp open avuthayi. Final Send manual.");
-}
-window.showUniquePhones=function(){
-  const nums=uniqueBelieverPhones();
-  $("uniqueList").innerHTML="<b>Unique Numbers: "+nums.length+"</b><br>"+nums.map(x=>x.name+" - "+x.phone).join("<br>");
+function renderAdminTestimonies(){
+  $("adminTestimonies").innerHTML=testimonies.map((t,i)=>`<tr><td>${i+1}</td><td>${esc(t.name)}</td><td>${esc(t.country)}</td><td>${esc(t.text)}</td><td><button class="red" onclick="deleteTestimony('${t.id}')">Delete</button></td></tr>`).join("");
 }
 
-window.saveFinance=async function(){
-  const amount=Number($("finAmount").value||0);
-  if(!amount){alert("Amount required");return}
-  await addDoc(collection(db,"global_finance"),{
-    name:$("finName").value,
-    amount,
-    type:$("finType").value,
-    purpose:$("finPurpose").value,
-    date:today(),
-    createdAt:new Date().toISOString()
-  });
-  ["finName","finAmount","finPurpose"].forEach(id=>$(id).value="");
-  await renderFinance();
-}
-async function renderFinance(){
-  finance=await getAll("global_finance");
-  $("financeTable").innerHTML="";
-  let income=0,expense=0,i=1;
-  finance.forEach(f=>{
-    if(f.type==="Income")income+=Number(f.amount||0);else expense+=Number(f.amount||0);
-    $("financeTable").innerHTML+=`
-    <tr>
-      <td>${i++}</td><td>${f.type}</td><td>${f.name||""}</td><td>₹${f.amount||0}</td><td>${f.purpose||""}</td><td>${f.date||""}</td>
-      <td><button onclick="printReceipt('${f.id}')">Receipt</button></td>
-      <td><button class="red" onclick="deleteFinance('${f.id}')">Delete</button></td>
-    </tr>`;
-  });
-  $("incomeTotal").innerText=income;
-  $("expenseTotal").innerText=expense;
-  $("balanceTotal").innerText=income-expense;
-}
-window.deleteFinance=id=>deleteRecord("global_finance",id,renderFinance);
+window.deleteBeliever=async function(id,col){if(!confirm("Delete this believer permanently?"))return;await deleteDoc(doc(db,col,id));await loadAdminData()}
+window.deletePrayer=async function(id){if(!confirm("Delete prayer?"))return;await deleteDoc(doc(db,"global_prayers",id));await loadAdminData();await renderPrayerWall()}
+window.deleteTestimony=async function(id){if(!confirm("Delete testimony?"))return;await deleteDoc(doc(db,"global_testimonies",id));await loadAdminData();await renderTestimonyWall()}
 
-window.printReceipt=function(id){
-  const f=finance.find(x=>x.id===id);
-  if(!f)return;
-  const w=window.open("");
-  w.document.write(`<html><head><title>Receipt</title><style>body{font-family:Arial;padding:30px}.box{border:3px solid #0b4da2;padding:25px;text-align:center;border-radius:20px}
-/* ===== HFGM FIREBASE OLD DATA ACTIONS FIX ===== */
-.login .note{display:none!important}
-.believer-cards{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-  gap:14px;
-  margin:14px 0;
+window.openIdCard=function(id,col){
+  const b=combinedBelievers().find(x=>x.id===id && x.sourceCollection===col);
+  if(!b)return;
+  const phone=cleanPhone(b.phone);
+  $("idCardContent").innerHTML=`<div class="id-card"><h3>🕊️ HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES</h3>${b.photo?`<img class="photo" src="${b.photo}">`:`<div class="photo" style="display:inline-flex;align-items:center;justify-content:center;color:#0b4da2;background:white;font-size:34px">👤</div>`}<h2>${esc(b.name)}</h2><p><b>Type:</b> ${esc(b.type)}</p><p><b>Phone:</b> ${phone}</p><p><b>Place:</b> ${esc(b.city)}, ${esc(b.district)}</p><img class="qr" src="${qrUrl(b.name,phone)}"><p style="font-size:12px">HFGM-${String(b.id).slice(0,8).toUpperCase()}</p></div>`;
+  $("idCardModal").style.display="block";
 }
-.believer-card{
-  background:#fff;
-  border-radius:20px;
-  padding:15px;
-  box-shadow:0 6px 20px #0002;
-  border:1px solid #dbeafe;
-}
-.believer-top{
-  display:flex;
-  gap:12px;
-  align-items:center;
-  margin-bottom:10px;
-}
-.believer-top img,.avatar-fallback{
-  width:62px;
-  height:62px;
-  border-radius:50%;
-  object-fit:cover;
-  border:3px solid #0b4da2;
-  background:#eef5ff;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:28px;
-}
-.believer-card h3{margin:0;color:#0b4da2;font-size:18px}
-.believer-card p{margin:4px 0;font-size:13px;color:#333}
-.believer-actions{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:7px;
-  margin-top:12px;
-}
-.believer-actions button{
-  width:100%!important;
-  margin:0!important;
-  padding:10px 8px!important;
-  font-size:13px!important;
-  border-radius:11px!important;
-}
-.edit-action{background:#2563eb!important}
-.id-action{background:#7c3aed!important}
-.wa-action{background:#16a34a!important}
-.prayer-action{background:#f59e0b!important}
-.delete-action{background:#dc2626!important}
-.firebase-note{
-  background:#ecfeff;
-  border-left:6px solid #0891b2;
-  padding:12px;
-  border-radius:14px;
-  margin:12px 0;
-  color:#075985;
-  font-weight:bold;
-}
-.card-preview{
-  max-width:390px;margin:15px auto;padding:20px;border-radius:24px;
-  background:linear-gradient(135deg,#071b52,#0b4da2,#06b6d4);
-  color:white;text-align:center;box-shadow:0 10px 30px #0005
-}
-.card-preview .photo{width:90px;height:90px;border-radius:50%;object-fit:cover;border:4px solid white;background:#eee}
-.card-preview h2{margin:8px 0 4px;font-size:22px}
-.card-preview p{margin:5px 0;font-size:14px}
-.card-preview .qr{background:white;padding:8px;border-radius:12px;margin-top:10px;width:100px;height:100px}
+window.closeIdCard=function(){$("idCardModal").style.display="none"}
+window.printIdCard=function(){const html=$("idCardContent").innerHTML;const w=window.open("");w.document.write(`<html><body style="font-family:Arial;padding:25px">${html}<script>setTimeout(()=>window.print(),700)<\/script></body></html>`);w.document.close()}
 
-</style></head><body><div class="box"><h1>🕊️ HFGM Receipt</h1><h2>HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES</h2><p><b>Name:</b> ${f.name}</p><p><b>Type:</b> ${f.type}</p><p><b>Amount:</b> ₹${f.amount}</p><p><b>Purpose:</b> ${f.purpose||""}</p><p><b>Date:</b> ${f.date||""}</p></div><script>setTimeout(()=>window.print(),800)<\/script></body></html>`);
-}
-
-window.printReport=function(){
-  const india=believers.filter(b=>b.country==="India").length+oldMembers.length;
-  const intl=believers.length-india;
-  const income=Number($("incomeTotal").innerText||0);
-  const expense=Number($("expenseTotal").innerText||0);
-  const w=window.open("");
-  w.document.write(`<html><body style="font-family:Arial;padding:30px"><h1>HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES</h1><h2>Global Believers Report</h2><p>Total Believers: ${believers.length+oldMembers.length}</p><p>India: ${india}</p><p>International: ${intl}</p><p>Prayer Requests: ${prayers.length}</p><p>Testimonies: ${testimonies.length}</p><p>Income: ₹${income}</p><p>Expense: ₹${expense}</p><p>Balance: ₹${income-expense}</p><script>setTimeout(()=>window.print(),800)<\/script></body></html>`);
-}
 window.downloadBackup=function(){
-  const data={believers,oldMembers,prayers,testimonies,finance,backupDate:new Date().toISOString()};
-  const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+  const data={believers,oldMembers,prayers,testimonies,backupDate:new Date().toISOString()};
   const a=document.createElement("a");
-  a.href=URL.createObjectURL(blob);
-  a.download="hfgm-global-believers-backup.json";
+  a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:"application/json"}));
+  a.download="hfgm-firebase-public-admin-backup.json";
   a.click();
 }
-function updateDashboard(){
-  const totalBelievers=believers.length+oldMembers.length;
-  const india=believers.filter(b=>b.country==="India").length+oldMembers.length;
-  $("dBelievers").innerText=totalBelievers;
-  $("dIndia").innerText=india;
-  $("dIntl").innerText=totalBelievers-india;
-  $("dPrayer").innerText=prayers.length;
-  $("dTestimony").innerText=testimonies.length;
-}
-setTimeout(()=>{ if($('pubCountry')) setCountryCode(); },500);
-async function loadAdmin(){
-  await renderBelievers();
-  await renderPrayers();
-  await renderTestimonies();
-  await renderFinance();
-  showUniquePhones();
+
+setCode();
+renderPromise();
+renderPublicStats();
+renderPrayerWall();
+renderTestimonyWall();
+if(sessionStorage.getItem("hfgm_firebase_admin")==="yes"){
+  $("adminLoginBox").style.display="none";
+  $("adminPanel").style.display="block";
+  loadAdminData();
 }
 </script>
 </body>
