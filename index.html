@@ -426,6 +426,53 @@ input:focus,select:focus,textarea:focus{
 }
 @media(max-width:850px){.ai-actions{grid-template-columns:1fr}}
 
+
+/* ===== INSTALL APP UPGRADE ===== */
+.install-banner{
+  position:fixed;
+  left:18px;
+  right:18px;
+  bottom:18px;
+  z-index:9999;
+  background:linear-gradient(135deg,#0b4da2,#06b6d4,#16a34a);
+  color:white;
+  border-radius:24px;
+  padding:16px;
+  box-shadow:0 18px 45px #0008;
+  display:none;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  flex-wrap:wrap;
+}
+.install-banner h3{
+  margin:0;
+  font-size:22px;
+}
+.install-banner p{
+  margin:4px 0 0;
+}
+.install-actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.install-actions button{
+  border:none;
+  border-radius:14px;
+  padding:12px 18px;
+  font-weight:bold;
+  cursor:pointer;
+}
+.install-btn{
+  background:white;
+  color:#0b4da2;
+}
+.close-install{
+  background:#ef4444;
+  color:white;
+}
+
 </style>
 </head>
 <body>
@@ -911,7 +958,19 @@ window.openIdCard=function(id,col){
   $("idCardModal").style.display="block";
 }
 window.closeIdCard=function(){$("idCardModal").style.display="none"}
-window.printIdCard=function(){const html=$("idCardContent").innerHTML;const w=window.open("");w.document.write(`<html><body style="font-family:Arial;padding:25px">${html}<script>setTimeout(()=>window.print(),700)<\/script></body></html>`);w.document.close()}
+window.printIdCard=function(){const html=$("idCardContent").innerHTML;const w=window.open("");w.document.write(`<html><body style="font-family:Arial;padding:25px">${html}<script>setTimeout(()=>window.print(),700)<\/script>
+<div id="installBanner" class="install-banner">
+  <div>
+    <h3>📲 Install HFGM App</h3>
+    <p>Add this ministry app to mobile home screen like real Android app.</p>
+  </div>
+  <div class="install-actions">
+    <button class="install-btn" id="installAppBtn">Install App</button>
+    <button class="close-install" onclick="closeInstallBanner()">Later</button>
+  </div>
+</div>
+
+</body></html>`);w.document.close()}
 
 window.downloadBackup=function(){
   const data={believers,oldMembers,prayers,testimonies,backupDate:new Date().toISOString()};
@@ -1007,6 +1066,56 @@ window.generateMemberId=function(index){
   return `HFGM-${String(index+1).padStart(4,'0')}`;
 }
 
+
+let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', (e)=>{
+  e.preventDefault();
+  deferredPrompt = e;
+  const banner=document.getElementById("installBanner");
+  if(banner) banner.style.display="flex";
+});
+
+const installBtn=document.getElementById("installAppBtn");
+if(installBtn){
+  installBtn.addEventListener("click", async ()=>{
+    if(!deferredPrompt){
+      alert("Chrome browser lo open chesi menu > Install App click cheyandi.");
+      return;
+    }
+    deferredPrompt.prompt();
+    await deferredPrompt.userChoice;
+    deferredPrompt=null;
+    document.getElementById("installBanner").style.display="none";
+  });
+}
+
+window.closeInstallBanner=function(){
+  document.getElementById("installBanner").style.display="none";
+}
+
+if ('serviceWorker' in navigator) {
+  const swCode = `
+    self.addEventListener('install',e=>self.skipWaiting());
+    self.addEventListener('fetch',()=>{});
+  `;
+  const blob = new Blob([swCode], {type:'text/javascript'});
+  const swUrl = URL.createObjectURL(blob);
+  navigator.serviceWorker.register(swUrl);
+}
+
 </script>
+
+<div id="installBanner" class="install-banner">
+  <div>
+    <h3>📲 Install HFGM App</h3>
+    <p>Add this ministry app to mobile home screen like real Android app.</p>
+  </div>
+  <div class="install-actions">
+    <button class="install-btn" id="installAppBtn">Install App</button>
+    <button class="close-install" onclick="closeInstallBanner()">Later</button>
+  </div>
+</div>
+
 </body>
 </html>
