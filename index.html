@@ -335,7 +335,7 @@ td{padding:10px;border-bottom:1px solid #ddd;text-align:center}
 </div>
 
 
-<div class="firebase-note">✅ Firebase old believers list + old members list ikkada load avuthayi. Delete / Edit / ID Card visible cards lo unnayi.</div>
+<div class="firebase-note">✅ Firebase believers list load avuthundi. Phone numbers visible. Old Member / Old Data / New text remove chesanu.</div>
 
 <div id="editBelieverBox" class="card" style="display:none;background:#eef5ff;border:2px dashed #0b4da2">
 <h2>✏️ Edit Believer Details</h2>
@@ -366,7 +366,7 @@ td{padding:10px;border-bottom:1px solid #ddd;text-align:center}
 <table>
 <thead>
 <tr>
-<th>S.No</th><th>Photo</th><th>Name</th><th>Age</th><th>Type</th><th>Country</th><th>State</th><th>District</th><th>City</th><th>WhatsApp</th><th>Email</th><th>Prayer/Message</th><th>Status</th><th>Actions</th>
+<th>S.No</th><th>Photo</th><th>Name</th><th>Age</th><th>Type</th><th>Country</th><th>State</th><th>District</th><th>City</th><th>WhatsApp</th><th>Email</th><th>Prayer/Message</th><th>Actions</th>
 </tr>
 </thead>
 <tbody id="believerTable"></tbody>
@@ -767,7 +767,6 @@ async function renderBelievers(){
         ${b.photo?`<img src="${b.photo}">`:`<div class="avatar-fallback">👤</div>`}
         <div>
           <h3>${esc(b.name||"No Name")}</h3>
-          <p><b>${esc(b.type||"Believer")}</b> • ${esc(b.status||"New")}</p>
           <p>📲 ${phone}</p>
         </div>
       </div>
@@ -790,7 +789,6 @@ async function renderBelievers(){
       <td>${phone}</td>
       <td>${esc(b.email||"")}</td>
       <td>${esc(b.prayer||"")}</td>
-      <td>${esc(b.status||"New")}</td>
       <td><div class="action-row">${actionButtons}</div></td>
     </tr>`;
   });
