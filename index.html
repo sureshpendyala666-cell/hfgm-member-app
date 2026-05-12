@@ -104,24 +104,6 @@ td{padding:10px;border-bottom:1px solid #ddd;text-align:center}
   .public-grid,.dashboard{grid-template-columns:1fr}
   .hero h1{font-size:22px}
 }
-
-.action-row{display:flex;gap:6px;justify-content:center;align-items:center;flex-wrap:wrap}
-.edit-btn{background:#2563eb!important}
-.id-btn{background:#7c3aed!important}
-.wa-btn{background:#16a34a!important}
-.card-preview{
-  max-width:390px;margin:15px auto;padding:20px;border-radius:24px;
-  background:linear-gradient(135deg,#071b52,#0b4da2,#06b6d4);
-  color:white;text-align:center;box-shadow:0 10px 30px #0005;
-}
-.card-preview .photo{
-  width:90px;height:90px;border-radius:50%;object-fit:cover;border:4px solid white;background:#eee;
-}
-.card-preview h2{margin:8px 0 4px;font-size:22px}
-.card-preview p{margin:5px 0;font-size:14px}
-.card-preview .qr{background:white;padding:8px;border-radius:12px;margin-top:10px;width:100px;height:100px}
-.edit-box{background:#eef5ff;border:2px dashed #0b4da2}
-
 </style>
 </head>
 
@@ -137,16 +119,6 @@ td{padding:10px;border-bottom:1px solid #ddd;text-align:center}
 <div class="tabs">
   <button onclick="showPublic()">🌍 Public Registration</button>
   <button onclick="showLogin()" class="orange">🔐 Admin Login</button>
-</div>
-
-
-<div id="idCardModal" style="display:none;position:fixed;inset:0;background:#0009;z-index:9999;padding:20px;overflow:auto">
-  <div class="card" style="max-width:520px;margin:30px auto">
-    <button onclick="closeIdCard()" class="red" style="float:right;width:auto">Close</button>
-    <h2>🪪 Professional Member ID Card</h2>
-    <div id="idCardContent"></div>
-    <button onclick="printIdCard()" class="purple">Print / Save ID Card PDF</button>
-  </div>
 </div>
 
 <!-- PUBLIC SECTION -->
@@ -289,36 +261,11 @@ td{padding:10px;border-bottom:1px solid #ddd;text-align:center}
   </select>
 </div>
 
-
-<div id="editBelieverBox" class="card edit-box" style="display:none">
-<h2>✏️ Edit Believer Details</h2>
-<input id="editId" type="hidden">
-<div class="public-grid">
-  <input id="editName" placeholder="Name">
-  <input id="editAge" type="number" placeholder="Age">
-  <select id="editType">
-    <option>New Believer</option><option>Church Member</option><option>Prayer Partner</option><option>Sponsor / Donor</option><option>Volunteer</option><option>Pastor / Leader</option><option>Old Member</option>
-  </select>
-  <input id="editCountry" placeholder="Country">
-  <input id="editState" placeholder="State">
-  <input id="editDistrict" placeholder="District">
-  <input id="editCity" placeholder="City / Village">
-  <input id="editPhone" placeholder="WhatsApp Number">
-  <input id="editEmail" placeholder="Email">
-  <select id="editStatus"><option>New</option><option>Contacted</option><option>Praying</option><option>Member</option><option>Follow-up</option><option>Inactive</option></select>
-</div>
-<textarea id="editPrayer" placeholder="Prayer / Message"></textarea>
-<div class="public-grid">
-  <button onclick="updateBeliever()" class="green">Update Details</button>
-  <button onclick="cancelEdit()" class="red">Cancel</button>
-</div>
-</div>
-
 <div class="table-wrap">
 <table>
 <thead>
 <tr>
-<th>S.No</th><th>Photo</th><th>Name</th><th>Age</th><th>Type</th><th>Country</th><th>State</th><th>District</th><th>City</th><th>WhatsApp</th><th>Email</th><th>Prayer/Message</th><th>Status</th><th>Actions</th>
+<th>S.No</th><th>Photo</th><th>Name</th><th>Age</th><th>Type</th><th>Country</th><th>State</th><th>District</th><th>City</th><th>WhatsApp</th><th>Email</th><th>Prayer/Message</th><th>Status</th><th>Follow-up</th><th>Delete</th>
 </tr>
 </thead>
 <tbody id="believerTable"></tbody>
@@ -357,8 +304,6 @@ td{padding:10px;border-bottom:1px solid #ddd;text-align:center}
 <textarea id="bulkMessage" placeholder="Message"></textarea>
 <button onclick="prepareMessage()" class="orange">Prepare Message</button>
 <button onclick="openAllWhatsApp()" class="green">Open All Believers WhatsApp</button>
-<button onclick="copyAllNumbers()" class="purple">Copy All Numbers</button>
-<button onclick="openIndiaWhatsApp()" class="orange">Open India Believers Only</button>
 <button onclick="showUniquePhones()" class="purple">Show Unique Numbers</button>
 <div id="uniqueList" class="note"></div>
 <p class="note">WhatsApp security: tabs open automatically, final Send button manual ga press cheyali.</p>
@@ -628,135 +573,6 @@ window.saveTestimony=async function(){
   alert("Testimony submitted. Praise God ✨");
 }
 
-
-function esc(v){
-  return String(v ?? "").replace(/[&<>"']/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
-}
-function believerById(id){
-  return believers.find(x=>x.id===id) || oldMembers.find(x=>x.id===id);
-}
-window.startEditBeliever=function(id,source){
-  if(source!=="global"){ alert("Old members edit old section lo cheyali. New global records only editable here."); return; }
-  const b=believers.find(x=>x.id===id);
-  if(!b){alert("Record not found");return}
-  $("editBelieverBox").style.display="block";
-  $("editId").value=b.id;
-  $("editName").value=b.name||"";
-  $("editAge").value=b.age||"";
-  $("editType").value=b.type||"New Believer";
-  $("editCountry").value=b.country||"";
-  $("editState").value=b.state||"";
-  $("editDistrict").value=b.district||"";
-  $("editCity").value=b.city||"";
-  $("editPhone").value=cleanPhone(b.phone);
-  $("editEmail").value=b.email||"";
-  $("editStatus").value=b.status||"New";
-  $("editPrayer").value=b.prayer||"";
-  $("editBelieverBox").scrollIntoView({behavior:"smooth",block:"start"});
-}
-window.cancelEdit=function(){
-  $("editBelieverBox").style.display="none";
-}
-window.updateBeliever=async function(){
-  const id=$("editId").value;
-  if(!id){alert("No record selected");return}
-  await updateDoc(doc(db,"global_believers",id),{
-    name:$("editName").value.trim(),
-    age:$("editAge").value,
-    type:$("editType").value,
-    country:$("editCountry").value.trim(),
-    state:$("editState").value.trim(),
-    district:$("editDistrict").value.trim(),
-    city:$("editCity").value.trim(),
-    phone:cleanPhone($("editPhone").value),
-    email:$("editEmail").value.trim(),
-    prayer:$("editPrayer").value,
-    status:$("editStatus").value,
-    updatedAt:new Date().toISOString()
-  });
-  $("editBelieverBox").style.display="none";
-  await renderBelievers();
-  alert("Updated successfully ✅");
-}
-window.openIdCard=function(id,source){
-  let b;
-  if(source==="global"){
-    b=believers.find(x=>x.id===id);
-  }else{
-    const m=oldMembers.find(x=>x.id===id);
-    if(m){
-      b={id:m.id,name:m.name||"",age:m.age||"",type:"Old Member",country:"India",state:m.state||"",district:m.district||"",city:m.village||m.city||"",phone:(cleanPhone(m.cell||m.phone).length===10?"91"+cleanPhone(m.cell||m.phone):cleanPhone(m.cell||m.phone)),photo:m.photo||"",status:"Old Data"};
-    }
-  }
-  if(!b){alert("Record not found");return}
-  const phone=cleanPhone(b.phone);
-  const qr=makeMemberQR(b.name||"HFGM Member", phone);
-  $("idCardContent").innerHTML=`
-    <div class="card-preview" id="printMemberCard">
-      <h3>🕊️ HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES</h3>
-      ${b.photo?`<img class="photo" src="${b.photo}">`:`<div class="photo" style="display:inline-flex;align-items:center;justify-content:center;color:#0b4da2;background:white;font-size:34px">👤</div>`}
-      <h2>${esc(b.name||"Member")}</h2>
-      <p><b>Member Type:</b> ${esc(b.type||"Believer")}</p>
-      <p><b>Age:</b> ${esc(b.age||"")}</p>
-      <p><b>Phone:</b> ${esc(phone)}</p>
-      <p><b>Place:</b> ${esc((b.city||"")+", "+(b.district||""))}</p>
-      <p><b>Country:</b> ${esc(b.country||"")}</p>
-      <img class="qr" src="${qr}">
-      <p style="font-size:12px;margin-top:10px">HFGM-${String(b.id||"").slice(0,8).toUpperCase()}</p>
-      <p style="font-size:11px">Prayer • Fellowship • Follow-up</p>
-    </div>`;
-  $("idCardModal").style.display="block";
-}
-window.closeIdCard=function(){
-  $("idCardModal").style.display="none";
-}
-window.printIdCard=function(){
-  const html=$("idCardContent").innerHTML;
-  const w=window.open("");
-  w.document.write('<html><head><title>HFGM ID Card</title><style>body{font-family:Arial;padding:25px}.card-preview{max-width:390px;margin:auto;padding:20px;border-radius:24px;background:linear-gradient(135deg,#071b52,#0b4da2,#06b6d4);color:white;text-align:center}.photo{width:90px;height:90px;border-radius:50%;object-fit:cover;border:4px solid white}.qr{background:white;padding:8px;border-radius:12px;margin-top:10px;width:100px;height:100px}</style></head><body>'+html+'<script>setTimeout(()=>window.print(),800)<\/script></body></html>');
-  w.document.close();
-}
-window.sendBelieverWhatsApp=function(id,source,type){
-  let b;
-  if(source==="global"){
-    b=believers.find(x=>x.id===id);
-  }else{
-    const m=oldMembers.find(x=>x.id===id);
-    if(m)b={name:m.name||"Believer",phone:(cleanPhone(m.cell||m.phone).length===10?"91"+cleanPhone(m.cell||m.phone):cleanPhone(m.cell||m.phone))};
-  }
-  if(!b){alert("Record not found");return}
-  const phone=cleanPhone(b.phone);
-  if(!phone){alert("Phone number missing");return}
-  let msg="";
-  if(type==="welcome"){
-    msg=`Praise the Lord ${b.name} 🙏
-
-Welcome to HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES.
-
-We are praying for you and your family.
-God bless you.`;
-  }else if(type==="prayer"){
-    msg=`🙏 Prayer Meeting Invitation
-
-Dear ${b.name}, please join our prayer meeting.
-
-“My house shall be called a house of prayer.” Matthew 21:13
-
-HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES`;
-  }else if(type==="id"){
-    msg=`🪪 Dear ${b.name}, your HFGM Member ID is ready.
-
-HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES
-God bless you 🙏`;
-  }else{
-    msg=`Praise the Lord ${b.name},
-
-This is a follow-up message from HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES.
-We are praying for you and your family.`;
-  }
-  window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`,"_blank");
-}
-
 async function renderBelievers(){
   believers=await getAll("global_believers");
   oldMembers=await getAll("members").catch(()=>[]);
@@ -801,15 +617,8 @@ async function renderBelievers(){
       <td>${b.email||""}</td>
       <td>${b.prayer||""}</td>
       <td>${b.status||"New"}</td>
-      <td>
-        <div class="action-row">
-          <button class="small-btn edit-btn" onclick="startEditBeliever('${b.id}','${b.source}')">Edit</button>
-          <button class="small-btn id-btn" onclick="openIdCard('${b.id}','${b.source}')">ID Card</button>
-          <button class="small-btn wa-btn" onclick="sendBelieverWhatsApp('${b.id}','${b.source}','welcome')">WhatsApp</button>
-          <button class="small-btn orange" onclick="sendBelieverWhatsApp('${b.id}','${b.source}','prayer')">Prayer</button>
-          ${b.source==="global" ? `<button class="small-btn red" onclick="deleteBeliever('${b.id}')">Delete</button>` : `<span class="note">Old</span>`}
-        </div>
-      </td>
+      <td><a class="wa" target="_blank" href="https://wa.me/${phone}?text=${msg}">Follow-up</a></td>
+      <td>${delBtn}</td>
     </tr>`;
   });
   updateDashboard();
@@ -897,20 +706,6 @@ window.openAllWhatsApp=function(){
   });
   alert(nums.length+" unique believers ki WhatsApp open avuthayi. Final Send manual.");
 }
-
-window.copyAllNumbers=function(){
-  const nums=uniqueBelieverPhones().map(x=>x.phone).join("\\n");
-  navigator.clipboard.writeText(nums).then(()=>alert("All numbers copied ✅")).catch(()=>alert(nums));
-}
-window.openIndiaWhatsApp=function(){
-  const msg=$("bulkMessage").value.trim();
-  if(!msg){alert("Message required");return}
-  const nums=uniqueBelieverPhones().filter(x=>x.phone.startsWith("91"));
-  if(!nums.length){alert("No India numbers");return}
-  nums.forEach((x,i)=>setTimeout(()=>window.open(`https://wa.me/${x.phone}?text=${encodeURIComponent(msg)}`,"_blank"),i*1400));
-  alert(nums.length+" India WhatsApp chats open avuthayi.");
-}
-
 window.showUniquePhones=function(){
   const nums=uniqueBelieverPhones();
   $("uniqueList").innerHTML="<b>Unique Numbers: "+nums.length+"</b><br>"+nums.map(x=>x.name+" - "+x.phone).join("<br>");
@@ -960,25 +755,7 @@ window.printReceipt=function(id){
     '.box{max-width:650px;margin:auto;border:4px solid #0b4da2;padding:28px;text-align:center;border-radius:22px;background:white}' +
     'h1,h2{color:#0b4da2;margin:8px 0}.line{text-align:left;font-size:20px;margin:16px 0;padding:10px;border-bottom:1px solid #ddd}' +
     '.sign{margin-top:45px;text-align:right;font-weight:bold}.small{font-size:13px;color:#555;margin-top:25px}' +
-    '
-.action-row{display:flex;gap:6px;justify-content:center;align-items:center;flex-wrap:wrap}
-.edit-btn{background:#2563eb!important}
-.id-btn{background:#7c3aed!important}
-.wa-btn{background:#16a34a!important}
-.card-preview{
-  max-width:390px;margin:15px auto;padding:20px;border-radius:24px;
-  background:linear-gradient(135deg,#071b52,#0b4da2,#06b6d4);
-  color:white;text-align:center;box-shadow:0 10px 30px #0005;
-}
-.card-preview .photo{
-  width:90px;height:90px;border-radius:50%;object-fit:cover;border:4px solid white;background:#eee;
-}
-.card-preview h2{margin:8px 0 4px;font-size:22px}
-.card-preview p{margin:5px 0;font-size:14px}
-.card-preview .qr{background:white;padding:8px;border-radius:12px;margin-top:10px;width:100px;height:100px}
-.edit-box{background:#eef5ff;border:2px dashed #0b4da2}
-
-</style></head><body>' +
+    '</style></head><body>' +
     '<div class="box">' +
     '<h1>🕊️ HFGM Receipt</h1>' +
     '<h2>HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES</h2>' +
