@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#061b52">
-<title>HFGM Public + Admin Firebase App - Prayer Number Updated</title>
+<title>HFGM Premium Public Page + Admin Firebase</title>
 <style>
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -229,6 +229,203 @@ textarea{min-height:100px}
   .premium-stat{flex:1}
 }
 
+
+/* ===== PREMIUM PUBLIC PAGE UPGRADE ===== */
+body{
+  background:
+    radial-gradient(circle at top left,#0ea5e955,transparent 35%),
+    radial-gradient(circle at bottom right,#7c3aed44,transparent 35%),
+    linear-gradient(135deg,#020617,#061b52,#082f49)!important;
+}
+.hero{
+  min-height:100vh!important;
+  background:
+    linear-gradient(135deg,rgba(2,6,23,.78),rgba(6,27,82,.82)),
+    radial-gradient(circle at top,#38bdf899,transparent 38%),
+    linear-gradient(135deg,#020817,#061b52,#0e7490)!important;
+}
+.hero-box{
+  background:rgba(255,255,255,.10);
+  border:1px solid rgba(255,255,255,.22);
+  border-radius:34px;
+  padding:34px 24px;
+  box-shadow:0 22px 70px #0008, inset 0 1px 0 #ffffff33;
+  backdrop-filter:blur(16px);
+}
+.hero h1{
+  font-size:46px!important;
+  text-shadow:0 0 22px #38bdf888;
+  letter-spacing:.5px;
+}
+.hero h2{
+  color:#fef3c7!important;
+  font-size:24px!important;
+}
+.hero p{
+  max-width:780px;
+  margin:12px auto!important;
+}
+.logo{
+  animation:floatLogo 3.5s ease-in-out infinite;
+}
+@keyframes floatLogo{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-8px)}
+}
+.btn{
+  transition:.25s ease;
+}
+.btn:hover,button:hover{
+  transform:translateY(-2px);
+  filter:brightness(1.08);
+}
+.public-highlights{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+  margin-top:22px;
+}
+.public-highlight{
+  background:rgba(255,255,255,.14);
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:20px;
+  padding:14px;
+  font-weight:bold;
+  color:#e0f2fe;
+}
+.pro-section{
+  background:rgba(255,255,255,.06);
+  border-top:1px solid rgba(255,255,255,.08);
+}
+.pro-card{
+  position:relative;
+  overflow:hidden;
+}
+.pro-card:before{
+  content:"";
+  position:absolute;
+  width:160px;height:160px;
+  right:-70px;top:-70px;
+  background:#38bdf833;
+  border-radius:50%;
+  filter:blur(8px);
+}
+.form-title{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:12px;
+}
+.form-title .icon{
+  width:48px;height:48px;border-radius:16px;
+  background:linear-gradient(135deg,#0ea5e9,#7c3aed);
+  display:flex;align-items:center;justify-content:center;
+  color:white;font-size:24px;
+  box-shadow:0 10px 24px #0ea5e944;
+}
+.pro-input-group{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+input:focus,select:focus,textarea:focus{
+  outline:none!important;
+  border-color:#0ea5e9!important;
+  box-shadow:0 0 0 4px #38bdf833!important;
+}
+.counter{
+  box-shadow:0 12px 28px #0003!important;
+  border:1px solid #dbeafe;
+  transition:.25s ease;
+}
+.counter:hover{transform:translateY(-4px)}
+.promise{
+  border:1px solid #67e8f9;
+}
+.service-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+}
+.service-card{
+  background:linear-gradient(180deg,#ffffff16,#ffffff08);
+  border:1px solid #38bdf844;
+  border-radius:24px;
+  padding:20px;
+  text-align:center;
+  box-shadow:0 10px 28px #0003;
+}
+.service-card .big{
+  font-size:38px;
+  margin-bottom:8px;
+}
+.service-card h3{margin:6px 0;color:#fef3c7}
+.cta-banner{
+  background:linear-gradient(135deg,#0b4da2,#06b6d4,#16a34a);
+  border-radius:30px;
+  padding:28px;
+  text-align:center;
+  box-shadow:0 18px 45px #0005;
+}
+.cta-banner h2{font-size:32px;margin:0 0 10px}
+.nav{
+  box-shadow:0 8px 26px #0006;
+}
+.nav a:hover{
+  background:#0ea5e9;
+}
+.float-wa{
+  animation:pulseWa 1.8s infinite;
+}
+@keyframes pulseWa{
+  0%{box-shadow:0 0 0 0 #25D36688}
+  70%{box-shadow:0 0 0 18px #25D36600}
+  100%{box-shadow:0 0 0 0 #25D36600}
+}
+@media(max-width:850px){
+  .hero-box{padding:24px 14px}
+  .hero h1{font-size:30px!important}
+  .hero h2{font-size:18px!important}
+  .public-highlights,.service-grid,.pro-input-group{grid-template-columns:1fr}
+}
+
+
+/* ===== AI PRAYER ASSISTANT UPGRADE ===== */
+.ai-box{
+  background:linear-gradient(135deg,#111827,#0b4da2,#075985);
+  border:1px solid #67e8f9;
+  border-radius:28px;
+  padding:24px;
+  box-shadow:0 18px 45px #0006;
+}
+.ai-result{
+  background:white;
+  color:#111827;
+  border-radius:22px;
+  padding:18px;
+  margin-top:14px;
+  display:none;
+  line-height:1.65;
+}
+.ai-result h3{color:#0b4da2;margin-top:0}
+.ai-actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:12px;
+}
+.ai-chip{
+  display:inline-block;
+  background:#e0f2fe;
+  color:#075985;
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:bold;
+  margin:4px;
+}
+@media(max-width:850px){.ai-actions{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
@@ -249,6 +446,12 @@ textarea{min-height:100px}
     <h1>HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES</h1>
     <h2>Global Prayer • Healing • Deliverance • Fellowship</h2>
     <p>Jesus loves you. Submit your prayer request, join our prayer family, watch sermons, and receive daily promise word.</p>
+    <div class="public-highlights">
+      <div class="public-highlight">🙏 24/7 Prayer Support</div>
+      <div class="public-highlight">📖 Daily Promise Word</div>
+      <div class="public-highlight">📺 Sermons & Teachings</div>
+      <div class="public-highlight">🌎 Global Believers</div>
+    </div>
     <div class="btns">
       <a href="#register" class="btn">🌍 Register Now</a>
       <a href="#prayer" class="btn green">🙏 Prayer Request</a>
@@ -259,7 +462,7 @@ textarea{min-height:100px}
 </section>
 
 <div class="nav">
-  <a href="#home">Home</a><a href="#register">Register</a><a href="#prayer">Prayer</a><a href="#promise">Promise</a><a href="#sermons">Sermons</a><a href="#testimony">Testimony</a><a href="#contact">Contact</a><a href="#admin">Admin</a>
+  <a href="#home">Home</a><a href="#services">Services</a><a href="#register">Register</a><a href="#ai-prayer">AI Prayer</a><a href="#prayer">Prayer</a><a href="#promise">Promise</a><a href="#sermons">Sermons</a><a href="#testimony">Testimony</a><a href="#contact">Contact</a><a href="#admin">Admin</a>
 </div>
 
 <section class="section">
@@ -273,14 +476,43 @@ textarea{min-height:100px}
   </div>
 </section>
 
+
+<section class="section pro-section" id="services">
+  <div class="wrap">
+    <div class="title">
+      <h2>🔥 Ministry Services</h2>
+      <p>HFGM public page helps people connect quickly for prayer and ministry support.</p>
+    </div>
+    <div class="service-grid">
+      <div class="service-card">
+        <div class="big">🙏</div>
+        <h3>Prayer Support</h3>
+        <p>Submit prayer requests and receive WhatsApp follow-up from ministry team.</p>
+      </div>
+      <div class="service-card">
+        <div class="big">🕊️</div>
+        <h3>Healing & Deliverance</h3>
+        <p>Special prayer support for family, healing, deliverance and breakthrough.</p>
+      </div>
+      <div class="service-card">
+        <div class="big">📖</div>
+        <h3>Daily Word</h3>
+        <p>Telugu and English promise word to strengthen your faith daily.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="section" id="register">
   <div class="wrap">
     <div class="title"><h2>🌍 Join HFGM Global Believers Family</h2><p>Register and receive prayer support.</p></div>
     <div class="grid">
-      <div class="card light">
-        <h2>Public Registration</h2>
-        <input id="regName" placeholder="Full Name">
-        <input id="regAge" type="number" placeholder="Age">
+      <div class="card light pro-card">
+        <div class="form-title"><div class="icon">🌍</div><h2>Public Registration</h2></div>
+        <div class="pro-input-group">
+          <input id="regName" placeholder="Full Name">
+          <input id="regAge" type="number" placeholder="Age">
+        </div>
         <select id="regType"><option>New Believer</option><option>Church Member</option><option>Prayer Partner</option><option>Volunteer</option><option>Sponsor / Donor</option><option>Pastor / Leader</option></select>
         <select id="regCountry" onchange="setCode()"><option value="India" data-code="91">India (+91)</option><option value="United States" data-code="1">United States (+1)</option><option value="United Kingdom" data-code="44">United Kingdom (+44)</option><option value="Canada" data-code="1">Canada (+1)</option><option value="Australia" data-code="61">Australia (+61)</option><option value="UAE" data-code="971">UAE (+971)</option><option value="Other" data-code="">Other</option></select>
         <div style="display:grid;grid-template-columns:90px 1fr;gap:8px"><input id="regCode" value="91" placeholder="+91"><input id="regPhone" placeholder="WhatsApp Number"></div>
@@ -300,11 +532,46 @@ textarea{min-height:100px}
   </div>
 </section>
 
+
+<section class="section pro-section" id="ai-prayer">
+  <div class="wrap">
+    <div class="title">
+      <h2>🤖 AI Prayer Assistant</h2>
+      <p>Prayer request type cheyandi — Telugu prayer, Bible verse, encouragement, WhatsApp message automatic ga ready avuthundi.</p>
+    </div>
+
+    <div class="grid">
+      <div class="ai-box">
+        <h2>🙏 Write Your Prayer Need</h2>
+        <select id="aiPrayerType">
+          <option>Family Prayer</option>
+          <option>Healing Prayer</option>
+          <option>Deliverance Prayer</option>
+          <option>Job / Financial Breakthrough</option>
+          <option>Children / Education</option>
+          <option>Marriage / Family Peace</option>
+          <option>Emergency Prayer</option>
+        </select>
+        <input id="aiName" placeholder="Name optional">
+        <textarea id="aiNeed" placeholder="Example: maa family kosam prayer kavali / health problem / job problem"></textarea>
+        <button onclick="generateAIPrayer()" class="gold">Generate AI Prayer</button>
+        <div class="ai-actions">
+          <button onclick="copyAIPrayer()" class="green">Copy Message</button>
+          <button onclick="openAIWhatsApp()" class="purple">Send to WhatsApp</button>
+        </div>
+      </div>
+
+      <div id="aiResult" class="ai-result"></div>
+    </div>
+  </div>
+</section>
+
 <section class="section" id="prayer">
   <div class="wrap">
     <div class="title"><h2>🙏 Submit Prayer Request</h2><p>Our team will pray for you.</p></div>
     <div class="grid">
-      <div class="card light">
+      <div class="card light pro-card">
+        <div class="form-title"><div class="icon">🙏</div><h2>Prayer Request Form</h2></div>
         <input id="prayName" placeholder="Your Name"><input id="prayPhone" placeholder="WhatsApp Number"><input id="prayPlace" placeholder="Village / Country">
         <select id="prayType"><option>Family Prayer</option><option>Healing Prayer</option><option>Deliverance Prayer</option><option>Job / Financial Breakthrough</option><option>Emergency Prayer</option></select>
         <textarea id="prayText" placeholder="Write your prayer request"></textarea><button class="green" onclick="savePrayer()">Submit Prayer</button><div id="praySuccess" class="success">Prayer request submitted 🙏</div>
@@ -321,6 +588,20 @@ textarea{min-height:100px}
 <section class="section" id="testimony">
   <div class="wrap"><div class="title"><h2>✨ Share Your Testimony</h2><p>Let others know what God has done.</p></div>
     <div class="grid"><div class="card light"><input id="testName" placeholder="Name"><input id="testPlace" placeholder="Place / Country"><textarea id="testText" placeholder="Your testimony"></textarea><button class="purple" onclick="saveTestimony()">Submit Testimony</button><div id="testSuccess" class="success">Testimony submitted ✨</div></div><div class="card"><h2>Recent Testimonies</h2><div class="wall" id="testimonyWall"></div></div></div>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="wrap">
+    <div class="cta-banner">
+      <h2>Need Prayer Today?</h2>
+      <p>Click WhatsApp prayer support and our ministry team will pray for you.</p>
+      <div class="btns">
+        <a class="btn green" target="_blank" href="https://wa.me/918341023058?text=Praise%20the%20Lord%20HFGM%2C%20I%20need%20prayer%20support">📲 WhatsApp Prayer Now</a>
+        <a class="btn gold" href="#register">🌍 Join HFGM Family</a>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -638,6 +919,77 @@ window.downloadBackup=function(){
   a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:"application/json"}));
   a.download="hfgm-firebase-public-admin-backup.json";
   a.click();
+}
+
+
+let lastAIPrayerMessage="";
+
+window.generateAIPrayer=function(){
+  const type=$("aiPrayerType").value;
+  const name=($("aiName").value||"Beloved").trim();
+  const need=($("aiNeed").value||"").trim();
+
+  if(!need){
+    alert("Prayer need type cheyandi");
+    return;
+  }
+
+  const verses={
+    "Family Prayer":{ref:"Joshua 24:15", en:"As for me and my house, we will serve the Lord.", te:"నేనును నా ఇంటివారమును యెహోవాను సేవించెదము."},
+    "Healing Prayer":{ref:"Jeremiah 30:17", en:"I will restore health to you.", te:"నేను నీకు ఆరోగ్యము పునరుద్ధరించెదను."},
+    "Deliverance Prayer":{ref:"Psalm 34:17", en:"The Lord delivers them out of all their troubles.", te:"యెహోవా వారి శ్రమలన్నిటి నుండి విడిపించును."},
+    "Job / Financial Breakthrough":{ref:"Philippians 4:19", en:"God shall supply all your need.", te:"దేవుడు మీ ప్రతి అవసరమును తీర్చును."},
+    "Children / Education":{ref:"Isaiah 54:13", en:"All your children shall be taught by the Lord.", te:"నీ పిల్లలందరు యెహోవాచేత బోధింపబడుదురు."},
+    "Marriage / Family Peace":{ref:"Colossians 3:14", en:"Put on love, which binds everything together.", te:"ప్రేమను ధరించుకొనుడి; అది సంపూర్ణతకు బంధము."},
+    "Emergency Prayer":{ref:"Psalm 46:1", en:"God is our refuge and strength.", te:"దేవుడు మనకు ఆశ్రయమును బలమును."}
+  };
+
+  const v=verses[type] || verses["Family Prayer"];
+
+  lastAIPrayerMessage =
+`🕊️ HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES
+
+Praise the Lord ${name} 🙏
+
+We received your prayer request:
+"${need}"
+
+📖 Promise Word:
+${v.en}
+${v.te}
+Reference: ${v.ref}
+
+🙏 Prayer:
+ప్రభువైన యేసయ్యా, ${name} గారి అవసరాన్ని నీ సన్నిధిలో ఉంచుతున్నాము. వారి జీవితంలో నీ శాంతి, స్వస్థత, విడుదల, ఆశీర్వాదం కలుగజేయుము. వారి కుటుంబాన్ని కాపాడుము. వారి బాధను ఆనందంగా మార్చుము. విశ్వాసంలో బలపరచుము. యేసు నామములో ప్రార్థిస్తున్నాము. ఆమేన్.
+
+💙 Encouragement:
+Do not fear. God is with you. HFGM prayer team is praying for you and your family.
+
+God bless you 🙏`;
+
+  $("aiResult").style.display="block";
+  $("aiResult").innerHTML=`
+    <h3>🤖 AI Prayer Message Ready</h3>
+    <span class="ai-chip">${type}</span>
+    <span class="ai-chip">${v.ref}</span>
+    <p><b>Promise:</b> ${v.en}</p>
+    <p><b>వాగ్దానం:</b> ${v.te}</p>
+    <hr>
+    <p><b>Prayer:</b><br>ప్రభువైన యేసయ్యా, ${escapeHtml(name)} గారి అవసరాన్ని నీ సన్నిధిలో ఉంచుతున్నాము. వారి జీవితంలో నీ శాంతి, స్వస్థత, విడుదల, ఆశీర్వాదం కలుగజేయుము. వారి కుటుంబాన్ని కాపాడుము. వారి బాధను ఆనందంగా మార్చుము. విశ్వాసంలో బలపరచుము. యేసు నామములో ప్రార్థిస్తున్నాము. ఆమేన్.</p>
+    <p><b>WhatsApp Ready Message:</b></p>
+    <textarea readonly style="min-height:180px">${lastAIPrayerMessage}</textarea>
+  `;
+}
+
+window.copyAIPrayer=function(){
+  if(!lastAIPrayerMessage){alert("First generate prayer");return}
+  navigator.clipboard?.writeText(lastAIPrayerMessage);
+  alert("AI prayer message copied ✅");
+}
+
+window.openAIWhatsApp=function(){
+  if(!lastAIPrayerMessage){alert("First generate prayer");return}
+  window.open("https://wa.me/918341023058?text="+encodeURIComponent(lastAIPrayerMessage),"_blank");
 }
 
 setCode();
