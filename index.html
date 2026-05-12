@@ -473,9 +473,93 @@ input:focus,select:focus,textarea:focus{
   color:white;
 }
 
+
+/* ===== AI SERMON GENERATOR UPGRADE ===== */
+.sermon-ai{
+  background:linear-gradient(135deg,#1e1b4b,#0b4da2,#0f766e);
+  border:1px solid #67e8f9;
+  border-radius:28px;
+  padding:24px;
+  box-shadow:0 18px 45px #0006;
+}
+.sermon-output{
+  background:white;
+  color:#111827;
+  border-radius:22px;
+  padding:18px;
+  margin-top:14px;
+  display:none;
+  line-height:1.7;
+}
+.sermon-output h3{color:#0b4da2;margin-top:0}
+.sermon-output textarea{
+  min-height:280px;
+  font-size:14px;
+  line-height:1.6;
+}
+.sermon-actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:12px;
+}
+@media(max-width:850px){.sermon-actions{grid-template-columns:1fr}}
+
+
+/* ===== GLOBAL MAP + PRAYER ROOM + AI BIBLE + MULTI LANGUAGE ===== */
+.lang-switcher{position:fixed;top:72px;right:14px;z-index:999;background:white;color:#0b4da2;border-radius:18px;padding:8px;box-shadow:0 10px 28px #0005}
+.lang-switcher select{width:auto;margin:0;padding:8px 10px;border-radius:12px}
+.global-map-box,.prayer-room,.ai-bible{border-radius:30px;padding:24px;box-shadow:0 18px 50px #0006}
+.global-map-box{background:linear-gradient(135deg,#020617,#0b4da2,#0f766e);border:1px solid #67e8f9}
+.map-visual{min-height:320px;border-radius:26px;background:radial-gradient(circle at 24% 48%,#22c55e 0 8px,transparent 9px),radial-gradient(circle at 48% 42%,#facc15 0 8px,transparent 9px),radial-gradient(circle at 70% 35%,#38bdf8 0 8px,transparent 9px),radial-gradient(circle at 78% 62%,#f97316 0 8px,transparent 9px),radial-gradient(circle at 32% 68%,#a855f7 0 8px,transparent 9px),linear-gradient(135deg,#0f172a,#075985);position:relative;overflow:hidden;border:1px solid #ffffff22}
+.map-visual:before{content:"🌍";position:absolute;font-size:150px;opacity:.16;left:50%;top:50%;transform:translate(-50%,-50%)}
+.map-pulse{position:absolute;width:18px;height:18px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 0 #22c55e99;animation:pulseMap 2s infinite}
+.p1{left:24%;top:48%}.p2{left:48%;top:42%;background:#facc15}.p3{left:70%;top:35%;background:#38bdf8}.p4{left:78%;top:62%;background:#f97316}.p5{left:32%;top:68%;background:#a855f7}
+@keyframes pulseMap{70%{box-shadow:0 0 0 22px transparent}}
+.country-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:14px}
+.country-pill{background:white;color:#0b4da2;border-radius:16px;padding:12px;text-align:center;font-weight:bold}
+.prayer-room{background:linear-gradient(135deg,#1e1b4b,#581c87,#0b4da2);border:1px solid #c084fc}
+.prayer-clock{font-size:48px;font-weight:bold;text-align:center;color:#fef3c7;text-shadow:0 0 18px #facc15aa;margin:12px 0}
+.prayer-room-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.prayer-room-card{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:16px;text-align:center}
+.ai-bible{background:linear-gradient(135deg,#082f49,#0b4da2,#111827);border:1px solid #67e8f9}
+.ai-answer{background:white;color:#111827;border-radius:22px;padding:18px;margin-top:14px;display:none;line-height:1.7}
+.ai-answer h3{color:#0b4da2;margin-top:0}
+.quick-questions{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.quick-questions button{width:auto;padding:9px 12px;border-radius:20px;background:#e0f2fe;color:#075985}
+@media(max-width:850px){.prayer-room-grid{grid-template-columns:1fr}.prayer-clock{font-size:34px}.lang-switcher{top:auto;bottom:88px;right:14px}}
+
+
+.photo-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+.photo-box{
+  background:#f8fafc;
+  border:1px dashed #0ea5e9;
+  border-radius:16px;
+  padding:10px;
+}
+.photo-box label{
+  display:block;
+  color:#0b4da2;
+  font-weight:bold;
+  margin-bottom:4px;
+}
+@media(max-width:850px){.photo-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
+
+<div class="lang-switcher">
+  <select id="langSelect" onchange="changeLanguage()">
+    <option value="en">English</option>
+    <option value="te">తెలుగు</option>
+    <option value="hi">हिंदी</option>
+  </select>
+</div>
+
 <a class="float-wa" target="_blank" href="https://wa.me/918341023058?text=Praise%20the%20Lord%20HFGM%2C%20I%20need%20prayer%20support">💬</a>
 
 <div id="idCardModal">
@@ -509,7 +593,7 @@ input:focus,select:focus,textarea:focus{
 </section>
 
 <div class="nav">
-  <a href="#home">Home</a><a href="#services">Services</a><a href="#register">Register</a><a href="#ai-prayer">AI Prayer</a><a href="#prayer">Prayer</a><a href="#promise">Promise</a><a href="#sermons">Sermons</a><a href="#testimony">Testimony</a><a href="#contact">Contact</a><a href="#admin">Admin</a>
+  <a href="#home">Home</a><a href="#services">Services</a><a href="#global-map">Global Map</a><a href="#prayer-room">Prayer Room</a><a href="#ai-bible">AI Bible</a><a href="#register">Register</a><a href="#ai-sermon">AI Sermon</a><a href="#ai-prayer">AI Prayer</a><a href="#prayer">Prayer</a><a href="#promise">Promise</a><a href="#sermons">Sermons</a><a href="#testimony">Testimony</a><a href="#contact">Contact</a><a href="#admin">Admin</a>
 </div>
 
 <section class="section">
@@ -550,6 +634,71 @@ input:focus,select:focus,textarea:focus{
   </div>
 </section>
 
+
+<section class="section pro-section" id="global-map">
+  <div class="wrap">
+    <div class="title">
+      <h2 data-i18n="globalMapTitle">🌎 Live Global Ministry Map</h2>
+      <p data-i18n="globalMapSub">See HFGM believers growing across countries and prayer regions.</p>
+    </div>
+    <div class="global-map-box">
+      <div class="map-visual">
+        <div class="map-pulse p1"></div><div class="map-pulse p2"></div><div class="map-pulse p3"></div><div class="map-pulse p4"></div><div class="map-pulse p5"></div>
+      </div>
+      <div class="country-list" id="countryList"></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="prayer-room">
+  <div class="wrap">
+    <div class="title">
+      <h2 data-i18n="prayerRoomTitle">🛐 24/7 Prayer Room</h2>
+      <p data-i18n="prayerRoomSub">Join prayer anytime. HFGM prayer room is always open.</p>
+    </div>
+    <div class="prayer-room">
+      <h2 style="text-align:center">🙏 HFGM Prayer Watch</h2>
+      <div class="prayer-clock" id="prayerClock">00:00:00</div>
+      <div class="prayer-room-grid">
+        <div class="prayer-room-card"><h3>🌅 Morning Prayer</h3><p>5:00 AM - 6:00 AM</p></div>
+        <div class="prayer-room-card"><h3>🌙 Night Prayer</h3><p>9:00 PM - 10:00 PM</p></div>
+        <div class="prayer-room-card"><h3>🔥 Emergency Prayer</h3><p>Anytime WhatsApp Support</p></div>
+      </div>
+      <div class="btns">
+        <a class="btn green" target="_blank" href="https://wa.me/918341023058?text=Praise%20the%20Lord%20HFGM%2C%20I%20want%20to%20join%2024%2F7%20Prayer%20Room">Join Prayer Room</a>
+        <a class="btn gold" href="#prayer">Submit Prayer Request</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section pro-section" id="ai-bible">
+  <div class="wrap">
+    <div class="title">
+      <h2 data-i18n="aiBibleTitle">🤖 AI Bible Assistant</h2>
+      <p data-i18n="aiBibleSub">Ask Bible questions and get simple Telugu/English/Hindi guidance with verses.</p>
+    </div>
+    <div class="grid">
+      <div class="ai-bible">
+        <h2>📖 Ask Bible Question</h2>
+        <div class="quick-questions">
+          <button onclick="setBibleQ('Faith ante enti?')">Faith</button>
+          <button onclick="setBibleQ('Prayer ela cheyali?')">Prayer</button>
+          <button onclick="setBibleQ('Fear vachinappudu Bible verse?')">Fear</button>
+          <button onclick="setBibleQ('Family peace kosam verse?')">Family</button>
+        </div>
+        <textarea id="bibleQuestion" placeholder="Ask your Bible question..."></textarea>
+        <button onclick="askBibleAssistant()" class="gold">Ask AI Bible Assistant</button>
+        <div class="sermon-actions">
+          <button onclick="copyBibleAnswer()" class="green">Copy Answer</button>
+          <button onclick="shareBibleAnswer()" class="purple">Share WhatsApp</button>
+        </div>
+      </div>
+      <div id="bibleAnswer" class="ai-answer"></div>
+    </div>
+  </div>
+</section>
+
 <section class="section" id="register">
   <div class="wrap">
     <div class="title"><h2>🌍 Join HFGM Global Believers Family</h2><p>Register and receive prayer support.</p></div>
@@ -564,8 +713,33 @@ input:focus,select:focus,textarea:focus{
         <select id="regCountry" onchange="setCode()"><option value="India" data-code="91">India (+91)</option><option value="United States" data-code="1">United States (+1)</option><option value="United Kingdom" data-code="44">United Kingdom (+44)</option><option value="Canada" data-code="1">Canada (+1)</option><option value="Australia" data-code="61">Australia (+61)</option><option value="UAE" data-code="971">UAE (+971)</option><option value="Other" data-code="">Other</option></select>
         <div style="display:grid;grid-template-columns:90px 1fr;gap:8px"><input id="regCode" value="91" placeholder="+91"><input id="regPhone" placeholder="WhatsApp Number"></div>
         <select id="regState"><option value="">Select State</option><option>Andhra Pradesh</option><option>Telangana</option><option>Tamil Nadu</option><option>Karnataka</option><option>Kerala</option><option>Other</option></select>
-        <input id="regDistrict" placeholder="District">
+        <select id="regDistrict">
+          <option value="">Select District</option>
+          <option>West Godavari</option>
+          <option>East Godavari</option>
+          <option>Eluru</option>
+          <option>Krishna</option>
+          <option>NTR</option>
+          <option>Guntur</option>
+          <option>Palnadu</option>
+          <option>Visakhapatnam</option>
+          <option>Kakinada</option>
+          <option>Konaseema</option>
+          <option>Hyderabad</option>
+          <option>Ranga Reddy</option>
+          <option>Other</option>
+        </select>
         <input id="regCity" placeholder="Village / City">
+        <div class="photo-grid">
+          <div class="photo-box">
+            <label>📷 Take Selfie</label>
+            <input id="regSelfie" type="file" accept="image/*" capture="user">
+          </div>
+          <div class="photo-box">
+            <label>🖼️ Choose File</label>
+            <input id="regPhoto" type="file" accept="image/*">
+          </div>
+        </div>
         <input id="regEmail" placeholder="Email optional">
         <textarea id="regPrayer" placeholder="Prayer request / message"></textarea>
         <button class="green" onclick="saveRegistration()">Submit Registration</button>
@@ -579,6 +753,55 @@ input:focus,select:focus,textarea:focus{
   </div>
 </section>
 
+
+
+<section class="section pro-section" id="ai-sermon">
+  <div class="wrap">
+    <div class="title">
+      <h2>🎙️ AI Telugu Sermon Generator</h2>
+      <p>Topic select/type cheyandi — Telugu sermon, Bible references, emotional intro, warning and blessing ending ready.</p>
+    </div>
+
+    <div class="grid">
+      <div class="sermon-ai">
+        <h2>📖 Sermon Details</h2>
+        <select id="sermonTopicSelect" onchange="fillSermonTopic()">
+          <option value="">Select Topic / Topic Choose</option>
+          <option>Blessing</option>
+          <option>Faith</option>
+          <option>Prayer</option>
+          <option>Healing</option>
+          <option>Deliverance</option>
+          <option>Family Peace</option>
+          <option>Repentance</option>
+          <option>Holy Spirit</option>
+          <option>Breakthrough</option>
+        </select>
+        <input id="sermonTopic" placeholder="Or type sermon topic">
+        <select id="sermonDuration">
+          <option value="10">10 Minutes</option>
+          <option value="20">20 Minutes</option>
+          <option value="30">30 Minutes</option>
+          <option value="45">45 Minutes</option>
+        </select>
+        <select id="sermonTone">
+          <option>Emotional Blessing</option>
+          <option>Warning + Blessing</option>
+          <option>Deep Teaching</option>
+          <option>Evangelism Message</option>
+          <option>Prayer Meeting Message</option>
+        </select>
+        <button onclick="generateSermon()" class="gold">Generate Telugu Sermon</button>
+        <div class="sermon-actions">
+          <button onclick="copySermon()" class="green">Copy Sermon</button>
+          <button onclick="shareSermonWhatsApp()" class="purple">Share WhatsApp</button>
+        </div>
+      </div>
+
+      <div id="sermonOutput" class="sermon-output"></div>
+    </div>
+  </div>
+</section>
 
 <section class="section pro-section" id="ai-prayer">
   <div class="wrap">
@@ -744,16 +967,42 @@ function qrUrl(name,phone){return `https://api.qrserver.com/v1/create-qr-code/?s
 
 window.setCode=setCode;
 
+
+async function resizePublicImage(file){
+  return new Promise(resolve=>{
+    if(!file){resolve("");return}
+    const reader=new FileReader();
+    reader.onload=e=>{
+      const img=new Image();
+      img.onload=()=>{
+        const canvas=document.createElement("canvas");
+        const max=450;
+        let w=img.width,h=img.height;
+        if(w>h){if(w>max){h=Math.round(h*max/w);w=max}}
+        else{if(h>max){w=Math.round(w*max/h);h=max}}
+        canvas.width=w;canvas.height=h;
+        canvas.getContext("2d").drawImage(img,0,0,w,h);
+        resolve(canvas.toDataURL("image/jpeg",0.72));
+      };
+      img.src=e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
 window.saveRegistration=async function(){
   const name=$("regName").value.trim();
   const phone=fullPhone();
   if(!name || phone.length<10){alert("Name and valid WhatsApp number required");return}
+  const selectedPhoto = ($("regSelfie")?.files[0]) || ($("regPhoto")?.files[0]);
+  const photo = await resizePublicImage(selectedPhoto);
   await addDoc(collection(db,"global_believers"),{
     name, age:$("regAge").value, type:$("regType").value, country:$("regCountry").value, state:$("regState").value,
     district:$("regDistrict").value, city:$("regCity").value, phone, email:$("regEmail").value, prayer:$("regPrayer").value,
+    photo,
     status:"New", source:"Public Page", createdAt:new Date().toISOString()
   });
-  ["regName","regAge","regDistrict","regCity","regPhone","regEmail","regPrayer"].forEach(x=>$(x).value="");
+  ["regName","regAge","regDistrict","regCity","regPhone","regEmail","regPrayer","regSelfie","regPhoto"].forEach(x=>{ if($(x)) $(x).value=""; });
   $("regSuccess").style.display="block";
   await renderPublicStats();
 }
@@ -981,6 +1230,225 @@ window.downloadBackup=function(){
 }
 
 
+
+
+let lastBibleAnswer="";
+
+const translations={
+  en:{
+    globalMapTitle:"🌎 Live Global Ministry Map",
+    globalMapSub:"See HFGM believers growing across countries and prayer regions.",
+    prayerRoomTitle:"🛐 24/7 Prayer Room",
+    prayerRoomSub:"Join prayer anytime. HFGM prayer room is always open.",
+    aiBibleTitle:"🤖 AI Bible Assistant",
+    aiBibleSub:"Ask Bible questions and get simple Telugu/English/Hindi guidance with verses."
+  },
+  te:{
+    globalMapTitle:"🌎 లైవ్ గ్లోబల్ మినిస్ట్రీ మ్యాప్",
+    globalMapSub:"దేశాల వారీగా HFGM విశ్వాసుల పెరుగుదలను చూడండి.",
+    prayerRoomTitle:"🛐 24/7 ప్రార్థనా గది",
+    prayerRoomSub:"ఎప్పుడైనా ప్రార్థనలో చేరండి. HFGM prayer room ఎల్లప్పుడూ open.",
+    aiBibleTitle:"🤖 AI బైబిల్ అసిస్టెంట్",
+    aiBibleSub:"బైబిల్ ప్రశ్నలు అడగండి — వాక్యాలతో సులభమైన జవాబు పొందండి."
+  },
+  hi:{
+    globalMapTitle:"🌎 लाइव ग्लोबल मिनिस्ट्री मैप",
+    globalMapSub:"देशों के अनुसार HFGM believers growth देखें.",
+    prayerRoomTitle:"🛐 24/7 Prayer Room",
+    prayerRoomSub:"कभी भी prayer में join करें.",
+    aiBibleTitle:"🤖 AI Bible Assistant",
+    aiBibleSub:"Bible questions पूछें और verses के साथ simple answer पाएं."
+  }
+};
+
+window.changeLanguage=function(){
+  const lang=$("langSelect").value;
+  document.querySelectorAll("[data-i18n]").forEach(el=>{
+    const key=el.getAttribute("data-i18n");
+    if(translations[lang] && translations[lang][key]) el.textContent=translations[lang][key];
+  });
+}
+
+function updatePrayerClock(){
+  const now=new Date();
+  const hh=String(now.getHours()).padStart(2,"0");
+  const mm=String(now.getMinutes()).padStart(2,"0");
+  const ss=String(now.getSeconds()).padStart(2,"0");
+  if($("prayerClock")) $("prayerClock").innerText=`${hh}:${mm}:${ss}`;
+}
+setInterval(updatePrayerClock,1000);
+
+async function renderGlobalMap(){
+  try{
+    const b=await getAll("global_believers").catch(()=>[]);
+    const m=await getAll("members").catch(()=>[]);
+    const all=[...b,...m.map(x=>({...x,country:x.country||"India"}))];
+    const map={};
+    all.forEach(x=>{
+      const c=x.country||"India";
+      map[c]=(map[c]||0)+1;
+    });
+    const countries=Object.keys(map);
+    if($("countryList")){
+      $("countryList").innerHTML=countries.length?countries.map(c=>`<div class="country-pill">🌍 ${esc(c)}<br><b>${map[c]}</b></div>`).join(""):`<div class="country-pill">No country data</div>`;
+    }
+  }catch(e){}
+}
+
+window.setBibleQ=function(q){$("bibleQuestion").value=q;}
+
+window.askBibleAssistant=function(){
+  const q=($("bibleQuestion").value||"").trim();
+  if(!q){alert("Bible question type cheyandi");return}
+  let topic="general";
+  const lower=q.toLowerCase();
+  if(lower.includes("faith")||lower.includes("విశ్వాస")||lower.includes("viswas")) topic="faith";
+  if(lower.includes("prayer")||lower.includes("ప్రార్థ")||lower.includes("pray")) topic="prayer";
+  if(lower.includes("fear")||lower.includes("భయ")) topic="fear";
+  if(lower.includes("family")||lower.includes("కుటుంబ")) topic="family";
+
+  const answers={
+    faith:{ref:"Hebrews 11:1",en:"Faith means trusting God even before we see the answer.",te:"విశ్వాసం అంటే సమాధానం కనిపించకముందే దేవుని నమ్మడం.",hi:"विश्वास का अर्थ है उत्तर दिखने से पहले भी परमेश्वर पर भरोसा करना."},
+    prayer:{ref:"Jeremiah 33:3",en:"Prayer is talking to God with faith, humility, and expectation.",te:"ప్రార్థన అంటే విశ్వాసంతో, వినయంతో, ఆశతో దేవునితో మాట్లాడటం.",hi:"प्रार्थना विश्वास, नम्रता और आशा के साथ परमेश्वर से बात करना है."},
+    fear:{ref:"Isaiah 41:10",en:"Do not fear. God is with you and He will strengthen you.",te:"భయపడకండి. దేవుడు మీతో ఉన్నాడు, ఆయన మీకు బలం ఇస్తాడు.",hi:"मत डरो। परमेश्वर तुम्हारे साथ है और वह तुम्हें बल देगा."},
+    family:{ref:"Joshua 24:15",en:"A family becomes strong when it chooses to serve the Lord together.",te:"కుటుంబం కలిసి ప్రభువును సేవించడానికి నిర్ణయిస్తే బలంగా నిలబడుతుంది.",hi:"जब परिवार मिलकर प्रभु की सेवा करता है, वह मजबूत बनता है."},
+    general:{ref:"Psalm 119:105",en:"God’s Word is a lamp to our feet and a light to our path.",te:"దేవుని వాక్యం మన పాదములకు దీపము, మన త్రోవకు వెలుగు.",hi:"परमेश्वर का वचन हमारे पांव के लिये दीपक और मार्ग के लिये उजियाला है."}
+  };
+  const a=answers[topic];
+  lastBibleAnswer=`🤖 AI Bible Assistant
+
+Question:
+${q}
+
+📖 Bible Reference: ${a.ref}
+
+English:
+${a.en}
+
+తెలుగు:
+${a.te}
+
+हिंदी:
+${a.hi}
+
+Prayer:
+Lord Jesus, help me understand Your Word and walk in faith. Give me wisdom, peace, and strength. Amen.
+
+HFGM Ministry`;
+
+  $("bibleAnswer").style.display="block";
+  $("bibleAnswer").innerHTML=`
+    <h3>📖 Bible Answer</h3>
+    <p><b>Reference:</b> ${a.ref}</p>
+    <p><b>English:</b> ${a.en}</p>
+    <p><b>తెలుగు:</b> ${a.te}</p>
+    <p><b>हिंदी:</b> ${a.hi}</p>
+    <textarea readonly style="min-height:180px">${lastBibleAnswer}</textarea>
+  `;
+}
+
+window.copyBibleAnswer=function(){
+  if(!lastBibleAnswer){alert("First ask question");return}
+  navigator.clipboard?.writeText(lastBibleAnswer);
+  alert("Bible answer copied ✅");
+}
+
+window.shareBibleAnswer=function(){
+  if(!lastBibleAnswer){alert("First ask question");return}
+  window.open("https://wa.me/?text="+encodeURIComponent(lastBibleAnswer),"_blank");
+}
+
+let lastSermonText="";
+
+window.fillSermonTopic=function(){
+  const v=$("sermonTopicSelect").value;
+  if(v) $("sermonTopic").value=v;
+}
+
+window.generateSermon=function(){
+  const topic=($("sermonTopic").value||"Blessing").trim();
+  const duration=$("sermonDuration").value;
+  const tone=$("sermonTone").value;
+
+  const verseMap={
+    "Blessing":["Numbers 6:24-26","Deuteronomy 28:2","Psalm 23:1"],
+    "Faith":["Hebrews 11:1","Mark 11:24","Romans 10:17"],
+    "Prayer":["Matthew 21:13","Jeremiah 33:3","1 Thessalonians 5:17"],
+    "Healing":["Jeremiah 30:17","Isaiah 53:5","Psalm 103:3"],
+    "Deliverance":["Psalm 34:17","John 8:36","Obadiah 1:17"],
+    "Family Peace":["Joshua 24:15","Psalm 128:1-4","Colossians 3:14"],
+    "Repentance":["Acts 3:19","1 John 1:9","Luke 15:7"],
+    "Holy Spirit":["Acts 1:8","John 14:26","Romans 8:14"],
+    "Breakthrough":["Micah 2:13","Isaiah 43:19","Philippians 4:13"]
+  };
+
+  const refs=verseMap[topic] || ["Isaiah 41:10","Romans 8:28","Philippians 4:13"];
+
+  lastSermonText =
+`🕊️ HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES
+
+🎙️ Telugu Sermon Topic: ${topic}
+⏱️ Duration: ${duration} Minutes
+🔥 Tone: ${tone}
+
+📖 Bible References:
+1. ${refs[0]}
+2. ${refs[1]}
+3. ${refs[2]}
+
+━━━━━━━━━━━━━━━━━━━━
+1. పరిచయం
+━━━━━━━━━━━━━━━━━━━━
+ప్రియమైన దేవుని ప్రజలారా, ఈ రోజు మనం "${topic}" అనే విషయంపై దేవుని వాక్యాన్ని ధ్యానించబోతున్నాము. మన జీవితంలో పరిస్థితులు మారిపోవచ్చు, మనుషులు మారిపోవచ్చు, కానీ దేవుని వాగ్దానం ఎప్పటికీ మారదు.
+
+━━━━━━━━━━━━━━━━━━━━
+2. ప్రధాన వాక్యము
+━━━━━━━━━━━━━━━━━━━━
+${refs[0]} ద్వారా దేవుడు మనకు ఒక గొప్ప సత్యాన్ని గుర్తు చేస్తున్నాడు. మనం దేవుని మీద విశ్వాసంతో నిలబడినప్పుడు, ఆయన మన జీవితంలో మార్గం తెరుస్తాడు.
+
+━━━━━━━━━━━━━━━━━━━━
+3. లోతైన బోధన
+━━━━━━━━━━━━━━━━━━━━
+${topic} అనేది కేవలం మాట కాదు, అది దేవునితో మన సంబంధం ద్వారా అనుభవించే ఆత్మీయ వాస్తవం. ప్రార్థన, విశ్వాసం, విధేయత, పవిత్ర జీవితం ఇవన్నీ కలిసినప్పుడు దేవుని శక్తి మన జీవితంలో పనిచేస్తుంది.
+
+━━━━━━━━━━━━━━━━━━━━
+4. హెచ్చరిక
+━━━━━━━━━━━━━━━━━━━━
+దేవుని ఆశీర్వాదం కావాలి అని కోరుకుంటూ, దేవుని వాక్యానికి దూరంగా జీవిస్తే అది ప్రమాదకరం. దేవుని సమీపంలో ఉండాలి. పాపాన్ని విడిచిపెట్టాలి. ప్రార్థనను వదలకూడదు. కుటుంబ ప్రార్థనను నిర్లక్ష్యం చేయకూడదు.
+
+━━━━━━━━━━━━━━━━━━━━
+5. ఆశీర్వాద సందేశం
+━━━━━━━━━━━━━━━━━━━━
+ఈ రోజు దేవుడు నీ కుటుంబాన్ని తాకగలడు. నీ కన్నీరు ప్రార్థనగా మారితే, నీ పరిస్థితి సాక్ష్యంగా మారుతుంది. నువ్వు విరిగిపోయిన చోట దేవుడు నిన్ను మళ్లీ నిలబెడతాడు.
+
+━━━━━━━━━━━━━━━━━━━━
+6. ముగింపు ప్రార్థన
+━━━━━━━━━━━━━━━━━━━━
+ప్రభువైన యేసయ్యా, ఈ సందేశం వినే ప్రతి కుటుంబాన్ని ఆశీర్వదించుము. వారి జీవితంలో ${topic} అనుభవం కలుగజేయుము. ప్రతి భయాన్ని తొలగించుము. ప్రతి బంధాన్ని విరిచివేయుము. స్వస్థత, విడుదల, సమాధానం, ఆశీర్వాదం అనుగ్రహించుము. యేసు క్రీస్తు నామములో ప్రార్థిస్తున్నాము. ఆమేన్.
+
+God bless you 🙏
+HFGM Prayer Team`;
+
+  $("sermonOutput").style.display="block";
+  $("sermonOutput").innerHTML=`
+    <h3>🎙️ Sermon Ready</h3>
+    <p><b>Topic:</b> ${topic}</p>
+    <p><b>References:</b> ${refs.join(", ")}</p>
+    <textarea readonly>${lastSermonText}</textarea>
+  `;
+}
+
+window.copySermon=function(){
+  if(!lastSermonText){alert("First generate sermon");return}
+  navigator.clipboard?.writeText(lastSermonText);
+  alert("Sermon copied ✅");
+}
+
+window.shareSermonWhatsApp=function(){
+  if(!lastSermonText){alert("First generate sermon");return}
+  window.open("https://wa.me/?text="+encodeURIComponent(lastSermonText),"_blank");
+}
+
 let lastAIPrayerMessage="";
 
 window.generateAIPrayer=function(){
@@ -1053,6 +1521,8 @@ window.openAIWhatsApp=function(){
 
 setCode();
 renderPromise();
+updatePrayerClock();
+renderGlobalMap();
 renderPublicStats();
 renderPrayerWall();
 renderTestimonyWall();
