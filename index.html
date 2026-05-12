@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#061b52">
-<title>HFGM Public + Admin Firebase App</title>
+<title>HFGM Public + Admin Firebase App - Prayer Number Updated</title>
 <style>
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -232,7 +232,7 @@ textarea{min-height:100px}
 </style>
 </head>
 <body>
-<a class="float-wa" target="_blank" href="https://wa.me/919848131687?text=Praise%20the%20Lord%20HFGM%2C%20I%20need%20prayer%20support">💬</a>
+<a class="float-wa" target="_blank" href="https://wa.me/918341023058?text=Praise%20the%20Lord%20HFGM%2C%20I%20need%20prayer%20support">💬</a>
 
 <div id="idCardModal">
   <div class="card light" style="max-width:520px;margin:30px auto">
@@ -324,7 +324,7 @@ textarea{min-height:100px}
   </div>
 </section>
 
-<section class="section" id="contact"><div class="wrap"><div class="title"><h2>📲 Connect With HFGM</h2><p>Need prayer support?</p></div><div class="grid"><div class="card"><h2>Prayer Support</h2><p>WhatsApp: +91 98481 31687</p><p>Location: Tadepalligudem, Andhra Pradesh, India</p><div class="btns"><a class="btn green" target="_blank" href="https://wa.me/919848131687?text=Praise%20the%20Lord%20HFGM%2C%20I%20need%20prayer">WhatsApp Prayer</a></div></div><div class="card"><h2>Sunday Service</h2><p>Join with your family for worship, word, healing and deliverance prayer.</p><p><b>Matthew 21:13</b></p></div></div></div></section>
+<section class="section" id="contact"><div class="wrap"><div class="title"><h2>📲 Connect With HFGM</h2><p>Need prayer support?</p></div><div class="grid"><div class="card"><h2>Prayer Support</h2><p>WhatsApp: +91 83410 23058</p><p>Location: Tadepalligudem, Andhra Pradesh, India</p><div class="btns"><a class="btn green" target="_blank" href="https://wa.me/918341023058?text=Praise%20the%20Lord%20HFGM%2C%20I%20need%20prayer">WhatsApp Prayer</a></div></div><div class="card"><h2>Sunday Service</h2><p>Join with your family for worship, word, healing and deliverance prayer.</p><p><b>Matthew 21:13</b></p></div></div></div></section>
 
 <section class="section" id="admin">
   <div class="wrap">
@@ -531,6 +531,7 @@ function renderAdminBelievers(){
     const phone=cleanPhone(b.phone);
     const msg=encodeURIComponent(`Praise the Lord ${b.name}, welcome to HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES. We are praying for you.`);
     const srcLabel=b.sourceCollection==="members"?"Old Member":"New/Public";
+    const memberId=b.memberId || `HFGM-${String(i+1).padStart(4,'0')}`;
     return `<div class="premium-member-card">
       <div class="member-top">
         ${b.photo?`<img class="member-photo" src="${b.photo}">`:`<div class="member-avatar">👤</div>`}
@@ -543,12 +544,12 @@ function renderAdminBelievers(){
       <div class="member-badges">
         <span class="member-badge green">${esc(b.type||"Believer")}</span>
         <span class="member-badge gold">${esc(srcLabel)}</span>
-        <span class="member-badge">#${i+1}</span>
+        <span class="member-badge">#${i+1}</span><span class="member-badge gold">${memberId}</span>
       </div>
 
       <div class="member-details">
         <p>📍 <b>Place:</b> ${esc(b.city||"")}, ${esc(b.district||"")} ${esc(b.country||"")}</p>
-        <p>📧 <b>Email:</b> ${esc(b.email||"-")}</p>
+        <p>🪪 <b>ID:</b> ${memberId}</p><p>📧 <b>Email:</b> ${esc(b.email||"-")}</p>
         <p>🙏 <b>Prayer:</b> ${esc(b.prayer||"-")}</p>
       </div>
 
@@ -649,6 +650,11 @@ if(sessionStorage.getItem("hfgm_firebase_admin")==="yes"){
   $("adminPanel").style.display="block";
   loadAdminData();
 }
+
+window.generateMemberId=function(index){
+  return `HFGM-${String(index+1).padStart(4,'0')}`;
+}
+
 </script>
 </body>
 </html>
