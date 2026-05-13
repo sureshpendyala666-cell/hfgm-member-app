@@ -426,6 +426,136 @@ input,select,textarea{width:100%;border:1px solid rgba(255,255,255,.08);border-r
   margin-top:6px;
 }
 
+
+select#nBlood{
+width:100%;
+padding:14px;
+border-radius:14px;
+background:#13294b;
+color:white;
+border:1px solid rgba(255,255,255,.08);
+font-size:15px;
+}
+
+
+.familyBox{
+  background:#1c1916;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:18px;
+  padding:14px;
+  margin-bottom:10px;
+}
+.familyHead{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  align-items:center;
+}
+.familyHead h3{color:#fff;font-size:15px;margin-bottom:3px}
+.familyHead p{color:#9a9088;font-size:12px;line-height:1.4}
+.familyTag{
+  background:rgba(201,150,46,.16);
+  color:#e8b84a;
+  padding:5px 9px;
+  border-radius:999px;
+  font-size:10px;
+  font-weight:900;
+  display:inline-block;
+  margin-top:6px;
+}
+.familyMembers{
+  margin-top:10px;
+  border-top:1px solid rgba(255,255,255,.08);
+  padding-top:8px;
+}
+.familyMemberMini{
+  display:flex;
+  justify-content:space-between;
+  color:#cbd5e1;
+  font-size:12px;
+  padding:6px 0;
+  border-bottom:1px dashed rgba(255,255,255,.06);
+}
+.familyMemberMini:last-child{border-bottom:0}
+
+
+.reportGrid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+  margin-bottom:12px;
+}
+.reportCard{
+  background:#1c1916;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:18px;
+  padding:14px;
+}
+.reportCard h3{
+  color:#e8b84a;
+  font-size:14px;
+  margin-bottom:6px;
+}
+.reportCard b{
+  display:block;
+  color:#fff;
+  font-size:26px;
+  margin-bottom:4px;
+}
+.reportCard p{
+  color:#9a9088;
+  font-size:12px;
+}
+.reportTable{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:10px;
+  font-size:12px;
+}
+.reportTable th,.reportTable td{
+  border-bottom:1px solid rgba(255,255,255,.08);
+  padding:8px 6px;
+  text-align:left;
+}
+.reportTable th{color:#e8b84a}
+.reportTable td{color:#cbd5e1}
+.reportActions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-top:10px;
+}
+@media print{
+  body *{visibility:hidden!important}
+  #reportPrintArea,#reportPrintArea *{visibility:visible!important}
+  #reportPrintArea{position:absolute;left:0;top:0;width:100%;background:white;color:#111;padding:20px}
+  #reportPrintArea table{width:100%;border-collapse:collapse}
+  #reportPrintArea th,#reportPrintArea td{border:1px solid #ddd;padding:7px;color:#111}
+}
+
+
+.prayerApprovalCard{
+background:#1c1916;
+border:1px solid rgba(255,255,255,.08);
+border-radius:18px;
+padding:14px;
+margin-bottom:10px;
+}
+.testimonyBox{
+background:rgba(58,158,100,.08);
+border:1px solid rgba(58,158,100,.2);
+border-radius:16px;
+padding:12px;
+margin-top:10px;
+}
+
+
+.broadcastCard{background:#1c1916;border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:14px;margin-bottom:10px}
+.templateBtn{background:#2a2520;color:#e8b84a;border:1px solid rgba(201,150,46,.25);border-radius:999px;padding:8px 10px;font-size:12px;font-weight:800;margin:4px;display:inline-block}
+.broadcastMember{display:flex;justify-content:space-between;gap:8px;align-items:center;background:#141210;border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:10px;margin:8px 0}
+.broadcastMember h4{color:#fff;font-size:13px}
+.broadcastMember p{color:#9a9088;font-size:11px}
+
 </style>
 </head>
 <body>
@@ -534,9 +664,40 @@ input,select,textarea{width:100%;border:1px solid rgba(255,255,255,.08);border-r
     </div>
     <textarea id="nPrayer" placeholder="Prayer / Notes"></textarea>
     <input id="nFamily" placeholder="Family Link / Family Head Name">
-    <input id="nBlood" placeholder="Blood Group e.g. O+">
+    
+<select id="nBlood">
+<option value="">Select Blood Group</option>
+<option>O+</option>
+<option>O-</option>
+<option>A+</option>
+<option>A-</option>
+<option>B+</option>
+<option>B-</option>
+<option>AB+</option>
+<option>AB-</option>
+</select>
+
     <input id="nEmergency" placeholder="Emergency Contact">
     <input id="nBranch" placeholder="Church Branch / Area" value="HFGM Tadepalligudem">
+    <select id="nFamilyType" onchange="toggleFamilyFields()">
+      <option value="single">Single Member</option>
+      <option value="head">Family Head</option>
+      <option value="member">Family Member</option>
+    </select>
+    <input id="nFamilyId" placeholder="Family ID / Family Head Phone (optional)">
+    <select id="nRelationship">
+      <option value="">Relationship</option>
+      <option>Self</option>
+      <option>Husband</option>
+      <option>Wife</option>
+      <option>Son</option>
+      <option>Daughter</option>
+      <option>Father</option>
+      <option>Mother</option>
+      <option>Brother</option>
+      <option>Sister</option>
+      <option>Other</option>
+    </select>
     <div class="photoChoice">
       <label class="photoBtn" for="nSelfie">📷 Take Selfie<small>Camera open</small></label>
       <label class="photoBtn" for="nPhoto">🖼️ Choose File<small>Gallery/File</small></label>
@@ -587,6 +748,10 @@ input,select,textarea{width:100%;border:1px solid rgba(255,255,255,.08);border-r
         <button onclick="adminPage('adminPrayer',this)">Prayer</button>
         <button onclick="adminPage('adminGiving',this)">Giving</button>
         <button onclick="adminPage('adminAttendance',this)">Attendance</button>
+        <button onclick="adminPage('adminFamily',this)">Family</button>
+        <button onclick="adminPage('adminReports',this)">Reports</button>
+        <button onclick="adminPage('adminPrayerCenter',this)">Prayer Center</button>
+        <button onclick="adminPage('adminBroadcast',this)">Broadcast</button>
         <button onclick="adminPage('adminSettings',this)">Settings</button>
       </div>
 
@@ -676,7 +841,110 @@ input,select,textarea{width:100%;border:1px solid rgba(255,255,255,.08);border-r
         </div>
       </div>
 
-      <div id="adminSettings" class="adminPage">
+      <div id="adminFamily" class="adminPage">
+        <div class="adminStatGrid">
+          <div class="adminStat"><small>Total Families</small><b id="familyTotal">0</b><span>Linked family groups</span></div>
+          <div class="adminStat"><small>Family Members</small><b id="familyMembersCount">0</b><span>Members in families</span></div>
+        </div>
+        <div class="card">
+          <h2>👨‍👩‍👧 Family Management</h2>
+          <p class="small">Same family ID tho wife/children/parents link avutharu. Member ID card lo family info kuda save avuthundi.</p>
+          <input id="familySearch" placeholder="Search family head / family ID / phone" oninput="renderFamilies()">
+          <div id="familyList"></div>
+        </div>
+      </div>
+
+      
+      <div id="adminReports" class="adminPage">
+        <div class="adminStatGrid">
+          <div class="adminStat"><small>Members</small><b id="repMembers">0</b><span>Total member records</span></div>
+          <div class="adminStat"><small>Families</small><b id="repFamilies">0</b><span>Family groups</span></div>
+          <div class="adminStat"><small>Attendance</small><b id="repAttendance">0</b><span>Attendance records</span></div>
+          <div class="adminStat"><small>Prayers</small><b id="repPrayers">0</b><span>Prayer requests</span></div>
+        </div>
+
+        <div class="card">
+          <h2>📊 Reports Center</h2>
+          <p class="small">Members, family, attendance and prayer reports download/print cheyandi.</p>
+          <div class="reportActions">
+            <button class="btn green" onclick="generatePrintableReport()">🖨️ Print Full Report</button>
+            <button class="btn purple" onclick="downloadMembersCSV()">⬇ Members CSV</button>
+            <button class="btn blue" onclick="downloadFamilyCSV()">⬇ Family CSV</button>
+            <button class="btn dark" onclick="downloadAttendanceCSV()">⬇ Attendance CSV</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>👥 Members Report Preview</h2>
+          <div id="reportMembersPreview"></div>
+        </div>
+
+        <div class="card">
+          <h2>👨‍👩‍👧 Family Report Preview</h2>
+          <div id="reportFamilyPreview"></div>
+        </div>
+
+        <div class="card">
+          <h2>✅ Attendance Report Preview</h2>
+          <div id="reportAttendancePreview"></div>
+        </div>
+      </div>
+
+      <div id="reportPrintArea" style="display:none"></div>
+
+
+<div id="adminPrayerCenter" class="adminPage">
+  <div class="adminStatGrid">
+    <div class="adminStat"><small>Total Requests</small><b id="prTotal">0</b><span>Prayer requests</span></div>
+    <div class="adminStat"><small>Pending</small><b id="prPending">0</b><span>Need response</span></div>
+    <div class="adminStat"><small>Answered</small><b id="prAnswered">0</b><span>Testimonies</span></div>
+    <div class="adminStat"><small>Published</small><b id="prPublished">0</b><span>Public testimonies</span></div>
+  </div>
+
+  <div class="card">
+    <h2>🙏 Prayer Approval Center</h2>
+    <p class="small">Prayer requests approve / answered / testimony publish cheyandi.</p>
+    <div id="prayerAdminList"></div>
+  </div>
+
+  <div class="card">
+    <h2>🌟 Public Testimonies</h2>
+    <div id="testimonyWall"></div>
+  </div>
+</div>
+
+
+<div id="adminBroadcast" class="adminPage">
+  <div class="adminStatGrid">
+    <div class="adminStat"><small>Total Members</small><b id="bcMembers">0</b><span>Available contacts</span></div>
+    <div class="adminStat"><small>With Phone</small><b id="bcPhones">0</b><span>WhatsApp/SMS ready</span></div>
+  </div>
+
+  <div class="card">
+    <h2>📢 Broadcast Center</h2>
+    <p class="small">Browser app lo auto-send possible kaadu. But one click WhatsApp/SMS/Call open avuthayi.</p>
+    <textarea id="broadcastMsg" placeholder="Type message here..." style="height:120px">Praise the Lord 🙏 HFGM Ministry update: God bless you and your family.</textarea>
+
+    <div style="margin-top:10px">
+      <span class="templateBtn" onclick="setBroadcastTemplate('prayer')">🙏 Prayer Reminder</span>
+      <span class="templateBtn" onclick="setBroadcastTemplate('event')">📅 Event Invite</span>
+      <span class="templateBtn" onclick="setBroadcastTemplate('birthday')">🎂 Birthday Blessing</span>
+      <span class="templateBtn" onclick="setBroadcastTemplate('donation')">💝 Donation Thanks</span>
+      <span class="templateBtn" onclick="setBroadcastTemplate('telugu')">తెలుగు Message</span>
+    </div>
+
+    <button class="btn green" onclick="openWhatsAppFirst()">Open WhatsApp First Member</button>
+    <button class="btn blue" onclick="copyBroadcastMessage()">Copy Message</button>
+  </div>
+
+  <div class="card">
+    <h2>👥 Member Contact Actions</h2>
+    <input id="broadcastSearch" placeholder="Search member..." oninput="renderBroadcastMembers()">
+    <div id="broadcastMembersList"></div>
+  </div>
+</div>
+
+<div id="adminSettings" class="adminPage">
         <div class="card">
           <h2>⚙ Settings</h2>
           <input id="adminMinistryName" value="Holy Spirit Fellowship Global Ministry">
@@ -776,6 +1044,9 @@ function normalize(d,source){
     prayer:first(d.prayer,d.message,d.note),
     photo:first(d.photo,d.image,d.selfie,d.profile),
     family:first(d.family,d.familyHead,d.familyName),
+    familyType:first(d.familyType,d.family_type),
+    familyId:first(d.familyId,d.familyID,d.familyCode),
+    relationship:first(d.relationship,d.relation),
     blood:first(d.blood,d.bloodGroup),
     emergency:first(d.emergency,d.emergencyContact),
     branch:first(d.branch,d.churchBranch,d.area),
@@ -843,7 +1114,7 @@ function renderAll(){
   if($("aPrayers"))$("aPrayers").innerText=prayers.length;
   if($("dashOldCount"))$("dashOldCount").innerText=oldMembers.length;
   if($("dashNewCount"))$("dashNewCount").innerText=newMembers.length + localMembers.length;
-  renderCountries(); renderMembers(); renderAdminDashboardMembers(); renderAttendance();
+  renderCountries(); renderMembers(); renderAdminDashboardMembers(); renderAttendance(); renderFamilies(); renderReports(); renderPrayerCenter(); renderBroadcastMembers();
 }
 function renderCountries(){
   const sel=$("countryFilter"); if(!sel)return;
@@ -991,6 +1262,24 @@ function fullPhone(){
   const p=cleanPhone($("nPhone").value);
   return p.startsWith(c)?p:c+p;
 }
+
+function createFamilyId(){
+  const phone=fullPhone ? fullPhone() : cleanPhone($("nPhone")?.value||"");
+  if(phone && phone.length>=4) return "FAM-"+phone.slice(-4);
+  return "FAM-"+Date.now().toString().slice(-5);
+}
+function toggleFamilyFields(){
+  const type=$("nFamilyType") ? $("nFamilyType").value : "single";
+  if($("nRelationship")){
+    $("nRelationship").value = type==="head" ? "Self" : $("nRelationship").value;
+  }
+  if(type==="head" && $("nFamilyId")){
+    $("nFamilyId").placeholder="Auto Family ID will be created";
+  }else if($("nFamilyId")){
+    $("nFamilyId").placeholder="Family ID / Family Head Phone";
+  }
+}
+
 function getFormMember(){
   const phone=fullPhone();
   const memberId=createMemberId();
@@ -1011,6 +1300,9 @@ function getFormMember(){
     cell:phone,
     prayer:$("nPrayer").value.trim(),
     family:$("nFamily") ? $("nFamily").value.trim() : "",
+    familyType:$("nFamilyType") ? $("nFamilyType").value : "single",
+    familyId:$("nFamilyId") ? ($("nFamilyId").value.trim() || createFamilyId()) : createFamilyId(),
+    relationship:$("nRelationship") ? $("nRelationship").value : "",
     blood:$("nBlood") ? $("nBlood").value.trim() : "",
     emergency:$("nEmergency") ? $("nEmergency").value.trim() : "",
     branch:$("nBranch") ? $("nBranch").value.trim() : "HFGM",
@@ -1062,7 +1354,7 @@ async function saveOldMember(){
   try{await db.collection("members").add(d);alert("Old members collection lo save ayyindi");clearAdd();await loadFirebase();show("members");}
   catch(e){alert("Old member save failed: "+e.message)}
 }
-function clearAdd(){["nName","nAge","nGender","nRole","nState","nDistrict","nCity","nPhone","nPrayer","nFamily","nBlood","nEmergency","nBranch","nPhoto","nSelfie"].forEach(function(id){if($(id))$(id).value=""}); if($("nCountry"))$("nCountry").value="India"; if($("nCode"))$("nCode").value="91"; if($("photoPreview")){$("photoPreview").src="";$("photoPreview").style.display="none";} if($("addSuccess"))$("addSuccess").style.display="none"; if($("addMemberIdBox"))$("addMemberIdBox").style.display="none";}
+function clearAdd(){["nName","nAge","nGender","nRole","nState","nDistrict","nCity","nPhone","nPrayer","nFamily","nFamilyId","nRelationship","nBlood","nEmergency","nBranch","nPhoto","nSelfie"].forEach(function(id){if($(id))$(id).value=""}); if($("nCountry"))$("nCountry").value="India"; if($("nCode"))$("nCode").value="91"; if($("photoPreview")){$("photoPreview").src="";$("photoPreview").style.display="none";} if($("addSuccess"))$("addSuccess").style.display="none"; if($("addMemberIdBox"))$("addMemberIdBox").style.display="none";}
 
 function adminLogin(){
   if($("adminUser").value.trim()==="admin" && $("adminPass").value.trim()==="1234"){isAdmin=true;sessionStorage.setItem("hfgm_admin","yes");alert("Admin login success");renderAll();}
@@ -1134,6 +1426,7 @@ function makeID(id,source){
         '<div class="idRow"><b>Place:</b> '+esc(m.city||"-")+', '+esc(m.district||"-")+'</div>'+
         '<div class="idRow"><b>Country:</b> '+esc(m.country||"-")+'</div>'+
         '<div class="idRow"><b>Branch:</b> '+esc(m.branch||"HFGM")+'</div>'+
+        '<div class="idRow"><b>Family ID:</b> '+esc(m.familyId||"-")+' &nbsp; <b>Relation:</b> '+esc(m.relationship||"-")+'</div>'+
         '<div class="idRow"><b>Blood:</b> '+esc(m.blood||"-")+' &nbsp; <b>Emergency:</b> '+esc(m.emergency||"-")+'</div>'+
         '<img class="idQr" src="'+qr+'">'+
         '<div class="idQrNote">Scan QR for Attendance / Member verification</div>'+
@@ -1153,6 +1446,124 @@ function startHFGM(){
   loadFirebase();
 }
 document.addEventListener("DOMContentLoaded",startHFGM);
+
+
+
+function csvEscape(v){
+  v = String(v ?? "");
+  if(/[",\n]/.test(v)) return '"' + v.replace(/"/g,'""') + '"';
+  return v;
+}
+function downloadCSV(filename, rows){
+  const csv = rows.map(r => r.map(csvEscape).join(",")).join("\n");
+  const blob = new Blob([csv], {type:"text/csv;charset=utf-8"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download=filename;
+  a.click();
+}
+function downloadMembersCSV(){
+  const rows=[["Member ID","Name","Phone","Role","Age","Gender","Country","State","District","City","Family ID","Relation","Blood","Emergency","Branch","Source"]];
+  members.forEach(m=>rows.push([
+    professionalMemberId ? professionalMemberId(m) : (m.uid||m.memberId||""),
+    m.name||"",m.phone||"",m.role||"",m.age||"",m.gender||"",m.country||"",m.state||"",m.district||"",m.city||"",m.familyId||"",m.relationship||"",m.blood||"",m.emergency||"",m.branch||"",m.source||""
+  ]));
+  downloadCSV("hfgm_members_report.csv",rows);
+}
+function downloadFamilyCSV(){
+  const groups=getFamilyGroups();
+  const rows=[["Family ID","Head Name","Members Count","Members"]];
+  Object.keys(groups).forEach(fid=>{
+    const list=groups[fid];
+    const head=list.find(m=>m.relationship==="Self" || m.familyType==="head") || list[0];
+    rows.push([fid,head?.name||"",list.length,list.map(m=>(m.name||"")+" ("+(m.relationship||m.role||"Member")+")").join("; ")]);
+  });
+  downloadCSV("hfgm_family_report.csv",rows);
+}
+function downloadAttendanceCSV(){
+  const rows=[["Attendance ID","Member ID","Name","Phone","Event","Date","Time"]];
+  attendanceRecords.forEach(r=>rows.push([r.id,r.memberId,r.name,r.phone,r.event,r.date,r.time]));
+  downloadCSV("hfgm_attendance_report.csv",rows);
+}
+function renderReports(){
+  if($("repMembers"))$("repMembers").innerText=members.length;
+  const groups=getFamilyGroups ? getFamilyGroups() : {};
+  if($("repFamilies"))$("repFamilies").innerText=Object.keys(groups).length;
+  if($("repAttendance"))$("repAttendance").innerText=attendanceRecords ? attendanceRecords.length : 0;
+  if($("repPrayers"))$("repPrayers").innerText=prayers ? prayers.length : 0;
+
+  if($("reportMembersPreview")){
+    $("reportMembersPreview").innerHTML='<table class="reportTable"><thead><tr><th>ID</th><th>Name</th><th>Phone</th><th>Place</th></tr></thead><tbody>'+
+      members.slice(0,10).map(m=>'<tr><td>'+esc(professionalMemberId ? professionalMemberId(m) : (m.uid||""))+'</td><td>'+esc(m.name||"")+'</td><td>'+esc(m.phone||"")+'</td><td>'+esc((m.city||"")+", "+(m.district||""))+'</td></tr>').join("")+
+      '</tbody></table>';
+  }
+
+  if($("reportFamilyPreview")){
+    const keys=Object.keys(groups).slice(0,10);
+    $("reportFamilyPreview").innerHTML='<table class="reportTable"><thead><tr><th>Family ID</th><th>Head</th><th>Members</th></tr></thead><tbody>'+
+      keys.map(fid=>{
+        const list=groups[fid];
+        const head=list.find(m=>m.relationship==="Self" || m.familyType==="head") || list[0];
+        return '<tr><td>'+esc(fid)+'</td><td>'+esc(head?.name||"")+'</td><td>'+list.length+'</td></tr>';
+      }).join("")+
+      '</tbody></table>';
+  }
+
+  if($("reportAttendancePreview")){
+    $("reportAttendancePreview").innerHTML='<table class="reportTable"><thead><tr><th>Name</th><th>Event</th><th>Date</th><th>Time</th></tr></thead><tbody>'+
+      attendanceRecords.slice(0,10).map(r=>'<tr><td>'+esc(r.name||"")+'</td><td>'+esc(r.event||"")+'</td><td>'+esc(r.date||"")+'</td><td>'+esc(r.time||"")+'</td></tr>').join("")+
+      '</tbody></table>';
+  }
+}
+function generatePrintableReport(){
+  const groups=getFamilyGroups();
+  const date=new Date().toLocaleString();
+  const html='<div style="font-family:Arial,sans-serif;color:#111">'+
+    '<h1>HFGM Ministry Report</h1><p>Generated: '+date+'</p>'+
+    '<h2>Summary</h2>'+
+    '<table><tr><th>Total Members</th><td>'+members.length+'</td></tr><tr><th>Families</th><td>'+Object.keys(groups).length+'</td></tr><tr><th>Attendance Records</th><td>'+attendanceRecords.length+'</td></tr><tr><th>Prayer Requests</th><td>'+prayers.length+'</td></tr></table>'+
+    '<h2>Members</h2><table><tr><th>ID</th><th>Name</th><th>Phone</th><th>Place</th><th>Family</th></tr>'+
+    members.map(m=>'<tr><td>'+esc(professionalMemberId ? professionalMemberId(m) : (m.uid||""))+'</td><td>'+esc(m.name||"")+'</td><td>'+esc(m.phone||"")+'</td><td>'+esc((m.city||"")+", "+(m.district||""))+'</td><td>'+esc(m.familyId||"")+'</td></tr>').join("")+
+    '</table></div>';
+  $("reportPrintArea").style.display="block";
+  $("reportPrintArea").innerHTML=html;
+  window.print();
+  setTimeout(()=>{$("reportPrintArea").style.display="none";},800);
+}
+
+
+function getFamilyGroups(){
+  const map={};
+  members.forEach(function(m){
+    const fid=m.familyId || (m.phone ? "FAM-"+String(m.phone).slice(-4) : "");
+    if(!fid)return;
+    if(!map[fid]) map[fid]=[];
+    map[fid].push(m);
+  });
+  return map;
+}
+function renderFamilies(){
+  const box=$("familyList"); if(!box)return;
+  const q=($("familySearch") ? $("familySearch").value.toLowerCase() : "");
+  const groups=getFamilyGroups();
+  const keys=Object.keys(groups);
+  if($("familyTotal"))$("familyTotal").innerText=keys.length;
+  if($("familyMembersCount"))$("familyMembersCount").innerText=members.filter(m=>m.familyId).length;
+
+  const filtered=keys.filter(function(fid){
+    const text=(fid+" "+groups[fid].map(m=>m.name+" "+m.phone+" "+m.city).join(" ")).toLowerCase();
+    return !q || text.includes(q);
+  });
+
+  box.innerHTML=filtered.map(function(fid){
+    const list=groups[fid];
+    const head=list.find(m=>m.relationship==="Self" || m.familyType==="head") || list[0];
+    return '<div class="familyBox">'+
+      '<div class="familyHead"><div><h3>'+esc(head.name||"Family")+'</h3><p>'+esc(head.city||"")+', '+esc(head.country||"")+' · '+esc(head.phone||"")+'</p><span class="familyTag">'+esc(fid)+'</span></div><span class="attBadge">'+list.length+' Members</span></div>'+
+      '<div class="familyMembers">'+list.map(function(m){return '<div class="familyMemberMini"><span>'+esc(m.name)+'</span><span>'+esc(m.relationship||m.role||"Member")+'</span></div>'}).join("")+'</div>'+
+    '</div>';
+  }).join("") || '<div class="notice">No family records found.</div>';
+}
 
 let attendanceRecords = JSON.parse(localStorage.getItem("hfgm_attendance")||"[]");
 
@@ -1199,6 +1610,145 @@ function downloadAttendance(){
   a.href=URL.createObjectURL(blob);
   a.download="hfgm_attendance_backup.json";
   a.click();
+}
+
+
+let prayerCenterData = JSON.parse(localStorage.getItem("hfgm_prayer_center")||"[]");
+
+function seedPrayerData(){
+ if(prayerCenterData.length) return;
+ prayerCenterData = [
+  {id:"P1",name:"Aarathi",category:"Healing",text:"Please pray for my mother healing.",status:"pending",published:false},
+  {id:"P2",name:"Ravi Kumar",category:"Finance",text:"Prayer for business breakthrough.",status:"inprayer",published:false},
+  {id:"P3",name:"Meena",category:"Education",text:"Daughter medical seat prayer answered!",status:"answered",published:true,testimony:"God opened miracle door and she got seat."}
+ ];
+ localStorage.setItem("hfgm_prayer_center",JSON.stringify(prayerCenterData));
+}
+
+function savePrayerCenter(){
+ localStorage.setItem("hfgm_prayer_center",JSON.stringify(prayerCenterData));
+ renderPrayerCenter();
+}
+
+function setPrayerStatus(id,status){
+ prayerCenterData = prayerCenterData.map(p=>{
+   if(p.id===id) p.status=status;
+   return p;
+ });
+ savePrayerCenter();
+}
+
+function publishTestimony(id){
+ const t = prompt("Enter testimony message");
+ if(!t) return;
+ prayerCenterData = prayerCenterData.map(p=>{
+   if(p.id===id){
+      p.status="answered";
+      p.published=true;
+      p.testimony=t;
+   }
+   return p;
+ });
+ savePrayerCenter();
+}
+
+function prayerWhatsapp(id){
+ const p = prayerCenterData.find(x=>x.id===id);
+ if(!p) return;
+ const msg = encodeURIComponent("HFGM Prayer Team is praying for you. God bless you.");
+ window.open("https://wa.me/?text="+msg,"_blank");
+}
+
+function renderPrayerCenter(){
+ seedPrayerData();
+
+ if($("prTotal")) $("prTotal").innerText = prayerCenterData.length;
+ if($("prPending")) $("prPending").innerText = prayerCenterData.filter(x=>x.status==="pending").length;
+ if($("prAnswered")) $("prAnswered").innerText = prayerCenterData.filter(x=>x.status==="answered").length;
+ if($("prPublished")) $("prPublished").innerText = prayerCenterData.filter(x=>x.published).length;
+
+ const box = $("prayerAdminList");
+ if(box){
+  box.innerHTML = prayerCenterData.map(p=>`
+   <div class="prayerApprovalCard">
+    <h3 style="color:#fff;margin-bottom:6px">${p.name} · ${p.category}</h3>
+    <p style="color:#cbd5e1;font-size:13px">${p.text}</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
+      <button class="btn yellow" onclick="setPrayerStatus('${p.id}','inprayer')">🙏 In Prayer</button>
+      <button class="btn green" onclick="setPrayerStatus('${p.id}','answered')">✅ Answered</button>
+      <button class="btn blue" onclick="publishTestimony('${p.id}')">🌟 Publish Testimony</button>
+      <button class="btn dark" onclick="prayerWhatsapp('${p.id}')">📱 WhatsApp Reply</button>
+    </div>
+   </div>
+  `).join("");
+ }
+
+ const wall = $("testimonyWall");
+ if(wall){
+   const items = prayerCenterData.filter(x=>x.published);
+   wall.innerHTML = items.map(t=>`
+    <div class="testimonyBox">
+      <h3 style="color:#4ade80">${t.name}</h3>
+      <p style="color:#fff;margin-top:6px">${t.testimony||""}</p>
+    </div>
+   `).join("") || '<div class="notice">No testimonies yet.</div>';
+ }
+}
+
+
+function setBroadcastTemplate(type){
+  const templates={
+    prayer:"Praise the Lord 🙏 This is a loving prayer reminder from HFGM. Please join us in prayer. God bless you and your family.",
+    event:"Praise the Lord 🙏 You are invited to HFGM special prayer meeting. Come with faith and receive God's blessing.",
+    birthday:"Happy Birthday 🎂 May the Lord bless you, keep you, and make His face shine upon you. Numbers 6:24-26",
+    donation:"Praise the Lord 🙏 Thank you for supporting HFGM Ministry. May God bless your seed abundantly. 2 Corinthians 9:7",
+    telugu:"ప్రైజ్ ది లార్డ్ 🙏 HFGM నుండి ప్రేమపూర్వక సందేశం. మీ కుటుంబం మీద దేవుని ఆశీర్వాదం ఉండును గాక."
+  };
+  $("broadcastMsg").value=templates[type]||templates.prayer;
+}
+function getBroadcastText(){
+  return $("broadcastMsg") ? $("broadcastMsg").value.trim() : "";
+}
+function openWhatsApp(phone,name){
+  const msg=encodeURIComponent(getBroadcastText());
+  window.open("https://wa.me/"+cleanPhone(phone)+"?text="+msg,"_blank");
+}
+function openSMS(phone){
+  const msg=encodeURIComponent(getBroadcastText());
+  location.href="sms:"+cleanPhone(phone)+"?body="+msg;
+}
+function openCall(phone){
+  location.href="tel:"+cleanPhone(phone);
+}
+function openWhatsAppFirst(){
+  const m=members.find(x=>cleanPhone(x.phone).length>=10);
+  if(!m){alert("No phone numbers found");return}
+  openWhatsApp(m.phone,m.name);
+}
+function copyBroadcastMessage(){
+  const msg=getBroadcastText();
+  navigator.clipboard?.writeText(msg);
+  alert("Message copied");
+}
+function renderBroadcastMembers(){
+  if($("bcMembers"))$("bcMembers").innerText=members.length;
+  if($("bcPhones"))$("bcPhones").innerText=members.filter(m=>cleanPhone(m.phone).length>=10).length;
+  const box=$("broadcastMembersList"); if(!box)return;
+  const q=($("broadcastSearch")?$("broadcastSearch").value.toLowerCase():"");
+  const list=members.filter(m=>{
+    const t=(m.name+" "+m.phone+" "+m.city+" "+m.country).toLowerCase();
+    return (!q || t.includes(q)) && cleanPhone(m.phone).length>=10;
+  });
+  box.innerHTML=list.map(m=>`
+    <div class="broadcastMember">
+      <div><h4>${esc(m.name)}</h4><p>${esc(m.phone)} · ${esc(m.city||"")}</p></div>
+      <div style="display:flex;gap:6px">
+        <button class="btn green" style="padding:8px;margin:0" onclick="openWhatsApp('${cleanPhone(m.phone)}','${esc(m.name)}')">WA</button>
+        <button class="btn blue" style="padding:8px;margin:0" onclick="openSMS('${cleanPhone(m.phone)}')">SMS</button>
+        <button class="btn dark" style="padding:8px;margin:0" onclick="openCall('${cleanPhone(m.phone)}')">Call</button>
+      </div>
+    </div>
+  `).join("") || '<div class="notice">No phone contacts found.</div>';
 }
 
 window.addEventListener("load",function(){ setTimeout(startHFGM,800); });
