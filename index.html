@@ -568,6 +568,115 @@ margin-top:10px;
 .switchBtn{border:0;border-radius:999px;padding:7px 12px;font-weight:900;background:#2a2520;color:#9a9088}
 .switchBtn.on{background:#3a9e64;color:white}
 
+
+.hero{
+  position:relative;
+  overflow:hidden;
+  min-height:315px;
+  padding:26px 22px!important;
+  border-radius:30px!important;
+  background:
+    radial-gradient(circle at 88% 12%,rgba(255,209,102,.45),transparent 26%),
+    radial-gradient(circle at 10% 18%,rgba(56,189,248,.18),transparent 32%),
+    linear-gradient(145deg,#081225 0%,#0c1830 44%,#07101e 100%)!important;
+  border:1px solid rgba(255,209,102,.35)!important;
+  box-shadow:0 25px 70px rgba(0,0,0,.42), inset 0 0 40px rgba(255,255,255,.03);
+}
+.hero:before{
+  content:"";
+  position:absolute;
+  inset:-2px;
+  background:linear-gradient(120deg,transparent,rgba(255,209,102,.55),transparent);
+  transform:translateX(-120%);
+  animation:heroShine 5s infinite;
+  pointer-events:none;
+}
+.hero:after{
+  content:"🕊️";
+  position:absolute;
+  right:22px;
+  top:22px;
+  font-size:46px;
+  filter:drop-shadow(0 0 20px rgba(255,255,255,.5));
+  animation:doveFloat 3.5s ease-in-out infinite;
+}
+@keyframes heroShine{0%{transform:translateX(-120%)}45%,100%{transform:translateX(120%)}}
+@keyframes doveFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.hero h1{
+  font-size:36px!important;
+  line-height:1.08!important;
+  letter-spacing:-1.4px;
+  max-width:86%;
+  color:#fff!important;
+  text-shadow:0 4px 20px rgba(0,0,0,.55);
+}
+.hero h1 .goldText{
+  color:#ffd166;
+  text-shadow:0 0 22px rgba(255,209,102,.35);
+}
+.hero p{
+  max-width:92%;
+  margin-top:16px;
+  color:#d5deef!important;
+  font-size:15px!important;
+  line-height:1.65!important;
+}
+.heroStats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  margin:18px 0 4px;
+  position:relative;
+  z-index:2;
+}
+.heroStat{
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:16px;
+  padding:10px 8px;
+  text-align:center;
+  backdrop-filter:blur(8px);
+}
+.heroStat b{
+  display:block;
+  font-size:18px;
+  color:#ffd166;
+}
+.heroStat span{
+  display:block;
+  font-size:10px;
+  color:#cbd5e1;
+  margin-top:2px;
+}
+.hero .btn,.hero button{
+  position:relative;
+  z-index:2;
+  background:linear-gradient(135deg,#ffd166,#f59e0b)!important;
+  box-shadow:0 10px 30px rgba(245,158,11,.28);
+  border-radius:18px!important;
+  font-size:15px!important;
+}
+.heroMini{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  background:rgba(255,209,102,.12);
+  border:1px solid rgba(255,209,102,.25);
+  color:#ffd166;
+  padding:7px 12px;
+  border-radius:999px;
+  font-size:11px;
+  font-weight:900;
+  margin-bottom:14px;
+  position:relative;
+  z-index:2;
+}
+@media(max-width:420px){
+  .hero{min-height:320px}
+  .hero h1{font-size:32px!important;max-width:90%}
+  .heroStats{grid-template-columns:1fr 1fr 1fr}
+}
+
 </style>
 </head>
 <body>
@@ -576,9 +685,15 @@ margin-top:10px;
 
 <section id="home" class="screen active">
   <div class="hero">
-    <h1>Holy Spirit Fellowship Global Ministry</h1>
-    <p>Professional HFGM member registration, prayer support, donation and secure admin dashboard.</p>
-    <button class="btn" onclick="show('admin')">Admin Login to View Members</button>
+    <div class="heroMini">🔥 REVIVAL · PRAYER · GLOBAL FAMILY</div>
+    <h1>Holy Spirit Fellowship <span class="goldText">Global Ministries</span></h1>
+    <p>Connecting believers worldwide through prayer, faith, revival, member care and secure admin management.</p>
+    <div class="heroStats">
+      <div class="heroStat"><b id="heroMembers">0</b><span>Members</span></div>
+      <div class="heroStat"><b>24/7</b><span>Prayer</span></div>
+      <div class="heroStat"><b>🌍</b><span>Global</span></div>
+    </div>
+    <button class="btn" onclick="show('admin')">🔐 Enter Admin Dashboard</button>
   </div>
   <div class="grid">
     <div class="card worldHero"><div class="globeBox"></div><h2>🌎 Global Family</h2><div class="stat" id="memberCount">0</div><p class="muted">Believers connected</p><div class="worldDots"><span></span><span></span><span></span></div></div>
@@ -628,7 +743,7 @@ margin-top:10px;
       <option>Volunteer</option>
       <option>Youth Member</option>
       <option>Women Fellowship</option>
-      <option>Choir Ministry</option>
+      <option>Choir Ministries</option>
       <option>Prayer Team</option>
       <option>Sponsor / Donor</option>
       <option>Pastor / Leader</option>
@@ -732,7 +847,7 @@ margin-top:10px;
     <h2>🙏 Donation Section</h2>
     <img class="qr" id="qrImg" src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=upi://pay?pa=hfgm@upi&pn=HFGM&cu=INR">
     <input id="upi" value="hfgm@upi" placeholder="UPI ID">
-    <input id="payee" value="HFGM Ministry" placeholder="Payee name">
+    <input id="payee" value="HFGM Ministries" placeholder="Payee name">
     <div class="grid"><button class="btn" onclick="openUPI(500)">₹500</button><button class="btn" onclick="openUPI(1000)">₹1000</button><button class="btn" onclick="openUPI(2000)">₹2000</button><button class="btn" onclick="openUPI(5000)">₹5000</button></div>
     <button class="btn green" onclick="updateQR()">Update QR</button>
   </div>
@@ -936,7 +1051,7 @@ margin-top:10px;
   <div class="card">
     <h2>📢 Broadcast Center</h2>
     <p class="small">Browser app lo auto-send possible kaadu. But one click WhatsApp/SMS/Call open avuthayi.</p>
-    <textarea id="broadcastMsg" placeholder="Type message here..." style="height:120px">Praise the Lord 🙏 HFGM Ministry update: God bless you and your family.</textarea>
+    <textarea id="broadcastMsg" placeholder="Type message here..." style="height:120px">Praise the Lord 🙏 HFGM Ministries update: God bless you and your family.</textarea>
 
     <div style="margin-top:10px">
       <span class="templateBtn" onclick="setBroadcastTemplate('prayer')">🙏 Prayer Reminder</span>
@@ -992,9 +1107,9 @@ margin-top:10px;
 <div id="adminSettings" class="adminPage">
         <div class="card">
           <h2>⚙ Settings</h2>
-          <input id="adminMinistryName" value="Holy Spirit Fellowship Global Ministry">
+          <input id="adminMinistriesName" value="Holy Spirit Fellowship Global Ministries">
           <input id="adminPlace" value="Tadepalligudem">
-          <input id="adminPhone" placeholder="Ministry WhatsApp">
+          <input id="adminPhone" placeholder="Ministries WhatsApp">
           <button class="btn green" onclick="alert('Settings saved locally')">Save Settings</button>
         </div>
       </div>
@@ -1155,6 +1270,7 @@ function renderAll(){
   $("oldCount").innerText=oldMembers.length;
   $("newCount").innerText=newMembers.length+localMembers.length;
   $("adminStat").innerText=isAdmin?"ON":"OFF";
+  if($("heroMembers"))$("heroMembers").innerText=members.length;
   if($("aMembers"))$("aMembers").innerText=members.length;
   if($("aPrayers"))$("aPrayers").innerText=prayers.length;
   if($("dashOldCount"))$("dashOldCount").innerText=oldMembers.length;
@@ -1457,7 +1573,7 @@ function makeID(id,source){
   const qr="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data="+encodeURIComponent("HFGM Member ID: "+memberId+" Member No: "+serial+" Name: "+m.name+" Phone: "+m.phone);
   $("idPrintArea").innerHTML=
     '<div class="idCardPro">'+
-      '<div class="idTop"><h3>🕊️ HOLY SPIRIT FELLOWSHIP</h3><p>GLOBAL MINISTRY MEMBER CARD</p></div>'+
+      '<div class="idTop"><h3>🕊️ HOLY SPIRIT FELLOWSHIP</h3><p>GLOBAL MINISTRIES MEMBER CARD</p></div>'+
       '<div style="padding:0 18px 18px;text-align:center">'+
         (m.photo?'<img class="idPhoto" src="'+m.photo+'">':'<div class="idPhoto" style="display:inline-flex;align-items:center;justify-content:center;color:#0b4da2;font-size:34px">👤</div>')+
         '<div class="idName">'+esc(m.name)+'</div>'+
@@ -1564,7 +1680,7 @@ function generatePrintableReport(){
   const groups=getFamilyGroups();
   const date=new Date().toLocaleString();
   const html='<div style="font-family:Arial,sans-serif;color:#111">'+
-    '<h1>HFGM Ministry Report</h1><p>Generated: '+date+'</p>'+
+    '<h1>HFGM Ministries Report</h1><p>Generated: '+date+'</p>'+
     '<h2>Summary</h2>'+
     '<table><tr><th>Total Members</th><td>'+members.length+'</td></tr><tr><th>Families</th><td>'+Object.keys(groups).length+'</td></tr><tr><th>Attendance Records</th><td>'+attendanceRecords.length+'</td></tr><tr><th>Prayer Requests</th><td>'+prayers.length+'</td></tr></table>'+
     '<h2>Members</h2><table><tr><th>ID</th><th>Name</th><th>Phone</th><th>Place</th><th>Family</th></tr>'+
@@ -1746,7 +1862,7 @@ function setBroadcastTemplate(type){
     prayer:"Praise the Lord 🙏 This is a loving prayer reminder from HFGM. Please join us in prayer. God bless you and your family.",
     event:"Praise the Lord 🙏 You are invited to HFGM special prayer meeting. Come with faith and receive God's blessing.",
     birthday:"Happy Birthday 🎂 May the Lord bless you, keep you, and make His face shine upon you. Numbers 6:24-26",
-    donation:"Praise the Lord 🙏 Thank you for supporting HFGM Ministry. May God bless your seed abundantly. 2 Corinthians 9:7",
+    donation:"Praise the Lord 🙏 Thank you for supporting HFGM Ministries. May God bless your seed abundantly. 2 Corinthians 9:7",
     telugu:"ప్రైజ్ ది లార్డ్ 🙏 HFGM నుండి ప్రేమపూర్వక సందేశం. మీ కుటుంబం మీద దేవుని ఆశీర్వాదం ఉండును గాక."
   };
   $("broadcastMsg").value=templates[type]||templates.prayer;
