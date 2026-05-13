@@ -395,6 +395,37 @@ input,select,textarea{width:100%;border:1px solid rgba(255,255,255,.08);border-r
 
 
 .errBox{background:#fee2e2!important;color:#991b1b!important;border-left:4px solid #dc2626!important}
+
+.attendanceCard{
+  background:#1c1916;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:18px;
+  padding:14px;
+  margin-bottom:10px;
+}
+.attendanceTop{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+}
+.attendanceTop h3{font-size:15px;color:#fff}
+.attendanceTop p{font-size:12px;color:#9a9088;margin-top:3px}
+.attBadge{
+  background:#dcfce7;
+  color:#166534;
+  padding:5px 9px;
+  border-radius:999px;
+  font-size:11px;
+  font-weight:900;
+}
+.idQrNote{
+  color:#dbeafe;
+  font-size:11px;
+  text-align:center;
+  margin-top:6px;
+}
+
 </style>
 </head>
 <body>
@@ -502,6 +533,10 @@ input,select,textarea{width:100%;border:1px solid rgba(255,255,255,.08);border-r
       <input id="nPhone" placeholder="Phone number *">
     </div>
     <textarea id="nPrayer" placeholder="Prayer / Notes"></textarea>
+    <input id="nFamily" placeholder="Family Link / Family Head Name">
+    <input id="nBlood" placeholder="Blood Group e.g. O+">
+    <input id="nEmergency" placeholder="Emergency Contact">
+    <input id="nBranch" placeholder="Church Branch / Area" value="HFGM Tadepalligudem">
     <div class="photoChoice">
       <label class="photoBtn" for="nSelfie">📷 Take Selfie<small>Camera open</small></label>
       <label class="photoBtn" for="nPhoto">🖼️ Choose File<small>Gallery/File</small></label>
@@ -551,6 +586,7 @@ input,select,textarea{width:100%;border:1px solid rgba(255,255,255,.08);border-r
         <button onclick="adminPage('adminRegister',this)">Add Member</button>
         <button onclick="adminPage('adminPrayer',this)">Prayer</button>
         <button onclick="adminPage('adminGiving',this)">Giving</button>
+        <button onclick="adminPage('adminAttendance',this)">Attendance</button>
         <button onclick="adminPage('adminSettings',this)">Settings</button>
       </div>
 
@@ -612,6 +648,31 @@ input,select,textarea{width:100%;border:1px solid rgba(255,255,255,.08);border-r
           <h2>💳 Donation Settings</h2>
           <p class="small">UPI QR is available in Give page. Real account details can be added safely.</p>
           <button class="btn green" onclick="show('donate')">Open Donation Page</button>
+        </div>
+      </div>
+
+      <div id="adminAttendance" class="adminPage">
+        <div class="adminStatGrid">
+          <div class="adminStat"><small>Today Present</small><b id="attToday">0</b><span>Marked attendance</span></div>
+          <div class="adminStat"><small>Total Records</small><b id="attTotal">0</b><span>Local attendance</span></div>
+        </div>
+        <div class="card">
+          <h2>✅ Mark Attendance</h2>
+          <p class="small">Member ID enter chesi attendance mark cheyandi. ID card QR scan future lo direct open avuthundi.</p>
+          <input id="attMemberId" placeholder="Enter Member ID / Phone / Name">
+          <select id="attEvent">
+            <option>Sunday Service</option>
+            <option>Friday Prayer</option>
+            <option>All Night Prayer</option>
+            <option>Healing & Deliverance</option>
+            <option>Special Meeting</option>
+          </select>
+          <button class="btn green" onclick="markAttendance()">Mark Present</button>
+        </div>
+        <div class="card">
+          <h2>📋 Attendance Records</h2>
+          <div id="attendanceList"></div>
+          <button class="btn purple" onclick="downloadAttendance()">Download Attendance Backup</button>
         </div>
       </div>
 
@@ -714,6 +775,10 @@ function normalize(d,source){
     email:first(d.email,d.mail),
     prayer:first(d.prayer,d.message,d.note),
     photo:first(d.photo,d.image,d.selfie,d.profile),
+    family:first(d.family,d.familyHead,d.familyName),
+    blood:first(d.blood,d.bloodGroup),
+    emergency:first(d.emergency,d.emergencyContact),
+    branch:first(d.branch,d.churchBranch,d.area),
     raw:d
   }
 }
@@ -778,7 +843,7 @@ function renderAll(){
   if($("aPrayers"))$("aPrayers").innerText=prayers.length;
   if($("dashOldCount"))$("dashOldCount").innerText=oldMembers.length;
   if($("dashNewCount"))$("dashNewCount").innerText=newMembers.length + localMembers.length;
-  renderCountries(); renderMembers(); renderAdminDashboardMembers();
+  renderCountries(); renderMembers(); renderAdminDashboardMembers(); renderAttendance();
 }
 function renderCountries(){
   const sel=$("countryFilter"); if(!sel)return;
@@ -945,6 +1010,10 @@ function getFormMember(){
     phone:phone,
     cell:phone,
     prayer:$("nPrayer").value.trim(),
+    family:$("nFamily") ? $("nFamily").value.trim() : "",
+    blood:$("nBlood") ? $("nBlood").value.trim() : "",
+    emergency:$("nEmergency") ? $("nEmergency").value.trim() : "",
+    branch:$("nBranch") ? $("nBranch").value.trim() : "HFGM",
     createdAt:new Date().toISOString()
   };
 }
@@ -993,7 +1062,7 @@ async function saveOldMember(){
   try{await db.collection("members").add(d);alert("Old members collection lo save ayyindi");clearAdd();await loadFirebase();show("members");}
   catch(e){alert("Old member save failed: "+e.message)}
 }
-function clearAdd(){["nName","nAge","nGender","nRole","nState","nDistrict","nCity","nPhone","nPrayer","nPhoto","nSelfie"].forEach(function(id){if($(id))$(id).value=""}); if($("nCountry"))$("nCountry").value="India"; if($("nCode"))$("nCode").value="91"; if($("photoPreview")){$("photoPreview").src="";$("photoPreview").style.display="none";} if($("addSuccess"))$("addSuccess").style.display="none"; if($("addMemberIdBox"))$("addMemberIdBox").style.display="none";}
+function clearAdd(){["nName","nAge","nGender","nRole","nState","nDistrict","nCity","nPhone","nPrayer","nFamily","nBlood","nEmergency","nBranch","nPhoto","nSelfie"].forEach(function(id){if($(id))$(id).value=""}); if($("nCountry"))$("nCountry").value="India"; if($("nCode"))$("nCode").value="91"; if($("photoPreview")){$("photoPreview").src="";$("photoPreview").style.display="none";} if($("addSuccess"))$("addSuccess").style.display="none"; if($("addMemberIdBox"))$("addMemberIdBox").style.display="none";}
 
 function adminLogin(){
   if($("adminUser").value.trim()==="admin" && $("adminPass").value.trim()==="1234"){isAdmin=true;sessionStorage.setItem("hfgm_admin","yes");alert("Admin login success");renderAll();}
@@ -1026,25 +1095,48 @@ async function deleteMember(id,source){
   try{await db.collection(source).doc(id).delete();await loadFirebase();}
   catch(e){alert("Delete failed: "+e.message)}
 }
+
+function professionalMemberId(m){
+  // Avoid showing long Firebase document id on ID card.
+  const raw = String(m.memberId || m.uid || "");
+  if(raw && raw.startsWith("HFGM-")) return raw;
+  const phone = cleanPhone(m.phone || "");
+  if(phone && phone.length >= 4){
+    return "HFGM-MEM-" + phone.slice(-4);
+  }
+  const nameCode = String(m.name||"MEM").replace(/[^A-Za-z0-9]/g,"").toUpperCase().slice(0,4) || "MEM";
+  return "HFGM-MEM-" + nameCode + "-" + String(m.id||Date.now()).slice(-4).toUpperCase();
+}
+
+function memberSerialNumber(m){
+  const idx = members.findIndex(x => x.id===m.id && x.source===m.source);
+  return idx >= 0 ? String(idx+1).padStart(4,"0") : "0001";
+}
+
 function makeID(id,source){
   const m=findMember(id,source); if(!m)return;
-  const memberId=m.memberId||m.uid||("HFGM-"+String(m.id||"").slice(0,6).toUpperCase());
-  const qr="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data="+encodeURIComponent("HFGM ID: "+memberId+" Name: "+m.name+" Phone: "+m.phone);
+  const memberId=professionalMemberId(m);
+  const serial=memberSerialNumber(m);
+  const qr="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data="+encodeURIComponent("HFGM Member ID: "+memberId+" Member No: "+serial+" Name: "+m.name+" Phone: "+m.phone);
   $("idPrintArea").innerHTML=
     '<div class="idCardPro">'+
-      '<div class="idTop"><h3>🕊️ HOLY SPIRIT FELLOWSHIP</h3><p>GLOBAL MINISTRY MEMBER ID</p></div>'+
+      '<div class="idTop"><h3>🕊️ HOLY SPIRIT FELLOWSHIP</h3><p>GLOBAL MINISTRY MEMBER CARD</p></div>'+
       '<div style="padding:0 18px 18px;text-align:center">'+
         (m.photo?'<img class="idPhoto" src="'+m.photo+'">':'<div class="idPhoto" style="display:inline-flex;align-items:center;justify-content:center;color:#0b4da2;font-size:34px">👤</div>')+
         '<div class="idName">'+esc(m.name)+'</div>'+
         '<div class="idRole">'+esc(m.role||"Member")+'</div>'+
       '</div>'+
       '<div class="idBody">'+
-        '<div class="idRow"><b>ID:</b> '+esc(memberId)+'</div>'+
+        '<div class="idRow"><b>Member ID:</b> '+esc(memberId)+'</div>'+
+        '<div class="idRow"><b>Member No:</b> '+esc(serial)+'</div>'+
         '<div class="idRow"><b>Age:</b> '+esc(m.age||"-")+' &nbsp; <b>Gender:</b> '+esc(m.gender||"-")+'</div>'+
         '<div class="idRow"><b>Phone:</b> '+esc(m.phone||"-")+'</div>'+
         '<div class="idRow"><b>Place:</b> '+esc(m.city||"-")+', '+esc(m.district||"-")+'</div>'+
         '<div class="idRow"><b>Country:</b> '+esc(m.country||"-")+'</div>'+
+        '<div class="idRow"><b>Branch:</b> '+esc(m.branch||"HFGM")+'</div>'+
+        '<div class="idRow"><b>Blood:</b> '+esc(m.blood||"-")+' &nbsp; <b>Emergency:</b> '+esc(m.emergency||"-")+'</div>'+
         '<img class="idQr" src="'+qr+'">'+
+        '<div class="idQrNote">Scan QR for Attendance / Member verification</div>'+
       '</div>'+
     '</div>';
   $("idCardModal").style.display="block";
@@ -1061,6 +1153,54 @@ function startHFGM(){
   loadFirebase();
 }
 document.addEventListener("DOMContentLoaded",startHFGM);
+
+let attendanceRecords = JSON.parse(localStorage.getItem("hfgm_attendance")||"[]");
+
+function markAttendance(){
+  if(!isAdmin){alert("Admin login required");return}
+  const key=($("attMemberId")?$("attMemberId").value.trim():"");
+  if(!key){alert("Enter Member ID / Phone / Name");return}
+  const q=key.toLowerCase();
+  const member=members.find(function(m){
+    return String(m.uid||m.memberId||"").toLowerCase()===q ||
+           String(m.phone||"").includes(key.replace(/\D/g,"")) ||
+           String(m.name||"").toLowerCase().includes(q);
+  });
+  const rec={
+    id:"ATT-"+Date.now(),
+    memberId: member ? (member.uid||member.memberId||member.id) : key,
+    name: member ? member.name : key,
+    phone: member ? member.phone : "",
+    event: $("attEvent") ? $("attEvent").value : "Service",
+    date:new Date().toLocaleDateString(),
+    time:new Date().toLocaleTimeString(),
+    createdAt:new Date().toISOString()
+  };
+  attendanceRecords.unshift(rec);
+  localStorage.setItem("hfgm_attendance",JSON.stringify(attendanceRecords));
+  if($("attMemberId"))$("attMemberId").value="";
+  renderAttendance();
+  alert("Attendance marked: "+rec.name);
+}
+
+function renderAttendance(){
+  if($("attTotal"))$("attTotal").innerText=attendanceRecords.length;
+  const today=new Date().toLocaleDateString();
+  if($("attToday"))$("attToday").innerText=attendanceRecords.filter(r=>r.date===today).length;
+  const box=$("attendanceList"); if(!box)return;
+  box.innerHTML=attendanceRecords.slice(0,40).map(function(r){
+    return '<div class="attendanceCard"><div class="attendanceTop"><div><h3>'+esc(r.name)+'</h3><p>'+esc(r.event)+' · '+esc(r.date)+' · '+esc(r.time)+'</p><p>'+esc(r.memberId)+' '+esc(r.phone||"")+'</p></div><span class="attBadge">Present</span></div></div>';
+  }).join("") || '<div class="notice">No attendance records yet.</div>';
+}
+
+function downloadAttendance(){
+  const blob=new Blob([JSON.stringify(attendanceRecords,null,2)],{type:"application/json"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download="hfgm_attendance_backup.json";
+  a.click();
+}
+
 window.addEventListener("load",function(){ setTimeout(startHFGM,800); });
 setTimeout(startHFGM,1500);
 </script>
