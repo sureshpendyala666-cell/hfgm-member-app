@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#061b52">
-<title>HFGM Premium Public Page + Admin Firebase</title>
+<title>HFGM Full Admin Edit Upgrade - Firebase Fixed</title>
 <style>
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -548,6 +548,51 @@ input:focus,select:focus,textarea:focus{
   margin-bottom:4px;
 }
 @media(max-width:850px){.photo-grid{grid-template-columns:1fr}}
+
+.member-id-big{
+  font-size:22px;
+  font-weight:bold;
+  color:#0b4da2;
+  background:white;
+  border:2px dashed #0ea5e9;
+  padding:12px;
+  border-radius:16px;
+  margin-top:10px;
+  text-align:center;
+}
+
+.edit-modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:#0008;
+  z-index:10000;
+  overflow:auto;
+  padding:20px;
+}
+.edit-box{
+  max-width:720px;
+  margin:30px auto;
+  background:white;
+  color:#111827;
+  border-radius:28px;
+  padding:22px;
+  box-shadow:0 20px 60px #0007;
+}
+.edit-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+@media(max-width:850px){.edit-grid{grid-template-columns:1fr}}
+
+
+.followup-bar{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.follow-chip{padding:6px 10px;border-radius:999px;font-size:12px;font-weight:bold;color:white}
+.f-new{background:#16a34a}.f-contact{background:#eab308;color:#111}.f-pray{background:#2563eb}.f-follow{background:#7c3aed}.f-answer{background:#059669}
+.template-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+@media(max-width:850px){.template-grid{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
@@ -709,10 +754,51 @@ input:focus,select:focus,textarea:focus{
           <input id="regName" placeholder="Full Name">
           <input id="regAge" type="number" placeholder="Age">
         </div>
+        <select id="regGender">
+          <option value="">Select Gender</option>
+          <option>Male</option>
+          <option>Female</option>
+          <option>Other</option>
+        </select>
         <select id="regType"><option>New Believer</option><option>Church Member</option><option>Prayer Partner</option><option>Volunteer</option><option>Sponsor / Donor</option><option>Pastor / Leader</option></select>
         <select id="regCountry" onchange="setCode()"><option value="India" data-code="91">India (+91)</option><option value="United States" data-code="1">United States (+1)</option><option value="United Kingdom" data-code="44">United Kingdom (+44)</option><option value="Canada" data-code="1">Canada (+1)</option><option value="Australia" data-code="61">Australia (+61)</option><option value="UAE" data-code="971">UAE (+971)</option><option value="Other" data-code="">Other</option></select>
         <div style="display:grid;grid-template-columns:90px 1fr;gap:8px"><input id="regCode" value="91" placeholder="+91"><input id="regPhone" placeholder="WhatsApp Number"></div>
-        <select id="regState"><option value="">Select State</option><option>Andhra Pradesh</option><option>Telangana</option><option>Tamil Nadu</option><option>Karnataka</option><option>Kerala</option><option>Other</option></select>
+        <select id="regState" onchange="updateDistricts()">
+          <option value="">Select State</option>
+          <option>Andhra Pradesh</option>
+          <option>Arunachal Pradesh</option>
+          <option>Assam</option>
+          <option>Bihar</option>
+          <option>Chhattisgarh</option>
+          <option>Goa</option>
+          <option>Gujarat</option>
+          <option>Haryana</option>
+          <option>Himachal Pradesh</option>
+          <option>Jharkhand</option>
+          <option>Karnataka</option>
+          <option>Kerala</option>
+          <option>Madhya Pradesh</option>
+          <option>Maharashtra</option>
+          <option>Manipur</option>
+          <option>Meghalaya</option>
+          <option>Mizoram</option>
+          <option>Nagaland</option>
+          <option>Odisha</option>
+          <option>Punjab</option>
+          <option>Rajasthan</option>
+          <option>Sikkim</option>
+          <option>Tamil Nadu</option>
+          <option>Telangana</option>
+          <option>Tripura</option>
+          <option>Uttar Pradesh</option>
+          <option>Uttarakhand</option>
+          <option>West Bengal</option>
+          <option>Delhi</option>
+          <option>Jammu and Kashmir</option>
+          <option>Ladakh</option>
+          <option>Puducherry</option>
+          <option>Other</option>
+        </select>
         <select id="regDistrict">
           <option value="">Select District</option>
           <option>West Godavari</option>
@@ -744,6 +830,7 @@ input:focus,select:focus,textarea:focus{
         <textarea id="regPrayer" placeholder="Prayer request / message"></textarea>
         <button class="green" onclick="saveRegistration()">Submit Registration</button>
         <div id="regSuccess" class="success">Registration submitted successfully. God bless you 🙏</div>
+        <div id="memberIdBox" class="success" style="background:#e0f2fe;color:#075985;display:none"></div>
       </div>
       <div class="card">
         <h2>💙 Why Join?</h2><p>✅ Daily prayer support</p><p>✅ Telugu & English promise word</p><p>✅ Healing and deliverance prayer</p><p>✅ WhatsApp follow-up</p>
@@ -968,6 +1055,34 @@ function qrUrl(name,phone){return `https://api.qrserver.com/v1/create-qr-code/?s
 window.setCode=setCode;
 
 
+
+const districtData={
+  "Andhra Pradesh":["Alluri Sitharama Raju","Anakapalli","Anantapur","Annamayya","Bapatla","Chittoor","East Godavari","Eluru","Guntur","Kakinada","Konaseema","Krishna","Kurnool","Nandyal","NTR","Palnadu","Parvathipuram Manyam","Prakasam","Sri Potti Sriramulu Nellore","Sri Sathya Sai","Srikakulam","Tirupati","Visakhapatnam","Vizianagaram","West Godavari","YSR Kadapa"],
+  "Telangana":["Adilabad","Bhadradri Kothagudem","Hyderabad","Jagtial","Jangaon","Jayashankar Bhupalpally","Jogulamba Gadwal","Kamareddy","Karimnagar","Khammam","Komaram Bheem Asifabad","Mahabubabad","Mahabubnagar","Mancherial","Medak","Medchal Malkajgiri","Mulugu","Nagarkurnool","Nalgonda","Narayanpet","Nirmal","Nizamabad","Peddapalli","Rajanna Sircilla","Ranga Reddy","Sangareddy","Siddipet","Suryapet","Vikarabad","Wanaparthy","Warangal","Hanamkonda","Yadadri Bhuvanagiri"],
+  "Tamil Nadu":["Ariyalur","Chengalpattu","Chennai","Coimbatore","Cuddalore","Dharmapuri","Dindigul","Erode","Kallakurichi","Kancheepuram","Karur","Krishnagiri","Madurai","Mayiladuthurai","Nagapattinam","Kanniyakumari","Namakkal","Perambalur","Pudukkottai","Ramanathapuram","Ranipet","Salem","Sivagangai","Tenkasi","Thanjavur","Theni","Thoothukudi","Tiruchirappalli","Tirunelveli","Tirupathur","Tiruppur","Tiruvallur","Tiruvannamalai","Tiruvarur","Vellore","Viluppuram","Virudhunagar"],
+  "Karnataka":["Bagalkot","Ballari","Belagavi","Bengaluru Rural","Bengaluru Urban","Bidar","Chamarajanagar","Chikkaballapur","Chikkamagaluru","Chitradurga","Dakshina Kannada","Davanagere","Dharwad","Gadag","Hassan","Haveri","Kalaburagi","Kodagu","Kolar","Koppal","Mandya","Mysuru","Raichur","Ramanagara","Shivamogga","Tumakuru","Udupi","Uttara Kannada","Vijayapura","Yadgir","Vijayanagara"],
+  "Kerala":["Alappuzha","Ernakulam","Idukki","Kannur","Kasaragod","Kollam","Kottayam","Kozhikode","Malappuram","Palakkad","Pathanamthitta","Thiruvananthapuram","Thrissur","Wayanad"],
+  "Maharashtra":["Ahmednagar","Akola","Amravati","Aurangabad","Beed","Bhandara","Buldhana","Chandrapur","Dhule","Gadchiroli","Gondia","Hingoli","Jalgaon","Jalna","Kolhapur","Latur","Mumbai City","Mumbai Suburban","Nagpur","Nanded","Nandurbar","Nashik","Osmanabad","Palghar","Parbhani","Pune","Raigad","Ratnagiri","Sangli","Satara","Sindhudurg","Solapur","Thane","Wardha","Washim","Yavatmal"],
+  "Odisha":["Angul","Balangir","Balasore","Bargarh","Bhadrak","Boudh","Cuttack","Deogarh","Dhenkanal","Gajapati","Ganjam","Jagatsinghpur","Jajpur","Jharsuguda","Kalahandi","Kandhamal","Kendrapara","Keonjhar","Khordha","Koraput","Malkangiri","Mayurbhanj","Nabarangpur","Nayagarh","Nuapada","Puri","Rayagada","Sambalpur","Subarnapur","Sundargarh"],
+  "West Bengal":["Alipurduar","Bankura","Birbhum","Cooch Behar","Dakshin Dinajpur","Darjeeling","Hooghly","Howrah","Jalpaiguri","Jhargram","Kalimpong","Kolkata","Malda","Murshidabad","Nadia","North 24 Parganas","Paschim Bardhaman","Paschim Medinipur","Purba Bardhaman","Purba Medinipur","Purulia","South 24 Parganas","Uttar Dinajpur"],
+  "Delhi":["Central Delhi","East Delhi","New Delhi","North Delhi","North East Delhi","North West Delhi","Shahdara","South Delhi","South East Delhi","South West Delhi","West Delhi"],
+  "Other":["Other"]
+};
+
+window.updateDistricts=function(){
+  const state=$("regState").value;
+  const district=$("regDistrict");
+  const list=districtData[state] || ["Other"];
+  district.innerHTML='<option value="">Select District</option>'+list.map(d=>`<option>${d}</option>`).join("");
+}
+
+function createMemberId(country,state){
+  const prefix = country==="India" ? "IND" : "INT";
+  const st = (state||"GL").replace(/[^A-Za-z]/g,"").slice(0,2).toUpperCase() || "GL";
+  const num = Date.now().toString().slice(-5);
+  return `HFGM-${prefix}-${st}-${num}`;
+}
+
 async function resizePublicImage(file){
   return new Promise(resolve=>{
     if(!file){resolve("");return}
@@ -996,13 +1111,17 @@ window.saveRegistration=async function(){
   if(!name || phone.length<10){alert("Name and valid WhatsApp number required");return}
   const selectedPhoto = ($("regSelfie")?.files[0]) || ($("regPhoto")?.files[0]);
   const photo = await resizePublicImage(selectedPhoto);
+  const memberId=createMemberId($("regCountry").value,$("regState").value);
   await addDoc(collection(db,"global_believers"),{
-    name, age:$("regAge").value, type:$("regType").value, country:$("regCountry").value, state:$("regState").value,
+    memberId,
+    name, age:$("regAge").value, gender:$("regGender").value, type:$("regType").value, country:$("regCountry").value, state:$("regState").value,
     district:$("regDistrict").value, city:$("regCity").value, phone, email:$("regEmail").value, prayer:$("regPrayer").value,
     photo,
     status:"New", source:"Public Page", createdAt:new Date().toISOString()
   });
-  ["regName","regAge","regDistrict","regCity","regPhone","regEmail","regPrayer","regSelfie","regPhoto"].forEach(x=>{ if($(x)) $(x).value=""; });
+  $("memberIdBox").style.display="block";
+  $("memberIdBox").innerHTML=`<div class="member-id-big">🪪 Your Member ID: ${memberId}</div>`;
+  ["regName","regAge","regGender","regDistrict","regCity","regPhone","regEmail","regPrayer","regSelfie","regPhoto"].forEach(x=>{ if($(x)) $(x).value=""; });
   $("regSuccess").style.display="block";
   await renderPublicStats();
 }
@@ -1056,37 +1175,71 @@ const promises=[
 ];
 function renderPromise(){const p=promises[Math.floor(Date.now()/86400000)%promises.length];$("promiseBox").innerHTML=`<h3>${p.en}</h3><p>${p.te}</p><p><b>${p.ref}</b></p>`}
 
+
 window.adminLogin=function(){
-  if($("adminUser").value.trim()===ADMIN_USER && $("adminPass").value.trim()===ADMIN_PASS){
+  const u=($("adminUser")?.value||"").trim();
+  const p=($("adminPass")?.value||"").trim();
+
+  if(u==="admin" && p==="1234"){
     sessionStorage.setItem("hfgm_firebase_admin","yes");
     $("adminLoginBox").style.display="none";
     $("adminPanel").style.display="block";
     loadAdminData();
-  }else alert("Wrong username or password");
+  }else{
+    alert("Use admin / 1234");
+  }
 }
-window.adminLogout=function(){sessionStorage.removeItem("hfgm_firebase_admin");$("adminPanel").style.display="none";$("adminLoginBox").style.display="block"}
+window.adminLogout=function(){
+  sessionStorage.removeItem("hfgm_firebase_admin");
+  $("adminPanel").style.display="none";
+  $("adminLoginBox").style.display="block";
+}
+
 
 function combinedBelievers(){
   return [
-    ...believers.map(b=>({...b, sourceName:"global_believers", sourceCollection:"global_believers"})),
+    ...believers.map(b=>({
+      ...b,
+      sourceName:"global_believers",
+      sourceCollection:"global_believers"
+    })),
     ...oldMembers.map(m=>({
-      id:m.id, sourceName:"members old data", sourceCollection:"members",
-      name:m.name||"", age:m.age||"", type:m.type||"Old Member", country:m.country||"India", state:m.state||"",
-      district:m.district||"", city:m.village||m.city||"", phone:(cleanPhone(m.cell||m.phone).length===10?"91"+cleanPhone(m.cell||m.phone):cleanPhone(m.cell||m.phone)),
-      email:m.email||"", prayer:m.prayer||"", status:m.status||"Old Data", photo:m.photo||""
+      id:m.id,
+      sourceName:"members old data",
+      sourceCollection:"members",
+      name:m.name || m.fullName || m.memberName || "",
+      age:m.age || "",
+      gender:m.gender || "",
+      memberId:m.memberId || "",
+      type:m.type || m.believerType || m.memberType || "Old Member",
+      country:m.country || "India",
+      state:m.state || "",
+      district:m.district || "",
+      city:m.village || m.city || m.place || "",
+      phone:(cleanPhone(m.cell||m.phone||m.mobile||m.whatsapp).length===10 ? "91"+cleanPhone(m.cell||m.phone||m.mobile||m.whatsapp) : cleanPhone(m.cell||m.phone||m.mobile||m.whatsapp)),
+      email:m.email || "",
+      prayer:m.prayer || m.message || m.prayerRequest || "",
+      status:m.status || "Old Data",
+      photo:m.photo || m.image || ""
     }))
   ];
 }
 
 window.loadAdminData=async function(){
-  believers=await getAll("global_believers").catch(()=>[]);
-  oldMembers=await getAll("members").catch(()=>[]);
-  prayers=await getAll("global_prayers").catch(()=>[]);
-  testimonies=await getAll("global_testimonies").catch(()=>[]);
-  renderAdminBelievers();
-  renderAdminPrayers();
-  renderAdminTestimonies();
-  await renderPublicStats();
+  try{
+    believers=await getAll("global_believers").catch(()=>[]);
+    oldMembers=await getAll("members").catch(()=>[]);
+    prayers=await getAll("global_prayers").catch(()=>[]);
+    testimonies=await getAll("global_testimonies").catch(()=>[]);
+    renderAdminBelievers();
+    renderAdminPrayers();
+    renderAdminTestimonies();
+    await renderPublicStats();
+    await renderGlobalMap?.();
+  }catch(e){
+    console.error(e);
+    alert("Firebase data load failed. Internet/Firebase rules check cheyandi.");
+  }
 }
 
 function renderAdminBelievers(){
@@ -1096,7 +1249,7 @@ function renderAdminBelievers(){
   let arr=combinedBelievers();
 
   arr=arr.filter(b=>{
-    const s=`${b.name} ${b.phone} ${b.city} ${b.district} ${b.country} ${b.type}`.toLowerCase();
+    const s=`${b.name} ${b.phone} ${b.city} ${b.district} ${b.country} ${b.type} ${b.memberId}`.toLowerCase();
     return (!q || s.includes(q)) && (!cf || b.country===cf) && (!sf || b.sourceCollection===sf);
   });
 
@@ -1106,49 +1259,70 @@ function renderAdminBelievers(){
 
   $("premiumBelieverCards").innerHTML=arr.length?arr.map((b,i)=>{
     const phone=cleanPhone(b.phone);
-    const msg=encodeURIComponent(`Praise the Lord ${b.name}, welcome to HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES. We are praying for you.`);
-    const srcLabel=b.sourceCollection==="members"?"Old Member":"New/Public";
     const memberId=b.memberId || `HFGM-${String(i+1).padStart(4,'0')}`;
+    const srcLabel=b.sourceCollection==="members" ? "Old Member" : "New/Public";
+    const msg=encodeURIComponent(`Praise the Lord ${b.name}, welcome to HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES. Member ID: ${memberId}. We are praying for you.`);
     return `<div class="premium-member-card">
       <div class="member-top">
         ${b.photo?`<img class="member-photo" src="${b.photo}">`:`<div class="member-avatar">👤</div>`}
         <div class="member-info">
           <h3>${esc(b.name||"No Name")}</h3>
-          <p>📲 ${phone}</p>
+          <p>🪪 ${memberId}</p>
+          <p>📲 ${phone||"-"}</p>
         </div>
       </div>
 
       <div class="member-badges">
         <span class="member-badge green">${esc(b.type||"Believer")}</span>
         <span class="member-badge gold">${esc(srcLabel)}</span>
-        <span class="member-badge">#${i+1}</span><span class="member-badge gold">${memberId}</span>
+        <span class="member-badge">#${i+1}</span>
       </div>
 
       <div class="member-details">
         <p>📍 <b>Place:</b> ${esc(b.city||"")}, ${esc(b.district||"")} ${esc(b.country||"")}</p>
-        <p>🪪 <b>ID:</b> ${memberId}</p><p>📧 <b>Email:</b> ${esc(b.email||"-")}</p>
+        <p>👤 <b>Gender:</b> ${esc(b.gender||"-")}</p>
+        <p>📧 <b>Email:</b> ${esc(b.email||"-")}</p>
         <p>🙏 <b>Prayer:</b> ${esc(b.prayer||"-")}</p>
       </div>
 
-      <div class="member-actions-premium">
-        <button class="btn-edit" onclick="editBelieverPremium('${b.id}','${b.sourceCollection}')">✏️ Edit</button>
+      <div class="followup-bar">
+      <span class="follow-chip f-new">${(b.status||"").includes("New")?"🟢 New":""}</span>
+      <span class="follow-chip f-contact">${(b.status||"").includes("Contact")?"🟡 Contacted":""}</span>
+      <span class="follow-chip f-pray">${(b.status||"").includes("Praying")?"🔵 Praying":""}</span>
+      <span class="follow-chip f-follow">${(b.status||"").includes("Follow")?"🟣 Follow-up":""}</span>
+      <span class="follow-chip f-answer">${(b.status||"").includes("Answered")?"✅ Answered":""}</span>
+    </div>
+    <div class="member-actions-premium">
+        <button class="btn-edit" onclick="openFullEdit('${b.id}','${b.sourceCollection}')">✏️ Edit</button>
         <button class="btn-id" onclick="openIdCard('${b.id}','${b.sourceCollection}')">🪪 ID Card</button>
         <a class="btn-wa" target="_blank" href="https://wa.me/${phone}?text=${msg}">📲 WhatsApp</a>
         <button class="btn-prayer" onclick="sendPrayerMessage('${b.id}','${b.sourceCollection}')">🙏 Prayer</button>
         <button class="btn-delete" onclick="deleteBeliever('${b.id}','${b.sourceCollection}')">🗑️ Delete</button>
       </div>
     </div>`;
-  }).join(""):`<div class="card light"><h3>No believers found</h3><p>Search/filter clear cheyandi.</p></div>`;
+  }).join(""):`<div class="card light"><h3>No believers found</h3><p>Search/filter clear cheyandi. Firebase load problem unte Refresh Firebase Data click cheyandi.</p></div>`;
 
   $("adminBelievers").innerHTML=arr.map((b,i)=>{
     const phone=cleanPhone(b.phone);
-    const msg=encodeURIComponent(`Praise the Lord ${b.name}, welcome to HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES. We are praying for you.`);
+    const memberId=b.memberId || `HFGM-${String(i+1).padStart(4,'0')}`;
+    const msg=encodeURIComponent(`Praise the Lord ${b.name}, welcome to HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES. Member ID: ${memberId}.`);
     return `<tr>
       <td>${i+1}</td>
       <td>${b.photo?`<img class="person-photo" src="${b.photo}">`:""}</td>
-      <td>${esc(b.name)}</td><td>${esc(b.age)}</td><td>${esc(b.type)}</td><td>${esc(b.country)}</td><td>${esc(b.state)}</td><td>${esc(b.district)}</td><td>${esc(b.city)}</td><td>${phone}</td><td>${esc(b.email)}</td><td>${esc(b.prayer)}</td><td>${esc(b.sourceName)}</td>
+      <td>${esc(b.name)}</td>
+      <td>${esc(b.age)}</td>
+      <td>${esc(b.type)}</td>
+      <td>${esc(b.country)}</td>
+      <td>${esc(b.state)}</td>
+      <td>${esc(b.district)}</td>
+      <td>${esc(b.city)}</td>
+      <td>${phone}</td>
+      <td>${esc(b.email)}</td>
+      <td>${esc(b.prayer)}</td>
+      <td>${esc(b.sourceName)}</td>
       <td><div class="action-row">
         <button class="purple" onclick="openIdCard('${b.id}','${b.sourceCollection}')">ID</button>
+        <button onclick="openFullEdit('${b.id}','${b.sourceCollection}')">Edit</button>
         <a class="btn green" style="padding:8px 10px" target="_blank" href="https://wa.me/${phone}?text=${msg}">WA</a>
         <button class="red" onclick="deleteBeliever('${b.id}','${b.sourceCollection}')">Delete</button>
       </div></td>
@@ -1156,32 +1330,71 @@ function renderAdminBelievers(){
   }).join("");
 }
 
-window.toggleClassicTable=function(){
-  const box=$("classicTableBox");
-  box.style.display=box.style.display==="none"||!box.style.display?"block":"none";
-}
+let currentEditId="";
+let currentEditCollection="";
 
-window.sendPrayerMessage=function(id,col){
-  const b=combinedBelievers().find(x=>x.id===id && x.sourceCollection===col);
-  if(!b)return;
-  const phone=cleanPhone(b.phone);
-  const msg=encodeURIComponent(`🙏 Praise the Lord ${b.name}, HFGM prayer team is praying for you and your family. God bless you.`);
-  window.open(`https://wa.me/${phone}?text=${msg}`,"_blank");
-}
-
-window.editBelieverPremium=function(id,col){
+window.openFullEdit=function(id,col){
   const b=combinedBelievers().find(x=>x.id===id && x.sourceCollection===col);
   if(!b){alert("Record not found");return}
-  const newName=prompt("Name edit cheyandi:", b.name||"");
-  if(newName===null)return;
-  const newPhone=prompt("Phone number edit cheyandi:", cleanPhone(b.phone)||"");
-  if(newPhone===null)return;
-  updateDoc(doc(db,col,id),{
-    name:newName.trim(),
-    phone:cleanPhone(newPhone),
-    cell:cleanPhone(newPhone),
+
+  currentEditId=id;
+  currentEditCollection=col;
+
+  $("editName").value=b.name||"";
+  $("editAge").value=b.age||"";
+  $("editGender").value=b.gender||"";
+  $("editMemberId").value=b.memberId||"";
+  $("editCountry").value=b.country||"";
+  $("editState").value=b.state||"";
+  $("editDistrict").value=b.district||"";
+  $("editCity").value=b.city||"";
+  $("editPhone").value=cleanPhone(b.phone)||"";
+  $("editEmail").value=b.email||"";
+  $("editType").value=b.type||"";
+  $("editStatus").value=b.status||"";
+  $("editPrayer").value=b.prayer||"";
+
+  $("editModal").style.display="block";
+}
+
+window.closeEditModal=function(){
+  $("editModal").style.display="none";
+}
+
+window.saveFullMemberEdit=async function(){
+  if(!currentEditId || !currentEditCollection){
+    alert("Edit record not selected");
+    return;
+  }
+
+  const payload={
+    name:$("editName").value.trim(),
+    age:$("editAge").value.trim(),
+    gender:$("editGender").value.trim(),
+    memberId:$("editMemberId").value.trim(),
+    country:$("editCountry").value.trim(),
+    state:$("editState").value.trim(),
+    district:$("editDistrict").value.trim(),
+    city:$("editCity").value.trim(),
+    village:$("editCity").value.trim(),
+    phone:cleanPhone($("editPhone").value),
+    cell:cleanPhone($("editPhone").value),
+    email:$("editEmail").value.trim(),
+    type:$("editType").value.trim(),
+    status:$("editStatus").value.trim(),
+    prayer:$("editPrayer").value.trim(),
     updatedAt:new Date().toISOString()
-  }).then(()=>loadAdminData()).then(()=>alert("Updated successfully ✅"));
+  };
+
+  try{
+    await updateDoc(doc(db,currentEditCollection,currentEditId),payload);
+    alert("Member details updated successfully ✅");
+    closeEditModal();
+    await loadAdminData();
+  }catch(e){
+    console.error(e);
+    alert("Update failed. Firebase rules check cheyandi.");
+  }
 }
 
 function renderAdminPrayers(){
@@ -1203,7 +1416,18 @@ window.openIdCard=function(id,col){
   const b=combinedBelievers().find(x=>x.id===id && x.sourceCollection===col);
   if(!b)return;
   const phone=cleanPhone(b.phone);
-  $("idCardContent").innerHTML=`<div class="id-card"><h3>🕊️ HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES</h3>${b.photo?`<img class="photo" src="${b.photo}">`:`<div class="photo" style="display:inline-flex;align-items:center;justify-content:center;color:#0b4da2;background:white;font-size:34px">👤</div>`}<h2>${esc(b.name)}</h2><p><b>Type:</b> ${esc(b.type)}</p><p><b>Phone:</b> ${phone}</p><p><b>Place:</b> ${esc(b.city)}, ${esc(b.district)}</p><img class="qr" src="${qrUrl(b.name,phone)}"><p style="font-size:12px">HFGM-${String(b.id).slice(0,8).toUpperCase()}</p></div>`;
+  const memberId=b.memberId || "HFGM-"+String(b.id||"").slice(0,8).toUpperCase();
+  $("idCardContent").innerHTML=`<div class="id-card">
+    <h3>🕊️ HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES</h3>
+    ${b.photo?`<img class="photo" src="${b.photo}">`:`<div class="photo" style="display:inline-flex;align-items:center;justify-content:center;color:#0b4da2;background:white;font-size:34px">👤</div>`}
+    <h2>${esc(b.name||"Member")}</h2>
+    <p><b>Member ID:</b> ${esc(memberId)}</p>
+    <p><b>Type:</b> ${esc(b.type||"Believer")}</p>
+    <p><b>Phone:</b> ${phone}</p>
+    <p><b>Place:</b> ${esc(b.city||"")}, ${esc(b.district||"")}</p>
+    <img class="qr" src="${qrUrl(b.name||"HFGM Member",phone)}">
+    <p style="font-size:12px">HFGM Global Ministry</p>
+  </div>`;
   $("idCardModal").style.display="block";
 }
 window.closeIdCard=function(){$("idCardModal").style.display="none"}
@@ -1216,6 +1440,41 @@ window.printIdCard=function(){const html=$("idCardContent").innerHTML;const w=wi
   <div class="install-actions">
     <button class="install-btn" id="installAppBtn">Install App</button>
     <button class="close-install" onclick="closeInstallBanner()">Later</button>
+  </div>
+</div>
+
+
+<div id="editModal" class="edit-modal">
+  <div class="edit-box">
+    <button class="red" onclick="closeEditModal()" style="float:right">Close</button>
+    <h2>✏️ Full Member Edit</h2>
+
+    <div class="edit-grid">
+      <input id="editName" placeholder="Name">
+      <input id="editAge" placeholder="Age">
+      <input id="editGender" placeholder="Gender">
+      <input id="editMemberId" placeholder="Member ID">
+      <input id="editCountry" placeholder="Country">
+      <input id="editState" placeholder="State">
+      <input id="editDistrict" placeholder="District">
+      <input id="editCity" placeholder="Village / City">
+      <input id="editPhone" placeholder="Phone">
+      <input id="editEmail" placeholder="Email">
+      <input id="editType" placeholder="Member Type">
+      <select id="editStatus">
+      <option>New Member</option>
+      <option>Contacted</option>
+      <option>Praying</option>
+      <option>Follow-up</option>
+      <option>Prayer Answered</option>
+    </select>
+    </div>
+
+    <textarea id="editPrayer" placeholder="Prayer Request"></textarea>
+
+    <div class="btns">
+      <button class="green" onclick="saveFullMemberEdit()">💾 Save Changes</button>
+    </div>
   </div>
 </div>
 
