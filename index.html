@@ -677,6 +677,155 @@ margin-top:10px;
   .heroStats{grid-template-columns:1fr 1fr 1fr}
 }
 
+
+.adminPremiumTop{
+display:grid;
+grid-template-columns:2fr 1fr;
+gap:14px;
+margin-bottom:18px;
+}
+.quickBox,.todayBox{
+background:linear-gradient(145deg,#111827,#0f172a);
+border:1px solid rgba(255,255,255,.08);
+border-radius:24px;
+padding:18px;
+box-shadow:0 20px 40px rgba(0,0,0,.28);
+}
+.quickGrid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:10px;
+margin-top:14px;
+}
+.quickBtn{
+background:rgba(255,255,255,.06);
+border:1px solid rgba(255,255,255,.08);
+border-radius:18px;
+padding:14px 10px;
+text-align:center;
+color:#fff;
+font-weight:800;
+font-size:12px;
+cursor:pointer;
+transition:.25s;
+}
+.quickBtn:hover{
+transform:translateY(-3px);
+background:rgba(255,209,102,.12);
+border-color:rgba(255,209,102,.3);
+}
+.todayTask{
+display:flex;
+justify-content:space-between;
+padding:10px 0;
+border-bottom:1px solid rgba(255,255,255,.06);
+color:#d1d5db;
+font-size:13px;
+}
+.todayTask:last-child{border-bottom:0}
+.premiumGlow{
+background:linear-gradient(135deg,#ffd166,#f59e0b);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+font-weight:900;
+}
+@media(max-width:700px){
+.adminPremiumTop{grid-template-columns:1fr}
+.quickGrid{grid-template-columns:1fr 1fr}
+}
+
+
+/* MOBILE APP HERO FIX — compact globe + dove */
+.hero{
+  min-height:240px!important;
+  padding:18px 16px!important;
+  border-radius:26px!important;
+  margin:10px 24px 14px!important;
+  background:
+    radial-gradient(circle at 78% 34%,rgba(56,189,248,.28),transparent 24%),
+    radial-gradient(circle at 86% 18%,rgba(255,209,102,.45),transparent 20%),
+    linear-gradient(145deg,#09172d 0%,#0b1430 55%,#07101f 100%)!important;
+}
+.hero:after{
+  content:"";
+  position:absolute;
+  right:18px;
+  top:70px;
+  width:86px;
+  height:86px;
+  border-radius:50%;
+  background:
+    radial-gradient(circle at 30% 25%,#ffffffcc 0 4px,transparent 5px),
+    radial-gradient(circle at 50% 50%,#22c55e 0 18%,transparent 19%),
+    radial-gradient(circle at 62% 42%,#facc15 0 10%,transparent 11%),
+    linear-gradient(135deg,#38bdf8,#0b4da2 65%,#061b52);
+  box-shadow:0 0 30px rgba(56,189,248,.55), inset -10px -8px 18px rgba(0,0,0,.35);
+  animation:globeSpin 8s linear infinite, globeFloat 3s ease-in-out infinite;
+  z-index:1;
+}
+.hero .doveFly{
+  position:absolute;
+  right:48px;
+  top:30px;
+  font-size:34px;
+  z-index:3;
+  filter:drop-shadow(0 0 14px rgba(255,255,255,.7));
+  animation:doveUpDown 2.8s ease-in-out infinite;
+}
+@keyframes globeSpin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+@keyframes globeFloat{0%,100%{margin-top:0}50%{margin-top:6px}}
+@keyframes doveUpDown{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-8px) scale(1.08)}}
+.heroMini{
+  font-size:9px!important;
+  padding:5px 9px!important;
+  margin-bottom:10px!important;
+  max-width:235px;
+}
+.hero h1{
+  font-size:27px!important;
+  line-height:1.08!important;
+  max-width:72%!important;
+  letter-spacing:-.8px!important;
+}
+.hero p{
+  font-size:12.5px!important;
+  line-height:1.55!important;
+  max-width:68%!important;
+  margin-top:10px!important;
+}
+.heroStats{
+  max-width:67%!important;
+  gap:6px!important;
+  margin:12px 0 8px!important;
+}
+.heroStat{
+  padding:7px 5px!important;
+  border-radius:13px!important;
+}
+.heroStat b{
+  font-size:15px!important;
+}
+.heroStat span{
+  font-size:8px!important;
+}
+.hero .btn,.hero button{
+  width:68%!important;
+  padding:12px 12px!important;
+  border-radius:15px!important;
+  font-size:13px!important;
+  margin-top:4px!important;
+}
+@media(max-width:420px){
+  .hero{
+    min-height:235px!important;
+    margin:10px 24px 12px!important;
+  }
+  .hero h1{font-size:25px!important;max-width:72%!important}
+  .hero p{font-size:12px!important;max-width:68%!important}
+  .hero:after{width:78px;height:78px;right:16px;top:76px}
+  .hero .doveFly{right:42px;top:34px;font-size:30px}
+}
+
 </style>
 </head>
 <body>
@@ -685,15 +834,16 @@ margin-top:10px;
 
 <section id="home" class="screen active">
   <div class="hero">
+    <span class="doveFly">🕊️</span>
     <div class="heroMini">🔥 REVIVAL · PRAYER · GLOBAL FAMILY</div>
     <h1>Holy Spirit Fellowship <span class="goldText">Global Ministries</span></h1>
-    <p>Connecting believers worldwide through prayer, faith, revival, member care and secure admin management.</p>
+    <p>Prayer, revival, member care and secure HFGM admin system.</p>
     <div class="heroStats">
       <div class="heroStat"><b id="heroMembers">0</b><span>Members</span></div>
       <div class="heroStat"><b>24/7</b><span>Prayer</span></div>
       <div class="heroStat"><b>🌍</b><span>Global</span></div>
     </div>
-    <button class="btn" onclick="show('admin')">🔐 Enter Admin Dashboard</button>
+    <button class="btn" onclick="show('admin')">🔐 Admin Dashboard</button>
   </div>
   <div class="grid">
     <div class="card worldHero"><div class="globeBox"></div><h2>🌎 Global Family</h2><div class="stat" id="memberCount">0</div><p class="muted">Believers connected</p><div class="worldDots"><span></span><span></span><span></span></div></div>
