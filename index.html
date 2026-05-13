@@ -556,6 +556,18 @@ margin-top:10px;
 .broadcastMember h4{color:#fff;font-size:13px}
 .broadcastMember p{color:#9a9088;font-size:11px}
 
+
+.roleCard{background:#1c1916;border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:14px;margin-bottom:10px}
+.roleTop{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.roleTop h3{color:#fff;font-size:14px;margin-bottom:4px}
+.roleTop p{color:#9a9088;font-size:12px}
+.roleBadge{background:rgba(201,150,46,.16);color:#e8b84a;padding:5px 9px;border-radius:999px;font-size:10px;font-weight:900}
+.securityBox{background:#141210;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:12px;margin-top:10px}
+.switchRow{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06)}
+.switchRow:last-child{border-bottom:0}
+.switchBtn{border:0;border-radius:999px;padding:7px 12px;font-weight:900;background:#2a2520;color:#9a9088}
+.switchBtn.on{background:#3a9e64;color:white}
+
 </style>
 </head>
 <body>
@@ -752,6 +764,7 @@ margin-top:10px;
         <button onclick="adminPage('adminReports',this)">Reports</button>
         <button onclick="adminPage('adminPrayerCenter',this)">Prayer Center</button>
         <button onclick="adminPage('adminBroadcast',this)">Broadcast</button>
+        <button onclick="adminPage('adminSecurity',this)">Security</button>
         <button onclick="adminPage('adminSettings',this)">Settings</button>
       </div>
 
@@ -944,6 +957,38 @@ margin-top:10px;
   </div>
 </div>
 
+
+<div id="adminSecurity" class="adminPage">
+  <div class="adminStatGrid">
+    <div class="adminStat"><small>Admins</small><b id="secAdmins">4</b><span>Active roles</span></div>
+    <div class="adminStat"><small>Security</small><b id="secLevel">ON</b><span>Admin protected</span></div>
+    <div class="adminStat"><small>Backups</small><b id="secBackups">Ready</b><span>Manual export</span></div>
+    <div class="adminStat"><small>Logs</small><b id="secLogs">0</b><span>Login actions</span></div>
+  </div>
+
+  <div class="card">
+    <h2>🛡 Admin Roles & Security</h2>
+    <p class="small">Admin permissions manage cheyandi. Super Admin matrame delete/export settings control chestadu.</p>
+    <div id="adminRolesList"></div>
+  </div>
+
+  <div class="card">
+    <h2>🔐 Security Controls</h2>
+    <div class="securityBox">
+      <div class="switchRow"><div><b>Require Admin Login</b><p class="small">Members, reports, broadcast protected.</p></div><button class="switchBtn on">ON</button></div>
+      <div class="switchRow"><div><b>Hide Public Members</b><p class="small">Public users cannot see phone/member list.</p></div><button class="switchBtn on">ON</button></div>
+      <div class="switchRow"><div><b>Backup Reminder</b><p class="small">Weekly backup reminder.</p></div><button class="switchBtn on">ON</button></div>
+      <div class="switchRow"><div><b>Delete Protection</b><p class="small">Confirm before deleting members.</p></div><button class="switchBtn on">ON</button></div>
+    </div>
+    <button class="btn purple" onclick="downloadBackup()">Download Full Backup</button>
+  </div>
+
+  <div class="card">
+    <h2>📋 Admin Activity Log</h2>
+    <div id="adminLogList"></div>
+  </div>
+</div>
+
 <div id="adminSettings" class="adminPage">
         <div class="card">
           <h2>⚙ Settings</h2>
@@ -1114,7 +1159,7 @@ function renderAll(){
   if($("aPrayers"))$("aPrayers").innerText=prayers.length;
   if($("dashOldCount"))$("dashOldCount").innerText=oldMembers.length;
   if($("dashNewCount"))$("dashNewCount").innerText=newMembers.length + localMembers.length;
-  renderCountries(); renderMembers(); renderAdminDashboardMembers(); renderAttendance(); renderFamilies(); renderReports(); renderPrayerCenter(); renderBroadcastMembers();
+  renderCountries(); renderMembers(); renderAdminDashboardMembers(); renderAttendance(); renderFamilies(); renderReports(); renderPrayerCenter(); renderBroadcastMembers(); renderAdminSecurity();
 }
 function renderCountries(){
   const sel=$("countryFilter"); if(!sel)return;
@@ -1357,10 +1402,10 @@ async function saveOldMember(){
 function clearAdd(){["nName","nAge","nGender","nRole","nState","nDistrict","nCity","nPhone","nPrayer","nFamily","nFamilyId","nRelationship","nBlood","nEmergency","nBranch","nPhoto","nSelfie"].forEach(function(id){if($(id))$(id).value=""}); if($("nCountry"))$("nCountry").value="India"; if($("nCode"))$("nCode").value="91"; if($("photoPreview")){$("photoPreview").src="";$("photoPreview").style.display="none";} if($("addSuccess"))$("addSuccess").style.display="none"; if($("addMemberIdBox"))$("addMemberIdBox").style.display="none";}
 
 function adminLogin(){
-  if($("adminUser").value.trim()==="admin" && $("adminPass").value.trim()==="1234"){isAdmin=true;sessionStorage.setItem("hfgm_admin","yes");alert("Admin login success");renderAll();}
+  if($("adminUser").value.trim()==="admin" && $("adminPass").value.trim()==="1234"){isAdmin=true;sessionStorage.setItem("hfgm_admin","yes");alert("Admin login success"); addAdminLog("Admin login success"); renderAll();}
   else alert("Wrong login");
 }
-function adminLogout(){isAdmin=false;sessionStorage.removeItem("hfgm_admin");renderAll();}
+function adminLogout(){addAdminLog("Admin logged out"); isAdmin=false;sessionStorage.removeItem("hfgm_admin");renderAll();}
 function findMember(id,source){return members.find(function(m){return m.id===id&&m.source===source})}
 function openEdit(id,source){
   const m=findMember(id,source); if(!m)return alert("Not found");
@@ -1749,6 +1794,57 @@ function renderBroadcastMembers(){
       </div>
     </div>
   `).join("") || '<div class="notice">No phone contacts found.</div>';
+}
+
+
+let adminRoles = JSON.parse(localStorage.getItem("hfgm_admin_roles")||"[]");
+let adminLogs = JSON.parse(localStorage.getItem("hfgm_admin_logs")||"[]");
+
+function seedAdminRoles(){
+ if(adminRoles.length) return;
+ adminRoles=[
+  {name:"Suresh Pendyala",role:"Super Admin",access:"All Access",status:"Active"},
+  {name:"Finance Admin",role:"Finance",access:"Donations, Reports",status:"Active"},
+  {name:"Prayer Team",role:"Prayer",access:"Prayer Requests, Testimonies",status:"Active"},
+  {name:"Media Admin",role:"Media",access:"Sermons, Live, Broadcast",status:"Active"}
+ ];
+ localStorage.setItem("hfgm_admin_roles",JSON.stringify(adminRoles));
+}
+
+function addAdminLog(text){
+ adminLogs.unshift({text, time:new Date().toLocaleString()});
+ adminLogs=adminLogs.slice(0,30);
+ localStorage.setItem("hfgm_admin_logs",JSON.stringify(adminLogs));
+ renderAdminSecurity();
+}
+
+function renderAdminSecurity(){
+ seedAdminRoles();
+ if($("secAdmins"))$("secAdmins").innerText=adminRoles.length;
+ if($("secLogs"))$("secLogs").innerText=adminLogs.length;
+
+ const roleBox=$("adminRolesList");
+ if(roleBox){
+  roleBox.innerHTML=adminRoles.map((r,i)=>`
+    <div class="roleCard">
+      <div class="roleTop">
+        <div><h3>${esc(r.name)}</h3><p>${esc(r.access)}</p></div>
+        <span class="roleBadge">${esc(r.role)}</span>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:10px">
+        <button class="btn blue" style="padding:8px;margin:0" onclick="alert('Edit role coming next')">Edit</button>
+        <button class="btn dark" style="padding:8px;margin:0" onclick="addAdminLog('Role checked: ${esc(r.name)}')">Log</button>
+      </div>
+    </div>
+  `).join("");
+ }
+
+ const logBox=$("adminLogList");
+ if(logBox){
+  logBox.innerHTML=adminLogs.map(l=>`
+    <div class="roleCard"><p style="color:#fff">${esc(l.text)}</p><p class="small">${esc(l.time)}</p></div>
+  `).join("") || '<div class="notice">No admin activity yet.</div>';
+ }
 }
 
 window.addEventListener("load",function(){ setTimeout(startHFGM,800); });
