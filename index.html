@@ -826,6 +826,26 @@ font-weight:900;
   .hero .doveFly{right:42px;top:34px;font-size:30px}
 }
 
+
+.regSuccessBox{
+  display:none;
+  background:linear-gradient(135deg,#dcfce7,#bbf7d0);
+  color:#14532d;
+  border-left:5px solid #16a34a;
+  border-radius:16px;
+  padding:14px;
+  margin-top:12px;
+  font-weight:900;
+  text-align:center;
+  box-shadow:0 10px 25px rgba(22,163,74,.18);
+}
+.regSuccessBox small{
+  display:block;
+  color:#166534;
+  margin-top:6px;
+  font-size:12px;
+}
+
 </style>
 </head>
 <body>
@@ -982,7 +1002,7 @@ font-weight:900;
     <input id="nSelfie" class="hiddenFile" type="file" accept="image/*" capture="user" onchange="previewSelectedPhoto(this)">
     <input id="nPhoto" class="hiddenFile" type="file" accept="image/*" onchange="previewSelectedPhoto(this)">
     <img id="photoPreview" class="previewPhoto">
-    <button class="btn green" onclick="savePublicMember()">Save Member</button>
+    <button class="btn green" onclick="savePublicMember()">Save Member</button><div id="registerSuccessBox" class="regSuccessBox"></div>
     <button class="btn dark adminOnly" onclick="saveOldMember()">Admin Save Old Members</button>
     <div class="notice">Registration submit chesina వెంటనే Member ID generate అవుతుంది. Admin login లో details కనిపిస్తాయి.</div>
       <div id="addSuccess" class="success" style="display:none;background:#dcfce7;color:#166534">
@@ -1632,29 +1652,73 @@ function showAddSuccess(memberId,msg){
   }
 }
 
-async function savePublicMember(){
-  const d=getFormMember();
-  if(!d.name||d.phone.length<10)return alert("Name and phone required");
-  d.memberId="HFGM-"+Date.now().toString().slice(-6);
-  d.photo=await resizeImage(($("nSelfie").files[0] || $("nPhoto").files[0]));
 
-  localMembers.unshift(d);
-  localStorage.setItem("hfgm_local_members",JSON.stringify(localMembers));
-  mergeUnique(); renderAll();
-  showAddSuccess(d.memberId || d.localId, "Member added. Firebase save trying...");
-
-  if(db){
-    try{
-      await db.collection("global_believers").add(d);
-      showAddSuccess(d.memberId || d.localId, "Registration Success! Firebase lo save ayyindi.");
-      clearAdd(); await loadFirebase(); show("members");
-      return;
-    }catch(e){
-      setStatus("Firebase save failed: "+e.message+" | Local save done.");
-      showAddSuccess(d.memberId || d.localId, "Registration Success! Local lo save ayyindi. Firebase later sync cheyandi.");
-    }
+function showRegisterSuccess(memberId, msg){
+  const box = $("registerSuccessBox") || $("addSuccess");
+  if(box){
+    box.style.display = "block";
+    box.innerHTML = "✅ Registration Success<br><small>"+esc(msg || "Member saved successfully")+"</small><small>🪪 Member ID: <b>"+esc(memberId || "HFGM-MEM")+"</b></small>";
+    try{ box.scrollIntoView({behavior:"smooth",block:"center"}); }catch(e){}
+  } else {
+    alert("Registration Success\nMember ID: " + (memberId || "HFGM-MEM"));
   }
-  clearAdd(); show("members");
+}
+function makePublicMemberId(){
+  const code = $("nCode") ? $("nCode").value : "";
+  const ph = $("nPhone") ? $("nPhone").value : "";
+  const p = cleanPhone(code + ph);
+  if(p && p.length>=4) return "HFGM-MEM-" + p.slice(-4);
+  return "HFGM-MEM-" + Date.now().toString().slice(-5);
+}
+function saveLocalMemberOnly(d){
+  try{ localMembers = JSON.parse(localStorage.getItem("hfgm_local_members") || "[]"); }catch(e){ localMembers=[]; }
+  localMembers.unshift(d);
+  localStorage.setItem("hfgm_local_members", JSON.stringify(localMembers));
+  mergeUnique();
+  renderAll();
+}
+
+async function savePublicMember(){
+  try{
+    if(!$("nName") || !$("nName").value.trim()){
+      alert("Please enter Full Name");
+      return;
+    }
+    if(!$("nPhone") || !$("nPhone").value.trim()){
+      alert("Please enter Phone Number");
+      return;
+    }
+
+    let d = getFormMember();
+    d.memberId = d.memberId || makePublicMemberId();
+    d.uid = d.memberId;
+    d.id = d.memberId;
+    d.source = "local";
+
+    const file = (($("nSelfie") && $("nSelfie").files[0]) || ($("nPhoto") && $("nPhoto").files[0]));
+    if(file){
+      try{ d.photo = await resizeImage(file); }catch(e){ console.log("photo resize skipped", e); }
+    }
+
+    saveLocalMemberOnly(d);
+    showRegisterSuccess(d.memberId, "Local lo save ayyindi. Admin Members list lo kanipisthundi.");
+
+    try{
+      if(db && typeof db.collection === "function"){
+        await db.collection("global_believers").doc(d.memberId).set(d,{merge:true});
+        showRegisterSuccess(d.memberId, "Firebase lo kuda save ayyindi.");
+        loadFirebase();
+      }
+    }catch(fbErr){
+      console.log("Firebase save failed, local saved", fbErr);
+      showRegisterSuccess(d.memberId, "Local lo save ayyindi. Firebase later sync cheyandi.");
+    }
+
+    clearAdd();
+  }catch(err){
+    console.error("Save error", err);
+    alert("Save error: " + err.message);
+  }
 }
 async function saveOldMember(){
   if(!isAdmin)return alert("Admin login required");
@@ -1665,7 +1729,7 @@ async function saveOldMember(){
   try{await db.collection("members").add(d);alert("Old members collection lo save ayyindi");clearAdd();await loadFirebase();show("members");}
   catch(e){alert("Old member save failed: "+e.message)}
 }
-function clearAdd(){["nName","nAge","nGender","nRole","nState","nDistrict","nCity","nPhone","nPrayer","nFamily","nFamilyId","nRelationship","nBlood","nEmergency","nBranch","nPhoto","nSelfie"].forEach(function(id){if($(id))$(id).value=""}); if($("nCountry"))$("nCountry").value="India"; if($("nCode"))$("nCode").value="91"; if($("photoPreview")){$("photoPreview").src="";$("photoPreview").style.display="none";} if($("addSuccess"))$("addSuccess").style.display="none"; if($("addMemberIdBox"))$("addMemberIdBox").style.display="none";}
+function clearAdd(){["nName","nAge","nGender","nRole","nState","nDistrict","nCity","nPhone","nPrayer","nFamily","nFamilyId","nRelationship","nBlood","nEmergency","nBranch","nPhoto","nSelfie"].forEach(function(id){if($(id))$(id).value=""}); if($("nCountry"))$("nCountry").value="India"; if($("nCode"))$("nCode").value="91"; if($("photoPreview")){$("photoPreview").src="";$("photoPreview").style.display="none";} }
 
 function adminLogin(){
   if($("adminUser").value.trim()==="admin" && $("adminPass").value.trim()==="1234"){isAdmin=true;sessionStorage.setItem("hfgm_admin","yes");alert("Admin login success"); addAdminLog("Admin login success"); renderAll();}
@@ -1752,6 +1816,8 @@ function openUPI(amount){location.href="upi://pay?pa="+encodeURIComponent($("upi
 function downloadBackup(){const data={oldMembers:oldMembers,newMembers:newMembers,localMembers:localMembers,backupAt:new Date().toISOString()};const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="hfgm_backup.json";a.click()}
 
 function startHFGM(){
+  try{ localMembers = JSON.parse(localStorage.getItem("hfgm_local_members") || "[]"); }catch(e){ localMembers=[]; }
+
   setStatus("Starting Firebase...");
   initFirebase();
   loadFirebase();
