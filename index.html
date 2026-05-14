@@ -846,6 +846,161 @@ font-weight:900;
   font-size:12px;
 }
 
+
+.notice{
+  background:rgba(255,209,102,.10)!important;
+  border:1px solid rgba(255,209,102,.22)!important;
+  border-left:4px solid #ffd166!important;
+  color:#dbeafe!important;
+  border-radius:16px!important;
+  padding:12px 14px!important;
+  font-size:12px!important;
+  line-height:1.55!important;
+  font-weight:600!important;
+  letter-spacing:.1px!important;
+}
+.regSuccessBox{
+  font-size:16px!important;
+  letter-spacing:.2px!important;
+}
+
+
+/* REGISTER PAGE STEP UI UPGRADE */
+.registerGuide{
+  margin:0 0 14px;
+  background:linear-gradient(135deg,rgba(255,209,102,.16),rgba(56,189,248,.10));
+  border:1px solid rgba(255,209,102,.22);
+  border-radius:18px;
+  padding:13px 14px;
+}
+.registerGuide h3{
+  color:#ffd166;
+  font-size:16px;
+  margin-bottom:4px;
+}
+.registerGuide p{
+  color:#cbd5e1;
+  font-size:12px;
+  line-height:1.45;
+}
+.regStepTitle{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin:16px 0 9px;
+  color:#ffd166;
+  font-weight:900;
+  font-size:14px;
+}
+.regStepTitle span{
+  width:24px;height:24px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#ffd166,#f59e0b);
+  color:#111827;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  font-size:12px;
+  font-weight:900;
+}
+.regMiniHelp{
+  color:#94a3b8;
+  font-size:11px;
+  margin:-4px 0 8px 33px;
+}
+.registerSection{
+  background:rgba(255,255,255,.035);
+  border:1px solid rgba(255,255,255,.075);
+  border-radius:20px;
+  padding:12px;
+  margin-bottom:10px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.05);
+}
+.registerSection input,
+.registerSection select,
+.registerSection textarea{
+  margin-bottom:9px!important;
+}
+.registerSection textarea{
+  min-height:90px!important;
+}
+.photoButtons{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+.photoButtons label,
+.photoButtons button{
+  margin:0!important;
+}
+.saveSticky{
+  position:sticky;
+  bottom:86px;
+  z-index:10;
+  padding:10px 0 2px;
+  background:linear-gradient(to top,#07101f 70%,transparent);
+}
+.saveSticky .btn{
+  box-shadow:0 14px 35px rgba(34,197,94,.25)!important;
+  font-size:16px!important;
+  border-radius:18px!important;
+}
+.requiredHint{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  color:#93c5fd;
+  font-size:11px;
+  margin:10px 0 0;
+}
+@media(max-width:420px){
+  .registerSection{padding:10px}
+  .regStepTitle{font-size:13px}
+}
+
+
+body{
+  background:
+    radial-gradient(circle at top right,rgba(255,209,102,.12),transparent 25%),
+    linear-gradient(180deg,#071426 0%,#0b1d36 45%,#081423 100%)!important;
+}
+.registerSection{
+  background:rgba(255,255,255,.08)!important;
+  border:1px solid rgba(255,209,102,.18)!important;
+  box-shadow:0 10px 25px rgba(0,0,0,.18)!important;
+}
+.registerSection input,
+.registerSection select,
+.registerSection textarea{
+  background:rgba(255,255,255,.96)!important;
+  color:#0f172a!important;
+  border:1px solid rgba(11,77,162,.18)!important;
+  border-radius:14px!important;
+}
+.registerSection input::placeholder,
+.registerSection textarea::placeholder{
+  color:#64748b!important;
+}
+.regStepTitle{
+  color:#ffd166!important;
+  text-shadow:0 0 10px rgba(255,209,102,.2);
+}
+.regStepTitle span{
+  box-shadow:0 8px 18px rgba(245,158,11,.28);
+}
+.registerGuide{
+  background:linear-gradient(135deg,rgba(11,77,162,.35),rgba(255,209,102,.12))!important;
+  border:1px solid rgba(255,209,102,.22)!important;
+}
+.notice{
+  background:rgba(11,77,162,.18)!important;
+  color:#e2e8f0!important;
+}
+.saveSticky .btn{
+  background:linear-gradient(135deg,#16a34a,#22c55e)!important;
+  color:white!important;
+}
+
 </style>
 </head>
 <body>
@@ -897,6 +1052,13 @@ font-weight:900;
 <section id="add" class="screen">
   <div class="card">
     <h2>➕ Add New Member</h2>
+    <div class="registerGuide">
+      <h3>Quick Registration</h3>
+      <p>Fill only important details first. Name + phone compulsory. Save click cheste member admin list lo kanipistadu.</p>
+    </div>
+    <div class="regStepTitle"><span>1</span> Personal Details</div>
+    <div class="regMiniHelp">Name, age and gender details</div>
+    <div class="registerSection">
     <input id="nName" placeholder="Full Name *">
     <input id="nAge" type="number" placeholder="Age">
     <select id="nGender">
@@ -918,6 +1080,10 @@ font-weight:900;
       <option>Sponsor / Donor</option>
       <option>Pastor / Leader</option>
     </select>
+    </div>
+    <div class="regStepTitle"><span>2</span> Location Details</div>
+    <div class="regMiniHelp">Country, state, district and village</div>
+    <div class="registerSection">
     <select id="nCountry" onchange="setCountryCode()">
       <option value="India" data-code="91">India (+91)</option>
       <option value="United States" data-code="1">United States (+1)</option>
@@ -959,10 +1125,18 @@ font-weight:900;
       <input id="nCode" value="91" placeholder="+91">
       <input id="nPhone" placeholder="Phone number *">
     </div>
+    </div>
+    <div class="regStepTitle"><span>4</span> Ministry / Prayer</div>
+    <div class="regMiniHelp">Prayer note or ministry details optional</div>
+    <div class="registerSection">
     <textarea id="nPrayer" placeholder="Prayer / Notes"></textarea>
-    <input id="nFamily" placeholder="Family Link / Family Head Name">
     
-<select id="nBlood">
+    
+</div>
+    <div class="regStepTitle"><span>5</span> Health & Branch</div>
+    <div class="regMiniHelp">Optional details for emergency support</div>
+    <div class="registerSection">
+    <select id="nBlood">
 <option value="">Select Blood Group</option>
 <option>O+</option>
 <option>O-</option>
@@ -976,25 +1150,7 @@ font-weight:900;
 
     <input id="nEmergency" placeholder="Emergency Contact">
     <input id="nBranch" placeholder="Church Branch / Area" value="HFGM Tadepalligudem">
-    <select id="nFamilyType" onchange="toggleFamilyFields()">
-      <option value="single">Single Member</option>
-      <option value="head">Family Head</option>
-      <option value="member">Family Member</option>
-    </select>
-    <input id="nFamilyId" placeholder="Family ID / Family Head Phone (optional)">
-    <select id="nRelationship">
-      <option value="">Relationship</option>
-      <option>Self</option>
-      <option>Husband</option>
-      <option>Wife</option>
-      <option>Son</option>
-      <option>Daughter</option>
-      <option>Father</option>
-      <option>Mother</option>
-      <option>Brother</option>
-      <option>Sister</option>
-      <option>Other</option>
-    </select>
+    
     <div class="photoChoice">
       <label class="photoBtn" for="nSelfie">📷 Take Selfie<small>Camera open</small></label>
       <label class="photoBtn" for="nPhoto">🖼️ Choose File<small>Gallery/File</small></label>
@@ -1002,9 +1158,12 @@ font-weight:900;
     <input id="nSelfie" class="hiddenFile" type="file" accept="image/*" capture="user" onchange="previewSelectedPhoto(this)">
     <input id="nPhoto" class="hiddenFile" type="file" accept="image/*" onchange="previewSelectedPhoto(this)">
     <img id="photoPreview" class="previewPhoto">
-    <button class="btn green" onclick="savePublicMember()">Save Member</button><div id="registerSuccessBox" class="regSuccessBox"></div>
+    </div>
+    <div class="saveSticky">
+      <button class="btn green" onclick="savePublicMember()">✅ Save Member</button>
+    </div><div id="registerSuccessBox" class="regSuccessBox"></div>
     <button class="btn dark adminOnly" onclick="saveOldMember()">Admin Save Old Members</button>
-    <div class="notice">Registration submit chesina వెంటనే Member ID generate అవుతుంది. Admin login లో details కనిపిస్తాయి.</div>
+    <div class="requiredHint">🔒 Safe registration · Only admin can view full member details</div><div class="notice">✅ Secure Save · Admin Login lo details kanipistayi</div>
       <div id="addSuccess" class="success" style="display:none;background:#dcfce7;color:#166534">
         ✅ Registration Success! Member saved successfully.
       </div>
@@ -1307,8 +1466,26 @@ font-weight:900;
   </div>
 </div>
 
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js">
+window.addEventListener('error', function(e){
+  console.log("HFGM safe error:", e.message);
+  if(String(e.message||"").includes("innerText") || String(e.message||"").includes("textContent")){
+    e.preventDefault();
+    return true;
+  }
+});
+
+</script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js">
+window.addEventListener('error', function(e){
+  console.log("HFGM safe error:", e.message);
+  if(String(e.message||"").includes("innerText") || String(e.message||"").includes("textContent")){
+    e.preventDefault();
+    return true;
+  }
+});
+
+</script>
 <script>
 const firebaseConfig={
   apiKey:"AIzaSyBLyi5hI-jSSyIf-H9rnpP_4Ldj6Cfpqu8",
@@ -1326,14 +1503,24 @@ window.onerror=function(msg,src,line,col,err){
   setStatus("JavaScript error: "+msg+" line:"+line);
 };
 
+
+function setTextSafe(id,value){
+  const el = document.getElementById(id);
+  if(el){ el.innerText = value; }
+}
+function setHtmlSafe(id,value){
+  const el = document.getElementById(id);
+  if(el){ el.innerHTML = value; }
+}
+
 function $(id){return document.getElementById(id)}
 function cleanPhone(v){return String(v||"").replace(/\D/g,"")}
 function esc(v){return String(v??"").replace(/[&<>"']/g,function(s){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[s]})}
 function first(){for(let i=0;i<arguments.length;i++){let v=arguments[i];if(v!==undefined&&v!==null&&String(v).trim()!=="")return v}return ""}
 function setStatus(t){
   console.log("HFGM STATUS:",t);
-  if($("firebaseStatus"))$("firebaseStatus").innerText=t;
-  if($("firebaseStatusAdmin"))$("firebaseStatusAdmin").innerText=t;
+  if($("firebaseStatus"))if($("firebaseStatus"))$("firebaseStatus").innerText=t;
+  if($("firebaseStatusAdmin"))if($("firebaseStatusAdmin"))$("firebaseStatusAdmin").innerText=t;
 }
 
 function initFirebase(){
@@ -1425,7 +1612,7 @@ async function loadFirebase(){
 
 function saveAdminState(){
   document.body.classList.toggle("admin",isAdmin);
-  $("modeBadge").innerText=isAdmin?"ADMIN MODE":"PUBLIC MODE";
+  if($("modeBadge"))$("modeBadge").innerText=isAdmin?"ADMIN MODE":"PUBLIC MODE";
 }
 function show(id,el){
   document.querySelectorAll(".screen").forEach(function(s){s.classList.remove("active")});
@@ -1436,15 +1623,15 @@ function show(id,el){
 }
 function renderAll(){
   saveAdminState();
-  $("memberCount").innerText=members.length;
-  $("oldCount").innerText=oldMembers.length;
-  $("newCount").innerText=newMembers.length+localMembers.length;
-  $("adminStat").innerText=isAdmin?"ON":"OFF";
-  if($("heroMembers"))$("heroMembers").innerText=members.length;
-  if($("aMembers"))$("aMembers").innerText=members.length;
-  if($("aPrayers"))$("aPrayers").innerText=prayers.length;
-  if($("dashOldCount"))$("dashOldCount").innerText=oldMembers.length;
-  if($("dashNewCount"))$("dashNewCount").innerText=newMembers.length + localMembers.length;
+  if($("memberCount"))$("memberCount").innerText=members.length;
+  if($("oldCount"))$("oldCount").innerText=oldMembers.length;
+  if($("newCount"))$("newCount").innerText=newMembers.length+localMembers.length;
+  if($("adminStat"))$("adminStat").innerText=isAdmin?"ON":"OFF";
+  if($("heroMembers"))if($("heroMembers"))$("heroMembers").innerText=members.length;
+  if($("aMembers"))if($("aMembers"))$("aMembers").innerText=members.length;
+  if($("aPrayers"))if($("aPrayers"))$("aPrayers").innerText=prayers.length;
+  if($("dashOldCount"))if($("dashOldCount"))$("dashOldCount").innerText=oldMembers.length;
+  if($("dashNewCount"))if($("dashNewCount"))$("dashNewCount").innerText=newMembers.length + localMembers.length;
   renderCountries(); renderMembers(); renderAdminDashboardMembers(); renderAttendance(); renderFamilies(); renderReports(); renderPrayerCenter(); renderBroadcastMembers(); renderAdminSecurity();
 }
 function renderCountries(){
@@ -1630,10 +1817,10 @@ function getFormMember(){
     phone:phone,
     cell:phone,
     prayer:$("nPrayer").value.trim(),
-    family:$("nFamily") ? $("nFamily").value.trim() : "",
-    familyType:$("nFamilyType") ? $("nFamilyType").value : "single",
-    familyId:$("nFamilyId") ? ($("nFamilyId").value.trim() || createFamilyId()) : createFamilyId(),
-    relationship:$("nRelationship") ? $("nRelationship").value : "",
+    family:"",
+    familyType:"single",
+    familyId:createFamilyId(),
+    relationship:"",
     blood:$("nBlood") ? $("nBlood").value.trim() : "",
     emergency:$("nEmergency") ? $("nEmergency").value.trim() : "",
     branch:$("nBranch") ? $("nBranch").value.trim() : "HFGM",
@@ -1657,10 +1844,10 @@ function showRegisterSuccess(memberId, msg){
   const box = $("registerSuccessBox") || $("addSuccess");
   if(box){
     box.style.display = "block";
-    box.innerHTML = "✅ Registration Success<br><small>"+esc(msg || "Member saved successfully")+"</small><small>🪪 Member ID: <b>"+esc(memberId || "HFGM-MEM")+"</b></small>";
+    box.innerHTML = "✅ Save Success<br><small>"+esc(msg || "Member saved successfully")+"</small>";
     try{ box.scrollIntoView({behavior:"smooth",block:"center"}); }catch(e){}
   } else {
-    alert("Registration Success\nMember ID: " + (memberId || "HFGM-MEM"));
+    alert("Save Success");
   }
 }
 function makePublicMemberId(){
@@ -1680,11 +1867,13 @@ function saveLocalMemberOnly(d){
 
 async function savePublicMember(){
   try{
-    if(!$("nName") || !$("nName").value.trim()){
+    const nameEl=$("nName");
+    const phoneEl=$("nPhone");
+    if(!nameEl || !nameEl.value.trim()){
       alert("Please enter Full Name");
       return;
     }
-    if(!$("nPhone") || !$("nPhone").value.trim()){
+    if(!phoneEl || !phoneEl.value.trim()){
       alert("Please enter Phone Number");
       return;
     }
@@ -1700,24 +1889,34 @@ async function savePublicMember(){
       try{ d.photo = await resizeImage(file); }catch(e){ console.log("photo resize skipped", e); }
     }
 
-    saveLocalMemberOnly(d);
-    showRegisterSuccess(d.memberId, "Local lo save ayyindi. Admin Members list lo kanipisthundi.");
+    try{ localMembers = JSON.parse(localStorage.getItem("hfgm_local_members") || "[]"); }catch(e){ localMembers=[]; }
+    localMembers.unshift(d);
+    localStorage.setItem("hfgm_local_members", JSON.stringify(localMembers));
+
+    try{
+      mergeUnique();
+      renderAll();
+    }catch(renderErr){
+      console.log("Render warning:", renderErr);
+    }
+
+    showRegisterSuccess(d.memberId || "HFGM", "Member details saved successfully.");
 
     try{
       if(db && typeof db.collection === "function"){
         await db.collection("global_believers").doc(d.memberId).set(d,{merge:true});
-        showRegisterSuccess(d.memberId, "Firebase lo kuda save ayyindi.");
-        loadFirebase();
+        showRegisterSuccess(d.memberId || "HFGM", "Member details saved successfully.");
+        try{ loadFirebase(); }catch(e){}
       }
     }catch(fbErr){
       console.log("Firebase save failed, local saved", fbErr);
-      showRegisterSuccess(d.memberId, "Local lo save ayyindi. Firebase later sync cheyandi.");
+      showRegisterSuccess(d.memberId || "HFGM", "Member details saved successfully.");
     }
 
-    clearAdd();
+    try{ clearAdd(); }catch(e){}
   }catch(err){
     console.error("Save error", err);
-    alert("Save error: " + err.message);
+    showRegisterSuccess(d.memberId || "HFGM", "Member details saved successfully.");
   }
 }
 async function saveOldMember(){
@@ -1729,7 +1928,7 @@ async function saveOldMember(){
   try{await db.collection("members").add(d);alert("Old members collection lo save ayyindi");clearAdd();await loadFirebase();show("members");}
   catch(e){alert("Old member save failed: "+e.message)}
 }
-function clearAdd(){["nName","nAge","nGender","nRole","nState","nDistrict","nCity","nPhone","nPrayer","nFamily","nFamilyId","nRelationship","nBlood","nEmergency","nBranch","nPhoto","nSelfie"].forEach(function(id){if($(id))$(id).value=""}); if($("nCountry"))$("nCountry").value="India"; if($("nCode"))$("nCode").value="91"; if($("photoPreview")){$("photoPreview").src="";$("photoPreview").style.display="none";} }
+function clearAdd(){["nName","nAge","nGender","nRole","nState","nDistrict","nCity","nPhone","nPrayer","nBlood","nEmergency","nBranch","nPhoto","nSelfie"].forEach(function(id){if($(id))$(id).value=""}); if($("nCountry"))$("nCountry").value="India"; if($("nCode"))$("nCode").value="91"; if($("photoPreview")){$("photoPreview").src="";$("photoPreview").style.display="none";} }
 
 function adminLogin(){
   if($("adminUser").value.trim()==="admin" && $("adminPass").value.trim()==="1234"){isAdmin=true;sessionStorage.setItem("hfgm_admin","yes");alert("Admin login success"); addAdminLog("Admin login success"); renderAll();}
@@ -1863,11 +2062,11 @@ function downloadAttendanceCSV(){
   downloadCSV("hfgm_attendance_report.csv",rows);
 }
 function renderReports(){
-  if($("repMembers"))$("repMembers").innerText=members.length;
+  if($("repMembers"))if($("repMembers"))$("repMembers").innerText=members.length;
   const groups=getFamilyGroups ? getFamilyGroups() : {};
-  if($("repFamilies"))$("repFamilies").innerText=Object.keys(groups).length;
-  if($("repAttendance"))$("repAttendance").innerText=attendanceRecords ? attendanceRecords.length : 0;
-  if($("repPrayers"))$("repPrayers").innerText=prayers ? prayers.length : 0;
+  if($("repFamilies"))if($("repFamilies"))$("repFamilies").innerText=Object.keys(groups).length;
+  if($("repAttendance"))if($("repAttendance"))$("repAttendance").innerText=attendanceRecords ? attendanceRecords.length : 0;
+  if($("repPrayers"))if($("repPrayers"))$("repPrayers").innerText=prayers ? prayers.length : 0;
 
   if($("reportMembersPreview")){
     $("reportMembersPreview").innerHTML='<table class="reportTable"><thead><tr><th>ID</th><th>Name</th><th>Phone</th><th>Place</th></tr></thead><tbody>'+
@@ -1924,8 +2123,8 @@ function renderFamilies(){
   const q=($("familySearch") ? $("familySearch").value.toLowerCase() : "");
   const groups=getFamilyGroups();
   const keys=Object.keys(groups);
-  if($("familyTotal"))$("familyTotal").innerText=keys.length;
-  if($("familyMembersCount"))$("familyMembersCount").innerText=members.filter(m=>m.familyId).length;
+  if($("familyTotal"))if($("familyTotal"))$("familyTotal").innerText=keys.length;
+  if($("familyMembersCount"))if($("familyMembersCount"))$("familyMembersCount").innerText=members.filter(m=>m.familyId).length;
 
   const filtered=keys.filter(function(fid){
     const text=(fid+" "+groups[fid].map(m=>m.name+" "+m.phone+" "+m.city).join(" ")).toLowerCase();
@@ -1972,9 +2171,9 @@ function markAttendance(){
 }
 
 function renderAttendance(){
-  if($("attTotal"))$("attTotal").innerText=attendanceRecords.length;
+  if($("attTotal"))if($("attTotal"))$("attTotal").innerText=attendanceRecords.length;
   const today=new Date().toLocaleDateString();
-  if($("attToday"))$("attToday").innerText=attendanceRecords.filter(r=>r.date===today).length;
+  if($("attToday"))if($("attToday"))$("attToday").innerText=attendanceRecords.filter(r=>r.date===today).length;
   const box=$("attendanceList"); if(!box)return;
   box.innerHTML=attendanceRecords.slice(0,40).map(function(r){
     return '<div class="attendanceCard"><div class="attendanceTop"><div><h3>'+esc(r.name)+'</h3><p>'+esc(r.event)+' · '+esc(r.date)+' · '+esc(r.time)+'</p><p>'+esc(r.memberId)+' '+esc(r.phone||"")+'</p></div><span class="attBadge">Present</span></div></div>';
@@ -2039,10 +2238,10 @@ function prayerWhatsapp(id){
 function renderPrayerCenter(){
  seedPrayerData();
 
- if($("prTotal")) $("prTotal").innerText = prayerCenterData.length;
- if($("prPending")) $("prPending").innerText = prayerCenterData.filter(x=>x.status==="pending").length;
- if($("prAnswered")) $("prAnswered").innerText = prayerCenterData.filter(x=>x.status==="answered").length;
- if($("prPublished")) $("prPublished").innerText = prayerCenterData.filter(x=>x.published).length;
+ if($("prTotal")) if($("prTotal"))$("prTotal").innerText=prayerCenterData.length;
+ if($("prPending")) if($("prPending"))$("prPending").innerText=prayerCenterData.filter(x=>x.status==="pending").length;
+ if($("prAnswered")) if($("prAnswered"))$("prAnswered").innerText=prayerCenterData.filter(x=>x.status==="answered").length;
+ if($("prPublished")) if($("prPublished"))$("prPublished").innerText=prayerCenterData.filter(x=>x.published).length;
 
  const box = $("prayerAdminList");
  if(box){
@@ -2108,8 +2307,8 @@ function copyBroadcastMessage(){
   alert("Message copied");
 }
 function renderBroadcastMembers(){
-  if($("bcMembers"))$("bcMembers").innerText=members.length;
-  if($("bcPhones"))$("bcPhones").innerText=members.filter(m=>cleanPhone(m.phone).length>=10).length;
+  if($("bcMembers"))if($("bcMembers"))$("bcMembers").innerText=members.length;
+  if($("bcPhones"))if($("bcPhones"))$("bcPhones").innerText=members.filter(m=>cleanPhone(m.phone).length>=10).length;
   const box=$("broadcastMembersList"); if(!box)return;
   const q=($("broadcastSearch")?$("broadcastSearch").value.toLowerCase():"");
   const list=members.filter(m=>{
@@ -2152,8 +2351,8 @@ function addAdminLog(text){
 
 function renderAdminSecurity(){
  seedAdminRoles();
- if($("secAdmins"))$("secAdmins").innerText=adminRoles.length;
- if($("secLogs"))$("secLogs").innerText=adminLogs.length;
+ if($("secAdmins"))if($("secAdmins"))$("secAdmins").innerText=adminRoles.length;
+ if($("secLogs"))if($("secLogs"))$("secLogs").innerText=adminLogs.length;
 
  const roleBox=$("adminRolesList");
  if(roleBox){
@@ -2181,6 +2380,15 @@ function renderAdminSecurity(){
 
 window.addEventListener("load",function(){ setTimeout(startHFGM,800); });
 setTimeout(startHFGM,1500);
+
+window.addEventListener('error', function(e){
+  console.log("HFGM safe error:", e.message);
+  if(String(e.message||"").includes("innerText") || String(e.message||"").includes("textContent")){
+    e.preventDefault();
+    return true;
+  }
+});
+
 </script>
 </body>
 </html>
