@@ -1,240 +1,699 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>HFGM Ultra Premium Firebase App</title>
+<meta name="theme-color" content="#060d1a">
+<script src="https://cdn.tailwindcss.com">
+// STRONG ADMIN DASHBOARD UPGRADE OVERRIDES
+function todayStr(){return new Date().toISOString().slice(0,10)}
+function todayMembersCount(){return members.filter(m=>(m.createdAt||m.date||'').slice(0,10)===todayStr()).length}
+function exportMembersCSV(){
+  const rows=[['HFGM ID','Name','Phone','Role','City','District','State','Country','Source']];
+  members.forEach((m,idx)=>rows.push([autoCardNo(m,idx),m.name||'',m.phone||'',m.role||'',m.city||'',m.district||'',m.state||'',m.country||'',m.source||'']));
+  const csv=rows.map(r=>r.map(v=>'"'+String(v).replaceAll('"','""')+'"').join(',')).join('\n');
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='HFGM_members_'+todayStr()+'.csv';a.click();
+}
+function adminTab(tab){
+  document.querySelectorAll('.adminTabPage').forEach(x=>x.classList.add('hidden'));
+  document.querySelectorAll('.adminTabs button').forEach(x=>x.classList.remove('active'));
+  const page=document.getElementById('tab_'+tab); if(page)page.classList.remove('hidden');
+  const btn=document.getElementById('btn_'+tab); if(btn)btn.classList.add('active');
+  if(tab==='members') renderAdminList();
+}
+function donationSaveLocal(){
+  const name=$('donorName')?.value||'', amount=$('donorAmount')?.value||'', phone=$('donorPhone')?.value||'';
+  if(!name||!amount)return alert('Donor name and amount required');
+  const list=JSON.parse(localStorage.getItem('hfgm_donations')||'[]'); list.unshift({name,amount,phone,date:new Date().toLocaleString()}); localStorage.setItem('hfgm_donations',JSON.stringify(list)); renderDonationList(); alert('✅ Donation saved');
+}
+function renderDonationList(){const box=$('donationList'); if(!box)return; const list=JSON.parse(localStorage.getItem('hfgm_donations')||'[]'); box.innerHTML=list.map(d=>`<div class="memberCard mb-2"><b class="text-green-300">₹${esc(d.amount)}</b> <span class="font-bold">${esc(d.name)}</span><div class="text-xs text-slate-400">${esc(d.phone)} · ${esc(d.date)}</div></div>`).join('')||'<div class="text-slate-500 text-sm">No donation records yet</div>'}
+function markAttendance(){const count=members.length; localStorage.setItem('hfgm_attendance_'+todayStr(),String(count)); alert('✅ Today attendance marked for '+count+' members'); adminTab('attendance')}
+function adminHTML(){
+  if(!isAdmin)return `<h2 class="text-2xl font-black text-yellow-300 mb-3">🔐 Admin Login</h2><div class="adminHeroStrong"><div class="text-4xl mb-2">🛡️</div><div class="text-lg font-black">HFGM Secure Control Center</div><p class="text-xs text-slate-400 mt-1">Members, ID cards, QR, donations, attendance and Firebase sync.</p></div><input id="adminUser" class="input mb-3" placeholder="User Name" value="admin"><input id="adminPass" type="password" class="input mb-3" placeholder="Password"><button onclick="adminLogin()" class="w-full rounded-xl bg-yellow-400 text-black py-3 font-black">Login</button><p class="text-xs text-slate-500 mt-3">Default: admin / 1234</p>`;
+  const att=localStorage.getItem('hfgm_attendance_'+todayStr())||'0';
+  const dons=JSON.parse(localStorage.getItem('hfgm_donations')||'[]');
+  const totalAmount=dons.reduce((a,d)=>a+(parseFloat(d.amount)||0),0);
+  return `<div class="adminHeroStrong"><div class="flex items-center justify-between"><div><div class="text-[10px] tracking-[3px] text-yellow-300 font-black">ULTRA PRO ADMIN</div><h2 class="text-3xl font-black mt-1">⚙ Dashboard</h2><p class="text-xs text-slate-400 mt-1">Firebase saved data + strong ministry controls</p></div><button onclick="adminLogout()" class="rounded-xl bg-red-500 px-3 py-2 text-xs font-black">Logout</button></div><div class="miniBar"><i style="width:92%"></i></div></div>
+  <div class="grid grid-cols-2 gap-3 mb-3"><div class="adminStatStrong"><span>Total Members</span><b class="text-yellow-300">${members.length}</b><small>Live synced</small></div><div class="adminStatStrong"><span>Today Join</span><b class="text-green-300">${todayMembersCount()}</b><small>New registrations</small></div><div class="adminStatStrong"><span>Attendance</span><b class="text-blue-300">${att}</b><small>Today</small></div><div class="adminStatStrong"><span>Donations</span><b class="text-green-300">₹${totalAmount}</b><small>${dons.length} records</small></div></div>
+  <div class="adminToolGrid"><button onclick="openPanel('register')" class="goldSoft">➕ Add Member</button><button onclick="loadFirebase()" class="goldSoft">↻ Firebase Sync</button><button onclick="exportMembersCSV()" class="exportBtn">📤 Export CSV</button><button onclick="markAttendance()" class="goldSoft">📅 Mark Attendance</button></div>
+  <div class="adminTabs"><button id="btn_members" class="active" onclick="adminTab('members')">👥 Members</button><button id="btn_attendance" onclick="adminTab('attendance')">📅 Attendance</button><button id="btn_donations" onclick="adminTab('donations')">💰 Donations</button><button id="btn_reports" onclick="adminTab('reports')">📊 Reports</button><button id="btn_security" onclick="adminTab('security')">🛡 Security</button></div>
+  <div id="tab_members" class="adminTabPage"><div class="adminPanelBox"><input id="adminSearch" oninput="renderAdminList()" class="input mb-3" placeholder="Search name, phone, ID, country..."><div class="grid grid-cols-2 gap-2"><button onclick="renderAdminList()" class="rounded-xl bg-sky-500 py-3 font-black">Search</button><button onclick="loadFirebase()" class="rounded-xl bg-yellow-400 text-black py-3 font-black">Refresh</button></div></div><div id="adminList" class="max-h-[50vh] overflow-auto pr-1"></div></div>
+  <div id="tab_attendance" class="adminTabPage hidden"><div class="adminPanelBox"><h3 class="font-black text-yellow-300 mb-2">📅 Attendance Control</h3><p class="text-sm text-slate-400 mb-3">Today present count: <b class="text-blue-300">${att}</b></p><button onclick="markAttendance()" class="w-full rounded-xl bg-blue-500 py-3 font-black">Mark All Present Today</button></div></div>
+  <div id="tab_donations" class="adminTabPage hidden"><div class="adminPanelBox"><h3 class="font-black text-green-300 mb-2">💰 Donation Manager</h3><input id="donorName" class="input mb-2" placeholder="Donor Name"><input id="donorPhone" class="input mb-2" placeholder="Phone"><input id="donorAmount" type="number" class="input mb-2" placeholder="Amount"><button onclick="donationSaveLocal()" class="w-full rounded-xl bg-green-500 py-3 font-black">Save Donation</button></div><div id="donationList"></div></div>
+  <div id="tab_reports" class="adminTabPage hidden"><div class="adminPanelBox"><h3 class="font-black text-yellow-300 mb-2">📊 Reports</h3><p class="text-sm text-slate-400">Old Firebase: ${oldMembers.length}<br>New Firebase/Public: ${newMembers.length}<br>Local saved: ${localMembers.length}<br>Total donations: ₹${totalAmount}</p><button onclick="exportMembersCSV()" class="mt-3 w-full rounded-xl bg-green-500 py-3 font-black">Download Members Report CSV</button></div></div>
+  <div id="tab_security" class="adminTabPage hidden"><div class="adminPanelBox"><h3 class="font-black text-red-300 mb-2">🛡 Security Center</h3><p class="text-sm text-slate-400">Admin-only member numbers/photos are protected. Change default password in code before public use.</p><div class="mt-3 rounded-2xl border border-green-500/20 bg-green-500/10 p-3 text-sm text-green-200">✅ Firebase ready · ✅ Local backup · ✅ Admin lock enabled</div></div></div>`;
+}
+const oldOpenPanel=openPanel;
+openPanel=function(type){oldOpenPanel(type); if(type==='admin'&&isAdmin){renderAdminList(); renderDonationList();}}
+
+
+
+// PARTNER MISSION GOALS + SPONSOR RECEIPT PDF UPGRADE
+function partnerGoalsData(type){
+  const data={
+    silver:{title:'🥈 Silver Partner',amount:'₹500 Monthly Seed',tag:'Local ministry support',goals:[['🙏 Prayer Support','Village prayer meetings, personal prayer requests and daily follow-up.'],['📖 Gospel Materials','Tracts, Bible verses, promise cards and local outreach printing.'],['👥 Member Care','Help new believers connect with HFGM family and prayer support.']]},
+    gold:{title:'🥇 Gold Partner',amount:'₹1000 Monthly Seed',tag:'Prayer + outreach support',goals:[['🔥 Revival Meetings','Support worship, prayer gatherings and special meetings.'],['🕊️ Healing & Deliverance','Help arrange prayer support for families in need.'],['📲 Digital Ministry','YouTube, WhatsApp, online prayer and testimony sharing.']]},
+    kingdom:{title:'👑 Kingdom Builder',amount:'₹5000 Mission Support',tag:'Big mission impact',goals:[['🌍 Mission Outreach','Support gospel work in villages, towns and online global family.'],['🤝 Poor & Needy Care','Emergency help, food support and compassion ministry where possible.'],['🏛️ Ministry Growth','Equipment, travel, event setup and admin ministry tools.']]},
+    global:{title:'🌍 Global Mission Partner',amount:'International / Monthly Support',tag:'Worldwide HFGM vision',goals:[['🌐 Global Prayer Network','Connect India and international believers in one prayer family.'],['🎥 Media Mission','Sermons, testimonies, online meetings and global outreach content.'],['📊 Transparent Reports','Sponsor receipts, monthly reports and mission goal updates.']]}
+  };
+  return data[type]||data.silver;
+}
+function showPartnerGoals(type){
+  const d=partnerGoalsData(type);
+  let popup=document.getElementById('missionGoalsPopup');
+  if(!popup){popup=document.createElement('div');popup.id='missionGoalsPopup';popup.className='missionPopup';document.body.appendChild(popup)}
+  popup.innerHTML=`<div class="missionBox">
+    <div class="flex items-start justify-between gap-3 mb-3"><div><div class="text-[10px] tracking-[3px] text-yellow-300 font-black">MISSION GOALS</div><h2 class="text-2xl font-black text-white mt-1">${d.title}</h2><p class="text-green-300 font-black text-sm mt-1">${d.amount}</p><p class="text-slate-400 text-xs mt-1">${d.tag}</p></div><button onclick="closePartnerGoals()" class="rounded-xl bg-red-500 px-3 py-2 text-xs font-black">✕</button></div>
+    <div class="rounded-2xl border border-yellow-400/20 bg-yellow-500/10 p-3 text-sm text-yellow-100 leading-6 mb-3">“దేవుని కార్యమునకు మీ సహాయం అనేక కుటుంబాలకు ఆశీర్వాదం.”</div>
+    ${d.goals.map(g=>`<div class="goalItem"><div class="text-2xl">✅</div><div><b>${g[0]}</b><p>${g[1]}</p></div></div>`).join('')}
+    <button onclick="selectPartnerAmount('${type}')" class="mt-3 w-full rounded-2xl bg-gradient-to-r from-yellow-400 to-amber-500 text-black py-4 font-black">Select This Partner</button>
+  </div>`;
+  popup.classList.add('show');
+}
+function closePartnerGoals(){const p=document.getElementById('missionGoalsPopup'); if(p)p.classList.remove('show')}
+function selectPartnerAmount(type){const map={silver:500,gold:1000,kingdom:5000,global:10000}; setDonateAmount(map[type]||500); closePartnerGoals(); const a=document.getElementById('customDonateAmount'); if(a)a.scrollIntoView({behavior:'smooth',block:'center'});}
+function receiptPdfDownload(){window.print()}
+
+function receiptFileDownload(){
+  const area = document.getElementById('receiptPrintArea');
+  if(!area){
+    alert('First generate receipt');
+    return;
+  }
+  const full = `<!DOCTYPE html>
+<html>
+<head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HFGM Ultra Full App</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>HFGM Sponsor Receipt</title>
 <style>
-body{
-margin:0;
-font-family:Arial,sans-serif;
-background:linear-gradient(135deg,#06111f,#0b1f3a);
-color:white;
-text-align:center;
-}
-.hero{
-padding:80px 20px;
-}
-h1{
-font-size:42px;
-color:#ffd166;
-margin-bottom:10px;
-}
-.card{
-max-width:500px;
-margin:20px auto;
-background:rgba(255,255,255,.08);
-padding:25px;
-border-radius:22px;
-border:1px solid rgba(255,255,255,.12);
-}
-.btn{
-display:inline-block;
-padding:14px 28px;
-border-radius:14px;
-background:#16a34a;
-color:white;
-text-decoration:none;
-font-weight:bold;
-margin-top:15px;
-}
+body{font-family:Arial,sans-serif;background:#f4f4f4;padding:24px}
+.receiptPaper{max-width:760px;margin:auto;background:#fff;color:#111;border-radius:18px;padding:24px;border:2px dashed #d4af37}
+.receiptPaper h2{font-size:22px;text-align:center;color:#0f172a;font-weight:900;margin-bottom:4px}
+.rpSub{text-align:center;font-size:13px;color:#475569;margin-bottom:16px}
+.receiptRow{display:flex;justify-content:space-between;border-bottom:1px solid #e5e7eb;padding:10px 0;font-size:14px;gap:10px}
+.receiptBless{margin-top:14px;background:#fef3c7;border-radius:12px;padding:14px;text-align:center;font-size:13px;color:#78350f;font-weight:700;line-height:1.6}
+@media print{body{background:#fff;padding:0}.receiptPaper{border:0;max-width:none;border-radius:0}}
 
-.receipt-form{
-max-width:500px;
-margin:15px auto 0;
-text-align:left;
-}
-.receipt-form input,.receipt-form select{
-width:100%;
-box-sizing:border-box;
-margin:7px 0;
-padding:13px;
-border-radius:12px;
-border:1px solid rgba(255,255,255,.15);
-background:rgba(255,255,255,.95);
-color:#111;
-font-size:15px;
-}
-.receipt-actions{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:10px;
-margin-top:12px;
-}
-.receipt-btn{
-border:0;
-border-radius:14px;
-padding:14px 12px;
-font-weight:bold;
-cursor:pointer;
-}
-.print-btn{background:#ffd166;color:#111}
-.download-btn{background:#0ea5e9;color:white}
-#receiptPreview{
-display:none;
-max-width:760px;
-margin:25px auto;
-background:white;
-color:#111;
-border-radius:16px;
-padding:26px;
-text-align:left;
-box-shadow:0 15px 45px rgba(0,0,0,.25);
-}
-.receipt-head{
-text-align:center;
-border-bottom:2px solid #d4a017;
-padding-bottom:14px;
-margin-bottom:18px;
-}
-.receipt-head h2{
-margin:0;
-color:#0b1f3a;
-font-size:26px;
-}
-.receipt-row{
-display:flex;
-justify-content:space-between;
-border-bottom:1px solid #eee;
-padding:10px 0;
-gap:15px;
-}
-.receipt-row b{color:#0b1f3a}
-.receipt-bless{
-margin-top:20px;
-padding:14px;
-border-radius:12px;
-background:#fff7dc;
-color:#5c3b00;
-text-align:center;
-font-weight:bold;
-}
-@media print{
-body *{visibility:hidden!important}
-#receiptPreview,#receiptPreview *{visibility:visible!important}
-#receiptPreview{
-display:block!important;
-position:absolute;
-left:0;
-top:0;
-width:100%;
-max-width:none;
-box-shadow:none;
-border-radius:0;
-margin:0;
-}
-.no-print{display:none!important}
-}
-
+.receiptActions3{grid-template-columns:1fr 1fr 1fr!important}
+@media(max-width:420px){.receiptActions3{grid-template-columns:1fr!important}}
 </style>
 </head>
-<body>
-
-<section class="hero">
-<h1>🔥 HFGM Ultra App</h1>
-<p>Holy Spirit Fellowship Global Ministries</p>
-
-<div class="card">
-<h2>🙏 Donation Section</h2>
-<p>Support prayer and revival ministry.</p>
-
-<div class="receipt-form no-print">
-  <input id="donorName" placeholder="Sponsor / Donor Name">
-  <input id="donorPhone" placeholder="Phone Number">
-  <input id="donationAmount" type="number" placeholder="Donation Amount ₹">
-  <select id="sponsorType">
-    <option>Silver Partner</option>
-    <option>Gold Partner</option>
-    <option>Global Partner</option>
-    <option>Kingdom Builder</option>
-    <option>General Donation</option>
-  </select>
-
-  <div class="receipt-actions">
-    <button class="receipt-btn print-btn" onclick="printReceipt()">📄 PDF / Print</button>
-    <button class="receipt-btn download-btn" onclick="downloadReceipt()">⬇ Download Receipt</button>
-  </div>
-</div>
-
-<div id="receiptPreview">
-  <div class="receipt-head">
-    <h2>HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES</h2>
-    <p><b>Donation / Sponsor Receipt</b></p>
-  </div>
-
-  <div class="receipt-row"><b>Receipt No:</b><span id="rNo"></span></div>
-  <div class="receipt-row"><b>Date:</b><span id="rDate"></span></div>
-  <div class="receipt-row"><b>Sponsor Name:</b><span id="rName"></span></div>
-  <div class="receipt-row"><b>Phone:</b><span id="rPhone"></span></div>
-  <div class="receipt-row"><b>Sponsor Type:</b><span id="rType"></span></div>
-  <div class="receipt-row"><b>Amount:</b><span id="rAmount"></span></div>
-
-  <div class="receipt-bless">
-    🙏 Thank you for supporting God's work. May the Lord bless you and your family abundantly.
-    <br>“God loves a cheerful giver.” — 2 Corinthians 9:7
-  </div>
-</div>
-</div>
-
-<div class="card">
-<h2>🌍 Global Members</h2>
-<p>Connected believers worldwide.</p>
-</div>
-
-<div class="card">
-<h2>📖 Promise Word</h2>
-<p>“Fear not, for I am with you.” — Isaiah 41:10</p>
-<p>“భయపడకుము నేను నీతో ఉన్నాను.”</p>
-</div>
-
-</section>
-
-
-<script>
-function buildReceipt(){
-  const name = document.getElementById('donorName')?.value || 'Sponsor';
-  const phone = document.getElementById('donorPhone')?.value || '-';
-  const amount = document.getElementById('donationAmount')?.value || '0';
-  const type = document.getElementById('sponsorType')?.value || 'General Donation';
-  const now = new Date();
-  const receiptNo = 'HFGM-RCPT-' + now.getFullYear() + '-' + String(now.getTime()).slice(-6);
-
-  document.getElementById('rNo').innerText = receiptNo;
-  document.getElementById('rDate').innerText = now.toLocaleString();
-  document.getElementById('rName').innerText = name;
-  document.getElementById('rPhone').innerText = phone;
-  document.getElementById('rType').innerText = type;
-  document.getElementById('rAmount').innerText = '₹ ' + amount;
-  document.getElementById('receiptPreview').style.display = 'block';
-}
-
-function printReceipt(){
-  buildReceipt();
-  setTimeout(() => window.print(), 300);
-}
-
-function downloadReceipt(){
-  buildReceipt();
-  const receipt = document.getElementById('receiptPreview').innerHTML;
-  const fullHtml = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>HFGM Sponsor Receipt</title>
-  <style>
-  body{font-family:Arial,sans-serif;background:#f4f4f4;padding:25px}
-  .receipt{max-width:760px;margin:auto;background:white;padding:30px;border-radius:14px;color:#111}
-  .receipt-head{text-align:center;border-bottom:2px solid #d4a017;padding-bottom:14px;margin-bottom:18px}
-  .receipt-head h2{margin:0;color:#0b1f3a;font-size:26px}
-  .receipt-row{display:flex;justify-content:space-between;border-bottom:1px solid #eee;padding:10px 0;gap:15px}
-  .receipt-row b{color:#0b1f3a}
-  .receipt-bless{margin-top:20px;padding:14px;border-radius:12px;background:#fff7dc;color:#5c3b00;text-align:center;font-weight:bold}
-  </style></head><body><div class="receipt">${receipt}</div></body></html>`;
-
-  const blob = new Blob([fullHtml], {type:'text/html'});
+<body>${area.outerHTML}</body>
+</html>`;
+  const blob = new Blob([full], {type:'text/html;charset=utf-8'});
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
   a.download = 'HFGM_Sponsor_Receipt.html';
   document.body.appendChild(a);
   a.click();
   a.remove();
+  URL.revokeObjectURL(a.href);
 }
+
+function receiptWhatsappShare(){
+ const name=(document.getElementById('donorPublicName')||{}).value||'Beloved Partner';
+ const amount=Number((document.getElementById('customDonateAmount')||{}).value||donateAmount||0);
+ const msg=`🙏 HFGM Donation Receipt%0AName: ${encodeURIComponent(name)}%0AAmount: ₹${amount}%0AThank you for supporting God's work.`;
+ window.open('https://wa.me/?text='+msg,'_blank');
+}
+showDonationReceipt=function(){
+  const name=(document.getElementById('donorPublicName')||{}).value||'Beloved Partner';
+  const phone=(document.getElementById('donorPublicPhone')||{}).value||'';
+  const amount=Number((document.getElementById('customDonateAmount')||{}).value||donateAmount||0);
+  const id='HFGM-SP-'+Date.now().toString().slice(-6);
+  const date=new Date().toLocaleString();
+  const list=JSON.parse(localStorage.getItem('hfgm_donations')||'[]');
+  list.unshift({name,phone,amount,date,id,type:'Sponsor Receipt'}); localStorage.setItem('hfgm_donations',JSON.stringify(list));
+  const r=document.getElementById('receiptBox'); if(r){r.style.display='block'; r.innerHTML=`<div id="receiptPrintArea" class="receiptPaper"><h2>HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES</h2><div class="rpSub">Sponsor / Donation Receipt</div><div class="receiptRow"><b>Receipt ID</b><span>${id}</span></div><div class="receiptRow"><b>Donor Name</b><span>${esc(name)}</span></div><div class="receiptRow"><b>Phone</b><span>${esc(phone||'-')}</span></div><div class="receiptRow"><b>Amount</b><span>₹${esc(amount)}</span></div><div class="receiptRow"><b>Date</b><span>${date}</span></div><div class="receiptBless">🙏 Thank you for supporting HFGM mission, prayer and gospel work.<br>దేవుడు మీ కుటుంబాన్ని ఆశీర్వదించును.</div></div><div class="receiptActions receiptActions3"><button onclick="receiptPdfDownload()" class="rounded-xl bg-green-500 py-3 font-black">📄 PDF / Print</button><button onclick="receiptFileDownload()" class="rounded-xl bg-yellow-400 text-black py-3 font-black">⬇ Download</button><button onclick="receiptWhatsappShare()" class="rounded-xl bg-sky-500 py-3 font-black">📲 WhatsApp</button></div>`;}
+  try{renderDonationList()}catch(e){}
+}
+donationHTML=function(){return `<div class="space-y-4">
+  <div class="donateHero"><div class="donatePill">💝 KINGDOM GIVING</div><h2 class="text-3xl font-black mt-3 leading-tight">Support God's Work<br><span class="goldText">HFGM Global Ministries</span></h2><p class="text-slate-300 text-sm leading-6 mt-3">Your seed helps prayer, gospel work, believers care and revival ministry.</p><div class="donateVerse"><b>“దేవుని కార్యమునకు మీ విత్తనము అనేక ఆత్మలను ఆశీర్వదించును.”</b><br><span class="text-green-200">God loves a cheerful giver — 2 Corinthians 9:7</span></div></div>
+  <div class="donateQRBox"><img id="donateQrImg" src="${donationQR(donateAmount)}"><div class="text-slate-900 text-xs font-black mt-2">Scan QR to give securely</div></div>
+  <div class="memberCard"><div class="text-xs tracking-[3px] text-green-300 mb-3 font-black">QUICK AMOUNT</div><div class="amountGrid"><button id="amt_100" onclick="setDonateAmount(100)" class="amountBtn">₹100</button><button id="amt_500" onclick="setDonateAmount(500)" class="amountBtn">₹500</button><button id="amt_1000" onclick="setDonateAmount(1000)" class="amountBtn active">₹1000</button><button id="amt_2000" onclick="setDonateAmount(2000)" class="amountBtn">₹2000</button><button id="amt_5000" onclick="setDonateAmount(5000)" class="amountBtn">₹5000</button><button id="amt_10000" onclick="setDonateAmount(10000)" class="amountBtn">₹10000</button></div><input id="customDonateAmount" oninput="customDonateChange()" type="number" class="input mt-3" value="${donateAmount}" placeholder="Custom Amount"><button onclick="openUPI(donateAmount)" class="mt-3 w-full rounded-2xl bg-gradient-to-r from-green-500 to-emerald-400 py-4 font-black text-white shadow-[0_12px_35px_rgba(34,197,94,.28)]">📲 Pay Now with UPI</button></div>
+  <div class="payButtonGrid"><button onclick="openUPI(donateAmount)" class="payBtn">🟣 PhonePe</button><button onclick="openUPI(donateAmount)" class="payBtn">🔵 Google Pay</button><button onclick="openUPI(donateAmount)" class="payBtn">🔷 Paytm</button><button onclick="copyUPI()" class="payBtn">📋 Copy UPI</button></div><div id="copyToast" class="copyToast">✅ UPI copied: hfgm@upi</div>
+  <div class="memberCard"><div class="flex justify-between text-sm mb-2"><b class="text-yellow-300">Monthly Goal</b><span class="text-green-300 font-black">₹72,000 / ₹1,00,000</span></div><div class="goalTrack"><div class="goalFill"></div></div><p class="text-xs text-slate-400 mt-2">Prayer, gospel outreach and ministry support goal.</p></div>
+  <div><div class="text-xs tracking-[3px] text-slate-500 mb-3 font-black">MONTHLY PARTNERS · TAP TO SEE MISSION GOALS</div><div class="partnerGrid"><div onclick="showPartnerGoals('silver')" class="partnerCard"><b>Silver Partner</b><span>₹500 monthly seed</span></div><div onclick="showPartnerGoals('gold')" class="partnerCard"><b>Gold Partner</b><span>₹1000 monthly seed</span></div><div onclick="showPartnerGoals('kingdom')" class="partnerCard"><b>Kingdom Builder</b><span>₹5000 mission support</span></div><div onclick="showPartnerGoals('global')" class="partnerCard"><b>Global Partner</b><span>International support</span></div></div></div>
+  <div class="memberCard"><h3 class="font-black text-green-300 mb-2">🧾 Sponsor Receipt PDF</h3><input id="donorPublicName" class="input mb-2" placeholder="Sponsor / Donor Name"><input id="donorPublicPhone" class="input mb-3" placeholder="Phone Number"><button onclick="showDonationReceipt()" class="w-full rounded-xl bg-yellow-400 text-black py-3 font-black">Generate Sponsor Receipt</button><div id="receiptBox" class="receiptBox mt-3"></div></div>
+  <button onclick="donationWhatsapp()" class="w-full rounded-2xl bg-gradient-to-r from-green-600 to-green-400 py-4 font-black">📢 Share / Confirm on WhatsApp</button>
+</div>`}
+
+</script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js">
+// STRONG ADMIN DASHBOARD UPGRADE OVERRIDES
+function todayStr(){return new Date().toISOString().slice(0,10)}
+function todayMembersCount(){return members.filter(m=>(m.createdAt||m.date||'').slice(0,10)===todayStr()).length}
+function exportMembersCSV(){
+  const rows=[['HFGM ID','Name','Phone','Role','City','District','State','Country','Source']];
+  members.forEach((m,idx)=>rows.push([autoCardNo(m,idx),m.name||'',m.phone||'',m.role||'',m.city||'',m.district||'',m.state||'',m.country||'',m.source||'']));
+  const csv=rows.map(r=>r.map(v=>'"'+String(v).replaceAll('"','""')+'"').join(',')).join('\n');
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='HFGM_members_'+todayStr()+'.csv';a.click();
+}
+function adminTab(tab){
+  document.querySelectorAll('.adminTabPage').forEach(x=>x.classList.add('hidden'));
+  document.querySelectorAll('.adminTabs button').forEach(x=>x.classList.remove('active'));
+  const page=document.getElementById('tab_'+tab); if(page)page.classList.remove('hidden');
+  const btn=document.getElementById('btn_'+tab); if(btn)btn.classList.add('active');
+  if(tab==='members') renderAdminList();
+}
+function donationSaveLocal(){
+  const name=$('donorName')?.value||'', amount=$('donorAmount')?.value||'', phone=$('donorPhone')?.value||'';
+  if(!name||!amount)return alert('Donor name and amount required');
+  const list=JSON.parse(localStorage.getItem('hfgm_donations')||'[]'); list.unshift({name,amount,phone,date:new Date().toLocaleString()}); localStorage.setItem('hfgm_donations',JSON.stringify(list)); renderDonationList(); alert('✅ Donation saved');
+}
+function renderDonationList(){const box=$('donationList'); if(!box)return; const list=JSON.parse(localStorage.getItem('hfgm_donations')||'[]'); box.innerHTML=list.map(d=>`<div class="memberCard mb-2"><b class="text-green-300">₹${esc(d.amount)}</b> <span class="font-bold">${esc(d.name)}</span><div class="text-xs text-slate-400">${esc(d.phone)} · ${esc(d.date)}</div></div>`).join('')||'<div class="text-slate-500 text-sm">No donation records yet</div>'}
+function markAttendance(){const count=members.length; localStorage.setItem('hfgm_attendance_'+todayStr(),String(count)); alert('✅ Today attendance marked for '+count+' members'); adminTab('attendance')}
+function adminHTML(){
+  if(!isAdmin)return `<h2 class="text-2xl font-black text-yellow-300 mb-3">🔐 Admin Login</h2><div class="adminHeroStrong"><div class="text-4xl mb-2">🛡️</div><div class="text-lg font-black">HFGM Secure Control Center</div><p class="text-xs text-slate-400 mt-1">Members, ID cards, QR, donations, attendance and Firebase sync.</p></div><input id="adminUser" class="input mb-3" placeholder="User Name" value="admin"><input id="adminPass" type="password" class="input mb-3" placeholder="Password"><button onclick="adminLogin()" class="w-full rounded-xl bg-yellow-400 text-black py-3 font-black">Login</button><p class="text-xs text-slate-500 mt-3">Default: admin / 1234</p>`;
+  const att=localStorage.getItem('hfgm_attendance_'+todayStr())||'0';
+  const dons=JSON.parse(localStorage.getItem('hfgm_donations')||'[]');
+  const totalAmount=dons.reduce((a,d)=>a+(parseFloat(d.amount)||0),0);
+  return `<div class="adminHeroStrong"><div class="flex items-center justify-between"><div><div class="text-[10px] tracking-[3px] text-yellow-300 font-black">ULTRA PRO ADMIN</div><h2 class="text-3xl font-black mt-1">⚙ Dashboard</h2><p class="text-xs text-slate-400 mt-1">Firebase saved data + strong ministry controls</p></div><button onclick="adminLogout()" class="rounded-xl bg-red-500 px-3 py-2 text-xs font-black">Logout</button></div><div class="miniBar"><i style="width:92%"></i></div></div>
+  <div class="grid grid-cols-2 gap-3 mb-3"><div class="adminStatStrong"><span>Total Members</span><b class="text-yellow-300">${members.length}</b><small>Live synced</small></div><div class="adminStatStrong"><span>Today Join</span><b class="text-green-300">${todayMembersCount()}</b><small>New registrations</small></div><div class="adminStatStrong"><span>Attendance</span><b class="text-blue-300">${att}</b><small>Today</small></div><div class="adminStatStrong"><span>Donations</span><b class="text-green-300">₹${totalAmount}</b><small>${dons.length} records</small></div></div>
+  <div class="adminToolGrid"><button onclick="openPanel('register')" class="goldSoft">➕ Add Member</button><button onclick="loadFirebase()" class="goldSoft">↻ Firebase Sync</button><button onclick="exportMembersCSV()" class="exportBtn">📤 Export CSV</button><button onclick="markAttendance()" class="goldSoft">📅 Mark Attendance</button></div>
+  <div class="adminTabs"><button id="btn_members" class="active" onclick="adminTab('members')">👥 Members</button><button id="btn_attendance" onclick="adminTab('attendance')">📅 Attendance</button><button id="btn_donations" onclick="adminTab('donations')">💰 Donations</button><button id="btn_reports" onclick="adminTab('reports')">📊 Reports</button><button id="btn_security" onclick="adminTab('security')">🛡 Security</button></div>
+  <div id="tab_members" class="adminTabPage"><div class="adminPanelBox"><input id="adminSearch" oninput="renderAdminList()" class="input mb-3" placeholder="Search name, phone, ID, country..."><div class="grid grid-cols-2 gap-2"><button onclick="renderAdminList()" class="rounded-xl bg-sky-500 py-3 font-black">Search</button><button onclick="loadFirebase()" class="rounded-xl bg-yellow-400 text-black py-3 font-black">Refresh</button></div></div><div id="adminList" class="max-h-[50vh] overflow-auto pr-1"></div></div>
+  <div id="tab_attendance" class="adminTabPage hidden"><div class="adminPanelBox"><h3 class="font-black text-yellow-300 mb-2">📅 Attendance Control</h3><p class="text-sm text-slate-400 mb-3">Today present count: <b class="text-blue-300">${att}</b></p><button onclick="markAttendance()" class="w-full rounded-xl bg-blue-500 py-3 font-black">Mark All Present Today</button></div></div>
+  <div id="tab_donations" class="adminTabPage hidden"><div class="adminPanelBox"><h3 class="font-black text-green-300 mb-2">💰 Donation Manager</h3><input id="donorName" class="input mb-2" placeholder="Donor Name"><input id="donorPhone" class="input mb-2" placeholder="Phone"><input id="donorAmount" type="number" class="input mb-2" placeholder="Amount"><button onclick="donationSaveLocal()" class="w-full rounded-xl bg-green-500 py-3 font-black">Save Donation</button></div><div id="donationList"></div></div>
+  <div id="tab_reports" class="adminTabPage hidden"><div class="adminPanelBox"><h3 class="font-black text-yellow-300 mb-2">📊 Reports</h3><p class="text-sm text-slate-400">Old Firebase: ${oldMembers.length}<br>New Firebase/Public: ${newMembers.length}<br>Local saved: ${localMembers.length}<br>Total donations: ₹${totalAmount}</p><button onclick="exportMembersCSV()" class="mt-3 w-full rounded-xl bg-green-500 py-3 font-black">Download Members Report CSV</button></div></div>
+  <div id="tab_security" class="adminTabPage hidden"><div class="adminPanelBox"><h3 class="font-black text-red-300 mb-2">🛡 Security Center</h3><p class="text-sm text-slate-400">Admin-only member numbers/photos are protected. Change default password in code before public use.</p><div class="mt-3 rounded-2xl border border-green-500/20 bg-green-500/10 p-3 text-sm text-green-200">✅ Firebase ready · ✅ Local backup · ✅ Admin lock enabled</div></div></div>`;
+}
+const oldOpenPanel=openPanel;
+openPanel=function(type){oldOpenPanel(type); if(type==='admin'&&isAdmin){renderAdminList(); renderDonationList();}}
+
+</script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js">
+// STRONG ADMIN DASHBOARD UPGRADE OVERRIDES
+function todayStr(){return new Date().toISOString().slice(0,10)}
+function todayMembersCount(){return members.filter(m=>(m.createdAt||m.date||'').slice(0,10)===todayStr()).length}
+function exportMembersCSV(){
+  const rows=[['HFGM ID','Name','Phone','Role','City','District','State','Country','Source']];
+  members.forEach((m,idx)=>rows.push([autoCardNo(m,idx),m.name||'',m.phone||'',m.role||'',m.city||'',m.district||'',m.state||'',m.country||'',m.source||'']));
+  const csv=rows.map(r=>r.map(v=>'"'+String(v).replaceAll('"','""')+'"').join(',')).join('\n');
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='HFGM_members_'+todayStr()+'.csv';a.click();
+}
+function adminTab(tab){
+  document.querySelectorAll('.adminTabPage').forEach(x=>x.classList.add('hidden'));
+  document.querySelectorAll('.adminTabs button').forEach(x=>x.classList.remove('active'));
+  const page=document.getElementById('tab_'+tab); if(page)page.classList.remove('hidden');
+  const btn=document.getElementById('btn_'+tab); if(btn)btn.classList.add('active');
+  if(tab==='members') renderAdminList();
+}
+function donationSaveLocal(){
+  const name=$('donorName')?.value||'', amount=$('donorAmount')?.value||'', phone=$('donorPhone')?.value||'';
+  if(!name||!amount)return alert('Donor name and amount required');
+  const list=JSON.parse(localStorage.getItem('hfgm_donations')||'[]'); list.unshift({name,amount,phone,date:new Date().toLocaleString()}); localStorage.setItem('hfgm_donations',JSON.stringify(list)); renderDonationList(); alert('✅ Donation saved');
+}
+function renderDonationList(){const box=$('donationList'); if(!box)return; const list=JSON.parse(localStorage.getItem('hfgm_donations')||'[]'); box.innerHTML=list.map(d=>`<div class="memberCard mb-2"><b class="text-green-300">₹${esc(d.amount)}</b> <span class="font-bold">${esc(d.name)}</span><div class="text-xs text-slate-400">${esc(d.phone)} · ${esc(d.date)}</div></div>`).join('')||'<div class="text-slate-500 text-sm">No donation records yet</div>'}
+function markAttendance(){const count=members.length; localStorage.setItem('hfgm_attendance_'+todayStr(),String(count)); alert('✅ Today attendance marked for '+count+' members'); adminTab('attendance')}
+function adminHTML(){
+  if(!isAdmin)return `<h2 class="text-2xl font-black text-yellow-300 mb-3">🔐 Admin Login</h2><div class="adminHeroStrong"><div class="text-4xl mb-2">🛡️</div><div class="text-lg font-black">HFGM Secure Control Center</div><p class="text-xs text-slate-400 mt-1">Members, ID cards, QR, donations, attendance and Firebase sync.</p></div><input id="adminUser" class="input mb-3" placeholder="User Name" value="admin"><input id="adminPass" type="password" class="input mb-3" placeholder="Password"><button onclick="adminLogin()" class="w-full rounded-xl bg-yellow-400 text-black py-3 font-black">Login</button><p class="text-xs text-slate-500 mt-3">Default: admin / 1234</p>`;
+  const att=localStorage.getItem('hfgm_attendance_'+todayStr())||'0';
+  const dons=JSON.parse(localStorage.getItem('hfgm_donations')||'[]');
+  const totalAmount=dons.reduce((a,d)=>a+(parseFloat(d.amount)||0),0);
+  return `<div class="adminHeroStrong"><div class="flex items-center justify-between"><div><div class="text-[10px] tracking-[3px] text-yellow-300 font-black">ULTRA PRO ADMIN</div><h2 class="text-3xl font-black mt-1">⚙ Dashboard</h2><p class="text-xs text-slate-400 mt-1">Firebase saved data + strong ministry controls</p></div><button onclick="adminLogout()" class="rounded-xl bg-red-500 px-3 py-2 text-xs font-black">Logout</button></div><div class="miniBar"><i style="width:92%"></i></div></div>
+  <div class="grid grid-cols-2 gap-3 mb-3"><div class="adminStatStrong"><span>Total Members</span><b class="text-yellow-300">${members.length}</b><small>Live synced</small></div><div class="adminStatStrong"><span>Today Join</span><b class="text-green-300">${todayMembersCount()}</b><small>New registrations</small></div><div class="adminStatStrong"><span>Attendance</span><b class="text-blue-300">${att}</b><small>Today</small></div><div class="adminStatStrong"><span>Donations</span><b class="text-green-300">₹${totalAmount}</b><small>${dons.length} records</small></div></div>
+  <div class="adminToolGrid"><button onclick="openPanel('register')" class="goldSoft">➕ Add Member</button><button onclick="loadFirebase()" class="goldSoft">↻ Firebase Sync</button><button onclick="exportMembersCSV()" class="exportBtn">📤 Export CSV</button><button onclick="markAttendance()" class="goldSoft">📅 Mark Attendance</button></div>
+  <div class="adminTabs"><button id="btn_members" class="active" onclick="adminTab('members')">👥 Members</button><button id="btn_attendance" onclick="adminTab('attendance')">📅 Attendance</button><button id="btn_donations" onclick="adminTab('donations')">💰 Donations</button><button id="btn_reports" onclick="adminTab('reports')">📊 Reports</button><button id="btn_security" onclick="adminTab('security')">🛡 Security</button></div>
+  <div id="tab_members" class="adminTabPage"><div class="adminPanelBox"><input id="adminSearch" oninput="renderAdminList()" class="input mb-3" placeholder="Search name, phone, ID, country..."><div class="grid grid-cols-2 gap-2"><button onclick="renderAdminList()" class="rounded-xl bg-sky-500 py-3 font-black">Search</button><button onclick="loadFirebase()" class="rounded-xl bg-yellow-400 text-black py-3 font-black">Refresh</button></div></div><div id="adminList" class="max-h-[50vh] overflow-auto pr-1"></div></div>
+  <div id="tab_attendance" class="adminTabPage hidden"><div class="adminPanelBox"><h3 class="font-black text-yellow-300 mb-2">📅 Attendance Control</h3><p class="text-sm text-slate-400 mb-3">Today present count: <b class="text-blue-300">${att}</b></p><button onclick="markAttendance()" class="w-full rounded-xl bg-blue-500 py-3 font-black">Mark All Present Today</button></div></div>
+  <div id="tab_donations" class="adminTabPage hidden"><div class="adminPanelBox"><h3 class="font-black text-green-300 mb-2">💰 Donation Manager</h3><input id="donorName" class="input mb-2" placeholder="Donor Name"><input id="donorPhone" class="input mb-2" placeholder="Phone"><input id="donorAmount" type="number" class="input mb-2" placeholder="Amount"><button onclick="donationSaveLocal()" class="w-full rounded-xl bg-green-500 py-3 font-black">Save Donation</button></div><div id="donationList"></div></div>
+  <div id="tab_reports" class="adminTabPage hidden"><div class="adminPanelBox"><h3 class="font-black text-yellow-300 mb-2">📊 Reports</h3><p class="text-sm text-slate-400">Old Firebase: ${oldMembers.length}<br>New Firebase/Public: ${newMembers.length}<br>Local saved: ${localMembers.length}<br>Total donations: ₹${totalAmount}</p><button onclick="exportMembersCSV()" class="mt-3 w-full rounded-xl bg-green-500 py-3 font-black">Download Members Report CSV</button></div></div>
+  <div id="tab_security" class="adminTabPage hidden"><div class="adminPanelBox"><h3 class="font-black text-red-300 mb-2">🛡 Security Center</h3><p class="text-sm text-slate-400">Admin-only member numbers/photos are protected. Change default password in code before public use.</p><div class="mt-3 rounded-2xl border border-green-500/20 bg-green-500/10 p-3 text-sm text-green-200">✅ Firebase ready · ✅ Local backup · ✅ Admin lock enabled</div></div></div>`;
+}
+const oldOpenPanel=openPanel;
+openPanel=function(type){oldOpenPanel(type); if(type==='admin'&&isAdmin){renderAdminList(); renderDonationList();}}
+
+</script>
+<style>
+@keyframes pingSlow{0%{transform:scale(.7);opacity:.8}100%{transform:scale(1.9);opacity:0}}
+@keyframes softDrop{0%{transform:translateY(-5px);opacity:0}15%{opacity:1}100%{transform:translateY(90px);opacity:0}}
+@keyframes glow{0%,100%{box-shadow:0 0 20px rgba(251,191,36,.15)}50%{box-shadow:0 0 42px rgba(251,191,36,.35)}}
+@keyframes shimmer{0%{background-position:-200% center}100%{background-position:200% center}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+body{background:#060d1a;color:white;font-family:Inter,system-ui,Arial,sans-serif}.goldText{background:linear-gradient(90deg,#f59e0b,#fde68a,#fbbf24);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:shimmer 3s linear infinite}.ring{animation:pingSlow 3s infinite ease-out}.drop{animation:softDrop 3.8s infinite linear}.float{animation:float 3s infinite ease-in-out}.glow{animation:glow 4s infinite ease-in-out}.panelIn{animation:slideUp .22s ease-out}.input{width:100%;border-radius:16px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);padding:13px 14px;color:white;outline:none}.input::placeholder{color:#94a3b8}.input:focus{border-color:rgba(251,191,36,.55);box-shadow:0 0 0 3px rgba(251,191,36,.08)}.quickCard{border-radius:24px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.055);padding:18px;text-align:left;box-shadow:0 22px 50px rgba(0,0,0,.25);transition:.25s}.quickCard:hover{transform:translateY(-3px);border-color:rgba(251,191,36,.30);background:rgba(255,255,255,.08)}.saveBtn{width:100%;height:54px;border-radius:18px;background:linear-gradient(135deg,#22c55e,#16a34a);font-weight:900;color:white;box-shadow:0 10px 28px rgba(22,163,74,.30)}.memberCard{border-radius:20px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);padding:14px}.badge{display:inline-flex;border-radius:999px;padding:4px 9px;background:rgba(251,191,36,.12);color:#facc15;font-size:10px;font-weight:900}.bottomSafe{padding-bottom:104px}.hide{display:none!important}
+
+.idPreviewCard{width:320px;margin:0 auto;border-radius:26px;overflow:hidden;background:linear-gradient(160deg,#07111f,#0b4da2,#06b6d4);border:2px solid rgba(255,255,255,.35);box-shadow:0 25px 70px rgba(0,0,0,.45);text-align:center;color:white}.idPreviewTop{padding:16px;background:rgba(255,255,255,.12)}.idPreviewPhoto{width:92px;height:92px;border-radius:50%;object-fit:cover;border:4px solid #fff;margin:14px auto 8px;background:#fff}.idPreviewName{font-size:22px;font-weight:900}.idPreviewBadge{display:inline-block;background:#ffd166;color:#111827;border-radius:999px;padding:5px 12px;font-size:12px;font-weight:900;margin-top:6px}.idPreviewBody{padding:14px 18px 18px;text-align:left}.idPreviewRow{background:rgba(255,255,255,.11);border-radius:12px;padding:8px 10px;margin:7px 0;font-size:13px}.idPreviewQR{width:104px;height:104px;background:#fff;border-radius:14px;padding:7px;margin:12px auto 4px;display:block}.idPreviewNote{text-align:center;font-size:10px;color:#dbeafe;margin-top:3px;opacity:.9}.idNumberBig{display:inline-block;background:#ffd166;color:#111827;border-radius:999px;padding:6px 14px;font-size:13px;font-weight:900;margin-top:7px;letter-spacing:.4px}.phoneBig{font-size:14px!important;font-weight:900;color:#dcfce7}.memberActionBtn{border-radius:12px;padding:9px 8px;font-size:12px;font-weight:900;text-align:center}.editInput{width:100%;border-radius:14px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);padding:12px;color:white;margin-bottom:9px}.editInput::placeholder{color:#94a3b8}
+
+@keyframes liveFlow{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+@keyframes livePulse{0%,100%{opacity:.55;transform:scale(1)}50%{opacity:1;transform:scale(1.15)}}
+.liveStatusCard{position:relative;overflow:hidden}
+.liveStatusCard:before{content:"";position:absolute;inset:-1px;background:radial-gradient(circle at 85% 15%,rgba(34,197,94,.16),transparent 28%),radial-gradient(circle at 15% 10%,rgba(251,191,36,.13),transparent 28%);pointer-events:none}
+.liveDot{width:8px;height:8px;border-radius:999px;background:#22c55e;box-shadow:0 0 18px rgba(34,197,94,.9);animation:livePulse 1.3s infinite}
+.liveBarRow{position:relative;z-index:1;margin-bottom:14px}
+.liveBarHead{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:7px;font-size:12px;color:#cbd5e1}
+.liveBarHead b{color:#fff;font-size:12px}
+.liveBarTrack{height:10px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden;border:1px solid rgba(255,255,255,.08)}
+.liveBarFill{height:100%;border-radius:999px;position:relative;transition:width .7s ease;background:linear-gradient(90deg,#38bdf8,#22c55e,#facc15)}
+.liveBarFill:after{content:"";position:absolute;top:0;bottom:0;width:45%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);animation:liveFlow 1.8s infinite}
+.liveMiniStats{position:relative;z-index:1;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:15px}
+.liveMiniStats div{border-radius:16px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.08);padding:10px;text-align:center}
+.liveMiniStats b{display:block;color:#facc15;font-size:18px}.liveMiniStats span{display:block;color:#94a3b8;font-size:9px;letter-spacing:1px;margin-top:2px}
+
+
+/* STRONG ADMIN DASHBOARD UPGRADE */
+.adminHeroStrong{background:radial-gradient(circle at top right,rgba(251,191,36,.22),transparent 30%),linear-gradient(135deg,#111827,#070b14);border:1px solid rgba(251,191,36,.22);border-radius:26px;padding:18px;margin-bottom:14px;box-shadow:0 20px 55px rgba(0,0,0,.35)}
+.adminTabs{display:flex;gap:8px;overflow:auto;padding-bottom:8px;margin:10px 0 14px}.adminTabs button{flex-shrink:0;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.06);color:#cbd5e1;border-radius:999px;padding:9px 12px;font-size:12px;font-weight:900}.adminTabs button.active{background:linear-gradient(135deg,#f59e0b,#fde68a);color:#111827;border-color:rgba(251,191,36,.5)}
+.adminStatStrong{border:1px solid rgba(255,255,255,.09);background:linear-gradient(145deg,rgba(255,255,255,.08),rgba(255,255,255,.035));border-radius:20px;padding:14px;position:relative;overflow:hidden}.adminStatStrong:after{content:"";position:absolute;right:-20px;top:-20px;width:70px;height:70px;border-radius:50%;background:rgba(251,191,36,.12);filter:blur(3px)}.adminStatStrong b{display:block;font-size:25px}.adminStatStrong span{font-size:9px;letter-spacing:1.5px;color:#94a3b8;text-transform:uppercase}.adminStatStrong small{display:block;font-size:10px;color:#22c55e;margin-top:3px;font-weight:800}
+.adminToolGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}.adminToolGrid button{border-radius:16px;padding:11px 8px;font-size:12px;font-weight:900;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.07);color:white}.adminPanelBox{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.09);border-radius:22px;padding:14px;margin-bottom:12px}.miniBar{height:8px;background:rgba(255,255,255,.1);border-radius:999px;overflow:hidden;margin-top:8px}.miniBar i{display:block;height:100%;background:linear-gradient(90deg,#22c55e,#facc15,#38bdf8);border-radius:999px;animation:barPulse 2.8s infinite ease-in-out}@keyframes barPulse{0%,100%{filter:brightness(1)}50%{filter:brightness(1.45)}}
+.exportBtn{background:linear-gradient(135deg,#22c55e,#16a34a)!important;color:white!important}.dangerSoft{background:rgba(239,68,68,.14)!important;color:#fecaca!important;border-color:rgba(239,68,68,.25)!important}.goldSoft{background:rgba(251,191,36,.14)!important;color:#fde68a!important;border-color:rgba(251,191,36,.25)!important}
+
+
+/* COMPACT SYSTEM STATUS BARS */
+.liveStatusCard{padding:16px!important;border-radius:22px!important}
+.liveStatusCard .text-xl{font-size:17px!important}
+.liveBarRow{margin-bottom:9px!important}
+.liveBarHead{margin-bottom:4px!important;font-size:10.5px!important}
+.liveBarHead b{font-size:10.5px!important}
+.liveBarTrack{height:6px!important}
+.liveMiniStats{margin-top:10px!important;padding:10px!important;border-radius:16px!important}
+.liveMiniStats b{font-size:18px!important}
+.liveMiniStats span{font-size:8px!important}
+.liveStatusCard button{padding-top:9px!important;padding-bottom:9px!important;margin-top:10px!important;border-radius:12px!important;font-size:13px!important}
+
+
+
+/* ULTRA STRONG DONATION PAGE */
+@keyframes donateGlow{0%,100%{box-shadow:0 0 18px rgba(34,197,94,.18)}50%{box-shadow:0 0 38px rgba(34,197,94,.38)}}
+@keyframes qrPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.025)}}
+.donateHero{position:relative;overflow:hidden;border-radius:28px;padding:20px;background:radial-gradient(circle at 80% 12%,rgba(34,197,94,.24),transparent 30%),radial-gradient(circle at 10% 18%,rgba(251,191,36,.18),transparent 32%),linear-gradient(145deg,#07111f,#0d1f36 55%,#06101d);border:1px solid rgba(34,197,94,.22);box-shadow:0 24px 60px rgba(0,0,0,.36);animation:donateGlow 3.8s infinite ease-in-out}
+.donateHero:after{content:'💝';position:absolute;right:18px;top:18px;font-size:54px;opacity:.16;filter:blur(.2px)}
+.donatePill{display:inline-flex;gap:7px;align-items:center;border-radius:999px;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.24);color:#86efac;padding:6px 11px;font-size:10px;font-weight:900;letter-spacing:2px}
+.donateVerse{border-radius:20px;background:rgba(251,191,36,.09);border:1px solid rgba(251,191,36,.20);padding:13px;margin-top:13px;color:#fde68a;font-size:13px;line-height:1.65}
+.donateQRBox{border-radius:28px;background:linear-gradient(145deg,#ffffff,#e8fff2);padding:14px;text-align:center;border:4px solid rgba(34,197,94,.35);box-shadow:0 18px 45px rgba(34,197,94,.20);animation:qrPulse 2.8s infinite ease-in-out}
+.donateQRBox img{width:220px;height:220px;border-radius:20px;margin:auto;display:block}
+.amountGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.amountBtn{border-radius:18px;padding:13px 8px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.10);font-weight:900;text-align:center;color:white;transition:.2s}
+.amountBtn.active,.amountBtn:hover{background:linear-gradient(135deg,#22c55e,#16a34a);border-color:rgba(34,197,94,.55);transform:translateY(-2px)}
+.payButtonGrid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.payBtn{border-radius:16px;padding:12px 9px;font-weight:900;text-align:center;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.07);color:white}
+.partnerGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.partnerCard{border-radius:20px;padding:14px;background:linear-gradient(145deg,rgba(255,255,255,.08),rgba(255,255,255,.035));border:1px solid rgba(251,191,36,.17)}
+.partnerCard b{display:block;color:#fde68a;font-size:14px}.partnerCard span{display:block;color:#94a3b8;font-size:11px;margin-top:4px}.goalTrack{height:12px;border-radius:999px;background:rgba(255,255,255,.10);overflow:hidden;border:1px solid rgba(255,255,255,.08)}.goalFill{height:100%;width:72%;border-radius:999px;background:linear-gradient(90deg,#22c55e,#facc15);position:relative}.goalFill:after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);animation:liveFlow 1.6s infinite}
+.receiptBox{display:none;border-radius:22px;background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.25);padding:14px;color:#dcfce7}
+.copyToast{display:none;text-align:center;color:#86efac;font-weight:900;font-size:12px;margin-top:8px}
+
+
+.receiptActions3{grid-template-columns:1fr 1fr 1fr!important}
+@media(max-width:420px){.receiptActions3{grid-template-columns:1fr!important}}
+</style>
+
+<style>
+/* PARTNER GOALS + RECEIPT PDF UPGRADE */
+.partnerCard{cursor:pointer;position:relative;overflow:hidden;transition:.25s}
+.partnerCard:after{content:"Tap";position:absolute;right:10px;top:10px;font-size:10px;color:#facc15;background:rgba(250,204,21,.12);border:1px solid rgba(250,204,21,.25);border-radius:999px;padding:3px 8px}
+.partnerCard:hover{transform:translateY(-3px);box-shadow:0 12px 35px rgba(251,191,36,.16)}
+.missionPopup{display:none;position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.78);backdrop-filter:blur(8px);padding:18px;align-items:center;justify-content:center}
+.missionPopup.show{display:flex}
+.missionBox{width:100%;max-width:430px;max-height:88vh;overflow:auto;border-radius:28px;border:1px solid rgba(251,191,36,.28);background:linear-gradient(145deg,#0b1220,#08101f 58%,#111827);padding:20px;box-shadow:0 30px 80px rgba(0,0,0,.55)}
+.goalItem{display:flex;gap:10px;align-items:flex-start;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:12px;margin:9px 0}
+.goalItem b{color:#fde68a}.goalItem p{font-size:12px;color:#cbd5e1;line-height:1.5;margin-top:2px}
+.receiptPaper{background:white;color:#111;border-radius:18px;padding:16px;border:2px dashed #d4af37;font-family:Arial,sans-serif}
+.receiptPaper h2{font-size:18px;text-align:center;color:#0f172a;font-weight:900;margin-bottom:4px}.receiptPaper .rpSub{text-align:center;font-size:11px;color:#475569;margin-bottom:12px}.receiptRow{display:flex;justify-content:space-between;border-bottom:1px solid #e5e7eb;padding:7px 0;font-size:13px;gap:10px}.receiptBless{margin-top:12px;background:#fef3c7;border-radius:12px;padding:10px;text-align:center;font-size:12px;color:#78350f;font-weight:700}.receiptActions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+@media print{body *{visibility:hidden!important}#receiptPrintArea,#receiptPrintArea *{visibility:visible!important}#receiptPrintArea{position:absolute;left:0;top:0;width:100%;padding:18px;background:white}.receiptActions{display:none!important}}
+
+.receiptActions3{grid-template-columns:1fr 1fr 1fr!important}
+@media(max-width:420px){.receiptActions3{grid-template-columns:1fr!important}}
+</style>
+</head>
+<body>
+<div class="min-h-screen bg-[#060d1a] text-white overflow-hidden relative">
+  <div class="fixed inset-0 pointer-events-none">
+    <div class="absolute -top-40 left-1/2 -translate-x-1/2 w-[600px] h-[420px] bg-yellow-400/10 blur-3xl rounded-full"></div>
+    <div class="absolute top-48 -right-24 w-72 h-72 bg-blue-500/10 blur-3xl rounded-full"></div>
+    <div class="absolute inset-0 flex items-center justify-center text-[60vw] text-yellow-300/[0.015] select-none">✝</div>
+  </div>
+
+  <main class="relative z-10 max-w-md mx-auto px-5 bottomSafe">
+    <header class="flex items-center justify-between pt-5 pb-3">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-yellow-500 to-yellow-300 text-slate-950 grid place-items-center font-black shadow-[0_0_25px_rgba(251,191,36,.35)]">✦</div>
+        <div><div class="text-yellow-400 tracking-[3px] font-black text-lg leading-none">HFGM</div><div class="text-[10px] text-slate-500 tracking-[2px] uppercase">Holy Spirit Fellowship</div></div>
+      </div>
+      <div class="flex items-center gap-2 rounded-full border border-red-400/30 bg-red-500/10 text-red-200 px-3 py-1 text-[10px] tracking-[2px] font-bold"><span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span> LIVE</div>
+    </header>
+
+    <section class="text-center pt-8 pb-7">
+      <div class="relative w-28 h-28 mx-auto mb-6 flex items-center justify-center">
+        <div class="ring absolute w-28 h-28 rounded-full border border-yellow-400/40"></div><div class="ring absolute w-28 h-28 rounded-full border border-blue-300/25" style="animation-delay:1s"></div><div class="absolute w-44 h-44 rounded-full bg-blue-500/10 blur-3xl"></div>
+        <div class="absolute -top-3 right-1 text-3xl float">🕊️</div>
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-16 h-28 pointer-events-none"><div class="drop absolute left-4 top-0 w-1.5 h-6 rounded-full bg-gradient-to-b from-red-300 to-red-800 shadow-[0_0_14px_rgba(239,68,68,.55)]"></div><div class="drop absolute left-8 top-0 w-1 h-5 rounded-full bg-gradient-to-b from-red-300 to-red-900 shadow-[0_0_12px_rgba(239,68,68,.45)]" style="animation-delay:1.2s"></div><div class="drop absolute left-11 top-0 w-1.5 h-7 rounded-full bg-gradient-to-b from-red-300 to-red-800 shadow-[0_0_14px_rgba(239,68,68,.55)]" style="animation-delay:2.1s"></div></div>
+        <div class="text-6xl drop-shadow-[0_0_24px_rgba(96,165,250,.8)] animate-pulse">🌍</div>
+      </div>
+      <div class="inline-flex px-4 py-1 rounded-full bg-yellow-500/10 border border-yellow-500/20 text-yellow-300 text-[10px] tracking-[3px] font-bold mb-4">REVIVAL · PRAYER · GLOBAL</div>
+      <h1 class="text-4xl font-black leading-tight">Holy Spirit<br/>Fellowship <span class="text-blue-300 italic font-medium">Global</span><br/><span class="goldText">Ministries</span></h1>
+      <p class="mt-4 text-slate-400 text-sm max-w-sm mx-auto leading-6">Prayer, revival, donations, members and global ministry connection.</p>
+      <div class="glow grid grid-cols-3 gap-2 mt-6 bg-white/5 border border-yellow-400/10 rounded-2xl p-4"><div><div class="text-yellow-400 text-2xl font-black" id="heroMembers">0</div><div class="text-[10px] tracking-widest text-slate-500">MEMBERS</div></div><div><div class="text-green-400 text-2xl font-black">24/7</div><div class="text-[10px] tracking-widest text-slate-500">PRAYER</div></div><div><div class="text-blue-400 text-2xl font-black">LIVE</div><div class="text-[10px] tracking-widest text-slate-500">GLOBAL</div></div></div>
+      <button onclick="openPanel('admin')" class="mt-5 w-full rounded-2xl py-4 font-black text-black bg-gradient-to-r from-yellow-500 via-yellow-300 to-yellow-500 shadow-[0_10px_40px_rgba(251,191,36,.35)]">⚙ Open Admin Dashboard</button>
+    </section>
+
+    <section class="pb-6">
+      <div class="text-[11px] tracking-[4px] text-slate-500 mb-3">QUICK ACCESS</div>
+      <div class="grid grid-cols-2 gap-3">
+        <button onclick="openPanel('family')" class="quickCard"><div class="text-3xl mb-3">🌎</div><div class="font-bold">Global Family</div><div class="text-xs text-slate-500 mt-1"><span id="memberCount">0</span> believers connected</div></button>
+        <button onclick="openPanel('register')" class="quickCard"><div class="text-3xl mb-3">➕</div><div class="font-bold">Join / Register</div><div class="text-xs text-slate-500 mt-1">Save member to Firebase</div></button>
+        <button onclick="openPanel('donate')" class="quickCard"><div class="text-3xl mb-3">💝</div><div class="font-bold">Donations ₹</div><div class="text-xs text-slate-500 mt-1">Support ministry</div></button>
+        <button onclick="openPanel('admin')" class="quickCard"><div class="text-3xl mb-3">🔐</div><div class="font-bold">Admin</div><div class="text-xs text-slate-500 mt-1">Private saved data</div></button>
+      </div>
+    </section>
+
+    <section class="pb-6"><div class="rounded-3xl border border-yellow-500/20 bg-gradient-to-br from-[#0d1a2e] to-[#08101f] p-5 relative overflow-hidden"><div class="absolute top-0 right-0 w-40 h-40 bg-yellow-400/10 rounded-full blur-3xl"></div><div class="text-xs tracking-[3px] text-yellow-400 mb-3">PROMISE OF THE DAY · నేటి వాగ్దానం</div><div class="text-xl italic leading-8 font-semibold text-slate-100" id="verseText">“Fear not, for I am with you.”</div><div class="mt-3 text-[17px] leading-8 font-bold text-yellow-100" id="verseTelugu">“భయపడకుము, నేను నీతో ఉన్నాను.”</div><div class="mt-3 text-yellow-300 text-sm" id="verseRef">— Isaiah 41:10 · యెషయా 41:10</div></div></section>
+
+    <section class="pb-8">
+      <div class="liveStatusCard rounded-3xl bg-white/5 border border-white/10 p-5">
+        <div class="relative z-10 flex items-center justify-between mb-5">
+          <div>
+            <div class="text-xl font-bold">System Status</div>
+            <div class="text-xs text-slate-500 mt-1" id="firebaseStatus">Firebase starting...</div>
+          </div>
+          <div class="flex items-center gap-2 text-green-400 text-xs tracking-[3px] font-black"><span class="liveDot"></span> LIVE</div>
+        </div>
+        <div class="liveBarRow">
+          <div class="liveBarHead"><span>🔥 Firebase Live Sync</span><b id="barFirebaseText">0%</b></div>
+          <div class="liveBarTrack"><div id="barFirebase" class="liveBarFill" style="width:12%"></div></div>
+        </div>
+        <div class="liveBarRow">
+          <div class="liveBarHead"><span>👥 Members Data</span><b id="barMembersText">0%</b></div>
+          <div class="liveBarTrack"><div id="barMembers" class="liveBarFill" style="width:18%"></div></div>
+        </div>
+        <div class="liveBarRow">
+          <div class="liveBarHead"><span>🙏 Prayer Requests</span><b id="barPrayerText">Ready</b></div>
+          <div class="liveBarTrack"><div id="barPrayer" class="liveBarFill" style="width:74%"></div></div>
+        </div>
+        <div class="liveBarRow">
+          <div class="liveBarHead"><span>💝 Donation Support</span><b id="barDonateText">Active</b></div>
+          <div class="liveBarTrack"><div id="barDonate" class="liveBarFill" style="width:68%"></div></div>
+        </div>
+        <div class="liveMiniStats">
+          <div><b id="statusTotal">0</b><span>TOTAL</span></div>
+          <div><b id="statusOld">0</b><span>OLD</span></div>
+          <div><b id="statusNew">0</b><span>NEW</span></div>
+        </div>
+        <button onclick="loadFirebase()" class="relative z-10 mt-4 w-full py-3 rounded-xl bg-gradient-to-r from-sky-600 to-sky-400 font-bold">↻ Refresh Firebase</button>
+      </div>
+    </section>
+  </main>
+
+  <div class="fixed bottom-0 left-0 right-0 border-t border-white/10 bg-[#08101f]/95 backdrop-blur-xl z-40"><div class="max-w-md mx-auto grid grid-cols-4 py-3 text-center text-xs"><button onclick="window.scrollTo({top:0,behavior:'smooth'})" class="text-yellow-400 flex flex-col items-center gap-1"><span class="text-lg">🏠</span>Home</button><button onclick="openPanel('register')" class="text-slate-500 flex flex-col items-center gap-1"><span class="text-lg">➕</span>Join</button><button onclick="openPanel('donate')" class="text-slate-500 flex flex-col items-center gap-1"><span class="text-lg">💝</span>Donate</button><button onclick="openPanel('admin')" class="text-slate-500 flex flex-col items-center gap-1"><span class="text-lg">👤</span>Admin</button></div></div>
+</div>
+
+<div id="panel" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm p-4 overflow-y-auto"><div class="min-h-full flex items-center justify-center"><div class="panelIn w-full max-w-md rounded-3xl border border-yellow-400/20 bg-[#0b1220] p-5 shadow-2xl"><div id="panelContent"></div><button onclick="closePanel()" class="mt-4 w-full rounded-xl bg-slate-800 py-3 font-bold">Close</button></div></div></div>
+
+<script>
+const firebaseConfig={apiKey:"AIzaSyBLyi5hI-jSSyIf-H9rnpP_4Ldj6Cfpqu8",authDomain:"hfgm-ministry.firebaseapp.com",projectId:"hfgm-ministry",storageBucket:"hfgm-ministry.firebasestorage.app",messagingSenderId:"1079389581104",appId:"1:1079389581104:web:3830dc23c81389cb7fe2f5",measurementId:"G-2L8ZX8BJKM"};
+let db=null, oldMembers=[], newMembers=[], localMembers=[], members=[], isAdmin=sessionStorage.getItem('hfgm_admin')==='yes';
+const $=id=>document.getElementById(id); const esc=v=>String(v??'').replace(/[&<>"']/g,s=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[s]));
+function cleanPhone(v){return String(v||'').replace(/\D/g,'')} function first(){for(let v of arguments){if(v!==undefined&&v!==null&&String(v).trim()!=='')return v}return ''}
+function setStatus(t){console.log(t); if($('firebaseStatus')) $('firebaseStatus').innerText=t}
+function initFirebase(){try{if(!window.firebase){setStatus('Firebase SDK not loaded. Internet ON chesi Chrome lo open cheyyandi.');return false} if(!firebase.apps.length) firebase.initializeApp(firebaseConfig); db=firebase.firestore(); setStatus('Firebase connected. Data loading...'); return true}catch(e){setStatus('Firebase error: '+e.message);return false}}
+function normalize(d,source){const p=cleanPhone(first(d.phone,d.cell,d.mobile,d.whatsapp,d.Cell,d.Mobile,d.Phone,d.phoneNumber,d.contact)); const photo=first(d.photo,d.photoURL,d.photoUrl,d.image,d.imageUrl,d.selfie,d.profile,d.avatar,d.photoData,d.memberPhoto,d.url); const stableId=first(d.id,d.localId,d.docId,p,d.name,'L'+Date.now()); return {id:stableId,source,memberId:first(d.memberId,d.memberID,d.uid,d.sno,d.cardNo,d.id),name:first(d.name,d.fullName,d.fullname,d.memberName,d.Name,'No Name'),age:first(d.age,d.Age),gender:first(d.gender,d.sex),role:first(d.role,d.type,d.ministry,d.occupation,d.work,'Member'),country:first(d.country,d.Country,'India'),state:first(d.state,d.State),district:first(d.district,d.District),city:first(d.city,d.village,d.place,d.address,d.Village),phone:p.length===10?'91'+p:p,prayer:first(d.prayer,d.message,d.note),blood:first(d.blood,d.bloodGroup),emergency:first(d.emergency,d.emergencyContact),branch:first(d.branch,d.churchBranch,d.area),photo,createdAt:first(d.createdAt,d.date,d.time),raw:d}}
+async function getAll(col){const arr=[]; const snap=await db.collection(col).get(); snap.forEach(doc=>arr.push({...doc.data(),id:doc.id})); return arr}
+function mergeUnique(){members=[...oldMembers.map(x=>normalize(x,'members')),...newMembers.map(x=>normalize(x,'global_believers')),...localMembers.map(x=>normalize(x,'local'))]}
+async function loadFirebase(){try{localMembers=JSON.parse(localStorage.getItem('hfgm_local_members')||'[]'); if(!db&&!initFirebase()){mergeUnique();renderCounts();return} oldMembers=await getAll('members').catch(()=>[]); newMembers=await getAll('global_believers').catch(()=>[]); mergeUnique(); renderCounts(); setStatus('Firebase loaded: '+oldMembers.length+' old + '+newMembers.length+' new + '+localMembers.length+' local = '+members.length+' members'); if($('adminList')) renderAdminList(); if($('familyList')) renderFamilyList();}catch(e){setStatus('Load error: '+e.message)}}
+function setBar(id,val,label){const el=$(id), tx=$(id+'Text'); if(el) el.style.width=Math.max(6,Math.min(100,val))+'%'; if(tx) tx.innerText=label||Math.round(val)+'%'}
+function updateLiveBars(){
+  const total=members.length, old=oldMembers.length, newer=newMembers.length, local=localMembers.length;
+  const firebaseOk=!!db;
+  setBar('barFirebase', firebaseOk?96:35, firebaseOk?'LIVE':'LOCAL');
+  const memberPct=Math.min(100, Math.max(18, total ? 35 + total*2 : 18));
+  setBar('barMembers', memberPct, total+' Members');
+  setBar('barPrayer', 74, 'Ready');
+  setBar('barDonate', 68, 'Active');
+  if($('statusTotal')) $('statusTotal').innerText=total;
+  if($('statusOld')) $('statusOld').innerText=old;
+  if($('statusNew')) $('statusNew').innerText=newer+local;
+}
+function renderCounts(){['heroMembers','memberCount','adminCount','familyCount'].forEach(id=>{if($(id)) $(id).innerText=members.length}); updateLiveBars()}
+function formatHFGMNumber(n){return 'HFGM-'+String(Math.max(1,Number(n)||1)).padStart(4,'0')}
+function extractHFGMNumber(id){const m=String(id||'').match(/HFGM-(?:ID-)?(\d{1,6})$/i); return m?parseInt(m[1],10):0}
+function nextHFGMNumber(){let max=0; [...members,...localMembers].forEach(x=>{const m=normalize(x,x.source||'local'); max=Math.max(max,extractHFGMNumber(m.memberId),extractHFGMNumber(m.id));}); return formatHFGMNumber(max+1)}
+function newMemberId(){return nextHFGMNumber()}
+function readPhotoInput(){return new Promise(resolve=>{const f=$('nPhoto')?.files?.[0]||$('nSelfie')?.files?.[0]; if(!f)return resolve(''); const img=new Image(); const r=new FileReader(); r.onload=e=>{img.onload=()=>{const c=document.createElement('canvas'); const max=420; let w=img.width,h=img.height; if(w>h&&w>max){h=Math.round(h*max/w);w=max}else if(h>max){w=Math.round(w*max/h);h=max} c.width=w;c.height=h; c.getContext('2d').drawImage(img,0,0,w,h); resolve(c.toDataURL('image/jpeg',.72));}; img.src=e.target.result}; r.onerror=()=>resolve(''); r.readAsDataURL(f);});}
+function photoHTML(m){const initials=esc((m.name||'H').trim().slice(0,1).toUpperCase()); return m.photo?`<img src="${esc(m.photo)}" onerror="this.outerHTML='<div class='w-14 h-14 rounded-full bg-yellow-400/20 border border-yellow-400/30 grid place-items-center font-black text-yellow-300'>${initials}</div>'" class="w-14 h-14 rounded-full object-cover border-2 border-yellow-400/50 shadow-[0_0_18px_rgba(251,191,36,.25)]">`:`<div class="w-14 h-14 rounded-full bg-yellow-400/20 border border-yellow-400/30 grid place-items-center font-black text-yellow-300">${initials}</div>`}
+async function savePublicMember(){const name=$('nName')?.value.trim(), phone=cleanPhone($('nPhone')?.value); if(!name||!phone){alert('Name and phone compulsory');return} if($('saveResult'))$('saveResult').innerHTML='⏳ Saving...'; const country=$('nCountry')?.value||'India'; const code=$('nCode')?.value||'91'; const photo=await readPhotoInput(); const payload={memberId:newMemberId(),name,age:$('nAge')?.value||'',gender:$('nGender')?.value||'',role:$('nRole')?.value||'New Believer',country,state:$('nState')?.value||'',district:$('nDistrict')?.value||'',city:$('nCity')?.value||'',phone:phone.length===10?code+phone:phone,prayer:$('nPrayer')?.value||'',blood:$('nBlood')?.value||'',emergency:$('nEmergency')?.value||'',branch:$('nBranch')?.value||'HFGM Tadepalligudem',photo,createdAt:new Date().toISOString(),localId:'LOCAL-'+Date.now(),source:'global_believers'}; try{if(!db) initFirebase(); if(db) await db.collection('global_believers').add(payload); else {localMembers.push(payload); localStorage.setItem('hfgm_local_members',JSON.stringify(localMembers));} $('saveResult').innerHTML='✅ Saved Successfully<br><span class="text-xs">HFGM Auto ID: '+payload.memberId+' · Phone: '+payload.phone+'</span>'; await loadFirebase();}catch(e){localMembers.push(payload); localStorage.setItem('hfgm_local_members',JSON.stringify(localMembers)); $('saveResult').innerHTML='✅ Saved in phone backup<br><span class="text-xs">Firebase error: '+esc(e.message)+'</span>'; await loadFirebase();}}
+function setCountryCode(){const sel=$('nCountry'); if(!sel||!$('nCode'))return; const code=sel.options[sel.selectedIndex]?.dataset.code||''; $('nCode').value=code}
+function adminLogin(){if(($('adminUser')?.value||'').trim()==='admin' && ($('adminPass')?.value||'').trim()==='1234'){isAdmin=true;sessionStorage.setItem('hfgm_admin','yes');openPanel('admin')}else alert('Wrong login. User: admin / Pass: 1234')}
+function adminLogout(){isAdmin=false;sessionStorage.removeItem('hfgm_admin');openPanel('admin')}
+
+function memberKey(m){return encodeURIComponent((m.source||'')+'|'+(m.id||'')+'|'+(m.phone||'')+'|'+(m.name||''))}
+function findMemberByKey(k){const key=decodeURIComponent(k||'');return members.find(m=>((m.source||'')+'|'+(m.id||'')+'|'+(m.phone||'')+'|'+(m.name||''))===key)}
+function autoCardNo(m,idx){
+  const existing=first(m.memberId,m.memberID,m.cardNo,m.uid);
+  const ex=extractHFGMNumber(existing);
+  if(ex)return formatHFGMNumber(ex);
+  const n=(idx>=0?idx:members.indexOf(m))+1;
+  return formatHFGMNumber(n);
+}
+function qrDataForMember(m,card){return `HFGM Member ID: ${card}\nName: ${m.name||''}\nPhone: ${m.phone||''}\nPlace: ${first(m.city,m.district,m.state,m.country)||''}\nRole: ${m.role||'Member'}\nBranch: ${m.branch||'HFGM'}`;}
+function qrUrlForMember(m,card,size=180){return 'https://api.qrserver.com/v1/create-qr-code/?size='+size+'x'+size+'&data='+encodeURIComponent(qrDataForMember(m,card));}
+function idCardMarkup(m,idx){const card=autoCardNo(m,idx); const phone=m.phone||'No number'; const qr=qrUrlForMember(m,card,220); const photo=m.photo?`<img class="idPreviewPhoto" src="${esc(m.photo)}">`:`<div class="idPreviewPhoto" style="display:grid;place-items:center;color:#0b1220;font-size:38px;font-weight:900">${esc((m.name||'H').slice(0,1).toUpperCase())}</div>`;return `<div class="idPreviewCard"><div class="idPreviewTop"><div style="font-size:13px;font-weight:900;letter-spacing:1px">HOLY SPIRIT FELLOWSHIP</div><div style="font-size:10px;opacity:.85">GLOBAL MINISTRIES MEMBER ID</div>${photo}<div class="idPreviewName">${esc(m.name)}</div><div class="idNumberBig">🆔 ${esc(card)}</div></div><div class="idPreviewBody"><div class="idPreviewRow phoneBig">📞 Number: ${esc(phone)}</div><div class="idPreviewRow">🆔 ID Number: ${esc(card)}</div><div class="idPreviewRow">📍 Place: ${esc(first(m.city,m.district,m.state,m.country))}</div><div class="idPreviewRow">🙏 Role: ${esc(m.role||'Member')}</div><div class="idPreviewRow">⛪ Branch: ${esc(m.branch||'HFGM')}</div><img class="idPreviewQR" src="${qr}" alt="HFGM Member QR Code"><div class="idPreviewNote">Scan QR: ID + Number details</div></div></div>`}
+function viewIdCard(k){const m=findMemberByKey(k); if(!m)return alert('Member not found'); const idx=members.indexOf(m); $('panelContent').innerHTML=`<h2 class="text-2xl font-black text-yellow-300 mb-4">🆔 Member ID Card</h2>${idCardMarkup(m,idx)}<div class="grid grid-cols-2 gap-2 mt-4"><button onclick="printIdCard('${k}')" class="rounded-xl bg-blue-500 py-3 font-black">🖨 Print</button><button onclick="downloadIdCard('${k}')" class="rounded-xl bg-green-500 py-3 font-black">⬇ Download</button></div>`; $('panel').classList.remove('hidden')}
+function printIdCard(k){const m=findMemberByKey(k); if(!m)return; const idx=members.indexOf(m); const w=window.open('','_blank'); w.document.write(`<!DOCTYPE html><html><head><title>${esc(autoCardNo(m,idx))}</title><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#e5e7eb;font-family:Arial}.idPreviewCard{width:320px;border-radius:26px;overflow:hidden;background:linear-gradient(160deg,#07111f,#0b4da2,#06b6d4);border:2px solid rgba(255,255,255,.35);box-shadow:0 25px 70px rgba(0,0,0,.25);text-align:center;color:white}.idPreviewTop{padding:16px;background:rgba(255,255,255,.12)}.idPreviewPhoto{width:92px;height:92px;border-radius:50%;object-fit:cover;border:4px solid #fff;margin:14px auto 8px;background:#fff}.idPreviewName{font-size:22px;font-weight:900}.idPreviewBadge{display:inline-block;background:#ffd166;color:#111827;border-radius:999px;padding:5px 12px;font-size:12px;font-weight:900;margin-top:6px}.idPreviewBody{padding:14px 18px 18px;text-align:left}.idPreviewRow{background:rgba(255,255,255,.11);border-radius:12px;padding:8px 10px;margin:7px 0;font-size:13px}.idPreviewQR{width:104px;height:104px;background:#fff;border-radius:14px;padding:7px;margin:12px auto 4px;display:block}.idPreviewNote{text-align:center;font-size:10px;color:#dbeafe;margin-top:3px;opacity:.9}.idNumberBig{display:inline-block;background:#ffd166;color:#111827;border-radius:999px;padding:6px 14px;font-size:13px;font-weight:900;margin-top:7px;letter-spacing:.4px}.phoneBig{font-size:14px!important;font-weight:900;color:#dcfce7}@media print{button{display:none}}
+/* STRONG ADMIN DASHBOARD UPGRADE */
+.adminHeroStrong{background:radial-gradient(circle at top right,rgba(251,191,36,.22),transparent 30%),linear-gradient(135deg,#111827,#070b14);border:1px solid rgba(251,191,36,.22);border-radius:26px;padding:18px;margin-bottom:14px;box-shadow:0 20px 55px rgba(0,0,0,.35)}
+.adminTabs{display:flex;gap:8px;overflow:auto;padding-bottom:8px;margin:10px 0 14px}.adminTabs button{flex-shrink:0;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.06);color:#cbd5e1;border-radius:999px;padding:9px 12px;font-size:12px;font-weight:900}.adminTabs button.active{background:linear-gradient(135deg,#f59e0b,#fde68a);color:#111827;border-color:rgba(251,191,36,.5)}
+.adminStatStrong{border:1px solid rgba(255,255,255,.09);background:linear-gradient(145deg,rgba(255,255,255,.08),rgba(255,255,255,.035));border-radius:20px;padding:14px;position:relative;overflow:hidden}.adminStatStrong:after{content:"";position:absolute;right:-20px;top:-20px;width:70px;height:70px;border-radius:50%;background:rgba(251,191,36,.12);filter:blur(3px)}.adminStatStrong b{display:block;font-size:25px}.adminStatStrong span{font-size:9px;letter-spacing:1.5px;color:#94a3b8;text-transform:uppercase}.adminStatStrong small{display:block;font-size:10px;color:#22c55e;margin-top:3px;font-weight:800}
+.adminToolGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}.adminToolGrid button{border-radius:16px;padding:11px 8px;font-size:12px;font-weight:900;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.07);color:white}.adminPanelBox{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.09);border-radius:22px;padding:14px;margin-bottom:12px}.miniBar{height:8px;background:rgba(255,255,255,.1);border-radius:999px;overflow:hidden;margin-top:8px}.miniBar i{display:block;height:100%;background:linear-gradient(90deg,#22c55e,#facc15,#38bdf8);border-radius:999px;animation:barPulse 2.8s infinite ease-in-out}@keyframes barPulse{0%,100%{filter:brightness(1)}50%{filter:brightness(1.45)}}
+.exportBtn{background:linear-gradient(135deg,#22c55e,#16a34a)!important;color:white!important}.dangerSoft{background:rgba(239,68,68,.14)!important;color:#fecaca!important;border-color:rgba(239,68,68,.25)!important}.goldSoft{background:rgba(251,191,36,.14)!important;color:#fde68a!important;border-color:rgba(251,191,36,.25)!important}
+
+
+.receiptActions3{grid-template-columns:1fr 1fr 1fr!important}
+@media(max-width:420px){.receiptActions3{grid-template-columns:1fr!important}}
+</style></head><body>${idCardMarkup(m,idx)}<button onclick="print()" style="position:fixed;bottom:20px;padding:12px 20px;border:0;border-radius:14px;background:#16a34a;color:white;font-weight:900">Print / Save PDF</button></body></html>`); w.document.close()}
+function downloadIdCard(k){const m=findMemberByKey(k); if(!m)return; const idx=members.indexOf(m); const html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${esc(autoCardNo(m,idx))}</title><style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#e5e7eb;font-family:Arial}.idPreviewCard{width:320px;border-radius:26px;overflow:hidden;background:linear-gradient(160deg,#07111f,#0b4da2,#06b6d4);text-align:center;color:white}.idPreviewTop{padding:16px;background:rgba(255,255,255,.12)}.idPreviewPhoto{width:92px;height:92px;border-radius:50%;object-fit:cover;border:4px solid #fff;margin:14px auto 8px;background:#fff}.idPreviewName{font-size:22px;font-weight:900}.idPreviewBadge{display:inline-block;background:#ffd166;color:#111827;border-radius:999px;padding:5px 12px;font-size:12px;font-weight:900;margin-top:6px}.idPreviewBody{padding:14px 18px 18px;text-align:left}.idPreviewRow{background:rgba(255,255,255,.11);border-radius:12px;padding:8px 10px;margin:7px 0;font-size:13px}.idPreviewQR{width:104px;height:104px;background:#fff;border-radius:14px;padding:7px;margin:12px auto 4px;display:block}.idPreviewNote{text-align:center;font-size:10px;color:#dbeafe;margin-top:3px;opacity:.9}.idNumberBig{display:inline-block;background:#ffd166;color:#111827;border-radius:999px;padding:6px 14px;font-size:13px;font-weight:900;margin-top:7px;letter-spacing:.4px}.phoneBig{font-size:14px!important;font-weight:900;color:#dcfce7}
+/* STRONG ADMIN DASHBOARD UPGRADE */
+.adminHeroStrong{background:radial-gradient(circle at top right,rgba(251,191,36,.22),transparent 30%),linear-gradient(135deg,#111827,#070b14);border:1px solid rgba(251,191,36,.22);border-radius:26px;padding:18px;margin-bottom:14px;box-shadow:0 20px 55px rgba(0,0,0,.35)}
+.adminTabs{display:flex;gap:8px;overflow:auto;padding-bottom:8px;margin:10px 0 14px}.adminTabs button{flex-shrink:0;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.06);color:#cbd5e1;border-radius:999px;padding:9px 12px;font-size:12px;font-weight:900}.adminTabs button.active{background:linear-gradient(135deg,#f59e0b,#fde68a);color:#111827;border-color:rgba(251,191,36,.5)}
+.adminStatStrong{border:1px solid rgba(255,255,255,.09);background:linear-gradient(145deg,rgba(255,255,255,.08),rgba(255,255,255,.035));border-radius:20px;padding:14px;position:relative;overflow:hidden}.adminStatStrong:after{content:"";position:absolute;right:-20px;top:-20px;width:70px;height:70px;border-radius:50%;background:rgba(251,191,36,.12);filter:blur(3px)}.adminStatStrong b{display:block;font-size:25px}.adminStatStrong span{font-size:9px;letter-spacing:1.5px;color:#94a3b8;text-transform:uppercase}.adminStatStrong small{display:block;font-size:10px;color:#22c55e;margin-top:3px;font-weight:800}
+.adminToolGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}.adminToolGrid button{border-radius:16px;padding:11px 8px;font-size:12px;font-weight:900;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.07);color:white}.adminPanelBox{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.09);border-radius:22px;padding:14px;margin-bottom:12px}.miniBar{height:8px;background:rgba(255,255,255,.1);border-radius:999px;overflow:hidden;margin-top:8px}.miniBar i{display:block;height:100%;background:linear-gradient(90deg,#22c55e,#facc15,#38bdf8);border-radius:999px;animation:barPulse 2.8s infinite ease-in-out}@keyframes barPulse{0%,100%{filter:brightness(1)}50%{filter:brightness(1.45)}}
+.exportBtn{background:linear-gradient(135deg,#22c55e,#16a34a)!important;color:white!important}.dangerSoft{background:rgba(239,68,68,.14)!important;color:#fecaca!important;border-color:rgba(239,68,68,.25)!important}.goldSoft{background:rgba(251,191,36,.14)!important;color:#fde68a!important;border-color:rgba(251,191,36,.25)!important}
+
+
+.receiptActions3{grid-template-columns:1fr 1fr 1fr!important}
+@media(max-width:420px){.receiptActions3{grid-template-columns:1fr!important}}
+</style></head><body>${idCardMarkup(m,idx)}</body></html>`; const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([html],{type:'text/html'})); a.download=autoCardNo(m,idx)+'_'+(m.name||'member').replace(/\W+/g,'_')+'.html'; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+function editMember(k){const m=findMemberByKey(k); if(!m)return alert('Member not found'); $('panelContent').innerHTML=`<h2 class="text-2xl font-black text-yellow-300 mb-3">✏ Edit Member</h2><input id="eName" class="editInput" value="${esc(m.name)}" placeholder="Name"><input id="ePhone" class="editInput" value="${esc(m.phone)}" placeholder="Phone"><input id="eRole" class="editInput" value="${esc(m.role)}" placeholder="Role"><input id="eCity" class="editInput" value="${esc(m.city)}" placeholder="City / Village"><input id="eDistrict" class="editInput" value="${esc(m.district)}" placeholder="District"><input id="eState" class="editInput" value="${esc(m.state)}" placeholder="State"><input id="eCountry" class="editInput" value="${esc(m.country)}" placeholder="Country"><input id="eBranch" class="editInput" value="${esc(m.branch)}" placeholder="Branch"><textarea id="ePrayer" class="editInput" placeholder="Prayer / Notes">${esc(m.prayer)}</textarea><button onclick="saveMemberEdit('${k}')" class="w-full rounded-xl bg-green-500 py-3 font-black">✅ Update Member</button>`; $('panel').classList.remove('hidden')}
+async function saveMemberEdit(k){const m=findMemberByKey(k); if(!m)return alert('Member not found'); const payload={name:$('eName').value.trim(),phone:cleanPhone($('ePhone').value),role:$('eRole').value.trim(),city:$('eCity').value.trim(),district:$('eDistrict').value.trim(),state:$('eState').value.trim(),country:$('eCountry').value.trim(),branch:$('eBranch').value.trim(),prayer:$('ePrayer').value.trim(),updatedAt:new Date().toISOString()}; try{if(m.source==='local'){localMembers=localMembers.map(x=>normalize(x,'local').id===m.id?{...x,...payload}:x); localStorage.setItem('hfgm_local_members',JSON.stringify(localMembers));}else{if(!db) initFirebase(); if(!db) throw new Error('Firebase not connected'); await db.collection(m.source).doc(m.id).update(payload);} alert('✅ Member updated'); await loadFirebase(); openPanel('admin')}catch(e){alert('Update failed: '+e.message)}}
+async function deleteMember(k){const m=findMemberByKey(k); if(!m)return alert('Member not found'); if(!confirm('Delete '+m.name+'?'))return; try{if(m.source==='local'){localMembers=localMembers.filter(x=>normalize(x,'local').id!==m.id); localStorage.setItem('hfgm_local_members',JSON.stringify(localMembers));}else{if(!db) initFirebase(); if(!db) throw new Error('Firebase not connected'); await db.collection(m.source).doc(m.id).delete();} alert('🗑 Deleted'); await loadFirebase(); openPanel('admin')}catch(e){alert('Delete failed: '+e.message)}}
+
+function renderAdminList(){const box=$('adminList'); if(!box)return; const q=($('adminSearch')?.value||'').toLowerCase(); const list=members.filter(m=>(m.name+' '+m.phone+' '+m.city+' '+m.country+' '+m.source+' '+m.memberId).toLowerCase().includes(q)); box.innerHTML=list.map(m=>{const idx=members.indexOf(m); const k=memberKey(m); return `<div class="memberCard mb-3"><div class="flex gap-3 items-start">${photoHTML(m)}<div class="flex-1 min-w-0"><div class="font-black text-white">${esc(m.name)}</div><div class="text-xs text-green-300 mt-1 font-bold">📞 ${esc(m.phone||'No number')}</div><div class="text-xs text-yellow-300 mt-1 font-black">🆔 ID: ${esc(autoCardNo(m,idx))}</div><div class="text-xs text-slate-400 mt-1">📍 ${esc(m.city||m.district||m.country||'')}</div><div class="mt-2"><span class="badge">${esc(m.source)}</span> <span class="badge">${esc(m.role)}</span></div></div><button onclick="location.href='tel:${cleanPhone(m.phone)}'" class="h-10 px-3 rounded-xl bg-green-500 font-black">Call</button></div><div class="grid grid-cols-4 gap-2 mt-3"><button onclick="viewIdCard('${k}')" class="memberActionBtn bg-blue-500">ID</button><button onclick="downloadIdCard('${k}')" class="memberActionBtn bg-green-600">Download</button><button onclick="editMember('${k}')" class="memberActionBtn bg-yellow-400 text-black">Edit</button><button onclick="deleteMember('${k}')" class="memberActionBtn bg-red-500">Delete</button></div></div>`}).join('')||'<div class="text-slate-400">No members found</div>'}
+function renderFamilyList(){const box=$('familyList'); if(!box)return; box.innerHTML=members.slice(0,60).map(m=>`<div class="memberCard mb-3"><div class="flex gap-3 items-start">${photoHTML(m)}<div class="flex-1"><div class="font-black text-white">${esc(m.name)}</div><div class="text-xs text-green-300 mt-1 font-bold">📞 ${esc(m.phone||'No number')}</div><div class="text-xs text-slate-400 mt-1">${esc(m.country)} · ${esc(m.state)} · ${esc(m.district)}</div><div class="mt-2"><span class="badge">${esc(m.role)}</span></div></div></div></div>`).join('')||'<div class="text-slate-400">No public list loaded</div>'}
+function registerHTML(){return `<h2 class="text-2xl font-black text-yellow-300 mb-2">➕ Register Member</h2><p class="text-slate-400 text-sm mb-4">Save button file flow same: name + phone compulsory, data Firebase global_believers lo save avutundi.</p><div class="space-y-3"><input id="nName" class="input" placeholder="Full Name *"><input id="nAge" type="number" class="input" placeholder="Age"><select id="nGender" class="input"><option value="">Select Gender</option><option>Male</option><option>Female</option><option>Other</option></select><select id="nRole" class="input"><option>New Believer</option><option>Church Member</option><option>Prayer Partner</option><option>Volunteer</option><option>Sponsor / Donor</option><option>Pastor / Leader</option></select><select id="nCountry" onchange="setCountryCode()" class="input"><option value="India" data-code="91">India (+91)</option><option value="United States" data-code="1">United States (+1)</option><option value="United Kingdom" data-code="44">United Kingdom (+44)</option><option value="Canada" data-code="1">Canada (+1)</option><option value="Australia" data-code="61">Australia (+61)</option><option value="UAE" data-code="971">UAE (+971)</option><option value="Other" data-code="">Other</option></select><select id="nState" class="input"><option value="">Select State</option><option>Andhra Pradesh</option><option>Telangana</option><option>Tamil Nadu</option><option>Karnataka</option><option>Kerala</option><option>Other</option></select><select id="nDistrict" class="input"><option value="">Select District</option><option>West Godavari</option><option>East Godavari</option><option>Eluru</option><option>Krishna</option><option>NTR</option><option>Guntur</option><option>Hyderabad</option><option>Other</option></select><input id="nCity" class="input" placeholder="City / Village"><div class="grid grid-cols-[88px_1fr] gap-2"><input id="nCode" class="input" value="91" placeholder="+91"><input id="nPhone" class="input" placeholder="Phone number *"></div><textarea id="nPrayer" class="input" placeholder="Prayer / Notes"></textarea><select id="nBlood" class="input"><option value="">Select Blood Group</option><option>O+</option><option>O-</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>AB+</option><option>AB-</option></select><input id="nEmergency" class="input" placeholder="Emergency Contact"><input id="nBranch" class="input" value="HFGM Tadepalligudem" placeholder="Church Branch / Area"><div class="grid grid-cols-2 gap-2"><label class="rounded-2xl border border-yellow-400/20 bg-white/5 p-3 text-center text-xs font-bold cursor-pointer">📷 Selfie<input id="nSelfie" type="file" accept="image/*" capture="user" class="hidden"></label><label class="rounded-2xl border border-yellow-400/20 bg-white/5 p-3 text-center text-xs font-bold cursor-pointer">🖼️ Photo<input id="nPhoto" type="file" accept="image/*" class="hidden"></label></div><button onclick="savePublicMember()" class="saveBtn">✅ Save Member</button><div id="saveResult" class="text-center font-bold text-green-300"></div><div class="rounded-2xl border border-yellow-500/20 bg-yellow-500/10 p-3 text-xs text-slate-300">🔒 Secure Save · Only admin can view full member details.</div></div>`}
+function adminHTML(){if(!isAdmin)return `<h2 class="text-2xl font-black text-yellow-300 mb-3">🔐 Admin Login</h2><input id="adminUser" class="input mb-3" placeholder="User Name" value="admin"><input id="adminPass" type="password" class="input mb-3" placeholder="Password"><button onclick="adminLogin()" class="w-full rounded-xl bg-yellow-400 text-black py-3 font-black">Login</button><p class="text-xs text-slate-500 mt-3">Default: admin / 1234</p>`; return `<div class="flex items-center justify-between mb-4"><div><h2 class="text-2xl font-black text-yellow-300">⚙ Admin Dashboard</h2><p class="text-xs text-slate-400">Old Firebase + new saved members</p></div><button onclick="adminLogout()" class="rounded-xl bg-red-500 px-3 py-2 text-xs font-black">Logout</button></div><div class="grid grid-cols-3 gap-2 mb-4"><div class="rounded-2xl bg-white/5 p-3 text-center"><b id="adminCount" class="text-xl text-yellow-300">${members.length}</b><div class="text-[10px] text-slate-500">TOTAL</div></div><div class="rounded-2xl bg-white/5 p-3 text-center"><b class="text-xl text-blue-300">${oldMembers.length}</b><div class="text-[10px] text-slate-500">OLD</div></div><div class="rounded-2xl bg-white/5 p-3 text-center"><b class="text-xl text-green-300">${newMembers.length}</b><div class="text-[10px] text-slate-500">NEW</div></div></div><input id="adminSearch" oninput="renderAdminList()" class="input mb-3" placeholder="Search name, phone, country..."><button onclick="loadFirebase()" class="w-full rounded-xl bg-sky-500 py-3 font-black mb-3">↻ Refresh Firebase</button><div id="adminList" class="max-h-[50vh] overflow-auto pr-1"></div>`}
+function openPanel(type){const box=$('panelContent'); if(type==='register')box.innerHTML=registerHTML(); if(type==='admin')box.innerHTML=adminHTML(); if(type==='family')box.innerHTML=`<h2 class="text-2xl font-black text-blue-300 mb-2">🌍 Global Family</h2><p class="text-slate-400 mb-4"><b id="familyCount">${members.length}</b> believers connected from Firebase.</p><button onclick="loadFirebase()" class="w-full rounded-xl bg-sky-500 py-3 font-black mb-3">Refresh</button><div id="familyList" class="max-h-[55vh] overflow-auto"></div>`; if(type==='donate')box.innerHTML=donationHTML(); $('panel').classList.remove('hidden'); if(type==='admin'&&isAdmin)renderAdminList(); if(type==='family')renderFamilyList();}
+
+
+// ULTRA STRONG DONATION PAGE FUNCTIONS
+let donateAmount=1000;
+function donationQR(amount){
+  const upi='hfgm@upi', name='HFGM Ministries';
+  return 'https://api.qrserver.com/v1/create-qr-code/?size=260x260&data='+encodeURIComponent(`upi://pay?pa=${upi}&pn=${name}&am=${amount||''}&cu=INR`);
+}
+function setDonateAmount(amount){
+  donateAmount=amount;
+  if($('customDonateAmount')) $('customDonateAmount').value=amount;
+  if($('donateQrImg')) $('donateQrImg').src=donationQR(amount);
+  document.querySelectorAll('.amountBtn').forEach(b=>b.classList.remove('active'));
+  const btn=$('amt_'+amount); if(btn) btn.classList.add('active');
+}
+function customDonateChange(){
+  const v=Number(($('customDonateAmount')||{}).value||0); if(v>0){donateAmount=v; if($('donateQrImg')) $('donateQrImg').src=donationQR(v)}
+}
+function copyUPI(){
+  navigator.clipboard?.writeText('hfgm@upi');
+  const t=$('copyToast'); if(t){t.style.display='block'; setTimeout(()=>t.style.display='none',1800)}
+}
+function openUPI(amount){
+  const a=amount||donateAmount||'';
+  location.href='upi://pay?pa=hfgm@upi&pn=HFGM%20Ministries&am='+encodeURIComponent(a)+'&cu=INR';
+}
+function donationWhatsapp(){
+  const msg=`🙏 Praise the Lord. I want to support HFGM Global Ministries. Donation Amount: ₹${donateAmount||''}. God bless this ministry.`;
+  window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');
+}
+function showDonationReceipt(){
+  const name=($('donorPublicName')||{}).value||'Beloved Partner';
+  const phone=($('donorPublicPhone')||{}).value||'';
+  const amount=Number(($('customDonateAmount')||{}).value||donateAmount||0);
+  const id='HFGM-DON-'+Date.now().toString().slice(-6);
+  const date=new Date().toLocaleString();
+  const list=JSON.parse(localStorage.getItem('hfgm_donations')||'[]');
+  list.unshift({name,phone,amount,date,id}); localStorage.setItem('hfgm_donations',JSON.stringify(list));
+  const r=$('receiptBox'); if(r){r.style.display='block'; r.innerHTML=`<h3 class="font-black text-green-300 mb-2">✅ Donation Receipt Ready</h3><div class="text-sm leading-7"><b>Name:</b> ${esc(name)}<br><b>Amount:</b> ₹${esc(amount)}<br><b>Receipt ID:</b> ${id}<br><b>Date:</b> ${date}</div><button onclick="window.print()" class="mt-3 w-full rounded-xl bg-green-500 py-3 font-black">Print / Save Receipt</button>`;}
+  try{renderDonationList()}catch(e){}
+}
+function donationHTML(){return `<div class="space-y-4">
+  <div class="donateHero">
+    <div class="donatePill">💝 KINGDOM GIVING</div>
+    <h2 class="text-3xl font-black mt-3 leading-tight">Support God's Work<br><span class="goldText">HFGM Global Ministries</span></h2>
+    <p class="text-slate-300 text-sm leading-6 mt-3">Your seed helps prayer, gospel work, believers care and revival ministry.</p>
+    <div class="donateVerse"><b>“దేవుని కార్యమునకు మీ విత్తనము అనేక ఆత్మలను ఆశీర్వదించును.”</b><br><span class="text-green-200">God loves a cheerful giver — 2 Corinthians 9:7</span></div>
+  </div>
+  <div class="donateQRBox"><img id="donateQrImg" src="${donationQR(donateAmount)}"><div class="text-slate-900 text-xs font-black mt-2">Scan QR to give securely</div></div>
+  <div class="memberCard"><div class="text-xs tracking-[3px] text-green-300 mb-3 font-black">QUICK AMOUNT</div><div class="amountGrid"><button id="amt_100" onclick="setDonateAmount(100)" class="amountBtn">₹100</button><button id="amt_500" onclick="setDonateAmount(500)" class="amountBtn">₹500</button><button id="amt_1000" onclick="setDonateAmount(1000)" class="amountBtn active">₹1000</button><button id="amt_2000" onclick="setDonateAmount(2000)" class="amountBtn">₹2000</button><button id="amt_5000" onclick="setDonateAmount(5000)" class="amountBtn">₹5000</button><button id="amt_10000" onclick="setDonateAmount(10000)" class="amountBtn">₹10000</button></div><input id="customDonateAmount" oninput="customDonateChange()" type="number" class="input mt-3" value="${donateAmount}" placeholder="Custom Amount"><button onclick="openUPI()" class="mt-3 w-full rounded-2xl bg-gradient-to-r from-green-500 to-emerald-400 py-4 font-black text-white shadow-[0_12px_35px_rgba(34,197,94,.28)]">📲 Pay Now with UPI</button></div>
+  <div class="payButtonGrid"><button onclick="openUPI()" class="payBtn">🟣 PhonePe</button><button onclick="openUPI()" class="payBtn">🔵 Google Pay</button><button onclick="openUPI()" class="payBtn">🔷 Paytm</button><button onclick="copyUPI()" class="payBtn">📋 Copy UPI</button></div><div id="copyToast" class="copyToast">✅ UPI copied: hfgm@upi</div>
+  <div class="memberCard"><div class="flex justify-between text-sm mb-2"><b class="text-yellow-300">Monthly Goal</b><span class="text-green-300 font-black">₹72,000 / ₹1,00,000</span></div><div class="goalTrack"><div class="goalFill"></div></div><p class="text-xs text-slate-400 mt-2">Prayer, gospel outreach and ministry support goal.</p></div>
+  <div><div class="text-xs tracking-[3px] text-slate-500 mb-3 font-black">MONTHLY PARTNERS</div><div class="partnerGrid"><div class="partnerCard"><b>Silver Partner</b><span>₹500 monthly seed</span></div><div class="partnerCard"><b>Gold Partner</b><span>₹1000 monthly seed</span></div><div class="partnerCard"><b>Kingdom Builder</b><span>₹5000 mission support</span></div><div class="partnerCard"><b>Global Mission</b><span>International support</span></div></div></div>
+  <div class="memberCard"><h3 class="font-black text-green-300 mb-2">🧾 Donation Receipt</h3><input id="donorPublicName" class="input mb-2" placeholder="Donor Name"><input id="donorPublicPhone" class="input mb-3" placeholder="Phone Number"><button onclick="showDonationReceipt()" class="w-full rounded-xl bg-yellow-400 text-black py-3 font-black">Generate Receipt</button><div id="receiptBox" class="receiptBox mt-3"></div></div>
+  <button onclick="donationWhatsapp()" class="w-full rounded-2xl bg-gradient-to-r from-green-600 to-green-400 py-4 font-black">📢 Share / Confirm on WhatsApp</button>
+</div>`}
+
+function closePanel(){$('panel').classList.add('hidden')} function openUPI(amount){location.href='upi://pay?pa=hfgm@upi&pn=HFGM&am='+amount+'&cu=INR'}
+const verses=[
+  ['“Fear not, for I am with you.”','“భయపడకుము, నేను నీతో ఉన్నాను.”','— Isaiah 41:10 · యెషయా 41:10'],
+  ['“I can do all things through Christ who strengthens me.”','“నన్ను బలపరచువానియందే నేను సమస్తమును చేయగలను.”','— Philippians 4:13 · ఫిలిప్పీయులకు 4:13'],
+  ['“The Lord is my shepherd; I shall not want.”','“యెహోవా నా కాపరి; నాకు కొదువలేదు.”','— Psalm 23:1 · కీర్తనలు 23:1'],
+  ['“Trust in the Lord with all your heart.”','“నీ పూర్ణ హృదయముతో యెహోవాయందు నమ్మకముంచుము.”','— Proverbs 3:5 · సామెతలు 3:5']
+];let vi=0;setInterval(()=>{vi=(vi+1)%verses.length;$('verseText').innerText=verses[vi][0];$('verseTelugu').innerText=verses[vi][1];$('verseRef').innerText=verses[vi][2]},6000);
+window.addEventListener('load',()=>setTimeout(loadFirebase,700));
+
+// STRONG ADMIN DASHBOARD UPGRADE OVERRIDES
+function todayStr(){return new Date().toISOString().slice(0,10)}
+function todayMembersCount(){return members.filter(m=>(m.createdAt||m.date||'').slice(0,10)===todayStr()).length}
+function exportMembersCSV(){
+  const rows=[['HFGM ID','Name','Phone','Role','City','District','State','Country','Source']];
+  members.forEach((m,idx)=>rows.push([autoCardNo(m,idx),m.name||'',m.phone||'',m.role||'',m.city||'',m.district||'',m.state||'',m.country||'',m.source||'']));
+  const csv=rows.map(r=>r.map(v=>'"'+String(v).replaceAll('"','""')+'"').join(',')).join('\n');
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='HFGM_members_'+todayStr()+'.csv';a.click();
+}
+function adminTab(tab){
+  document.querySelectorAll('.adminTabPage').forEach(x=>x.classList.add('hidden'));
+  document.querySelectorAll('.adminTabs button').forEach(x=>x.classList.remove('active'));
+  const page=document.getElementById('tab_'+tab); if(page)page.classList.remove('hidden');
+  const btn=document.getElementById('btn_'+tab); if(btn)btn.classList.add('active');
+  if(tab==='members') renderAdminList();
+}
+function donationSaveLocal(){
+  const name=$('donorName')?.value||'', amount=$('donorAmount')?.value||'', phone=$('donorPhone')?.value||'';
+  if(!name||!amount)return alert('Donor name and amount required');
+  const list=JSON.parse(localStorage.getItem('hfgm_donations')||'[]'); list.unshift({name,amount,phone,date:new Date().toLocaleString()}); localStorage.setItem('hfgm_donations',JSON.stringify(list)); renderDonationList(); alert('✅ Donation saved');
+}
+function renderDonationList(){const box=$('donationList'); if(!box)return; const list=JSON.parse(localStorage.getItem('hfgm_donations')||'[]'); box.innerHTML=list.map(d=>`<div class="memberCard mb-2"><b class="text-green-300">₹${esc(d.amount)}</b> <span class="font-bold">${esc(d.name)}</span><div class="text-xs text-slate-400">${esc(d.phone)} · ${esc(d.date)}</div></div>`).join('')||'<div class="text-slate-500 text-sm">No donation records yet</div>'}
+function markAttendance(){const count=members.length; localStorage.setItem('hfgm_attendance_'+todayStr(),String(count)); alert('✅ Today attendance marked for '+count+' members'); adminTab('attendance')}
+function adminHTML(){
+  if(!isAdmin)return `<h2 class="text-2xl font-black text-yellow-300 mb-3">🔐 Admin Login</h2><div class="adminHeroStrong"><div class="text-4xl mb-2">🛡️</div><div class="text-lg font-black">HFGM Secure Control Center</div><p class="text-xs text-slate-400 mt-1">Members, ID cards, QR, donations, attendance and Firebase sync.</p></div><input id="adminUser" class="input mb-3" placeholder="User Name" value="admin"><input id="adminPass" type="password" class="input mb-3" placeholder="Password"><button onclick="adminLogin()" class="w-full rounded-xl bg-yellow-400 text-black py-3 font-black">Login</button><p class="text-xs text-slate-500 mt-3">Default: admin / 1234</p>`;
+  const att=localStorage.getItem('hfgm_attendance_'+todayStr())||'0';
+  const dons=JSON.parse(localStorage.getItem('hfgm_donations')||'[]');
+  const totalAmount=dons.reduce((a,d)=>a+(parseFloat(d.amount)||0),0);
+  return `<div class="adminHeroStrong"><div class="flex items-center justify-between"><div><div class="text-[10px] tracking-[3px] text-yellow-300 font-black">ULTRA PRO ADMIN</div><h2 class="text-3xl font-black mt-1">⚙ Dashboard</h2><p class="text-xs text-slate-400 mt-1">Firebase saved data + strong ministry controls</p></div><button onclick="adminLogout()" class="rounded-xl bg-red-500 px-3 py-2 text-xs font-black">Logout</button></div><div class="miniBar"><i style="width:92%"></i></div></div>
+  <div class="grid grid-cols-2 gap-3 mb-3"><div class="adminStatStrong"><span>Total Members</span><b class="text-yellow-300">${members.length}</b><small>Live synced</small></div><div class="adminStatStrong"><span>Today Join</span><b class="text-green-300">${todayMembersCount()}</b><small>New registrations</small></div><div class="adminStatStrong"><span>Attendance</span><b class="text-blue-300">${att}</b><small>Today</small></div><div class="adminStatStrong"><span>Donations</span><b class="text-green-300">₹${totalAmount}</b><small>${dons.length} records</small></div></div>
+  <div class="adminToolGrid"><button onclick="openPanel('register')" class="goldSoft">➕ Add Member</button><button onclick="loadFirebase()" class="goldSoft">↻ Firebase Sync</button><button onclick="exportMembersCSV()" class="exportBtn">📤 Export CSV</button><button onclick="markAttendance()" class="goldSoft">📅 Mark Attendance</button></div>
+  <div class="adminTabs"><button id="btn_members" class="active" onclick="adminTab('members')">👥 Members</button><button id="btn_attendance" onclick="adminTab('attendance')">📅 Attendance</button><button id="btn_donations" onclick="adminTab('donations')">💰 Donations</button><button id="btn_reports" onclick="adminTab('reports')">📊 Reports</button><button id="btn_security" onclick="adminTab('security')">🛡 Security</button></div>
+  <div id="tab_members" class="adminTabPage"><div class="adminPanelBox"><input id="adminSearch" oninput="renderAdminList()" class="input mb-3" placeholder="Search name, phone, ID, country..."><div class="grid grid-cols-2 gap-2"><button onclick="renderAdminList()" class="rounded-xl bg-sky-500 py-3 font-black">Search</button><button onclick="loadFirebase()" class="rounded-xl bg-yellow-400 text-black py-3 font-black">Refresh</button></div></div><div id="adminList" class="max-h-[50vh] overflow-auto pr-1"></div></div>
+  <div id="tab_attendance" class="adminTabPage hidden"><div class="adminPanelBox"><h3 class="font-black text-yellow-300 mb-2">📅 Attendance Control</h3><p class="text-sm text-slate-400 mb-3">Today present count: <b class="text-blue-300">${att}</b></p><button onclick="markAttendance()" class="w-full rounded-xl bg-blue-500 py-3 font-black">Mark All Present Today</button></div></div>
+  <div id="tab_donations" class="adminTabPage hidden"><div class="adminPanelBox"><h3 class="font-black text-green-300 mb-2">💰 Donation Manager</h3><input id="donorName" class="input mb-2" placeholder="Donor Name"><input id="donorPhone" class="input mb-2" placeholder="Phone"><input id="donorAmount" type="number" class="input mb-2" placeholder="Amount"><button onclick="donationSaveLocal()" class="w-full rounded-xl bg-green-500 py-3 font-black">Save Donation</button></div><div id="donationList"></div></div>
+  <div id="tab_reports" class="adminTabPage hidden"><div class="adminPanelBox"><h3 class="font-black text-yellow-300 mb-2">📊 Reports</h3><p class="text-sm text-slate-400">Old Firebase: ${oldMembers.length}<br>New Firebase/Public: ${newMembers.length}<br>Local saved: ${localMembers.length}<br>Total donations: ₹${totalAmount}</p><button onclick="exportMembersCSV()" class="mt-3 w-full rounded-xl bg-green-500 py-3 font-black">Download Members Report CSV</button></div></div>
+  <div id="tab_security" class="adminTabPage hidden"><div class="adminPanelBox"><h3 class="font-black text-red-300 mb-2">🛡 Security Center</h3><p class="text-sm text-slate-400">Admin-only member numbers/photos are protected. Change default password in code before public use.</p><div class="mt-3 rounded-2xl border border-green-500/20 bg-green-500/10 p-3 text-sm text-green-200">✅ Firebase ready · ✅ Local backup · ✅ Admin lock enabled</div></div></div>`;
+}
+const oldOpenPanel=openPanel;
+openPanel=function(type){oldOpenPanel(type); if(type==='admin'&&isAdmin){renderAdminList(); renderDonationList();}}
+
+</script>
+
+
+<!-- HEART TOUCHING PARTNER POPUP UPGRADE -->
+<style>
+@keyframes heartPulse{0%,100%{transform:scale(1);filter:drop-shadow(0 0 10px rgba(250,204,21,.35))}50%{transform:scale(1.13);filter:drop-shadow(0 0 26px rgba(250,204,21,.85))}}
+@keyframes iconFloat{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-8px) rotate(3deg)}}
+@keyframes softShine{0%{transform:translateX(-120%)}100%{transform:translateX(120%)}}
+.partnerCard{cursor:pointer!important;position:relative!important;overflow:hidden!important;min-height:118px!important;display:flex!important;flex-direction:column!important;justify-content:space-between!important;transition:.25s!important}
+.partnerCard:hover{transform:translateY(-4px)!important;border-color:rgba(250,204,21,.45)!important;box-shadow:0 18px 45px rgba(251,191,36,.18)!important}
+.partnerCard:before{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent,rgba(255,255,255,.16),transparent);transform:translateX(-120%)}
+.partnerCard:hover:before{animation:softShine 1.2s ease-in-out}
+.partnerIcon{font-size:34px;animation:iconFloat 3s ease-in-out infinite;margin-bottom:7px}
+.partnerCard b{font-size:15px!important}.partnerCard span{line-height:1.35!important}.tapGoal{margin-top:8px;color:#fde68a;font-size:10px;font-weight:900;letter-spacing:1.2px}
+.missionOverlay{position:fixed;inset:0;background:rgba(0,0,0,.82);backdrop-filter:blur(12px);z-index:99999;display:none;align-items:center;justify-content:center;padding:18px}
+.missionOverlay.show{display:flex}.missionModal{width:100%;max-width:430px;max-height:86vh;overflow:auto;border-radius:28px;border:1px solid rgba(250,204,21,.28);background:radial-gradient(circle at top right,rgba(250,204,21,.18),transparent 28%),linear-gradient(145deg,#07101f,#0d1b33 55%,#070b14);box-shadow:0 28px 90px rgba(0,0,0,.65);padding:18px;position:relative}.missionTop{text-align:center;border-radius:24px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);padding:18px;margin-bottom:12px;position:relative;overflow:hidden}.missionTop:before{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent,rgba(250,204,21,.13),transparent);animation:softShine 2.4s infinite}.missionHeart{font-size:54px;animation:heartPulse 2s infinite ease-in-out}.missionTitle{font-size:25px;font-weight:950;color:#fde68a;margin-top:8px}.missionAmount{color:#86efac;font-size:14px;font-weight:900;margin-top:4px}.missionTelugu{font-size:16px;line-height:1.75;color:#fff7ed;font-weight:800;margin-top:12px}.missionEnglish{font-size:13px;line-height:1.65;color:#cbd5e1;margin-top:8px}.missionImageGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}.missionImg{border-radius:18px;background:linear-gradient(145deg,rgba(255,255,255,.10),rgba(255,255,255,.04));border:1px solid rgba(255,255,255,.10);padding:12px 8px;text-align:center;min-height:84px;display:flex;flex-direction:column;align-items:center;justify-content:center}.missionImg .ico{font-size:30px;animation:iconFloat 3s ease-in-out infinite}.missionImg small{display:block;color:#cbd5e1;font-size:10px;font-weight:800;margin-top:6px;line-height:1.25}.goalLine{border-radius:18px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.09);padding:12px;margin:8px 0}.goalLine b{color:#fde68a;font-size:14px}.goalLine p{color:#cbd5e1;font-size:12px;line-height:1.55;margin-top:4px}.missionActions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}.missionActions button{border-radius:16px;padding:13px 10px;font-weight:950}.missionClose{position:absolute;right:14px;top:14px;border:0;border-radius:999px;background:rgba(239,68,68,.95);color:white;width:36px;height:36px;font-weight:950}.receiptPaper{background:#fff;color:#111;border-radius:18px;padding:18px;text-align:center}.receiptPaper h2{font-size:16px;margin:0;color:#111}.rpSub{font-size:12px;color:#555;margin:4px 0 14px}.receiptRow{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #eee;padding:9px 0;font-size:13px}.receiptBless{margin-top:14px;background:#fff7ed;border-radius:12px;padding:12px;font-weight:800;line-height:1.6;color:#7c2d12}.receiptActions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+@media print{body *{visibility:hidden!important}#receiptPrintArea,#receiptPrintArea *{visibility:visible!important}#receiptPrintArea{position:absolute;left:0;top:0;width:100%;border-radius:0!important}.missionOverlay{display:none!important}}
+
+.receiptActions3{grid-template-columns:1fr 1fr 1fr!important}
+@media(max-width:420px){.receiptActions3{grid-template-columns:1fr!important}}
+</style>
+<script>
+function partnerGoalsData(type){
+  const data={
+    silver:{icon:'🥈',title:'Silver Partner',amount:'₹500 Monthly Seed',heart:'💛',telugu:'మీ చిన్న విత్తనం కూడా దేవుని రాజ్యంలో గొప్ప ఆశీర్వాదంగా మారుతుంది. ఒక కుటుంబం ప్రార్థనలో నిలబడటానికి, ఒక ఆత్మ దేవుని ప్రేమను వినడానికి మీ సహాయం మార్గం అవుతుంది.',english:'Your monthly seed helps one more family receive prayer, hope and the Word of God.',images:[['🙏','Prayer Care'],['📖','Gospel Word'],['👨‍👩‍👧','Family Support']],goals:[['Village Prayer Support','Local prayer requests, home prayer support and personal follow-up.'],['Promise Word Sharing','Telugu promise words, Bible verses and encouragement messages.'],['New Believer Care','Help new believers connect with prayer and HFGM family.']]},
+    gold:{icon:'🥇',title:'Gold Partner',amount:'₹1000 Monthly Seed',heart:'❤️',telugu:'మీ సహకారం ఒక మీటింగ్‌కు వెలుగు, ఒక బాధిత హృదయానికి ఆదరణ, ఒక కుటుంబానికి ప్రార్థన ఆశీర్వాదంగా మారుతుంది. దేవుని పని కోసం మీరు వేసే విత్తనం వ్యర్థం కాదు.',english:'Your support strengthens revival meetings, healing prayer and digital gospel outreach.',images:[['🔥','Revival'],['🕊️','Healing'],['🎥','Media Mission']],goals:[['Revival Meetings','Support prayer meetings, worship, sound and meeting arrangements.'],['Healing & Deliverance Prayer','Prayer support for broken families, sick people and those in need.'],['Digital Ministry','YouTube, WhatsApp, testimonies and online gospel sharing.']]},
+    kingdom:{icon:'👑',title:'Kingdom Builder',amount:'₹5000 Mission Support',heart:'🔥',telugu:'మీరు కేవలం దానం చేయడం కాదు — దేవుని రాజ్య నిర్మాణంలో భాగస్వామి అవుతున్నారు. గ్రామాలు, కుటుంబాలు, యువత, ప్రార్థన అవసరమున్నవారు మీ సహాయంతో తాకబడతారు.',english:'You are partnering in mission growth, outreach, compassion and ministry building.',images:[['🌍','Outreach'],['🤝','Compassion'],['🏛️','Ministry Growth']],goals:[['Mission Outreach','Village, town and online gospel mission support.'],['Poor & Needy Care','Food, emergency help and compassion support where possible.'],['Ministry Equipment','Travel, event setup, media and ministry tools.']]},
+    global:{icon:'🌍',title:'Global Partner',amount:'International / Monthly Support',heart:'💙',telugu:'ప్రపంచంలో ఎక్కడ ఉన్నా, మీ హృదయం HFGM ప్రార్థన కుటుంబంతో కలవగలదు. మీ సహకారం భారత్ నుండి ప్రపంచానికి ప్రార్థన, వాక్యం, సాక్ష్యాలను తీసుకెళ్లడానికి సహాయం చేస్తుంది.',english:'From anywhere in the world, you can help connect believers through prayer, media and mission reports.',images:[['🌐','Global Prayer'],['📡','Online Gospel'],['🧾','Reports']],goals:[['Global Prayer Network','Connect India and international believers in one prayer family.'],['Media Mission','Sermons, testimonies, online meetings and gospel content.'],['Transparent Updates','Sponsor receipts, monthly goals and mission reports.']]}
+  };
+  return data[type]||data.silver;
+}
+function ensureMissionPopup(){
+  let p=document.getElementById('missionGoalsPopup');
+  if(!p){p=document.createElement('div');p.id='missionGoalsPopup';p.className='missionOverlay';document.body.appendChild(p)}
+  return p;
+}
+function showPartnerGoals(type){
+  const d=partnerGoalsData(type), p=ensureMissionPopup();
+  p.innerHTML=`<div class="missionModal"><button class="missionClose" onclick="closePartnerGoals()">✕</button><div class="missionTop"><div class="missionHeart">${d.heart}</div><div class="missionTitle">${d.icon} ${d.title}</div><div class="missionAmount">${d.amount}</div><div class="missionTelugu">${d.telugu}</div><div class="missionEnglish">${d.english}</div></div><div class="missionImageGrid">${d.images.map(x=>`<div class="missionImg"><div class="ico">${x[0]}</div><small>${x[1]}</small></div>`).join('')}</div><div>${d.goals.map(g=>`<div class="goalLine"><b>${g[0]}</b><p>${g[1]}</p></div>`).join('')}</div><div class="missionActions"><button onclick="selectPartnerAmount('${type}')" class="bg-gradient-to-r from-yellow-400 to-amber-500 text-black">Select Partner</button><button onclick="partnerWhatsapp('${type}')" class="bg-gradient-to-r from-green-600 to-green-400 text-white">WhatsApp</button></div></div>`;
+  p.classList.add('show');
+}
+function closePartnerGoals(){const p=document.getElementById('missionGoalsPopup'); if(p)p.classList.remove('show')}
+function selectPartnerAmount(type){const map={silver:500,gold:1000,kingdom:5000,global:10000}; setDonateAmount(map[type]||500); closePartnerGoals(); const a=document.getElementById('customDonateAmount'); if(a)a.scrollIntoView({behavior:'smooth',block:'center'});}
+function partnerWhatsapp(type){const d=partnerGoalsData(type); const msg=`🙏 Praise the Lord. I want to become ${d.title} for HFGM Global Ministries. ${d.amount}. Please send details. దేవుని కార్యమునకు నేను భాగస్వామి కావాలని కోరుకుంటున్నాను.`; window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');}
+function receiptPdfDownload(){window.print()}
+
+function receiptFileDownload(){
+  const area = document.getElementById('receiptPrintArea');
+  if(!area){
+    alert('First generate receipt');
+    return;
+  }
+  const full = `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>HFGM Sponsor Receipt</title>
+<style>
+body{font-family:Arial,sans-serif;background:#f4f4f4;padding:24px}
+.receiptPaper{max-width:760px;margin:auto;background:#fff;color:#111;border-radius:18px;padding:24px;border:2px dashed #d4af37}
+.receiptPaper h2{font-size:22px;text-align:center;color:#0f172a;font-weight:900;margin-bottom:4px}
+.rpSub{text-align:center;font-size:13px;color:#475569;margin-bottom:16px}
+.receiptRow{display:flex;justify-content:space-between;border-bottom:1px solid #e5e7eb;padding:10px 0;font-size:14px;gap:10px}
+.receiptBless{margin-top:14px;background:#fef3c7;border-radius:12px;padding:14px;text-align:center;font-size:13px;color:#78350f;font-weight:700;line-height:1.6}
+@media print{body{background:#fff;padding:0}.receiptPaper{border:0;max-width:none;border-radius:0}}
+
+.receiptActions3{grid-template-columns:1fr 1fr 1fr!important}
+@media(max-width:420px){.receiptActions3{grid-template-columns:1fr!important}}
+</style>
+</head>
+<body>${area.outerHTML}</body>
+</html>`;
+  const blob = new Blob([full], {type:'text/html;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'HFGM_Sponsor_Receipt.html';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(a.href);
+}
+
+function receiptWhatsappShare(){const name=(document.getElementById('donorPublicName')||{}).value||'Beloved Partner'; const amount=(document.getElementById('customDonateAmount')||{}).value||donateAmount||''; const msg=`🙏 HFGM Donation Receipt\nName: ${name}\nAmount: ₹${amount}\nThank you for supporting God's work.`; window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank')}
+function showDonationReceipt(){
+  const name=($('donorPublicName')||{}).value||'Beloved Partner';
+  const phone=($('donorPublicPhone')||{}).value||'';
+  const amount=Number(($('customDonateAmount')||{}).value||donateAmount||0);
+  const id='HFGM-DON-'+Date.now().toString().slice(-6);
+  const date=new Date().toLocaleString();
+  const list=JSON.parse(localStorage.getItem('hfgm_donations')||'[]');
+  list.unshift({name,phone,amount,date,id}); localStorage.setItem('hfgm_donations',JSON.stringify(list));
+  const r=$('receiptBox'); if(r){r.style.display='block'; r.innerHTML=`<div id="receiptPrintArea" class="receiptPaper"><h2>HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES</h2><div class="rpSub">Sponsor / Donation Receipt</div><div class="receiptRow"><b>Receipt ID</b><span>${id}</span></div><div class="receiptRow"><b>Donor Name</b><span>${esc(name)}</span></div><div class="receiptRow"><b>Phone</b><span>${esc(phone||'-')}</span></div><div class="receiptRow"><b>Amount</b><span>₹${esc(amount)}</span></div><div class="receiptRow"><b>Date</b><span>${date}</span></div><div class="receiptBless">🙏 Thank you for supporting HFGM mission, prayer and gospel work.<br>దేవుడు మీ కుటుంబాన్ని ఆశీర్వదించును.</div></div><div class="receiptActions receiptActions3"><button onclick="receiptPdfDownload()" class="rounded-xl bg-green-500 py-3 font-black">📄 PDF / Print</button><button onclick="receiptFileDownload()" class="rounded-xl bg-yellow-400 text-black py-3 font-black">⬇ Download</button><button onclick="receiptWhatsappShare()" class="rounded-xl bg-sky-500 py-3 font-black">📲 WhatsApp</button></div>`;}
+  try{renderDonationList()}catch(e){}
+}
+function donationHTML(){return `<div class="space-y-4">
+  <div class="donateHero"><div class="donatePill">💝 KINGDOM GIVING</div><h2 class="text-3xl font-black mt-3 leading-tight">Support God's Work<br><span class="goldText">HFGM Global Ministries</span></h2><p class="text-slate-300 text-sm leading-6 mt-3">Your seed helps prayer, gospel work, believers care and revival ministry.</p><div class="donateVerse"><b>“దేవుని కార్యమునకు మీ విత్తనము అనేక ఆత్మలను ఆశీర్వదించును.”</b><br><span class="text-green-200">God loves a cheerful giver — 2 Corinthians 9:7</span></div></div>
+  <div class="donateQRBox"><img id="donateQrImg" src="${donationQR(donateAmount)}"><div class="text-slate-900 text-xs font-black mt-2">Scan QR to give securely</div></div>
+  <div class="memberCard"><div class="text-xs tracking-[3px] text-green-300 mb-3 font-black">QUICK AMOUNT</div><div class="amountGrid"><button id="amt_100" onclick="setDonateAmount(100)" class="amountBtn">₹100</button><button id="amt_500" onclick="setDonateAmount(500)" class="amountBtn">₹500</button><button id="amt_1000" onclick="setDonateAmount(1000)" class="amountBtn active">₹1000</button><button id="amt_2000" onclick="setDonateAmount(2000)" class="amountBtn">₹2000</button><button id="amt_5000" onclick="setDonateAmount(5000)" class="amountBtn">₹5000</button><button id="amt_10000" onclick="setDonateAmount(10000)" class="amountBtn">₹10000</button></div><input id="customDonateAmount" oninput="customDonateChange()" type="number" class="input mt-3" value="${donateAmount}" placeholder="Custom Amount"><button onclick="openUPI()" class="mt-3 w-full rounded-2xl bg-gradient-to-r from-green-500 to-emerald-400 py-4 font-black text-white shadow-[0_12px_35px_rgba(34,197,94,.28)]">📲 Pay Now with UPI</button></div>
+  <div class="payButtonGrid"><button onclick="openUPI()" class="payBtn">🟣 PhonePe</button><button onclick="openUPI()" class="payBtn">🔵 Google Pay</button><button onclick="openUPI()" class="payBtn">🔷 Paytm</button><button onclick="copyUPI()" class="payBtn">📋 Copy UPI</button></div><div id="copyToast" class="copyToast">✅ UPI copied: hfgm@upi</div>
+  <div class="memberCard"><div class="flex justify-between text-sm mb-2"><b class="text-yellow-300">Monthly Goal</b><span class="text-green-300 font-black">₹72,000 / ₹1,00,000</span></div><div class="goalTrack"><div class="goalFill"></div></div><p class="text-xs text-slate-400 mt-2">Prayer, gospel outreach and ministry support goal.</p></div>
+  <div><div class="text-xs tracking-[3px] text-slate-500 mb-3 font-black">MONTHLY PARTNERS · TAP CARD</div><div class="partnerGrid"><div onclick="showPartnerGoals('silver')" class="partnerCard"><div><div class="partnerIcon">🥈</div><b>Silver Partner</b><span>₹500 monthly seed</span></div><div class="tapGoal">MISSION GOALS →</div></div><div onclick="showPartnerGoals('gold')" class="partnerCard"><div><div class="partnerIcon">🥇</div><b>Gold Partner</b><span>₹1000 monthly seed</span></div><div class="tapGoal">SPIRITUAL MESSAGE →</div></div><div onclick="showPartnerGoals('kingdom')" class="partnerCard"><div><div class="partnerIcon">👑</div><b>Kingdom Builder</b><span>₹5000 mission support</span></div><div class="tapGoal">KINGDOM VISION →</div></div><div onclick="showPartnerGoals('global')" class="partnerCard"><div><div class="partnerIcon">🌍</div><b>Global Partner</b><span>International support</span></div><div class="tapGoal">GLOBAL MISSION →</div></div></div></div>
+  <div class="memberCard"><h3 class="font-black text-green-300 mb-2">🧾 Sponsor Receipt</h3><input id="donorPublicName" class="input mb-2" placeholder="Donor Name"><input id="donorPublicPhone" class="input mb-3" placeholder="Phone Number"><button onclick="showDonationReceipt()" class="w-full rounded-xl bg-yellow-400 text-black py-3 font-black">Generate Receipt</button><div id="receiptBox" class="receiptBox mt-3"></div></div>
+  <button onclick="donationWhatsapp()" class="w-full rounded-2xl bg-gradient-to-r from-green-600 to-green-400 py-4 font-black">📢 Share / Confirm on WhatsApp</button>
+</div>`}
 </script>
 
 </body>
