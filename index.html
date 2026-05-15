@@ -74,44 +74,6 @@ function showPartnerGoals(type){
 function closePartnerGoals(){const p=document.getElementById('missionGoalsPopup'); if(p)p.classList.remove('show')}
 function selectPartnerAmount(type){const map={silver:500,gold:1000,kingdom:5000,global:10000}; setDonateAmount(map[type]||500); closePartnerGoals(); const a=document.getElementById('customDonateAmount'); if(a)a.scrollIntoView({behavior:'smooth',block:'center'});}
 function receiptPdfDownload(){window.print()}
-
-function receiptFileDownload(){
-  const area = document.getElementById('receiptPrintArea');
-  if(!area){
-    alert('First generate receipt');
-    return;
-  }
-  const full = `<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>HFGM Sponsor Receipt</title>
-<style>
-body{font-family:Arial,sans-serif;background:#f4f4f4;padding:24px}
-.receiptPaper{max-width:760px;margin:auto;background:#fff;color:#111;border-radius:18px;padding:24px;border:2px dashed #d4af37}
-.receiptPaper h2{font-size:22px;text-align:center;color:#0f172a;font-weight:900;margin-bottom:4px}
-.rpSub{text-align:center;font-size:13px;color:#475569;margin-bottom:16px}
-.receiptRow{display:flex;justify-content:space-between;border-bottom:1px solid #e5e7eb;padding:10px 0;font-size:14px;gap:10px}
-.receiptBless{margin-top:14px;background:#fef3c7;border-radius:12px;padding:14px;text-align:center;font-size:13px;color:#78350f;font-weight:700;line-height:1.6}
-@media print{body{background:#fff;padding:0}.receiptPaper{border:0;max-width:none;border-radius:0}}
-
-.receiptActions3{grid-template-columns:1fr 1fr 1fr!important}
-@media(max-width:420px){.receiptActions3{grid-template-columns:1fr!important}}
-</style>
-</head>
-<body>${area.outerHTML}</body>
-</html>`;
-  const blob = new Blob([full], {type:'text/html;charset=utf-8'});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'HFGM_Sponsor_Receipt.html';
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  URL.revokeObjectURL(a.href);
-}
-
 function receiptWhatsappShare(){
  const name=(document.getElementById('donorPublicName')||{}).value||'Beloved Partner';
  const amount=Number((document.getElementById('customDonateAmount')||{}).value||donateAmount||0);
@@ -126,7 +88,7 @@ showDonationReceipt=function(){
   const date=new Date().toLocaleString();
   const list=JSON.parse(localStorage.getItem('hfgm_donations')||'[]');
   list.unshift({name,phone,amount,date,id,type:'Sponsor Receipt'}); localStorage.setItem('hfgm_donations',JSON.stringify(list));
-  const r=document.getElementById('receiptBox'); if(r){r.style.display='block'; r.innerHTML=`<div id="receiptPrintArea" class="receiptPaper"><h2>HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES</h2><div class="rpSub">Sponsor / Donation Receipt</div><div class="receiptRow"><b>Receipt ID</b><span>${id}</span></div><div class="receiptRow"><b>Donor Name</b><span>${esc(name)}</span></div><div class="receiptRow"><b>Phone</b><span>${esc(phone||'-')}</span></div><div class="receiptRow"><b>Amount</b><span>₹${esc(amount)}</span></div><div class="receiptRow"><b>Date</b><span>${date}</span></div><div class="receiptBless">🙏 Thank you for supporting HFGM mission, prayer and gospel work.<br>దేవుడు మీ కుటుంబాన్ని ఆశీర్వదించును.</div></div><div class="receiptActions receiptActions3"><button onclick="receiptPdfDownload()" class="rounded-xl bg-green-500 py-3 font-black">📄 PDF / Print</button><button onclick="receiptFileDownload()" class="rounded-xl bg-yellow-400 text-black py-3 font-black">⬇ Download</button><button onclick="receiptWhatsappShare()" class="rounded-xl bg-sky-500 py-3 font-black">📲 WhatsApp</button></div>`;}
+  const r=document.getElementById('receiptBox'); if(r){r.style.display='block'; r.innerHTML=`<div id="receiptPrintArea" class="receiptPaper"><h2>HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES</h2><div class="rpSub">Sponsor / Donation Receipt</div><div class="receiptRow"><b>Receipt ID</b><span>${id}</span></div><div class="receiptRow"><b>Donor Name</b><span>${esc(name)}</span></div><div class="receiptRow"><b>Phone</b><span>${esc(phone||'-')}</span></div><div class="receiptRow"><b>Amount</b><span>₹${esc(amount)}</span></div><div class="receiptRow"><b>Date</b><span>${date}</span></div><div class="receiptBless">🙏 Thank you for supporting HFGM mission, prayer and gospel work.<br>దేవుడు మీ కుటుంబాన్ని ఆశీర్వదించును.</div></div><div class="receiptActions"><button onclick="receiptPdfDownload()" class="rounded-xl bg-green-500 py-3 font-black">📄 PDF / Print</button><button onclick="receiptWhatsappShare()" class="rounded-xl bg-sky-500 py-3 font-black">📲 WhatsApp</button></div>`;}
   try{renderDonationList()}catch(e){}
 }
 donationHTML=function(){return `<div class="space-y-4">
@@ -295,8 +257,446 @@ body{background:#060d1a;color:white;font-family:Inter,system-ui,Arial,sans-serif
 .copyToast{display:none;text-align:center;color:#86efac;font-weight:900;font-size:12px;margin-top:8px}
 
 
-.receiptActions3{grid-template-columns:1fr 1fr 1fr!important}
-@media(max-width:420px){.receiptActions3{grid-template-columns:1fr!important}}
+/* SAFE CLEAN ANIMATION ONLY */
+button[onclick*="family"],button[onclick*="register"],button[onclick*="donate"],button[onclick*="admin"]{transition:all .25s ease!important}
+button[onclick*="family"]:hover,button[onclick*="register"]:hover,button[onclick*="donate"]:hover,button[onclick*="admin"]:hover{transform:translateY(-3px)!important;filter:brightness(1.08)!important}
+button[onclick*="family"] .text-3xl,button[onclick*="register"] .text-3xl,button[onclick*="donate"] .text-3xl,button[onclick*="admin"] .text-3xl{display:inline-block!important;animation:hfgmSoftIcon 3s ease-in-out infinite!important}
+@keyframes hfgmSoftIcon{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+
+
+/* HOME 4 CARDS PROFESSIONAL UPGRADE */
+.quickGrid .quickCard,
+.grid .quickCard{
+position:relative;
+overflow:hidden;
+backdrop-filter:blur(12px);
+}
+
+.grid .quickCard:nth-child(1){
+background:linear-gradient(145deg,rgba(8,25,45,.95),rgba(15,23,42,.92));
+border:1px solid rgba(56,189,248,.28);
+animation:hfgmGlobeCard 4s ease-in-out infinite;
+}
+.grid .quickCard:nth-child(2){
+background:linear-gradient(145deg,rgba(12,30,20,.95),rgba(15,23,42,.92));
+border:1px solid rgba(34,197,94,.28);
+animation:hfgmJoinCard 3.6s ease-in-out infinite;
+}
+.grid .quickCard:nth-child(3){
+background:linear-gradient(145deg,rgba(38,28,8,.95),rgba(15,23,42,.92));
+border:1px solid rgba(251,191,36,.32);
+animation:hfgmDonateCard 3.8s ease-in-out infinite;
+}
+.grid .quickCard:nth-child(4){
+background:linear-gradient(145deg,rgba(10,22,42,.95),rgba(15,23,42,.92));
+border:1px solid rgba(96,165,250,.28);
+animation:hfgmAdminCard 4s ease-in-out infinite;
+}
+
+.grid .quickCard:before{
+content:"";
+position:absolute;
+top:-100%;
+left:-60%;
+width:70%;
+height:260%;
+background:linear-gradient(120deg,transparent,rgba(255,255,255,.14),transparent);
+transform:rotate(24deg);
+animation:hfgmSweep 5s linear infinite;
+}
+
+.grid .quickCard:hover{
+transform:translateY(-6px) scale(1.02);
+box-shadow:0 20px 40px rgba(0,0,0,.28);
+}
+
+.grid .quickCard .text-3xl{
+display:inline-block;
+animation:hfgmIconFloat 2.5s ease-in-out infinite;
+filter:drop-shadow(0 0 10px rgba(255,255,255,.25));
+}
+
+/* globe card special */
+.grid .quickCard:nth-child(1) .text-3xl{
+animation:hfgmGlobeSpin 10s linear infinite;
+filter:drop-shadow(0 0 18px rgba(56,189,248,.55));
+}
+
+@keyframes hfgmSweep{
+0%{left:-120%}
+100%{left:160%}
+}
+@keyframes hfgmIconFloat{
+0%,100%{transform:translateY(0)}
+50%{transform:translateY(-6px)}
+}
+@keyframes hfgmGlobeSpin{
+0%{transform:rotate(0deg)}
+100%{transform:rotate(360deg)}
+}
+@keyframes hfgmGlobeCard{
+0%,100%{box-shadow:0 0 18px rgba(56,189,248,.10)}
+50%{box-shadow:0 0 34px rgba(56,189,248,.20)}
+}
+@keyframes hfgmJoinCard{
+0%,100%{box-shadow:0 0 16px rgba(34,197,94,.08)}
+50%{box-shadow:0 0 28px rgba(34,197,94,.18)}
+}
+@keyframes hfgmDonateCard{
+0%,100%{box-shadow:0 0 16px rgba(251,191,36,.10)}
+50%{box-shadow:0 0 30px rgba(251,191,36,.22)}
+}
+@keyframes hfgmAdminCard{
+0%,100%{box-shadow:0 0 16px rgba(96,165,250,.08)}
+50%{box-shadow:0 0 28px rgba(96,165,250,.18)}
+}
+
+
+/* GLOBAL VISION INNER 4 CARDS */
+.visionOpenCard{
+  position:relative;
+  overflow:hidden;
+  transition:all .25s ease!important;
+}
+.visionOpenCard:after{
+  content:"";
+  position:absolute;
+  top:0;
+  left:-120%;
+  width:55%;
+  height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.14),transparent);
+  animation:visionCardShine 4.5s linear infinite;
+}
+.visionOpenCard:hover{
+  transform:translateY(-4px) scale(1.02);
+  border-color:rgba(251,191,36,.35)!important;
+  box-shadow:0 14px 35px rgba(0,0,0,.25);
+}
+@keyframes visionCardShine{
+  0%{left:-120%}
+  55%,100%{left:140%}
+}
+
+
+/* HFGM GLOBAL VISION PROFESSIONAL PAGE UPGRADE */
+.gvProPage{text-align:center}
+.gvHeroPro{position:relative;overflow:hidden;border-radius:30px;padding:22px 18px;background:radial-gradient(circle at 80% 10%,rgba(56,189,248,.22),transparent 30%),radial-gradient(circle at 12% 90%,rgba(251,191,36,.15),transparent 34%),linear-gradient(145deg,rgba(8,17,34,.98),rgba(12,22,45,.95));border:1px solid rgba(56,189,248,.18);box-shadow:0 24px 65px rgba(0,0,0,.38)}
+.gvOrbitStage{position:relative;width:168px;height:168px;margin:0 auto 16px}
+.gvPulseRing{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle,rgba(56,189,248,.30),transparent 68%);filter:blur(8px);animation:gvPulse 3s ease-in-out infinite}
+.gvRing{position:absolute;border-radius:50%;border:1px dashed rgba(255,209,102,.45);animation:gvSpin 9s linear infinite}
+.gvRing1{inset:8px}.gvRing2{inset:24px;border-color:rgba(56,189,248,.45);animation-duration:6s;animation-direction:reverse}
+.gvRing1 span{position:absolute;width:10px;height:10px;border-radius:50%;background:#ffd166;box-shadow:0 0 14px #ffd166}
+.gvRing1 span:nth-child(1){top:-5px;left:50%}.gvRing1 span:nth-child(2){right:-5px;top:52%;background:#22c55e;box-shadow:0 0 14px #22c55e}.gvRing1 span:nth-child(3){bottom:12px;left:18px;background:#38bdf8;box-shadow:0 0 14px #38bdf8}
+.gvEarthPro{position:absolute;inset:36px;border-radius:50%;display:grid;place-items:center;font-size:64px;background:linear-gradient(135deg,#38bdf8,#0b4da2 62%,#06152c);box-shadow:0 0 42px rgba(56,189,248,.55),inset -16px -14px 25px rgba(0,0,0,.35);animation:gvFloat 3s ease-in-out infinite}
+.gvDovePro{position:absolute;right:20px;top:14px;font-size:30px;filter:drop-shadow(0 0 14px rgba(255,255,255,.8));animation:gvDove 2.6s ease-in-out infinite}
+.gvMini{display:inline-block;border:1px solid rgba(251,191,36,.25);background:rgba(251,191,36,.10);color:#fde68a;border-radius:999px;padding:6px 10px;font-size:9px;font-weight:900;letter-spacing:2px;margin-bottom:10px}
+.gvHeroPro h2{font-size:29px;font-weight:900;color:#93c5fd;margin:0 0 8px}.gvHeroPro p{font-size:13px;line-height:1.65;color:#cbd5e1}
+.gvVisionBox{text-align:left;margin:14px 0;border-radius:24px;border:1px solid rgba(251,191,36,.18);background:rgba(251,191,36,.08);padding:15px}.gvVisionTitle{color:#facc15;font-weight:900;margin-bottom:6px}.gvVisionBox p{color:#dbeafe;font-size:13px;line-height:1.7}
+.gvStatsGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:14px 0}.gvStatsGrid div{border-radius:18px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.08);padding:12px}.gvStatsGrid b{display:block;color:#facc15;font-size:18px}.gvStatsGrid span{display:block;color:#94a3b8;font-size:9px;margin-top:2px;letter-spacing:1px}
+.gvSectionTitle{text-align:left;color:#64748b;font-size:10px;letter-spacing:3px;font-weight:900;margin:16px 0 10px}
+.gvCardsPro{display:grid;grid-template-columns:1fr;gap:10px}
+.gvMissionCard{position:relative;overflow:hidden;display:flex;align-items:center;gap:12px;text-align:left;width:100%;border-radius:22px;padding:14px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.055);transition:.25s}
+.gvMissionCard:after{content:"";position:absolute;top:0;left:-120%;width:55%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.14),transparent);animation:gvShine 4.5s linear infinite}
+.gvMissionCard:hover{transform:translateY(-3px);box-shadow:0 18px 38px rgba(0,0,0,.25)}
+.gvMissionCard.prayer{border-color:rgba(56,189,248,.25)}.gvMissionCard.word{border-color:rgba(251,191,36,.25)}.gvMissionCard.care{border-color:rgba(34,197,94,.25)}.gvMissionCard.global{border-color:rgba(96,165,250,.25)}
+.gvCardIcon{width:48px;height:48px;border-radius:16px;display:grid;place-items:center;font-size:28px;background:rgba(255,255,255,.08);animation:gvIconFloat 2.4s ease-in-out infinite}
+.gvMissionCard h3{font-size:15px;font-weight:900;color:#fff}.gvMissionCard p{font-size:11px;color:#94a3b8;margin-top:2px}.gvMissionCard span{margin-left:auto;color:#facc15;font-size:11px;font-weight:900;white-space:nowrap}
+.gvDetailHolder{margin-top:14px}
+.gvDetailPro{text-align:left;border-radius:26px;padding:16px;background:linear-gradient(145deg,rgba(255,255,255,.09),rgba(255,255,255,.045));border:1px solid rgba(251,191,36,.18);box-shadow:0 20px 48px rgba(0,0,0,.30);animation:gvDetailIn .35s ease both}
+.gvDetailTop{display:flex;align-items:center;gap:12px;margin-bottom:12px}.gvDetailIcon{width:58px;height:58px;border-radius:18px;display:grid;place-items:center;font-size:34px;background:rgba(255,255,255,.08);animation:gvIconFloat 2.3s ease-in-out infinite}.gvDetailSub{font-size:10px;letter-spacing:2px;color:#94a3b8;font-weight:900}.gvDetailPro h3{font-size:22px;font-weight:900;color:#fde68a}.gvDetailText{color:#dbeafe;font-size:13px;line-height:1.75}.gvDetailVerse{margin-top:12px;border-radius:16px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.20);padding:11px;color:#fde68a;font-size:12px;line-height:1.5}.gvPointGrid{display:grid;gap:8px;margin-top:12px}.gvPointGrid div{border-radius:13px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.08);padding:10px;color:#e2e8f0;font-size:12px}
+.gvVersePro{margin-top:14px;border-radius:18px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.20);padding:13px;color:#fde68a;font-size:13px;line-height:1.6}
+@keyframes gvSpin{to{transform:rotate(360deg)}}@keyframes gvFloat{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-7px) scale(1.05)}}@keyframes gvDove{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}@keyframes gvPulse{0%,100%{opacity:.55;transform:scale(.96)}50%{opacity:1;transform:scale(1.08)}}@keyframes gvShine{0%{left:-120%}55%,100%{left:140%}}@keyframes gvIconFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}@keyframes gvDetailIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+
+/* GLOBAL VISION SEPARATE DETAIL PAGES */
+.gvSeparatePage{
+  text-align:left;
+  animation:gvPageIn .28s ease both;
+}
+.gvBackBtn{
+  width:100%;
+  border-radius:16px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.12);
+  color:#fde68a;
+  padding:12px;
+  font-weight:900;
+  margin-bottom:14px;
+}
+.gvSeparateHero{
+  position:relative;
+  overflow:hidden;
+  border-radius:30px;
+  padding:22px 18px;
+  background:radial-gradient(circle at 80% 10%,rgba(56,189,248,.22),transparent 30%),
+             radial-gradient(circle at 10% 90%,rgba(251,191,36,.14),transparent 32%),
+             linear-gradient(145deg,#081426,#0f172a);
+  border:1px solid rgba(255,255,255,.10);
+  text-align:center;
+  box-shadow:0 24px 65px rgba(0,0,0,.35);
+}
+.gvSeparateIcon{
+  font-size:78px;
+  margin-bottom:10px;
+  animation:gvSepIcon 2.5s ease-in-out infinite;
+}
+.gvSeparateMini{
+  display:inline-block;
+  border-radius:999px;
+  background:rgba(251,191,36,.10);
+  border:1px solid rgba(251,191,36,.20);
+  color:#fde68a;
+  padding:6px 10px;
+  font-size:10px;
+  letter-spacing:2px;
+  font-weight:900;
+  margin-bottom:10px;
+}
+.gvSeparateHero h2{
+  font-size:30px;
+  font-weight:900;
+  color:#93c5fd;
+  margin-bottom:10px;
+}
+.gvSeparateHero p{
+  color:#dbeafe;
+  font-size:14px;
+  line-height:1.75;
+}
+.gvSeparateVerse{
+  margin-top:14px;
+  border-radius:20px;
+  background:rgba(251,191,36,.10);
+  border:1px solid rgba(251,191,36,.20);
+  padding:14px;
+  color:#fde68a;
+  font-size:14px;
+  line-height:1.6;
+  text-align:center;
+  font-weight:800;
+}
+.gvSeparateTitle{
+  margin:18px 0 10px;
+  color:#64748b;
+  font-size:10px;
+  letter-spacing:3px;
+  font-weight:900;
+  text-transform:uppercase;
+}
+.gvSeparatePoints{
+  display:grid;
+  gap:10px;
+}
+.gvSeparatePoints div{
+  border-radius:16px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.10);
+  padding:13px;
+  color:#e2e8f0;
+  font-size:13px;
+  line-height:1.5;
+}
+.gvSeparateBless{
+  margin-top:15px;
+  border-radius:20px;
+  background:rgba(34,197,94,.10);
+  border:1px solid rgba(34,197,94,.20);
+  color:#bbf7d0;
+  padding:14px;
+  text-align:center;
+  font-size:13px;
+  line-height:1.6;
+}
+@keyframes gvPageIn{
+  from{opacity:0;transform:translateX(18px)}
+  to{opacity:1;transform:translateX(0)}
+}
+@keyframes gvSepIcon{
+  0%,100%{transform:translateY(0) scale(1)}
+  50%{transform:translateY(-8px) scale(1.08)}
+}
+
+
+/* FULL PAGE OPEN FIX: GLOBAL VISION 4 CARDS ONLY */
+.gvSeparateFullPage{
+  min-height:70vh;
+  text-align:left;
+  animation:gvSeparateFullIn .28s ease both;
+}
+.gvSeparateBack{
+  width:100%;
+  border-radius:16px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.12);
+  color:#fde68a;
+  padding:13px;
+  font-weight:900;
+  margin-bottom:14px;
+}
+.gvSeparateFullHero{
+  border-radius:30px;
+  padding:24px 18px;
+  text-align:center;
+  background:
+    radial-gradient(circle at 80% 10%,rgba(56,189,248,.22),transparent 30%),
+    radial-gradient(circle at 10% 90%,rgba(251,191,36,.15),transparent 32%),
+    linear-gradient(145deg,#081426,#0f172a);
+  border:1px solid rgba(255,255,255,.12);
+  box-shadow:0 24px 65px rgba(0,0,0,.35);
+}
+.gvSeparateFullIcon{
+  font-size:82px;
+  margin-bottom:10px;
+  animation:gvSeparateFullFloat 2.6s ease-in-out infinite;
+}
+.gvSeparateFullPill{
+  display:inline-block;
+  border-radius:999px;
+  background:rgba(251,191,36,.10);
+  border:1px solid rgba(251,191,36,.22);
+  color:#fde68a;
+  padding:6px 10px;
+  font-size:10px;
+  letter-spacing:2px;
+  font-weight:900;
+  margin-bottom:10px;
+}
+.gvSeparateFullHero h2{
+  font-size:30px;
+  font-weight:900;
+  color:#93c5fd;
+  margin-bottom:10px;
+}
+.gvSeparateFullHero p{
+  color:#dbeafe;
+  font-size:14px;
+  line-height:1.75;
+}
+.gvSeparateFullVerse{
+  margin-top:14px;
+  border-radius:20px;
+  background:rgba(251,191,36,.10);
+  border:1px solid rgba(251,191,36,.20);
+  padding:14px;
+  color:#fde68a;
+  font-size:14px;
+  line-height:1.6;
+  text-align:center;
+  font-weight:800;
+}
+.gvSeparateFullTitle{
+  margin:18px 0 10px;
+  color:#64748b;
+  font-size:10px;
+  letter-spacing:3px;
+  font-weight:900;
+}
+.gvSeparateFullPoints{
+  display:grid;
+  gap:10px;
+}
+.gvSeparatePoint{
+  border-radius:16px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.10);
+  padding:13px;
+  color:#e2e8f0;
+  font-size:13px;
+  line-height:1.5;
+}
+.gvSeparateFullBless{
+  margin-top:15px;
+  border-radius:20px;
+  background:rgba(34,197,94,.10);
+  border:1px solid rgba(34,197,94,.20);
+  color:#bbf7d0;
+  padding:14px;
+  text-align:center;
+  font-size:13px;
+  line-height:1.6;
+}
+@keyframes gvSeparateFullIn{
+  from{opacity:0;transform:translateX(24px)}
+  to{opacity:1;transform:translateX(0)}
+}
+@keyframes gvSeparateFullFloat{
+  0%,100%{transform:translateY(0) scale(1)}
+  50%{transform:translateY(-8px) scale(1.08)}
+}
+
+
+/* PRAYER GLOBAL COUNTRIES */
+.prayerWorldBox{
+margin-top:16px;
+border-radius:24px;
+padding:18px;
+background:linear-gradient(145deg,rgba(56,189,248,.10),rgba(255,255,255,.04));
+border:1px solid rgba(56,189,248,.20);
+text-align:center;
+overflow:hidden;
+position:relative;
+}
+.prayerWorldFlag{
+font-size:82px;
+animation:prayerFlagFloat 2.5s ease-in-out infinite;
+}
+.prayerWorldTitle{
+font-size:24px;
+font-weight:900;
+color:#fde68a;
+margin-top:10px;
+}
+.prayerWorldSub{
+font-size:13px;
+line-height:1.7;
+color:#dbeafe;
+margin-top:6px;
+}
+@keyframes prayerFlagFloat{
+0%,100%{transform:translateY(0)}
+50%{transform:translateY(-8px)}
+}
+
+
+/* PRAYER ALL COUNTRIES FLAG ROTATION UPGRADE */
+.prayerWorldBox{
+  min-height:230px;
+}
+.prayerWorldFlag{
+  font-size:88px!important;
+  display:inline-block;
+  animation:prayerFlagZoom 2.8s ease-in-out infinite!important;
+  filter:drop-shadow(0 0 22px rgba(56,189,248,.55));
+}
+.prayerWorldTitle{
+  font-size:25px!important;
+}
+.prayerWorldCounter{
+  margin-top:10px;
+  color:#94a3b8;
+  font-size:11px;
+  letter-spacing:2px;
+  font-weight:900;
+}
+.prayerWorldMini{
+  margin-top:12px;
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:6px;
+}
+.prayerWorldMini span{
+  border-radius:10px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.08);
+  padding:6px 2px;
+  font-size:20px;
+}
+@keyframes prayerFlagZoom{
+  0%,100%{transform:translateY(0) scale(1) rotate(0deg)}
+  50%{transform:translateY(-8px) scale(1.12) rotate(2deg)}
+}
+
 </style>
 
 <style>
@@ -312,9 +712,6 @@ body{background:#060d1a;color:white;font-family:Inter,system-ui,Arial,sans-serif
 .receiptPaper{background:white;color:#111;border-radius:18px;padding:16px;border:2px dashed #d4af37;font-family:Arial,sans-serif}
 .receiptPaper h2{font-size:18px;text-align:center;color:#0f172a;font-weight:900;margin-bottom:4px}.receiptPaper .rpSub{text-align:center;font-size:11px;color:#475569;margin-bottom:12px}.receiptRow{display:flex;justify-content:space-between;border-bottom:1px solid #e5e7eb;padding:7px 0;font-size:13px;gap:10px}.receiptBless{margin-top:12px;background:#fef3c7;border-radius:12px;padding:10px;text-align:center;font-size:12px;color:#78350f;font-weight:700}.receiptActions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
 @media print{body *{visibility:hidden!important}#receiptPrintArea,#receiptPrintArea *{visibility:visible!important}#receiptPrintArea{position:absolute;left:0;top:0;width:100%;padding:18px;background:white}.receiptActions{display:none!important}}
-
-.receiptActions3{grid-template-columns:1fr 1fr 1fr!important}
-@media(max-width:420px){.receiptActions3{grid-template-columns:1fr!important}}
 </style>
 </head>
 <body>
@@ -457,9 +854,6 @@ function printIdCard(k){const m=findMemberByKey(k); if(!m)return; const idx=memb
 .adminToolGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}.adminToolGrid button{border-radius:16px;padding:11px 8px;font-size:12px;font-weight:900;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.07);color:white}.adminPanelBox{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.09);border-radius:22px;padding:14px;margin-bottom:12px}.miniBar{height:8px;background:rgba(255,255,255,.1);border-radius:999px;overflow:hidden;margin-top:8px}.miniBar i{display:block;height:100%;background:linear-gradient(90deg,#22c55e,#facc15,#38bdf8);border-radius:999px;animation:barPulse 2.8s infinite ease-in-out}@keyframes barPulse{0%,100%{filter:brightness(1)}50%{filter:brightness(1.45)}}
 .exportBtn{background:linear-gradient(135deg,#22c55e,#16a34a)!important;color:white!important}.dangerSoft{background:rgba(239,68,68,.14)!important;color:#fecaca!important;border-color:rgba(239,68,68,.25)!important}.goldSoft{background:rgba(251,191,36,.14)!important;color:#fde68a!important;border-color:rgba(251,191,36,.25)!important}
 
-
-.receiptActions3{grid-template-columns:1fr 1fr 1fr!important}
-@media(max-width:420px){.receiptActions3{grid-template-columns:1fr!important}}
 </style></head><body>${idCardMarkup(m,idx)}<button onclick="print()" style="position:fixed;bottom:20px;padding:12px 20px;border:0;border-radius:14px;background:#16a34a;color:white;font-weight:900">Print / Save PDF</button></body></html>`); w.document.close()}
 function downloadIdCard(k){const m=findMemberByKey(k); if(!m)return; const idx=members.indexOf(m); const html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${esc(autoCardNo(m,idx))}</title><style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#e5e7eb;font-family:Arial}.idPreviewCard{width:320px;border-radius:26px;overflow:hidden;background:linear-gradient(160deg,#07111f,#0b4da2,#06b6d4);text-align:center;color:white}.idPreviewTop{padding:16px;background:rgba(255,255,255,.12)}.idPreviewPhoto{width:92px;height:92px;border-radius:50%;object-fit:cover;border:4px solid #fff;margin:14px auto 8px;background:#fff}.idPreviewName{font-size:22px;font-weight:900}.idPreviewBadge{display:inline-block;background:#ffd166;color:#111827;border-radius:999px;padding:5px 12px;font-size:12px;font-weight:900;margin-top:6px}.idPreviewBody{padding:14px 18px 18px;text-align:left}.idPreviewRow{background:rgba(255,255,255,.11);border-radius:12px;padding:8px 10px;margin:7px 0;font-size:13px}.idPreviewQR{width:104px;height:104px;background:#fff;border-radius:14px;padding:7px;margin:12px auto 4px;display:block}.idPreviewNote{text-align:center;font-size:10px;color:#dbeafe;margin-top:3px;opacity:.9}.idNumberBig{display:inline-block;background:#ffd166;color:#111827;border-radius:999px;padding:6px 14px;font-size:13px;font-weight:900;margin-top:7px;letter-spacing:.4px}.phoneBig{font-size:14px!important;font-weight:900;color:#dcfce7}
 /* STRONG ADMIN DASHBOARD UPGRADE */
@@ -469,19 +863,218 @@ function downloadIdCard(k){const m=findMemberByKey(k); if(!m)return; const idx=m
 .adminToolGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}.adminToolGrid button{border-radius:16px;padding:11px 8px;font-size:12px;font-weight:900;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.07);color:white}.adminPanelBox{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.09);border-radius:22px;padding:14px;margin-bottom:12px}.miniBar{height:8px;background:rgba(255,255,255,.1);border-radius:999px;overflow:hidden;margin-top:8px}.miniBar i{display:block;height:100%;background:linear-gradient(90deg,#22c55e,#facc15,#38bdf8);border-radius:999px;animation:barPulse 2.8s infinite ease-in-out}@keyframes barPulse{0%,100%{filter:brightness(1)}50%{filter:brightness(1.45)}}
 .exportBtn{background:linear-gradient(135deg,#22c55e,#16a34a)!important;color:white!important}.dangerSoft{background:rgba(239,68,68,.14)!important;color:#fecaca!important;border-color:rgba(239,68,68,.25)!important}.goldSoft{background:rgba(251,191,36,.14)!important;color:#fde68a!important;border-color:rgba(251,191,36,.25)!important}
 
-
-.receiptActions3{grid-template-columns:1fr 1fr 1fr!important}
-@media(max-width:420px){.receiptActions3{grid-template-columns:1fr!important}}
 </style></head><body>${idCardMarkup(m,idx)}</body></html>`; const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([html],{type:'text/html'})); a.download=autoCardNo(m,idx)+'_'+(m.name||'member').replace(/\W+/g,'_')+'.html'; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
 function editMember(k){const m=findMemberByKey(k); if(!m)return alert('Member not found'); $('panelContent').innerHTML=`<h2 class="text-2xl font-black text-yellow-300 mb-3">✏ Edit Member</h2><input id="eName" class="editInput" value="${esc(m.name)}" placeholder="Name"><input id="ePhone" class="editInput" value="${esc(m.phone)}" placeholder="Phone"><input id="eRole" class="editInput" value="${esc(m.role)}" placeholder="Role"><input id="eCity" class="editInput" value="${esc(m.city)}" placeholder="City / Village"><input id="eDistrict" class="editInput" value="${esc(m.district)}" placeholder="District"><input id="eState" class="editInput" value="${esc(m.state)}" placeholder="State"><input id="eCountry" class="editInput" value="${esc(m.country)}" placeholder="Country"><input id="eBranch" class="editInput" value="${esc(m.branch)}" placeholder="Branch"><textarea id="ePrayer" class="editInput" placeholder="Prayer / Notes">${esc(m.prayer)}</textarea><button onclick="saveMemberEdit('${k}')" class="w-full rounded-xl bg-green-500 py-3 font-black">✅ Update Member</button>`; $('panel').classList.remove('hidden')}
 async function saveMemberEdit(k){const m=findMemberByKey(k); if(!m)return alert('Member not found'); const payload={name:$('eName').value.trim(),phone:cleanPhone($('ePhone').value),role:$('eRole').value.trim(),city:$('eCity').value.trim(),district:$('eDistrict').value.trim(),state:$('eState').value.trim(),country:$('eCountry').value.trim(),branch:$('eBranch').value.trim(),prayer:$('ePrayer').value.trim(),updatedAt:new Date().toISOString()}; try{if(m.source==='local'){localMembers=localMembers.map(x=>normalize(x,'local').id===m.id?{...x,...payload}:x); localStorage.setItem('hfgm_local_members',JSON.stringify(localMembers));}else{if(!db) initFirebase(); if(!db) throw new Error('Firebase not connected'); await db.collection(m.source).doc(m.id).update(payload);} alert('✅ Member updated'); await loadFirebase(); openPanel('admin')}catch(e){alert('Update failed: '+e.message)}}
 async function deleteMember(k){const m=findMemberByKey(k); if(!m)return alert('Member not found'); if(!confirm('Delete '+m.name+'?'))return; try{if(m.source==='local'){localMembers=localMembers.filter(x=>normalize(x,'local').id!==m.id); localStorage.setItem('hfgm_local_members',JSON.stringify(localMembers));}else{if(!db) initFirebase(); if(!db) throw new Error('Firebase not connected'); await db.collection(m.source).doc(m.id).delete();} alert('🗑 Deleted'); await loadFirebase(); openPanel('admin')}catch(e){alert('Delete failed: '+e.message)}}
 
 function renderAdminList(){const box=$('adminList'); if(!box)return; const q=($('adminSearch')?.value||'').toLowerCase(); const list=members.filter(m=>(m.name+' '+m.phone+' '+m.city+' '+m.country+' '+m.source+' '+m.memberId).toLowerCase().includes(q)); box.innerHTML=list.map(m=>{const idx=members.indexOf(m); const k=memberKey(m); return `<div class="memberCard mb-3"><div class="flex gap-3 items-start">${photoHTML(m)}<div class="flex-1 min-w-0"><div class="font-black text-white">${esc(m.name)}</div><div class="text-xs text-green-300 mt-1 font-bold">📞 ${esc(m.phone||'No number')}</div><div class="text-xs text-yellow-300 mt-1 font-black">🆔 ID: ${esc(autoCardNo(m,idx))}</div><div class="text-xs text-slate-400 mt-1">📍 ${esc(m.city||m.district||m.country||'')}</div><div class="mt-2"><span class="badge">${esc(m.source)}</span> <span class="badge">${esc(m.role)}</span></div></div><button onclick="location.href='tel:${cleanPhone(m.phone)}'" class="h-10 px-3 rounded-xl bg-green-500 font-black">Call</button></div><div class="grid grid-cols-4 gap-2 mt-3"><button onclick="viewIdCard('${k}')" class="memberActionBtn bg-blue-500">ID</button><button onclick="downloadIdCard('${k}')" class="memberActionBtn bg-green-600">Download</button><button onclick="editMember('${k}')" class="memberActionBtn bg-yellow-400 text-black">Edit</button><button onclick="deleteMember('${k}')" class="memberActionBtn bg-red-500">Delete</button></div></div>`}).join('')||'<div class="text-slate-400">No members found</div>'}
+
+
+
+function visionCard(type){
+const box=document.getElementById('panelContent');
+if(!box)return;
+
+const data={
+prayer:{
+icon:'🕊️',
+title:'Prayer Covering',
+sub:'Global Prayer Mission',
+text:'HFGM worldwide prayer movement for all countries and believers.',
+verse:'“Pray without ceasing.” — 1 Thessalonians 5:17'
+},
+word:{
+icon:'📖',
+title:'Promise Word',
+sub:'Daily Bible Encouragement',
+text:'Daily Telugu and English promise words for believers.',
+verse:'“Your word is a lamp to my feet.” — Psalm 119:105'
+},
+care:{
+icon:'🤝',
+title:'Family Care',
+sub:'Believers Support',
+text:'Prayer support and spiritual encouragement for families.',
+verse:'“Carry each other’s burdens.” — Galatians 6:2'
+},
+global:{
+icon:'🌍',
+title:'Global Mission',
+sub:'Worldwide Gospel Vision',
+text:'Connecting nations through prayer and gospel mission.',
+verse:'“You are the light of the world.” — Matthew 5:14'
+}
+};
+
+const d=data[type]||data.prayer;
+
+box.innerHTML=`
+<div class="gvSeparatePage">
+
+<button onclick="openPanel('family')" class="gvBackBtn">← Back to Global Vision</button>
+
+<div class="gvSeparateHero">
+<div class="gvSeparateIcon">${d.icon}</div>
+<div class="gvSeparateMini">${d.sub}</div>
+<h2>${d.title}</h2>
+<p>${d.text}</p>
+</div>
+
+${type==='prayer'?`
+<div class="prayerWorldBox">
+<div id="prayerFlag" class="prayerWorldFlag">🇮🇳</div>
+<div id="prayerCountry" class="prayerWorldTitle">Prayer for India</div>
+<div id="prayerText" class="prayerWorldSub">Pray for revival, churches and families.</div>
+<div id="prayerCounter" class="prayerWorldCounter">COUNTRY PRAYER 1 / 40</div>
+<div class="prayerWorldMini"><span>🇮🇳</span><span>🇺🇸</span><span>🇬🇧</span><span>🇮🇱</span><span>🇦🇺</span></div>
+</div>
+`:''}
+
+<div class="gvSeparateVerse">${d.verse}</div>
+
+</div>
+`;
+
+if(type==='prayer'){
+const countries=[
+['🇮🇳','Prayer for India','Pray for revival, churches, pastors, families and villages in India.'],
+['🇺🇸','Prayer for United States','Pray for churches, youth, families and gospel outreach.'],
+['🇬🇧','Prayer for United Kingdom','Pray for spiritual awakening, churches and families.'],
+['🇮🇱','Prayer for Israel','Pray for peace, protection and God’s purpose.'],
+['🇦🇺','Prayer for Australia','Pray for believers, families and Telugu communities.'],
+['🇨🇦','Prayer for Canada','Pray for churches, students and mission workers.'],
+['🇦🇪','Prayer for UAE','Pray for workers, families and prayer fellowship.'],
+['🇸🇬','Prayer for Singapore','Pray for unity, churches and mission doors.'],
+['🇿🇦','Prayer for South Africa','Pray for healing, revival and community peace.'],
+['🇰🇪','Prayer for Kenya','Pray for churches, evangelism and young generation.'],
+['🇵🇭','Prayer for Philippines','Pray for believers, gospel workers and families.'],
+['🇧🇷','Prayer for Brazil','Pray for revival, worship and mission fire.'],
+['🇩🇪','Prayer for Germany','Pray for families, churches and new believers.'],
+['🇫🇷','Prayer for France','Pray for gospel light and spiritual renewal.'],
+['🇮🇹','Prayer for Italy','Pray for churches, families and revival.'],
+['🇪🇸','Prayer for Spain','Pray for youth, families and gospel outreach.'],
+['🇳🇱','Prayer for Netherlands','Pray for prayer groups and mission doors.'],
+['🇸🇪','Prayer for Sweden','Pray for churches, families and awakening.'],
+['🇳🇴','Prayer for Norway','Pray for believers, youth and revival.'],
+['🇨🇭','Prayer for Switzerland','Pray for peace, churches and mission partners.'],
+['🇯🇵','Prayer for Japan','Pray for gospel doors and families.'],
+['🇰🇷','Prayer for South Korea','Pray for prayer revival and mission work.'],
+['🇹🇭','Prayer for Thailand','Pray for families, churches and gospel workers.'],
+['🇲🇾','Prayer for Malaysia','Pray for unity, believers and gospel light.'],
+['🇮🇩','Prayer for Indonesia','Pray for protection, churches and families.'],
+['🇳🇿','Prayer for New Zealand','Pray for families, churches and revival.'],
+['🇳🇬','Prayer for Nigeria','Pray for peace, protection and churches.'],
+['🇬🇭','Prayer for Ghana','Pray for evangelism, families and youth.'],
+['🇪🇹','Prayer for Ethiopia','Pray for healing, provision and churches.'],
+['🇪🇬','Prayer for Egypt','Pray for peace, protection and believers.'],
+['🇲🇽','Prayer for Mexico','Pray for families, churches and gospel outreach.'],
+['🇦🇷','Prayer for Argentina','Pray for revival and mission fire.'],
+['🇨🇱','Prayer for Chile','Pray for churches, families and youth.'],
+['🇵🇪','Prayer for Peru','Pray for communities, families and gospel work.'],
+['🇷🇺','Prayer for Russia','Pray for peace, families and believers.'],
+['🇺🇦','Prayer for Ukraine','Pray for peace, protection and healing.'],
+['🇱🇰','Prayer for Sri Lanka','Pray for families, churches and provision.'],
+['🇳🇵','Prayer for Nepal','Pray for gospel outreach and mountain villages.'],
+['🇧🇩','Prayer for Bangladesh','Pray for families, children and gospel doors.'],
+['🇵🇰','Prayer for Pakistan','Pray for protection, peace and believers.']
+];
+
+let i=0;
+setInterval(()=>{
+i=(i+1)%countries.length;
+document.getElementById('prayerFlag').innerHTML=countries[i][0];
+document.getElementById('prayerCountry').innerHTML=countries[i][1];
+document.getElementById('prayerText').innerHTML=countries[i][2];
+const c=document.getElementById('prayerCounter');
+if(c)c.innerHTML='COUNTRY PRAYER '+(i+1)+' / '+countries.length;
+},3000);
+}
+}
+
+
 function renderFamilyList(){const box=$('familyList'); if(!box)return; box.innerHTML=members.slice(0,60).map(m=>`<div class="memberCard mb-3"><div class="flex gap-3 items-start">${photoHTML(m)}<div class="flex-1"><div class="font-black text-white">${esc(m.name)}</div><div class="text-xs text-green-300 mt-1 font-bold">📞 ${esc(m.phone||'No number')}</div><div class="text-xs text-slate-400 mt-1">${esc(m.country)} · ${esc(m.state)} · ${esc(m.district)}</div><div class="mt-2"><span class="badge">${esc(m.role)}</span></div></div></div></div>`).join('')||'<div class="text-slate-400">No public list loaded</div>'}
 function registerHTML(){return `<h2 class="text-2xl font-black text-yellow-300 mb-2">➕ Register Member</h2><p class="text-slate-400 text-sm mb-4">Save button file flow same: name + phone compulsory, data Firebase global_believers lo save avutundi.</p><div class="space-y-3"><input id="nName" class="input" placeholder="Full Name *"><input id="nAge" type="number" class="input" placeholder="Age"><select id="nGender" class="input"><option value="">Select Gender</option><option>Male</option><option>Female</option><option>Other</option></select><select id="nRole" class="input"><option>New Believer</option><option>Church Member</option><option>Prayer Partner</option><option>Volunteer</option><option>Sponsor / Donor</option><option>Pastor / Leader</option></select><select id="nCountry" onchange="setCountryCode()" class="input"><option value="India" data-code="91">India (+91)</option><option value="United States" data-code="1">United States (+1)</option><option value="United Kingdom" data-code="44">United Kingdom (+44)</option><option value="Canada" data-code="1">Canada (+1)</option><option value="Australia" data-code="61">Australia (+61)</option><option value="UAE" data-code="971">UAE (+971)</option><option value="Other" data-code="">Other</option></select><select id="nState" class="input"><option value="">Select State</option><option>Andhra Pradesh</option><option>Telangana</option><option>Tamil Nadu</option><option>Karnataka</option><option>Kerala</option><option>Other</option></select><select id="nDistrict" class="input"><option value="">Select District</option><option>West Godavari</option><option>East Godavari</option><option>Eluru</option><option>Krishna</option><option>NTR</option><option>Guntur</option><option>Hyderabad</option><option>Other</option></select><input id="nCity" class="input" placeholder="City / Village"><div class="grid grid-cols-[88px_1fr] gap-2"><input id="nCode" class="input" value="91" placeholder="+91"><input id="nPhone" class="input" placeholder="Phone number *"></div><textarea id="nPrayer" class="input" placeholder="Prayer / Notes"></textarea><select id="nBlood" class="input"><option value="">Select Blood Group</option><option>O+</option><option>O-</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>AB+</option><option>AB-</option></select><input id="nEmergency" class="input" placeholder="Emergency Contact"><input id="nBranch" class="input" value="HFGM Tadepalligudem" placeholder="Church Branch / Area"><div class="grid grid-cols-2 gap-2"><label class="rounded-2xl border border-yellow-400/20 bg-white/5 p-3 text-center text-xs font-bold cursor-pointer">📷 Selfie<input id="nSelfie" type="file" accept="image/*" capture="user" class="hidden"></label><label class="rounded-2xl border border-yellow-400/20 bg-white/5 p-3 text-center text-xs font-bold cursor-pointer">🖼️ Photo<input id="nPhoto" type="file" accept="image/*" class="hidden"></label></div><button onclick="savePublicMember()" class="saveBtn">✅ Save Member</button><div id="saveResult" class="text-center font-bold text-green-300"></div><div class="rounded-2xl border border-yellow-500/20 bg-yellow-500/10 p-3 text-xs text-slate-300">🔒 Secure Save · Only admin can view full member details.</div></div>`}
 function adminHTML(){if(!isAdmin)return `<h2 class="text-2xl font-black text-yellow-300 mb-3">🔐 Admin Login</h2><input id="adminUser" class="input mb-3" placeholder="User Name" value="admin"><input id="adminPass" type="password" class="input mb-3" placeholder="Password"><button onclick="adminLogin()" class="w-full rounded-xl bg-yellow-400 text-black py-3 font-black">Login</button><p class="text-xs text-slate-500 mt-3">Default: admin / 1234</p>`; return `<div class="flex items-center justify-between mb-4"><div><h2 class="text-2xl font-black text-yellow-300">⚙ Admin Dashboard</h2><p class="text-xs text-slate-400">Old Firebase + new saved members</p></div><button onclick="adminLogout()" class="rounded-xl bg-red-500 px-3 py-2 text-xs font-black">Logout</button></div><div class="grid grid-cols-3 gap-2 mb-4"><div class="rounded-2xl bg-white/5 p-3 text-center"><b id="adminCount" class="text-xl text-yellow-300">${members.length}</b><div class="text-[10px] text-slate-500">TOTAL</div></div><div class="rounded-2xl bg-white/5 p-3 text-center"><b class="text-xl text-blue-300">${oldMembers.length}</b><div class="text-[10px] text-slate-500">OLD</div></div><div class="rounded-2xl bg-white/5 p-3 text-center"><b class="text-xl text-green-300">${newMembers.length}</b><div class="text-[10px] text-slate-500">NEW</div></div></div><input id="adminSearch" oninput="renderAdminList()" class="input mb-3" placeholder="Search name, phone, country..."><button onclick="loadFirebase()" class="w-full rounded-xl bg-sky-500 py-3 font-black mb-3">↻ Refresh Firebase</button><div id="adminList" class="max-h-[50vh] overflow-auto pr-1"></div>`}
-function openPanel(type){const box=$('panelContent'); if(type==='register')box.innerHTML=registerHTML(); if(type==='admin')box.innerHTML=adminHTML(); if(type==='family')box.innerHTML=`<h2 class="text-2xl font-black text-blue-300 mb-2">🌍 Global Family</h2><p class="text-slate-400 mb-4"><b id="familyCount">${members.length}</b> believers connected from Firebase.</p><button onclick="loadFirebase()" class="w-full rounded-xl bg-sky-500 py-3 font-black mb-3">Refresh</button><div id="familyList" class="max-h-[55vh] overflow-auto"></div>`; if(type==='donate')box.innerHTML=donationHTML(); $('panel').classList.remove('hidden'); if(type==='admin'&&isAdmin)renderAdminList(); if(type==='family')renderFamilyList();}
+function openPanel(type){const box=$('panelContent'); if(type==='register')box.innerHTML=registerHTML(); if(type==='admin')box.innerHTML=adminHTML(); if(type==='family')box.innerHTML=`
+<div class="gvProPage">
+
+  <div class="gvHeroPro">
+    <div class="gvOrbitStage">
+      <div class="gvPulseRing"></div>
+      <div class="gvRing gvRing1"><span></span><span></span><span></span></div>
+      <div class="gvRing gvRing2"></div>
+      <div class="gvEarthPro">🌍</div>
+      <div class="gvDovePro">🕊️</div>
+    </div>
+
+    <div class="gvMini">HFGM · PRAYER · WORD · CARE · MISSION</div>
+    <h2>HFGM Global Vision</h2>
+    <p>
+      🔒 Public page lo members personal data, phone numbers, photos show avvavu.
+      This page shows only our spiritual vision and mission.
+    </p>
+  </div>
+
+  <div class="gvVisionBox">
+    <div class="gvVisionTitle">🔥 Our Vision</div>
+    <p>
+      ప్రతి కుటుంబానికి ప్రార్థన, ప్రతి హృదయానికి దేవుని వాక్యం,
+      ప్రతి ప్రాంతానికి సువార్త వెలుగు చేరాలి. HFGM Global Family is a safe spiritual connection.
+    </p>
+  </div>
+
+  <div class="gvStatsGrid">
+    <div><b>24/7</b><span>Prayer</span></div>
+    <div><b>Daily</b><span>Word</span></div>
+    <div><b>Care</b><span>Families</span></div>
+  </div>
+
+  <div class="gvSectionTitle">OPEN MISSION AREAS</div>
+
+  <div class="gvCardsPro">
+    <button onclick="visionCard('prayer')" class="gvMissionCard prayer">
+      <div class="gvCardIcon">🕊️</div>
+      <div>
+        <h3>Prayer Covering</h3>
+        <p>Families and believers prayer support</p>
+      </div>
+      <span>Open →</span>
+    </button>
+
+    <button onclick="visionCard('word')" class="gvMissionCard word">
+      <div class="gvCardIcon">📖</div>
+      <div>
+        <h3>Promise Word</h3>
+        <p>Daily Bible encouragement</p>
+      </div>
+      <span>Open →</span>
+    </button>
+
+    <button onclick="visionCard('care')" class="gvMissionCard care">
+      <div class="gvCardIcon">🤝</div>
+      <div>
+        <h3>Family Care</h3>
+        <p>Spiritual support and follow-up</p>
+      </div>
+      <span>Open →</span>
+    </button>
+
+    <button onclick="visionCard('global')" class="gvMissionCard global">
+      <div class="gvCardIcon">🌎</div>
+      <div>
+        <h3>Global Mission</h3>
+        <p>Worldwide gospel and revival vision</p>
+      </div>
+      <span>Open →</span>
+    </button>
+  </div>
+
+  <div id="visionContent" class="gvDetailHolder"></div>
+
+  <div class="gvVersePro">“మీరు లోకమునకు వెలుగు.” — మత్తయి 5:14</div>
+</div>`;
+if(type==='donate')box.innerHTML=donationHTML(); $('panel').classList.remove('hidden'); if(type==='admin'&&isAdmin)renderAdminList(); /* public family details hidden for privacy */}
 
 
 // ULTRA STRONG DONATION PAGE FUNCTIONS
@@ -606,9 +1199,6 @@ openPanel=function(type){oldOpenPanel(type); if(type==='admin'&&isAdmin){renderA
 .missionOverlay{position:fixed;inset:0;background:rgba(0,0,0,.82);backdrop-filter:blur(12px);z-index:99999;display:none;align-items:center;justify-content:center;padding:18px}
 .missionOverlay.show{display:flex}.missionModal{width:100%;max-width:430px;max-height:86vh;overflow:auto;border-radius:28px;border:1px solid rgba(250,204,21,.28);background:radial-gradient(circle at top right,rgba(250,204,21,.18),transparent 28%),linear-gradient(145deg,#07101f,#0d1b33 55%,#070b14);box-shadow:0 28px 90px rgba(0,0,0,.65);padding:18px;position:relative}.missionTop{text-align:center;border-radius:24px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);padding:18px;margin-bottom:12px;position:relative;overflow:hidden}.missionTop:before{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent,rgba(250,204,21,.13),transparent);animation:softShine 2.4s infinite}.missionHeart{font-size:54px;animation:heartPulse 2s infinite ease-in-out}.missionTitle{font-size:25px;font-weight:950;color:#fde68a;margin-top:8px}.missionAmount{color:#86efac;font-size:14px;font-weight:900;margin-top:4px}.missionTelugu{font-size:16px;line-height:1.75;color:#fff7ed;font-weight:800;margin-top:12px}.missionEnglish{font-size:13px;line-height:1.65;color:#cbd5e1;margin-top:8px}.missionImageGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}.missionImg{border-radius:18px;background:linear-gradient(145deg,rgba(255,255,255,.10),rgba(255,255,255,.04));border:1px solid rgba(255,255,255,.10);padding:12px 8px;text-align:center;min-height:84px;display:flex;flex-direction:column;align-items:center;justify-content:center}.missionImg .ico{font-size:30px;animation:iconFloat 3s ease-in-out infinite}.missionImg small{display:block;color:#cbd5e1;font-size:10px;font-weight:800;margin-top:6px;line-height:1.25}.goalLine{border-radius:18px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.09);padding:12px;margin:8px 0}.goalLine b{color:#fde68a;font-size:14px}.goalLine p{color:#cbd5e1;font-size:12px;line-height:1.55;margin-top:4px}.missionActions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}.missionActions button{border-radius:16px;padding:13px 10px;font-weight:950}.missionClose{position:absolute;right:14px;top:14px;border:0;border-radius:999px;background:rgba(239,68,68,.95);color:white;width:36px;height:36px;font-weight:950}.receiptPaper{background:#fff;color:#111;border-radius:18px;padding:18px;text-align:center}.receiptPaper h2{font-size:16px;margin:0;color:#111}.rpSub{font-size:12px;color:#555;margin:4px 0 14px}.receiptRow{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #eee;padding:9px 0;font-size:13px}.receiptBless{margin-top:14px;background:#fff7ed;border-radius:12px;padding:12px;font-weight:800;line-height:1.6;color:#7c2d12}.receiptActions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
 @media print{body *{visibility:hidden!important}#receiptPrintArea,#receiptPrintArea *{visibility:visible!important}#receiptPrintArea{position:absolute;left:0;top:0;width:100%;border-radius:0!important}.missionOverlay{display:none!important}}
-
-.receiptActions3{grid-template-columns:1fr 1fr 1fr!important}
-@media(max-width:420px){.receiptActions3{grid-template-columns:1fr!important}}
 </style>
 <script>
 function partnerGoalsData(type){
@@ -634,44 +1224,6 @@ function closePartnerGoals(){const p=document.getElementById('missionGoalsPopup'
 function selectPartnerAmount(type){const map={silver:500,gold:1000,kingdom:5000,global:10000}; setDonateAmount(map[type]||500); closePartnerGoals(); const a=document.getElementById('customDonateAmount'); if(a)a.scrollIntoView({behavior:'smooth',block:'center'});}
 function partnerWhatsapp(type){const d=partnerGoalsData(type); const msg=`🙏 Praise the Lord. I want to become ${d.title} for HFGM Global Ministries. ${d.amount}. Please send details. దేవుని కార్యమునకు నేను భాగస్వామి కావాలని కోరుకుంటున్నాను.`; window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');}
 function receiptPdfDownload(){window.print()}
-
-function receiptFileDownload(){
-  const area = document.getElementById('receiptPrintArea');
-  if(!area){
-    alert('First generate receipt');
-    return;
-  }
-  const full = `<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>HFGM Sponsor Receipt</title>
-<style>
-body{font-family:Arial,sans-serif;background:#f4f4f4;padding:24px}
-.receiptPaper{max-width:760px;margin:auto;background:#fff;color:#111;border-radius:18px;padding:24px;border:2px dashed #d4af37}
-.receiptPaper h2{font-size:22px;text-align:center;color:#0f172a;font-weight:900;margin-bottom:4px}
-.rpSub{text-align:center;font-size:13px;color:#475569;margin-bottom:16px}
-.receiptRow{display:flex;justify-content:space-between;border-bottom:1px solid #e5e7eb;padding:10px 0;font-size:14px;gap:10px}
-.receiptBless{margin-top:14px;background:#fef3c7;border-radius:12px;padding:14px;text-align:center;font-size:13px;color:#78350f;font-weight:700;line-height:1.6}
-@media print{body{background:#fff;padding:0}.receiptPaper{border:0;max-width:none;border-radius:0}}
-
-.receiptActions3{grid-template-columns:1fr 1fr 1fr!important}
-@media(max-width:420px){.receiptActions3{grid-template-columns:1fr!important}}
-</style>
-</head>
-<body>${area.outerHTML}</body>
-</html>`;
-  const blob = new Blob([full], {type:'text/html;charset=utf-8'});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'HFGM_Sponsor_Receipt.html';
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  URL.revokeObjectURL(a.href);
-}
-
 function receiptWhatsappShare(){const name=(document.getElementById('donorPublicName')||{}).value||'Beloved Partner'; const amount=(document.getElementById('customDonateAmount')||{}).value||donateAmount||''; const msg=`🙏 HFGM Donation Receipt\nName: ${name}\nAmount: ₹${amount}\nThank you for supporting God's work.`; window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank')}
 function showDonationReceipt(){
   const name=($('donorPublicName')||{}).value||'Beloved Partner';
@@ -681,7 +1233,7 @@ function showDonationReceipt(){
   const date=new Date().toLocaleString();
   const list=JSON.parse(localStorage.getItem('hfgm_donations')||'[]');
   list.unshift({name,phone,amount,date,id}); localStorage.setItem('hfgm_donations',JSON.stringify(list));
-  const r=$('receiptBox'); if(r){r.style.display='block'; r.innerHTML=`<div id="receiptPrintArea" class="receiptPaper"><h2>HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES</h2><div class="rpSub">Sponsor / Donation Receipt</div><div class="receiptRow"><b>Receipt ID</b><span>${id}</span></div><div class="receiptRow"><b>Donor Name</b><span>${esc(name)}</span></div><div class="receiptRow"><b>Phone</b><span>${esc(phone||'-')}</span></div><div class="receiptRow"><b>Amount</b><span>₹${esc(amount)}</span></div><div class="receiptRow"><b>Date</b><span>${date}</span></div><div class="receiptBless">🙏 Thank you for supporting HFGM mission, prayer and gospel work.<br>దేవుడు మీ కుటుంబాన్ని ఆశీర్వదించును.</div></div><div class="receiptActions receiptActions3"><button onclick="receiptPdfDownload()" class="rounded-xl bg-green-500 py-3 font-black">📄 PDF / Print</button><button onclick="receiptFileDownload()" class="rounded-xl bg-yellow-400 text-black py-3 font-black">⬇ Download</button><button onclick="receiptWhatsappShare()" class="rounded-xl bg-sky-500 py-3 font-black">📲 WhatsApp</button></div>`;}
+  const r=$('receiptBox'); if(r){r.style.display='block'; r.innerHTML=`<div id="receiptPrintArea" class="receiptPaper"><h2>HOLY SPIRIT FELLOWSHIP GLOBAL MINISTRIES</h2><div class="rpSub">Sponsor / Donation Receipt</div><div class="receiptRow"><b>Receipt ID</b><span>${id}</span></div><div class="receiptRow"><b>Donor Name</b><span>${esc(name)}</span></div><div class="receiptRow"><b>Phone</b><span>${esc(phone||'-')}</span></div><div class="receiptRow"><b>Amount</b><span>₹${esc(amount)}</span></div><div class="receiptRow"><b>Date</b><span>${date}</span></div><div class="receiptBless">🙏 Thank you for supporting HFGM mission, prayer and gospel work.<br>దేవుడు మీ కుటుంబాన్ని ఆశీర్వదించును.</div></div><div class="receiptActions"><button onclick="receiptPdfDownload()" class="rounded-xl bg-green-500 py-3 font-black">📄 PDF / Print</button><button onclick="receiptWhatsappShare()" class="rounded-xl bg-sky-500 py-3 font-black">📲 WhatsApp</button></div>`;}
   try{renderDonationList()}catch(e){}
 }
 function donationHTML(){return `<div class="space-y-4">
