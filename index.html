@@ -697,6 +697,36 @@ margin-top:6px;
   50%{transform:translateY(-8px) scale(1.12) rotate(2deg)}
 }
 
+
+.gvCardsOnlyTitle{
+  margin:18px auto 8px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:10px 22px;
+  border-radius:999px;
+  background:linear-gradient(135deg,rgba(255,215,120,.18),rgba(75,160,255,.12));
+  border:1px solid rgba(255,255,255,.16);
+  color:#fff;
+  font-weight:900;
+  letter-spacing:.7px;
+  box-shadow:0 12px 35px rgba(0,0,0,.25), inset 0 0 25px rgba(255,255,255,.06);
+}
+
+
+/* Clean professional four boxes only - Global Vision */
+.gvFourGrid{margin-top:24px!important;display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:18px!important;}
+.gvOpenCard{min-height:210px!important;border-radius:26px!important;padding:24px!important;text-align:left!important;display:flex!important;flex-direction:column!important;justify-content:space-between!important;align-items:flex-start!important;border:1px solid rgba(255,255,255,.16)!important;background:linear-gradient(145deg,rgba(255,255,255,.12),rgba(255,255,255,.04))!important;box-shadow:0 18px 45px rgba(0,0,0,.32), inset 0 0 35px rgba(255,255,255,.05)!important;backdrop-filter:blur(16px)!important;transition:.35s ease!important;position:relative!important;overflow:hidden!important;}
+.gvOpenCard:before{content:"";position:absolute;inset:-2px;background:radial-gradient(circle at top right,rgba(255,215,120,.26),transparent 38%),radial-gradient(circle at bottom left,rgba(87,166,255,.22),transparent 42%);opacity:.9;pointer-events:none;}
+.gvOpenCard>*{position:relative;z-index:1;}
+.gvOpenCard:hover{transform:translateY(-8px) scale(1.015)!important;box-shadow:0 28px 70px rgba(0,0,0,.45),0 0 34px rgba(80,160,255,.22)!important;}
+.gvOpenIcon{width:62px!important;height:62px!important;border-radius:20px!important;display:flex!important;align-items:center!important;justify-content:center!important;font-size:32px!important;background:rgba(255,255,255,.12)!important;border:1px solid rgba(255,255,255,.18)!important;box-shadow:inset 0 0 20px rgba(255,255,255,.06)!important;}
+.gvOpenCard h3{font-size:21px!important;margin:16px 0 8px!important;color:#fff!important;font-weight:900!important;}
+.gvOpenCard p{font-size:13.5px!important;line-height:1.45!important;color:rgba(255,255,255,.78)!important;margin:0!important;}
+.gvOpenCard small{align-self:flex-end!important;margin-top:18px!important;padding:8px 12px!important;border-radius:999px!important;background:rgba(255,255,255,.12)!important;border:1px solid rgba(255,255,255,.12)!important;color:#ffe7a2!important;font-weight:900!important;letter-spacing:.4px!important;}
+@media(max-width:900px){.gvFourGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important;}.gvOpenCard{min-height:190px!important;}}
+@media(max-width:560px){.gvFourGrid{grid-template-columns:1fr!important;}.gvOpenCard{min-height:165px!important;}}
+
 </style>
 
 <style>
@@ -712,7 +742,218 @@ margin-top:6px;
 .receiptPaper{background:white;color:#111;border-radius:18px;padding:16px;border:2px dashed #d4af37;font-family:Arial,sans-serif}
 .receiptPaper h2{font-size:18px;text-align:center;color:#0f172a;font-weight:900;margin-bottom:4px}.receiptPaper .rpSub{text-align:center;font-size:11px;color:#475569;margin-bottom:12px}.receiptRow{display:flex;justify-content:space-between;border-bottom:1px solid #e5e7eb;padding:7px 0;font-size:13px;gap:10px}.receiptBless{margin-top:12px;background:#fef3c7;border-radius:12px;padding:10px;text-align:center;font-size:12px;color:#78350f;font-weight:700}.receiptActions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
 @media print{body *{visibility:hidden!important}#receiptPrintArea,#receiptPrintArea *{visibility:visible!important}#receiptPrintArea{position:absolute;left:0;top:0;width:100%;padding:18px;background:white}.receiptActions{display:none!important}}
+
+.gvCardsOnlyTitle{
+  margin:18px auto 8px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:10px 22px;
+  border-radius:999px;
+  background:linear-gradient(135deg,rgba(255,215,120,.18),rgba(75,160,255,.12));
+  border:1px solid rgba(255,255,255,.16);
+  color:#fff;
+  font-weight:900;
+  letter-spacing:.7px;
+  box-shadow:0 12px 35px rgba(0,0,0,.25), inset 0 0 25px rgba(255,255,255,.06);
+}
+
+
+/* Clean professional four boxes only - Global Vision */
+.gvFourGrid{margin-top:24px!important;display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:18px!important;}
+.gvOpenCard{min-height:210px!important;border-radius:26px!important;padding:24px!important;text-align:left!important;display:flex!important;flex-direction:column!important;justify-content:space-between!important;align-items:flex-start!important;border:1px solid rgba(255,255,255,.16)!important;background:linear-gradient(145deg,rgba(255,255,255,.12),rgba(255,255,255,.04))!important;box-shadow:0 18px 45px rgba(0,0,0,.32), inset 0 0 35px rgba(255,255,255,.05)!important;backdrop-filter:blur(16px)!important;transition:.35s ease!important;position:relative!important;overflow:hidden!important;}
+.gvOpenCard:before{content:"";position:absolute;inset:-2px;background:radial-gradient(circle at top right,rgba(255,215,120,.26),transparent 38%),radial-gradient(circle at bottom left,rgba(87,166,255,.22),transparent 42%);opacity:.9;pointer-events:none;}
+.gvOpenCard>*{position:relative;z-index:1;}
+.gvOpenCard:hover{transform:translateY(-8px) scale(1.015)!important;box-shadow:0 28px 70px rgba(0,0,0,.45),0 0 34px rgba(80,160,255,.22)!important;}
+.gvOpenIcon{width:62px!important;height:62px!important;border-radius:20px!important;display:flex!important;align-items:center!important;justify-content:center!important;font-size:32px!important;background:rgba(255,255,255,.12)!important;border:1px solid rgba(255,255,255,.18)!important;box-shadow:inset 0 0 20px rgba(255,255,255,.06)!important;}
+.gvOpenCard h3{font-size:21px!important;margin:16px 0 8px!important;color:#fff!important;font-weight:900!important;}
+.gvOpenCard p{font-size:13.5px!important;line-height:1.45!important;color:rgba(255,255,255,.78)!important;margin:0!important;}
+.gvOpenCard small{align-self:flex-end!important;margin-top:18px!important;padding:8px 12px!important;border-radius:999px!important;background:rgba(255,255,255,.12)!important;border:1px solid rgba(255,255,255,.12)!important;color:#ffe7a2!important;font-weight:900!important;letter-spacing:.4px!important;}
+@media(max-width:900px){.gvFourGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important;}.gvOpenCard{min-height:190px!important;}}
+@media(max-width:560px){.gvFourGrid{grid-template-columns:1fr!important;}.gvOpenCard{min-height:165px!important;}}
+
 </style>
+<style>
+
+/* PRAYER CARD FULL PREMIUM PAGE - NO HOME BOTTOM SECTION */
+.gvPrayerPremiumPage{max-width:980px;margin:18px auto 0;padding:18px;border-radius:30px;background:radial-gradient(circle at top,rgba(14,165,233,.22),rgba(15,23,42,.86));border:1px solid rgba(125,211,252,.20);box-shadow:0 18px 55px rgba(0,0,0,.32)}
+.gvPrayerGlobePro{width:190px;height:190px;margin:10px auto 18px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative;background:radial-gradient(circle at 30% 25%,#67e8f9,#2563eb 45%,#020617 72%);box-shadow:0 0 45px rgba(14,165,233,.50),inset -20px -20px 38px rgba(0,0,0,.38);animation:gvPrayerSpin 18s linear infinite}
+.gvPrayerRing{position:absolute;inset:-10px;border-radius:50%;border:1px dashed rgba(186,230,253,.45);animation:gvPrayerSpin 11s linear infinite reverse}
+.gvPrayerPremiumPage .gvFlagBig{font-size:82px;filter:drop-shadow(0 8px 18px rgba(0,0,0,.45))}
+.gvPrayerProBox{max-width:680px;margin:auto;padding:22px;border-radius:24px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14)}
+.gvPrayerLabel{font-size:12px;letter-spacing:2px;color:#93c5fd;font-weight:900;margin-bottom:8px}
+.gvPrayerPremiumPage .gvCountryTitle{font-size:clamp(24px,5vw,38px);font-weight:900;color:#e0f2fe;margin-bottom:8px}
+.gvPrayerPremiumPage .gvCountryPrayer{font-size:16px;line-height:1.65;color:rgba(255,255,255,.92)}
+.gvPrayerPremiumPage .gvCounter{margin:14px auto 0;display:inline-block;padding:8px 13px;border-radius:999px;background:rgba(14,165,233,.16);border:1px solid rgba(125,211,252,.22);font-size:12px;font-weight:800;color:#bae6fd}
+.gvSharePrayerBtn{display:block;margin:18px auto 0;border:0;border-radius:999px;padding:13px 25px;background:linear-gradient(135deg,#06b6d4,#2563eb);color:#fff;font-weight:900;box-shadow:0 14px 32px rgba(37,99,235,.38);cursor:pointer}
+.gvPrayerMiniGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0}
+.gvPrayerMiniGrid>div{border-radius:18px;padding:14px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);display:flex;flex-direction:column;gap:5px}
+.gvPrayerMiniGrid b{color:#e0f2fe}.gvPrayerMiniGrid span{font-size:12px;opacity:.82}
+@keyframes gvPrayerSpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@media(max-width:720px){.gvPrayerMiniGrid{grid-template-columns:repeat(2,1fr)}.gvPrayerGlobePro{width:155px;height:155px}.gvPrayerPremiumPage .gvFlagBig{font-size:68px}}
+
+</style>
+
+<style>
+.gvPromisePremiumPage,.gvMissionPremiumPage{max-width:940px;margin:18px auto 0;padding:28px;border-radius:30px;text-align:center;border:1px solid rgba(255,255,255,.14);box-shadow:0 22px 60px rgba(0,0,0,.32)}
+.gvPromisePremiumPage{background:radial-gradient(circle at top,rgba(250,204,21,.22),rgba(15,23,42,.90))}
+.gvPromiseBible{font-size:76px;filter:drop-shadow(0 0 22px rgba(250,204,21,.42))}
+.gvPromiseBadge,.gvMissionBadge{font-size:12px;letter-spacing:2px;font-weight:900;margin:10px 0;color:#fde68a}
+.gvPromisePremiumPage h2,.gvMissionPremiumPage h2{font-size:clamp(26px,5vw,42px);margin:10px 0;color:#fff7ed}
+.gvPromisePremiumPage p,.gvMissionPremiumPage p{font-size:17px;line-height:1.7;color:rgba(255,255,255,.92)}
+.gvPromiseActions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:18px}
+.gvPromiseActions button{border:0;border-radius:999px;padding:12px 20px;font-weight:900;cursor:pointer;background:linear-gradient(135deg,#f59e0b,#eab308);color:#111827}
+.gvPromiseTabs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px}
+.gvPromiseTabs span{border-radius:16px;padding:12px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);font-size:13px;font-weight:800}
+.gvMissionPremiumPage{background:radial-gradient(circle at top,rgba(34,197,94,.20),rgba(15,23,42,.92))}
+.gvMissionStats,.gvMissionPath{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:18px}
+.gvMissionStats div,.gvMissionPath div{border-radius:20px;padding:18px 12px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12)}
+.gvMissionStats b,.gvMissionPath b{display:block;font-size:26px;color:#86efac}.gvMissionStats span,.gvMissionPath span{font-size:12px;opacity:.86}
+@media(max-width:720px){.gvPromiseTabs{grid-template-columns:1fr}.gvMissionStats,.gvMissionPath{grid-template-columns:repeat(2,1fr)}}
+</style>
+
+
+<style>
+.gvFamilyPremiumPage{
+max-width:980px;
+margin:18px auto 0;
+padding:28px;
+border-radius:34px;
+background:radial-gradient(circle at top,rgba(96,165,250,.20),rgba(15,23,42,.94));
+border:1px solid rgba(255,255,255,.14);
+box-shadow:0 24px 65px rgba(0,0,0,.35);
+text-align:center;
+}
+.gvFamilyGlobe{
+width:130px;height:130px;margin:0 auto 14px;
+border-radius:50%;
+display:flex;align-items:center;justify-content:center;
+font-size:62px;
+background:radial-gradient(circle at top,#60a5fa,#1d4ed8,#020617);
+box-shadow:0 0 35px rgba(96,165,250,.45);
+}
+.gvFamilyBadge{
+font-size:12px;
+letter-spacing:2px;
+font-weight:900;
+color:#93c5fd;
+margin-bottom:10px;
+}
+.gvFamilyHero h2{
+font-size:clamp(28px,5vw,44px);
+margin:10px 0;
+color:#eff6ff;
+}
+.gvFamilyHero p{
+max-width:760px;
+margin:auto;
+line-height:1.7;
+color:rgba(255,255,255,.92);
+}
+.gvFamilyStats{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:12px;
+margin-top:24px;
+}
+.gvFamilyStats div{
+border-radius:20px;
+padding:18px 10px;
+background:rgba(255,255,255,.07);
+border:1px solid rgba(255,255,255,.12);
+}
+.gvFamilyStats b{
+display:block;
+font-size:26px;
+color:#bfdbfe;
+}
+.gvFamilyStats span{
+font-size:12px;
+opacity:.86;
+}
+.gvFamilyGrid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:16px;
+margin-top:22px;
+}
+.gvFamilyCard{
+border-radius:24px;
+padding:22px;
+background:rgba(255,255,255,.06);
+border:1px solid rgba(255,255,255,.10);
+text-align:left;
+}
+.gvFamilyIcon{
+font-size:38px;
+margin-bottom:10px;
+}
+.gvFamilyCard h3{
+margin:0 0 8px;
+color:#dbeafe;
+}
+.gvFamilyCard p{
+margin:0;
+line-height:1.6;
+color:rgba(255,255,255,.85);
+}
+.gvFamilyPrayerBox{
+margin-top:24px;
+padding:22px;
+border-radius:24px;
+background:rgba(255,255,255,.07);
+border:1px solid rgba(255,255,255,.12);
+}
+.gvFamilyPrayerTitle{
+font-size:20px;
+font-weight:900;
+margin-bottom:10px;
+color:#dbeafe;
+}
+.gvFamilyShareBtn{
+margin-top:14px;
+border:0;
+border-radius:999px;
+padding:12px 22px;
+background:linear-gradient(135deg,#60a5fa,#2563eb);
+color:white;
+font-weight:900;
+cursor:pointer;
+}
+@media(max-width:720px){
+.gvFamilyStats{grid-template-columns:repeat(2,1fr)}
+.gvFamilyGrid{grid-template-columns:1fr}
+}
+</style>
+
+
+<style>
+/* FAMILY PAGE BACKGROUND VISIBILITY FIX */
+.gvSeparatePage:has(.gvFamilyPremiumPage){
+  background:#020617!important;
+  border-radius:28px!important;
+  padding:14px!important;
+  box-shadow:0 0 0 9999px rgba(2,6,23,.96)!important;
+}
+.gvSeparatePage:has(.gvFamilyPremiumPage) .gvSeparateHero{
+  background:linear-gradient(145deg,#071a33,#020617)!important;
+  border:1px solid rgba(96,165,250,.22)!important;
+}
+.gvFamilyPremiumPage{
+  background:linear-gradient(180deg,#071a33 0%,#06111f 45%,#020617 100%)!important;
+  border:1px solid rgba(147,197,253,.22)!important;
+  box-shadow:0 25px 80px rgba(0,0,0,.72)!important;
+}
+.gvFamilyCard,.gvFamilyStats div,.gvFamilyPrayerBox{
+  background:rgba(15,23,42,.92)!important;
+}
+@supports not selector(:has(*)){
+  .gvSeparatePage{
+    background:#020617!important;
+  }
+}
+</style>
+
 </head>
 <body>
 <div class="min-h-screen bg-[#060d1a] text-white overflow-hidden relative">
@@ -751,6 +992,7 @@ margin-top:6px;
         <button onclick="openPanel('family')" class="quickCard"><div class="text-3xl mb-3">🌎</div><div class="font-bold">Global Family</div><div class="text-xs text-slate-500 mt-1"><span id="memberCount">0</span> believers connected</div></button>
         <button onclick="openPanel('register')" class="quickCard"><div class="text-3xl mb-3">➕</div><div class="font-bold">Join / Register</div><div class="text-xs text-slate-500 mt-1">Save member to Firebase</div></button>
         <button onclick="openPanel('donate')" class="quickCard"><div class="text-3xl mb-3">💝</div><div class="font-bold">Donations ₹</div><div class="text-xs text-slate-500 mt-1">Support ministry</div></button>
+        <button onclick="openPanel('media')" class="quickCard"><div class="text-3xl mb-3">🎬</div><div class="font-bold">HFGM Media</div><div class="text-xs text-slate-500 mt-1">Videos, photos, live stream</div></button>
         <button onclick="openPanel('admin')" class="quickCard"><div class="text-3xl mb-3">🔐</div><div class="font-bold">Admin</div><div class="text-xs text-slate-500 mt-1">Private saved data</div></button>
       </div>
     </section>
@@ -792,7 +1034,7 @@ margin-top:6px;
     </section>
   </main>
 
-  <div class="fixed bottom-0 left-0 right-0 border-t border-white/10 bg-[#08101f]/95 backdrop-blur-xl z-40"><div class="max-w-md mx-auto grid grid-cols-4 py-3 text-center text-xs"><button onclick="window.scrollTo({top:0,behavior:'smooth'})" class="text-yellow-400 flex flex-col items-center gap-1"><span class="text-lg">🏠</span>Home</button><button onclick="openPanel('register')" class="text-slate-500 flex flex-col items-center gap-1"><span class="text-lg">➕</span>Join</button><button onclick="openPanel('donate')" class="text-slate-500 flex flex-col items-center gap-1"><span class="text-lg">💝</span>Donate</button><button onclick="openPanel('admin')" class="text-slate-500 flex flex-col items-center gap-1"><span class="text-lg">👤</span>Admin</button></div></div>
+  <div class="fixed bottom-0 left-0 right-0 border-t border-white/10 bg-[#08101f]/95 backdrop-blur-xl z-40"><div class="max-w-md mx-auto grid grid-cols-5 py-3 text-center text-[11px]"><button onclick="window.scrollTo({top:0,behavior:'smooth'})" class="text-yellow-400 flex flex-col items-center gap-1"><span class="text-lg">🏠</span>Home</button><button onclick="openPanel('register')" class="text-slate-500 flex flex-col items-center gap-1"><span class="text-lg">➕</span>Join</button><button onclick="openPanel('donate')" class="text-slate-500 flex flex-col items-center gap-1"><span class="text-lg">💝</span>Donate</button><button onclick="openPanel('media')" class="text-slate-500 flex flex-col items-center gap-1"><span class="text-lg">🎬</span>Media</button><button onclick="openPanel('admin')" class="text-slate-500 flex flex-col items-center gap-1"><span class="text-lg">👤</span>Admin</button></div></div>
 </div>
 
 <div id="panel" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm p-4 overflow-y-auto"><div class="min-h-full flex items-center justify-center"><div class="panelIn w-full max-w-md rounded-3xl border border-yellow-400/20 bg-[#0b1220] p-5 shadow-2xl"><div id="panelContent"></div><button onclick="closePanel()" class="mt-4 w-full rounded-xl bg-slate-800 py-3 font-bold">Close</button></div></div></div>
@@ -854,7 +1096,218 @@ function printIdCard(k){const m=findMemberByKey(k); if(!m)return; const idx=memb
 .adminToolGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}.adminToolGrid button{border-radius:16px;padding:11px 8px;font-size:12px;font-weight:900;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.07);color:white}.adminPanelBox{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.09);border-radius:22px;padding:14px;margin-bottom:12px}.miniBar{height:8px;background:rgba(255,255,255,.1);border-radius:999px;overflow:hidden;margin-top:8px}.miniBar i{display:block;height:100%;background:linear-gradient(90deg,#22c55e,#facc15,#38bdf8);border-radius:999px;animation:barPulse 2.8s infinite ease-in-out}@keyframes barPulse{0%,100%{filter:brightness(1)}50%{filter:brightness(1.45)}}
 .exportBtn{background:linear-gradient(135deg,#22c55e,#16a34a)!important;color:white!important}.dangerSoft{background:rgba(239,68,68,.14)!important;color:#fecaca!important;border-color:rgba(239,68,68,.25)!important}.goldSoft{background:rgba(251,191,36,.14)!important;color:#fde68a!important;border-color:rgba(251,191,36,.25)!important}
 
-</style></head><body>${idCardMarkup(m,idx)}<button onclick="print()" style="position:fixed;bottom:20px;padding:12px 20px;border:0;border-radius:14px;background:#16a34a;color:white;font-weight:900">Print / Save PDF</button></body></html>`); w.document.close()}
+
+.gvCardsOnlyTitle{
+  margin:18px auto 8px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:10px 22px;
+  border-radius:999px;
+  background:linear-gradient(135deg,rgba(255,215,120,.18),rgba(75,160,255,.12));
+  border:1px solid rgba(255,255,255,.16);
+  color:#fff;
+  font-weight:900;
+  letter-spacing:.7px;
+  box-shadow:0 12px 35px rgba(0,0,0,.25), inset 0 0 25px rgba(255,255,255,.06);
+}
+
+
+/* Clean professional four boxes only - Global Vision */
+.gvFourGrid{margin-top:24px!important;display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:18px!important;}
+.gvOpenCard{min-height:210px!important;border-radius:26px!important;padding:24px!important;text-align:left!important;display:flex!important;flex-direction:column!important;justify-content:space-between!important;align-items:flex-start!important;border:1px solid rgba(255,255,255,.16)!important;background:linear-gradient(145deg,rgba(255,255,255,.12),rgba(255,255,255,.04))!important;box-shadow:0 18px 45px rgba(0,0,0,.32), inset 0 0 35px rgba(255,255,255,.05)!important;backdrop-filter:blur(16px)!important;transition:.35s ease!important;position:relative!important;overflow:hidden!important;}
+.gvOpenCard:before{content:"";position:absolute;inset:-2px;background:radial-gradient(circle at top right,rgba(255,215,120,.26),transparent 38%),radial-gradient(circle at bottom left,rgba(87,166,255,.22),transparent 42%);opacity:.9;pointer-events:none;}
+.gvOpenCard>*{position:relative;z-index:1;}
+.gvOpenCard:hover{transform:translateY(-8px) scale(1.015)!important;box-shadow:0 28px 70px rgba(0,0,0,.45),0 0 34px rgba(80,160,255,.22)!important;}
+.gvOpenIcon{width:62px!important;height:62px!important;border-radius:20px!important;display:flex!important;align-items:center!important;justify-content:center!important;font-size:32px!important;background:rgba(255,255,255,.12)!important;border:1px solid rgba(255,255,255,.18)!important;box-shadow:inset 0 0 20px rgba(255,255,255,.06)!important;}
+.gvOpenCard h3{font-size:21px!important;margin:16px 0 8px!important;color:#fff!important;font-weight:900!important;}
+.gvOpenCard p{font-size:13.5px!important;line-height:1.45!important;color:rgba(255,255,255,.78)!important;margin:0!important;}
+.gvOpenCard small{align-self:flex-end!important;margin-top:18px!important;padding:8px 12px!important;border-radius:999px!important;background:rgba(255,255,255,.12)!important;border:1px solid rgba(255,255,255,.12)!important;color:#ffe7a2!important;font-weight:900!important;letter-spacing:.4px!important;}
+@media(max-width:900px){.gvFourGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important;}.gvOpenCard{min-height:190px!important;}}
+@media(max-width:560px){.gvFourGrid{grid-template-columns:1fr!important;}.gvOpenCard{min-height:165px!important;}}
+
+</style><style>
+
+/* PRAYER CARD FULL PREMIUM PAGE - NO HOME BOTTOM SECTION */
+.gvPrayerPremiumPage{max-width:980px;margin:18px auto 0;padding:18px;border-radius:30px;background:radial-gradient(circle at top,rgba(14,165,233,.22),rgba(15,23,42,.86));border:1px solid rgba(125,211,252,.20);box-shadow:0 18px 55px rgba(0,0,0,.32)}
+.gvPrayerGlobePro{width:190px;height:190px;margin:10px auto 18px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative;background:radial-gradient(circle at 30% 25%,#67e8f9,#2563eb 45%,#020617 72%);box-shadow:0 0 45px rgba(14,165,233,.50),inset -20px -20px 38px rgba(0,0,0,.38);animation:gvPrayerSpin 18s linear infinite}
+.gvPrayerRing{position:absolute;inset:-10px;border-radius:50%;border:1px dashed rgba(186,230,253,.45);animation:gvPrayerSpin 11s linear infinite reverse}
+.gvPrayerPremiumPage .gvFlagBig{font-size:82px;filter:drop-shadow(0 8px 18px rgba(0,0,0,.45))}
+.gvPrayerProBox{max-width:680px;margin:auto;padding:22px;border-radius:24px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14)}
+.gvPrayerLabel{font-size:12px;letter-spacing:2px;color:#93c5fd;font-weight:900;margin-bottom:8px}
+.gvPrayerPremiumPage .gvCountryTitle{font-size:clamp(24px,5vw,38px);font-weight:900;color:#e0f2fe;margin-bottom:8px}
+.gvPrayerPremiumPage .gvCountryPrayer{font-size:16px;line-height:1.65;color:rgba(255,255,255,.92)}
+.gvPrayerPremiumPage .gvCounter{margin:14px auto 0;display:inline-block;padding:8px 13px;border-radius:999px;background:rgba(14,165,233,.16);border:1px solid rgba(125,211,252,.22);font-size:12px;font-weight:800;color:#bae6fd}
+.gvSharePrayerBtn{display:block;margin:18px auto 0;border:0;border-radius:999px;padding:13px 25px;background:linear-gradient(135deg,#06b6d4,#2563eb);color:#fff;font-weight:900;box-shadow:0 14px 32px rgba(37,99,235,.38);cursor:pointer}
+.gvPrayerMiniGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0}
+.gvPrayerMiniGrid>div{border-radius:18px;padding:14px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);display:flex;flex-direction:column;gap:5px}
+.gvPrayerMiniGrid b{color:#e0f2fe}.gvPrayerMiniGrid span{font-size:12px;opacity:.82}
+@keyframes gvPrayerSpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@media(max-width:720px){.gvPrayerMiniGrid{grid-template-columns:repeat(2,1fr)}.gvPrayerGlobePro{width:155px;height:155px}.gvPrayerPremiumPage .gvFlagBig{font-size:68px}}
+
+</style>
+
+<style>
+.gvPromisePremiumPage,.gvMissionPremiumPage{max-width:940px;margin:18px auto 0;padding:28px;border-radius:30px;text-align:center;border:1px solid rgba(255,255,255,.14);box-shadow:0 22px 60px rgba(0,0,0,.32)}
+.gvPromisePremiumPage{background:radial-gradient(circle at top,rgba(250,204,21,.22),rgba(15,23,42,.90))}
+.gvPromiseBible{font-size:76px;filter:drop-shadow(0 0 22px rgba(250,204,21,.42))}
+.gvPromiseBadge,.gvMissionBadge{font-size:12px;letter-spacing:2px;font-weight:900;margin:10px 0;color:#fde68a}
+.gvPromisePremiumPage h2,.gvMissionPremiumPage h2{font-size:clamp(26px,5vw,42px);margin:10px 0;color:#fff7ed}
+.gvPromisePremiumPage p,.gvMissionPremiumPage p{font-size:17px;line-height:1.7;color:rgba(255,255,255,.92)}
+.gvPromiseActions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:18px}
+.gvPromiseActions button{border:0;border-radius:999px;padding:12px 20px;font-weight:900;cursor:pointer;background:linear-gradient(135deg,#f59e0b,#eab308);color:#111827}
+.gvPromiseTabs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px}
+.gvPromiseTabs span{border-radius:16px;padding:12px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);font-size:13px;font-weight:800}
+.gvMissionPremiumPage{background:radial-gradient(circle at top,rgba(34,197,94,.20),rgba(15,23,42,.92))}
+.gvMissionStats,.gvMissionPath{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:18px}
+.gvMissionStats div,.gvMissionPath div{border-radius:20px;padding:18px 12px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12)}
+.gvMissionStats b,.gvMissionPath b{display:block;font-size:26px;color:#86efac}.gvMissionStats span,.gvMissionPath span{font-size:12px;opacity:.86}
+@media(max-width:720px){.gvPromiseTabs{grid-template-columns:1fr}.gvMissionStats,.gvMissionPath{grid-template-columns:repeat(2,1fr)}}
+</style>
+
+
+<style>
+.gvFamilyPremiumPage{
+max-width:980px;
+margin:18px auto 0;
+padding:28px;
+border-radius:34px;
+background:radial-gradient(circle at top,rgba(96,165,250,.20),rgba(15,23,42,.94));
+border:1px solid rgba(255,255,255,.14);
+box-shadow:0 24px 65px rgba(0,0,0,.35);
+text-align:center;
+}
+.gvFamilyGlobe{
+width:130px;height:130px;margin:0 auto 14px;
+border-radius:50%;
+display:flex;align-items:center;justify-content:center;
+font-size:62px;
+background:radial-gradient(circle at top,#60a5fa,#1d4ed8,#020617);
+box-shadow:0 0 35px rgba(96,165,250,.45);
+}
+.gvFamilyBadge{
+font-size:12px;
+letter-spacing:2px;
+font-weight:900;
+color:#93c5fd;
+margin-bottom:10px;
+}
+.gvFamilyHero h2{
+font-size:clamp(28px,5vw,44px);
+margin:10px 0;
+color:#eff6ff;
+}
+.gvFamilyHero p{
+max-width:760px;
+margin:auto;
+line-height:1.7;
+color:rgba(255,255,255,.92);
+}
+.gvFamilyStats{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:12px;
+margin-top:24px;
+}
+.gvFamilyStats div{
+border-radius:20px;
+padding:18px 10px;
+background:rgba(255,255,255,.07);
+border:1px solid rgba(255,255,255,.12);
+}
+.gvFamilyStats b{
+display:block;
+font-size:26px;
+color:#bfdbfe;
+}
+.gvFamilyStats span{
+font-size:12px;
+opacity:.86;
+}
+.gvFamilyGrid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:16px;
+margin-top:22px;
+}
+.gvFamilyCard{
+border-radius:24px;
+padding:22px;
+background:rgba(255,255,255,.06);
+border:1px solid rgba(255,255,255,.10);
+text-align:left;
+}
+.gvFamilyIcon{
+font-size:38px;
+margin-bottom:10px;
+}
+.gvFamilyCard h3{
+margin:0 0 8px;
+color:#dbeafe;
+}
+.gvFamilyCard p{
+margin:0;
+line-height:1.6;
+color:rgba(255,255,255,.85);
+}
+.gvFamilyPrayerBox{
+margin-top:24px;
+padding:22px;
+border-radius:24px;
+background:rgba(255,255,255,.07);
+border:1px solid rgba(255,255,255,.12);
+}
+.gvFamilyPrayerTitle{
+font-size:20px;
+font-weight:900;
+margin-bottom:10px;
+color:#dbeafe;
+}
+.gvFamilyShareBtn{
+margin-top:14px;
+border:0;
+border-radius:999px;
+padding:12px 22px;
+background:linear-gradient(135deg,#60a5fa,#2563eb);
+color:white;
+font-weight:900;
+cursor:pointer;
+}
+@media(max-width:720px){
+.gvFamilyStats{grid-template-columns:repeat(2,1fr)}
+.gvFamilyGrid{grid-template-columns:1fr}
+}
+</style>
+
+
+<style>
+/* FAMILY PAGE BACKGROUND VISIBILITY FIX */
+.gvSeparatePage:has(.gvFamilyPremiumPage){
+  background:#020617!important;
+  border-radius:28px!important;
+  padding:14px!important;
+  box-shadow:0 0 0 9999px rgba(2,6,23,.96)!important;
+}
+.gvSeparatePage:has(.gvFamilyPremiumPage) .gvSeparateHero{
+  background:linear-gradient(145deg,#071a33,#020617)!important;
+  border:1px solid rgba(96,165,250,.22)!important;
+}
+.gvFamilyPremiumPage{
+  background:linear-gradient(180deg,#071a33 0%,#06111f 45%,#020617 100%)!important;
+  border:1px solid rgba(147,197,253,.22)!important;
+  box-shadow:0 25px 80px rgba(0,0,0,.72)!important;
+}
+.gvFamilyCard,.gvFamilyStats div,.gvFamilyPrayerBox{
+  background:rgba(15,23,42,.92)!important;
+}
+@supports not selector(:has(*)){
+  .gvSeparatePage{
+    background:#020617!important;
+  }
+}
+</style>
+
+</head><body>${idCardMarkup(m,idx)}<button onclick="print()" style="position:fixed;bottom:20px;padding:12px 20px;border:0;border-radius:14px;background:#16a34a;color:white;font-weight:900">Print / Save PDF</button></body></html>`); w.document.close()}
 function downloadIdCard(k){const m=findMemberByKey(k); if(!m)return; const idx=members.indexOf(m); const html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${esc(autoCardNo(m,idx))}</title><style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#e5e7eb;font-family:Arial}.idPreviewCard{width:320px;border-radius:26px;overflow:hidden;background:linear-gradient(160deg,#07111f,#0b4da2,#06b6d4);text-align:center;color:white}.idPreviewTop{padding:16px;background:rgba(255,255,255,.12)}.idPreviewPhoto{width:92px;height:92px;border-radius:50%;object-fit:cover;border:4px solid #fff;margin:14px auto 8px;background:#fff}.idPreviewName{font-size:22px;font-weight:900}.idPreviewBadge{display:inline-block;background:#ffd166;color:#111827;border-radius:999px;padding:5px 12px;font-size:12px;font-weight:900;margin-top:6px}.idPreviewBody{padding:14px 18px 18px;text-align:left}.idPreviewRow{background:rgba(255,255,255,.11);border-radius:12px;padding:8px 10px;margin:7px 0;font-size:13px}.idPreviewQR{width:104px;height:104px;background:#fff;border-radius:14px;padding:7px;margin:12px auto 4px;display:block}.idPreviewNote{text-align:center;font-size:10px;color:#dbeafe;margin-top:3px;opacity:.9}.idNumberBig{display:inline-block;background:#ffd166;color:#111827;border-radius:999px;padding:6px 14px;font-size:13px;font-weight:900;margin-top:7px;letter-spacing:.4px}.phoneBig{font-size:14px!important;font-weight:900;color:#dcfce7}
 /* STRONG ADMIN DASHBOARD UPGRADE */
 .adminHeroStrong{background:radial-gradient(circle at top right,rgba(251,191,36,.22),transparent 30%),linear-gradient(135deg,#111827,#070b14);border:1px solid rgba(251,191,36,.22);border-radius:26px;padding:18px;margin-bottom:14px;box-shadow:0 20px 55px rgba(0,0,0,.35)}
@@ -863,7 +1316,218 @@ function downloadIdCard(k){const m=findMemberByKey(k); if(!m)return; const idx=m
 .adminToolGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}.adminToolGrid button{border-radius:16px;padding:11px 8px;font-size:12px;font-weight:900;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.07);color:white}.adminPanelBox{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.09);border-radius:22px;padding:14px;margin-bottom:12px}.miniBar{height:8px;background:rgba(255,255,255,.1);border-radius:999px;overflow:hidden;margin-top:8px}.miniBar i{display:block;height:100%;background:linear-gradient(90deg,#22c55e,#facc15,#38bdf8);border-radius:999px;animation:barPulse 2.8s infinite ease-in-out}@keyframes barPulse{0%,100%{filter:brightness(1)}50%{filter:brightness(1.45)}}
 .exportBtn{background:linear-gradient(135deg,#22c55e,#16a34a)!important;color:white!important}.dangerSoft{background:rgba(239,68,68,.14)!important;color:#fecaca!important;border-color:rgba(239,68,68,.25)!important}.goldSoft{background:rgba(251,191,36,.14)!important;color:#fde68a!important;border-color:rgba(251,191,36,.25)!important}
 
-</style></head><body>${idCardMarkup(m,idx)}</body></html>`; const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([html],{type:'text/html'})); a.download=autoCardNo(m,idx)+'_'+(m.name||'member').replace(/\W+/g,'_')+'.html'; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+
+.gvCardsOnlyTitle{
+  margin:18px auto 8px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:10px 22px;
+  border-radius:999px;
+  background:linear-gradient(135deg,rgba(255,215,120,.18),rgba(75,160,255,.12));
+  border:1px solid rgba(255,255,255,.16);
+  color:#fff;
+  font-weight:900;
+  letter-spacing:.7px;
+  box-shadow:0 12px 35px rgba(0,0,0,.25), inset 0 0 25px rgba(255,255,255,.06);
+}
+
+
+/* Clean professional four boxes only - Global Vision */
+.gvFourGrid{margin-top:24px!important;display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:18px!important;}
+.gvOpenCard{min-height:210px!important;border-radius:26px!important;padding:24px!important;text-align:left!important;display:flex!important;flex-direction:column!important;justify-content:space-between!important;align-items:flex-start!important;border:1px solid rgba(255,255,255,.16)!important;background:linear-gradient(145deg,rgba(255,255,255,.12),rgba(255,255,255,.04))!important;box-shadow:0 18px 45px rgba(0,0,0,.32), inset 0 0 35px rgba(255,255,255,.05)!important;backdrop-filter:blur(16px)!important;transition:.35s ease!important;position:relative!important;overflow:hidden!important;}
+.gvOpenCard:before{content:"";position:absolute;inset:-2px;background:radial-gradient(circle at top right,rgba(255,215,120,.26),transparent 38%),radial-gradient(circle at bottom left,rgba(87,166,255,.22),transparent 42%);opacity:.9;pointer-events:none;}
+.gvOpenCard>*{position:relative;z-index:1;}
+.gvOpenCard:hover{transform:translateY(-8px) scale(1.015)!important;box-shadow:0 28px 70px rgba(0,0,0,.45),0 0 34px rgba(80,160,255,.22)!important;}
+.gvOpenIcon{width:62px!important;height:62px!important;border-radius:20px!important;display:flex!important;align-items:center!important;justify-content:center!important;font-size:32px!important;background:rgba(255,255,255,.12)!important;border:1px solid rgba(255,255,255,.18)!important;box-shadow:inset 0 0 20px rgba(255,255,255,.06)!important;}
+.gvOpenCard h3{font-size:21px!important;margin:16px 0 8px!important;color:#fff!important;font-weight:900!important;}
+.gvOpenCard p{font-size:13.5px!important;line-height:1.45!important;color:rgba(255,255,255,.78)!important;margin:0!important;}
+.gvOpenCard small{align-self:flex-end!important;margin-top:18px!important;padding:8px 12px!important;border-radius:999px!important;background:rgba(255,255,255,.12)!important;border:1px solid rgba(255,255,255,.12)!important;color:#ffe7a2!important;font-weight:900!important;letter-spacing:.4px!important;}
+@media(max-width:900px){.gvFourGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important;}.gvOpenCard{min-height:190px!important;}}
+@media(max-width:560px){.gvFourGrid{grid-template-columns:1fr!important;}.gvOpenCard{min-height:165px!important;}}
+
+</style><style>
+
+/* PRAYER CARD FULL PREMIUM PAGE - NO HOME BOTTOM SECTION */
+.gvPrayerPremiumPage{max-width:980px;margin:18px auto 0;padding:18px;border-radius:30px;background:radial-gradient(circle at top,rgba(14,165,233,.22),rgba(15,23,42,.86));border:1px solid rgba(125,211,252,.20);box-shadow:0 18px 55px rgba(0,0,0,.32)}
+.gvPrayerGlobePro{width:190px;height:190px;margin:10px auto 18px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative;background:radial-gradient(circle at 30% 25%,#67e8f9,#2563eb 45%,#020617 72%);box-shadow:0 0 45px rgba(14,165,233,.50),inset -20px -20px 38px rgba(0,0,0,.38);animation:gvPrayerSpin 18s linear infinite}
+.gvPrayerRing{position:absolute;inset:-10px;border-radius:50%;border:1px dashed rgba(186,230,253,.45);animation:gvPrayerSpin 11s linear infinite reverse}
+.gvPrayerPremiumPage .gvFlagBig{font-size:82px;filter:drop-shadow(0 8px 18px rgba(0,0,0,.45))}
+.gvPrayerProBox{max-width:680px;margin:auto;padding:22px;border-radius:24px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14)}
+.gvPrayerLabel{font-size:12px;letter-spacing:2px;color:#93c5fd;font-weight:900;margin-bottom:8px}
+.gvPrayerPremiumPage .gvCountryTitle{font-size:clamp(24px,5vw,38px);font-weight:900;color:#e0f2fe;margin-bottom:8px}
+.gvPrayerPremiumPage .gvCountryPrayer{font-size:16px;line-height:1.65;color:rgba(255,255,255,.92)}
+.gvPrayerPremiumPage .gvCounter{margin:14px auto 0;display:inline-block;padding:8px 13px;border-radius:999px;background:rgba(14,165,233,.16);border:1px solid rgba(125,211,252,.22);font-size:12px;font-weight:800;color:#bae6fd}
+.gvSharePrayerBtn{display:block;margin:18px auto 0;border:0;border-radius:999px;padding:13px 25px;background:linear-gradient(135deg,#06b6d4,#2563eb);color:#fff;font-weight:900;box-shadow:0 14px 32px rgba(37,99,235,.38);cursor:pointer}
+.gvPrayerMiniGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0}
+.gvPrayerMiniGrid>div{border-radius:18px;padding:14px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);display:flex;flex-direction:column;gap:5px}
+.gvPrayerMiniGrid b{color:#e0f2fe}.gvPrayerMiniGrid span{font-size:12px;opacity:.82}
+@keyframes gvPrayerSpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@media(max-width:720px){.gvPrayerMiniGrid{grid-template-columns:repeat(2,1fr)}.gvPrayerGlobePro{width:155px;height:155px}.gvPrayerPremiumPage .gvFlagBig{font-size:68px}}
+
+</style>
+
+<style>
+.gvPromisePremiumPage,.gvMissionPremiumPage{max-width:940px;margin:18px auto 0;padding:28px;border-radius:30px;text-align:center;border:1px solid rgba(255,255,255,.14);box-shadow:0 22px 60px rgba(0,0,0,.32)}
+.gvPromisePremiumPage{background:radial-gradient(circle at top,rgba(250,204,21,.22),rgba(15,23,42,.90))}
+.gvPromiseBible{font-size:76px;filter:drop-shadow(0 0 22px rgba(250,204,21,.42))}
+.gvPromiseBadge,.gvMissionBadge{font-size:12px;letter-spacing:2px;font-weight:900;margin:10px 0;color:#fde68a}
+.gvPromisePremiumPage h2,.gvMissionPremiumPage h2{font-size:clamp(26px,5vw,42px);margin:10px 0;color:#fff7ed}
+.gvPromisePremiumPage p,.gvMissionPremiumPage p{font-size:17px;line-height:1.7;color:rgba(255,255,255,.92)}
+.gvPromiseActions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:18px}
+.gvPromiseActions button{border:0;border-radius:999px;padding:12px 20px;font-weight:900;cursor:pointer;background:linear-gradient(135deg,#f59e0b,#eab308);color:#111827}
+.gvPromiseTabs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px}
+.gvPromiseTabs span{border-radius:16px;padding:12px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);font-size:13px;font-weight:800}
+.gvMissionPremiumPage{background:radial-gradient(circle at top,rgba(34,197,94,.20),rgba(15,23,42,.92))}
+.gvMissionStats,.gvMissionPath{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:18px}
+.gvMissionStats div,.gvMissionPath div{border-radius:20px;padding:18px 12px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12)}
+.gvMissionStats b,.gvMissionPath b{display:block;font-size:26px;color:#86efac}.gvMissionStats span,.gvMissionPath span{font-size:12px;opacity:.86}
+@media(max-width:720px){.gvPromiseTabs{grid-template-columns:1fr}.gvMissionStats,.gvMissionPath{grid-template-columns:repeat(2,1fr)}}
+</style>
+
+
+<style>
+.gvFamilyPremiumPage{
+max-width:980px;
+margin:18px auto 0;
+padding:28px;
+border-radius:34px;
+background:radial-gradient(circle at top,rgba(96,165,250,.20),rgba(15,23,42,.94));
+border:1px solid rgba(255,255,255,.14);
+box-shadow:0 24px 65px rgba(0,0,0,.35);
+text-align:center;
+}
+.gvFamilyGlobe{
+width:130px;height:130px;margin:0 auto 14px;
+border-radius:50%;
+display:flex;align-items:center;justify-content:center;
+font-size:62px;
+background:radial-gradient(circle at top,#60a5fa,#1d4ed8,#020617);
+box-shadow:0 0 35px rgba(96,165,250,.45);
+}
+.gvFamilyBadge{
+font-size:12px;
+letter-spacing:2px;
+font-weight:900;
+color:#93c5fd;
+margin-bottom:10px;
+}
+.gvFamilyHero h2{
+font-size:clamp(28px,5vw,44px);
+margin:10px 0;
+color:#eff6ff;
+}
+.gvFamilyHero p{
+max-width:760px;
+margin:auto;
+line-height:1.7;
+color:rgba(255,255,255,.92);
+}
+.gvFamilyStats{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:12px;
+margin-top:24px;
+}
+.gvFamilyStats div{
+border-radius:20px;
+padding:18px 10px;
+background:rgba(255,255,255,.07);
+border:1px solid rgba(255,255,255,.12);
+}
+.gvFamilyStats b{
+display:block;
+font-size:26px;
+color:#bfdbfe;
+}
+.gvFamilyStats span{
+font-size:12px;
+opacity:.86;
+}
+.gvFamilyGrid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:16px;
+margin-top:22px;
+}
+.gvFamilyCard{
+border-radius:24px;
+padding:22px;
+background:rgba(255,255,255,.06);
+border:1px solid rgba(255,255,255,.10);
+text-align:left;
+}
+.gvFamilyIcon{
+font-size:38px;
+margin-bottom:10px;
+}
+.gvFamilyCard h3{
+margin:0 0 8px;
+color:#dbeafe;
+}
+.gvFamilyCard p{
+margin:0;
+line-height:1.6;
+color:rgba(255,255,255,.85);
+}
+.gvFamilyPrayerBox{
+margin-top:24px;
+padding:22px;
+border-radius:24px;
+background:rgba(255,255,255,.07);
+border:1px solid rgba(255,255,255,.12);
+}
+.gvFamilyPrayerTitle{
+font-size:20px;
+font-weight:900;
+margin-bottom:10px;
+color:#dbeafe;
+}
+.gvFamilyShareBtn{
+margin-top:14px;
+border:0;
+border-radius:999px;
+padding:12px 22px;
+background:linear-gradient(135deg,#60a5fa,#2563eb);
+color:white;
+font-weight:900;
+cursor:pointer;
+}
+@media(max-width:720px){
+.gvFamilyStats{grid-template-columns:repeat(2,1fr)}
+.gvFamilyGrid{grid-template-columns:1fr}
+}
+</style>
+
+
+<style>
+/* FAMILY PAGE BACKGROUND VISIBILITY FIX */
+.gvSeparatePage:has(.gvFamilyPremiumPage){
+  background:#020617!important;
+  border-radius:28px!important;
+  padding:14px!important;
+  box-shadow:0 0 0 9999px rgba(2,6,23,.96)!important;
+}
+.gvSeparatePage:has(.gvFamilyPremiumPage) .gvSeparateHero{
+  background:linear-gradient(145deg,#071a33,#020617)!important;
+  border:1px solid rgba(96,165,250,.22)!important;
+}
+.gvFamilyPremiumPage{
+  background:linear-gradient(180deg,#071a33 0%,#06111f 45%,#020617 100%)!important;
+  border:1px solid rgba(147,197,253,.22)!important;
+  box-shadow:0 25px 80px rgba(0,0,0,.72)!important;
+}
+.gvFamilyCard,.gvFamilyStats div,.gvFamilyPrayerBox{
+  background:rgba(15,23,42,.92)!important;
+}
+@supports not selector(:has(*)){
+  .gvSeparatePage{
+    background:#020617!important;
+  }
+}
+</style>
+
+</head><body>${idCardMarkup(m,idx)}</body></html>`; const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([html],{type:'text/html'})); a.download=autoCardNo(m,idx)+'_'+(m.name||'member').replace(/\W+/g,'_')+'.html'; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
 function editMember(k){const m=findMemberByKey(k); if(!m)return alert('Member not found'); $('panelContent').innerHTML=`<h2 class="text-2xl font-black text-yellow-300 mb-3">✏ Edit Member</h2><input id="eName" class="editInput" value="${esc(m.name)}" placeholder="Name"><input id="ePhone" class="editInput" value="${esc(m.phone)}" placeholder="Phone"><input id="eRole" class="editInput" value="${esc(m.role)}" placeholder="Role"><input id="eCity" class="editInput" value="${esc(m.city)}" placeholder="City / Village"><input id="eDistrict" class="editInput" value="${esc(m.district)}" placeholder="District"><input id="eState" class="editInput" value="${esc(m.state)}" placeholder="State"><input id="eCountry" class="editInput" value="${esc(m.country)}" placeholder="Country"><input id="eBranch" class="editInput" value="${esc(m.branch)}" placeholder="Branch"><textarea id="ePrayer" class="editInput" placeholder="Prayer / Notes">${esc(m.prayer)}</textarea><button onclick="saveMemberEdit('${k}')" class="w-full rounded-xl bg-green-500 py-3 font-black">✅ Update Member</button>`; $('panel').classList.remove('hidden')}
 async function saveMemberEdit(k){const m=findMemberByKey(k); if(!m)return alert('Member not found'); const payload={name:$('eName').value.trim(),phone:cleanPhone($('ePhone').value),role:$('eRole').value.trim(),city:$('eCity').value.trim(),district:$('eDistrict').value.trim(),state:$('eState').value.trim(),country:$('eCountry').value.trim(),branch:$('eBranch').value.trim(),prayer:$('ePrayer').value.trim(),updatedAt:new Date().toISOString()}; try{if(m.source==='local'){localMembers=localMembers.map(x=>normalize(x,'local').id===m.id?{...x,...payload}:x); localStorage.setItem('hfgm_local_members',JSON.stringify(localMembers));}else{if(!db) initFirebase(); if(!db) throw new Error('Firebase not connected'); await db.collection(m.source).doc(m.id).update(payload);} alert('✅ Member updated'); await loadFirebase(); openPanel('admin')}catch(e){alert('Update failed: '+e.message)}}
 async function deleteMember(k){const m=findMemberByKey(k); if(!m)return alert('Member not found'); if(!confirm('Delete '+m.name+'?'))return; try{if(m.source==='local'){localMembers=localMembers.filter(x=>normalize(x,'local').id!==m.id); localStorage.setItem('hfgm_local_members',JSON.stringify(localMembers));}else{if(!db) initFirebase(); if(!db) throw new Error('Firebase not connected'); await db.collection(m.source).doc(m.id).delete();} alert('🗑 Deleted'); await loadFirebase(); openPanel('admin')}catch(e){alert('Delete failed: '+e.message)}}
@@ -877,62 +1541,83 @@ const box=document.getElementById('panelContent');
 if(!box)return;
 
 const data={
-prayer:{
-icon:'🕊️',
-title:'Prayer Covering',
-sub:'Global Prayer Mission',
-text:'HFGM worldwide prayer movement for all countries and believers.',
-verse:'“Pray without ceasing.” — 1 Thessalonians 5:17'
-},
-word:{
-icon:'📖',
-title:'Promise Word',
-sub:'Daily Bible Encouragement',
-text:'Daily Telugu and English promise words for believers.',
-verse:'“Your word is a lamp to my feet.” — Psalm 119:105'
-},
-care:{
-icon:'🤝',
-title:'Family Care',
-sub:'Believers Support',
-text:'Prayer support and spiritual encouragement for families.',
-verse:'“Carry each other’s burdens.” — Galatians 6:2'
-},
-global:{
-icon:'🌍',
-title:'Global Mission',
-sub:'Worldwide Gospel Vision',
-text:'Connecting nations through prayer and gospel mission.',
-verse:'“You are the light of the world.” — Matthew 5:14'
-}
+prayer:{icon:'🕊️',title:'Prayer Covering',sub:'Global Prayer Mission',text:'HFGM worldwide prayer movement for all countries and believers.',verse:'“Pray without ceasing.” — 1 Thessalonians 5:17'},
+word:{icon:'📖',title:'Promise Word',sub:'Daily Bible Encouragement',text:'Daily Telugu and English promise words for believers.',verse:'“Your word is a lamp to my feet.” — Psalm 119:105'},
+care:{icon:'🤝',title:'Family Care',sub:'Believers Support',text:'Prayer support and spiritual encouragement for families.',verse:'“Carry each other’s burdens.” — Galatians 6:2'},
+global:{icon:'🌍',title:'Global Mission',sub:'Worldwide Gospel Vision',text:'Connecting nations through prayer and gospel mission.',verse:'“You are the light of the world.” — Matthew 5:14'}
 };
 
 const d=data[type]||data.prayer;
+let extra='';
+
+if(type==='prayer'){
+extra=`
+<div class="gvPrayerPremiumPage">
+  <div class="gvPrayerGlobePro"><div class="gvPrayerRing"></div><div id="prayerFlag" class="gvFlagBig">🇮🇳</div></div>
+  <div class="gvPrayerProBox">
+    <div class="gvPrayerLabel">LIVE NATION PRAYER</div>
+    <div id="prayerCountry" class="gvCountryTitle">Prayer for India</div>
+    <div id="prayerText" class="gvCountryPrayer">Pray for revival, churches and families.</div>
+    <div id="prayerCounter" class="gvCounter">COUNTRY PRAYER 1 / 40</div>
+    <button class="gvSharePrayerBtn" onclick="sharePrayerNow()">🙏 Share Prayer</button>
+  </div>
+  <div class="gvPrayerMiniGrid">
+    <div><b>Prayer Tower</b><span>24/7 Intercession Vision</span></div>
+    <div><b>Healing</b><span>Miracles & Deliverance</span></div>
+    <div><b>Families</b><span>Prayer Covering</span></div>
+    <div><b>Nations</b><span>Global Revival</span></div>
+  </div>
+</div>`;
+}
+
+if(type==='word'){
+extra=`
+<div class="gvPromisePremiumPage">
+  <div class="gvPromiseBible">📖</div>
+  <div class="gvPromiseBadge">DAILY PROMISE WORD</div>
+  <h2 id="promiseTitle">దేవుని వాగ్దానం</h2>
+  <p id="promiseTelugu">యెహోవా నిన్ను ఆశీర్వదించి నిన్ను కాపాడును.</p>
+  <p id="promiseEnglish">The Lord bless you and keep you. — Numbers 6:24</p>
+  <div class="gvPromiseActions">
+    <button onclick="nextPromiseNow()">Next Promise</button>
+    <button onclick="sharePromiseNow()">📲 Share Promise</button>
+  </div>
+  <div class="gvPromiseTabs"><span>Morning Blessing</span><span>Evening Strength</span><span>Family Prayer</span></div>
+</div>`;
+}
+
+if(type==='global'){
+extra=`
+<div class="gvMissionPremiumPage">
+  <div class="gvMissionBadge">FOUNDER GLOBAL VISION</div>
+  <h2>🌍 Nations Revival Mission</h2>
+  <p>To reach nations with the Gospel of Jesus Christ through prayer, healing, deliverance, discipleship, family restoration and spiritual revival.</p>
+  <div class="gvMissionStats">
+    <div><b>24/7</b><span>Prayer</span></div>
+    <div><b>40+</b><span>Nations Prayer</span></div>
+    <div><b>Daily</b><span>Promise Word</span></div>
+    <div><b>Global</b><span>Family Vision</span></div>
+  </div>
+  <div class="gvMissionPath">
+    <div><b>1</b><span>Local Prayer</span></div>
+    <div><b>2</b><span>Village Outreach</span></div>
+    <div><b>3</b><span>Online Gospel</span></div>
+    <div><b>4</b><span>Nations Revival</span></div>
+  </div>
+</div>`;
+}
 
 box.innerHTML=`
 <div class="gvSeparatePage">
-
 <button onclick="openPanel('family')" class="gvBackBtn">← Back to Global Vision</button>
-
 <div class="gvSeparateHero">
 <div class="gvSeparateIcon">${d.icon}</div>
 <div class="gvSeparateMini">${d.sub}</div>
 <h2>${d.title}</h2>
 <p>${d.text}</p>
 </div>
-
-${type==='prayer'?`
-<div class="prayerWorldBox">
-<div id="prayerFlag" class="prayerWorldFlag">🇮🇳</div>
-<div id="prayerCountry" class="prayerWorldTitle">Prayer for India</div>
-<div id="prayerText" class="prayerWorldSub">Pray for revival, churches and families.</div>
-<div id="prayerCounter" class="prayerWorldCounter">COUNTRY PRAYER 1 / 40</div>
-<div class="prayerWorldMini"><span>🇮🇳</span><span>🇺🇸</span><span>🇬🇧</span><span>🇮🇱</span><span>🇦🇺</span></div>
-</div>
-`:''}
-
+${extra}
 <div class="gvSeparateVerse">${d.verse}</div>
-
 </div>
 `;
 
@@ -979,19 +1664,46 @@ const countries=[
 ['🇧🇩','Prayer for Bangladesh','Pray for families, children and gospel doors.'],
 ['🇵🇰','Prayer for Pakistan','Pray for protection, peace and believers.']
 ];
-
 let i=0;
-setInterval(()=>{
+clearInterval(window.__hfgmPrayerTimer);
+window.__hfgmPrayerTimer=setInterval(()=>{
 i=(i+1)%countries.length;
-document.getElementById('prayerFlag').innerHTML=countries[i][0];
-document.getElementById('prayerCountry').innerHTML=countries[i][1];
-document.getElementById('prayerText').innerHTML=countries[i][2];
-const c=document.getElementById('prayerCounter');
-if(c)c.innerHTML='COUNTRY PRAYER '+(i+1)+' / '+countries.length;
+const f=document.getElementById('prayerFlag'), c=document.getElementById('prayerCountry'), t=document.getElementById('prayerText'), cnt=document.getElementById('prayerCounter');
+if(f)f.innerHTML=countries[i][0];
+if(c)c.innerHTML=countries[i][1];
+if(t)t.innerHTML=countries[i][2];
+if(cnt)cnt.innerHTML='COUNTRY PRAYER '+(i+1)+' / '+countries.length;
 },3000);
 }
 }
 
+window.sharePrayerNow=function(){
+ const country=(document.getElementById('prayerCountry')||{}).innerText||'Prayer for Nations';
+ const prayer=(document.getElementById('prayerText')||{}).innerText||'Pray for revival, healing and families.';
+ const msg='🙏 HFGM Global Prayer Vision\n\n'+country+'\n'+prayer+'\n\nHoly Spirit Fellowship Global Ministry';
+ window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');
+};
+
+const hfgmPromises=[
+['దేవుని వాగ్దానం','యెహోవా నిన్ను ఆశీర్వదించి నిన్ను కాపాడును.','The Lord bless you and keep you. — Numbers 6:24'],
+['భయపడవద్దు','నేను నీతో ఉన్నాను, దిగులుపడవద్దు.','Fear not, for I am with you. — Isaiah 41:10'],
+['ప్రార్థనకు జవాబు','అడుగుడి మీకు ఇవ్వబడును.','Ask, and it will be given to you. — Matthew 7:7'],
+['నూతన బలం','యెహోవాను ఆశ్రయించువారు నూతన బలం పొందుదురు.','Those who hope in the Lord will renew their strength. — Isaiah 40:31']
+];
+window.__promiseIndex=0;
+window.nextPromiseNow=function(){
+ window.__promiseIndex=(window.__promiseIndex+1)%hfgmPromises.length;
+ const v=hfgmPromises[window.__promiseIndex];
+ const a=document.getElementById('promiseTitle'), b=document.getElementById('promiseTelugu'), c=document.getElementById('promiseEnglish');
+ if(a)a.innerText=v[0]; if(b)b.innerText=v[1]; if(c)c.innerText=v[2];
+};
+window.sharePromiseNow=function(){
+ const t=(document.getElementById('promiseTitle')||{}).innerText||'Daily Promise Word';
+ const te=(document.getElementById('promiseTelugu')||{}).innerText||'దేవుని వాగ్దానం';
+ const en=(document.getElementById('promiseEnglish')||{}).innerText||'The Lord bless you.';
+ const msg='📖 HFGM Promise Word\n\n'+t+'\n'+te+'\n'+en+'\n\nHoly Spirit Fellowship Global Ministry';
+ window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');
+};
 
 function renderFamilyList(){const box=$('familyList'); if(!box)return; box.innerHTML=members.slice(0,60).map(m=>`<div class="memberCard mb-3"><div class="flex gap-3 items-start">${photoHTML(m)}<div class="flex-1"><div class="font-black text-white">${esc(m.name)}</div><div class="text-xs text-green-300 mt-1 font-bold">📞 ${esc(m.phone||'No number')}</div><div class="text-xs text-slate-400 mt-1">${esc(m.country)} · ${esc(m.state)} · ${esc(m.district)}</div><div class="mt-2"><span class="badge">${esc(m.role)}</span></div></div></div></div>`).join('')||'<div class="text-slate-400">No public list loaded</div>'}
 function registerHTML(){return `<h2 class="text-2xl font-black text-yellow-300 mb-2">➕ Register Member</h2><p class="text-slate-400 text-sm mb-4">Save button file flow same: name + phone compulsory, data Firebase global_believers lo save avutundi.</p><div class="space-y-3"><input id="nName" class="input" placeholder="Full Name *"><input id="nAge" type="number" class="input" placeholder="Age"><select id="nGender" class="input"><option value="">Select Gender</option><option>Male</option><option>Female</option><option>Other</option></select><select id="nRole" class="input"><option>New Believer</option><option>Church Member</option><option>Prayer Partner</option><option>Volunteer</option><option>Sponsor / Donor</option><option>Pastor / Leader</option></select><select id="nCountry" onchange="setCountryCode()" class="input"><option value="India" data-code="91">India (+91)</option><option value="United States" data-code="1">United States (+1)</option><option value="United Kingdom" data-code="44">United Kingdom (+44)</option><option value="Canada" data-code="1">Canada (+1)</option><option value="Australia" data-code="61">Australia (+61)</option><option value="UAE" data-code="971">UAE (+971)</option><option value="Other" data-code="">Other</option></select><select id="nState" class="input"><option value="">Select State</option><option>Andhra Pradesh</option><option>Telangana</option><option>Tamil Nadu</option><option>Karnataka</option><option>Kerala</option><option>Other</option></select><select id="nDistrict" class="input"><option value="">Select District</option><option>West Godavari</option><option>East Godavari</option><option>Eluru</option><option>Krishna</option><option>NTR</option><option>Guntur</option><option>Hyderabad</option><option>Other</option></select><input id="nCity" class="input" placeholder="City / Village"><div class="grid grid-cols-[88px_1fr] gap-2"><input id="nCode" class="input" value="91" placeholder="+91"><input id="nPhone" class="input" placeholder="Phone number *"></div><textarea id="nPrayer" class="input" placeholder="Prayer / Notes"></textarea><select id="nBlood" class="input"><option value="">Select Blood Group</option><option>O+</option><option>O-</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>AB+</option><option>AB-</option></select><input id="nEmergency" class="input" placeholder="Emergency Contact"><input id="nBranch" class="input" value="HFGM Tadepalligudem" placeholder="Church Branch / Area"><div class="grid grid-cols-2 gap-2"><label class="rounded-2xl border border-yellow-400/20 bg-white/5 p-3 text-center text-xs font-bold cursor-pointer">📷 Selfie<input id="nSelfie" type="file" accept="image/*" capture="user" class="hidden"></label><label class="rounded-2xl border border-yellow-400/20 bg-white/5 p-3 text-center text-xs font-bold cursor-pointer">🖼️ Photo<input id="nPhoto" type="file" accept="image/*" class="hidden"></label></div><button onclick="savePublicMember()" class="saveBtn">✅ Save Member</button><div id="saveResult" class="text-center font-bold text-green-300"></div><div class="rounded-2xl border border-yellow-500/20 bg-yellow-500/10 p-3 text-xs text-slate-300">🔒 Secure Save · Only admin can view full member details.</div></div>`}
@@ -1199,6 +1911,36 @@ openPanel=function(type){oldOpenPanel(type); if(type==='admin'&&isAdmin){renderA
 .missionOverlay{position:fixed;inset:0;background:rgba(0,0,0,.82);backdrop-filter:blur(12px);z-index:99999;display:none;align-items:center;justify-content:center;padding:18px}
 .missionOverlay.show{display:flex}.missionModal{width:100%;max-width:430px;max-height:86vh;overflow:auto;border-radius:28px;border:1px solid rgba(250,204,21,.28);background:radial-gradient(circle at top right,rgba(250,204,21,.18),transparent 28%),linear-gradient(145deg,#07101f,#0d1b33 55%,#070b14);box-shadow:0 28px 90px rgba(0,0,0,.65);padding:18px;position:relative}.missionTop{text-align:center;border-radius:24px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);padding:18px;margin-bottom:12px;position:relative;overflow:hidden}.missionTop:before{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent,rgba(250,204,21,.13),transparent);animation:softShine 2.4s infinite}.missionHeart{font-size:54px;animation:heartPulse 2s infinite ease-in-out}.missionTitle{font-size:25px;font-weight:950;color:#fde68a;margin-top:8px}.missionAmount{color:#86efac;font-size:14px;font-weight:900;margin-top:4px}.missionTelugu{font-size:16px;line-height:1.75;color:#fff7ed;font-weight:800;margin-top:12px}.missionEnglish{font-size:13px;line-height:1.65;color:#cbd5e1;margin-top:8px}.missionImageGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}.missionImg{border-radius:18px;background:linear-gradient(145deg,rgba(255,255,255,.10),rgba(255,255,255,.04));border:1px solid rgba(255,255,255,.10);padding:12px 8px;text-align:center;min-height:84px;display:flex;flex-direction:column;align-items:center;justify-content:center}.missionImg .ico{font-size:30px;animation:iconFloat 3s ease-in-out infinite}.missionImg small{display:block;color:#cbd5e1;font-size:10px;font-weight:800;margin-top:6px;line-height:1.25}.goalLine{border-radius:18px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.09);padding:12px;margin:8px 0}.goalLine b{color:#fde68a;font-size:14px}.goalLine p{color:#cbd5e1;font-size:12px;line-height:1.55;margin-top:4px}.missionActions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}.missionActions button{border-radius:16px;padding:13px 10px;font-weight:950}.missionClose{position:absolute;right:14px;top:14px;border:0;border-radius:999px;background:rgba(239,68,68,.95);color:white;width:36px;height:36px;font-weight:950}.receiptPaper{background:#fff;color:#111;border-radius:18px;padding:18px;text-align:center}.receiptPaper h2{font-size:16px;margin:0;color:#111}.rpSub{font-size:12px;color:#555;margin:4px 0 14px}.receiptRow{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #eee;padding:9px 0;font-size:13px}.receiptBless{margin-top:14px;background:#fff7ed;border-radius:12px;padding:12px;font-weight:800;line-height:1.6;color:#7c2d12}.receiptActions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
 @media print{body *{visibility:hidden!important}#receiptPrintArea,#receiptPrintArea *{visibility:visible!important}#receiptPrintArea{position:absolute;left:0;top:0;width:100%;border-radius:0!important}.missionOverlay{display:none!important}}
+
+.gvCardsOnlyTitle{
+  margin:18px auto 8px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:10px 22px;
+  border-radius:999px;
+  background:linear-gradient(135deg,rgba(255,215,120,.18),rgba(75,160,255,.12));
+  border:1px solid rgba(255,255,255,.16);
+  color:#fff;
+  font-weight:900;
+  letter-spacing:.7px;
+  box-shadow:0 12px 35px rgba(0,0,0,.25), inset 0 0 25px rgba(255,255,255,.06);
+}
+
+
+/* Clean professional four boxes only - Global Vision */
+.gvFourGrid{margin-top:24px!important;display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:18px!important;}
+.gvOpenCard{min-height:210px!important;border-radius:26px!important;padding:24px!important;text-align:left!important;display:flex!important;flex-direction:column!important;justify-content:space-between!important;align-items:flex-start!important;border:1px solid rgba(255,255,255,.16)!important;background:linear-gradient(145deg,rgba(255,255,255,.12),rgba(255,255,255,.04))!important;box-shadow:0 18px 45px rgba(0,0,0,.32), inset 0 0 35px rgba(255,255,255,.05)!important;backdrop-filter:blur(16px)!important;transition:.35s ease!important;position:relative!important;overflow:hidden!important;}
+.gvOpenCard:before{content:"";position:absolute;inset:-2px;background:radial-gradient(circle at top right,rgba(255,215,120,.26),transparent 38%),radial-gradient(circle at bottom left,rgba(87,166,255,.22),transparent 42%);opacity:.9;pointer-events:none;}
+.gvOpenCard>*{position:relative;z-index:1;}
+.gvOpenCard:hover{transform:translateY(-8px) scale(1.015)!important;box-shadow:0 28px 70px rgba(0,0,0,.45),0 0 34px rgba(80,160,255,.22)!important;}
+.gvOpenIcon{width:62px!important;height:62px!important;border-radius:20px!important;display:flex!important;align-items:center!important;justify-content:center!important;font-size:32px!important;background:rgba(255,255,255,.12)!important;border:1px solid rgba(255,255,255,.18)!important;box-shadow:inset 0 0 20px rgba(255,255,255,.06)!important;}
+.gvOpenCard h3{font-size:21px!important;margin:16px 0 8px!important;color:#fff!important;font-weight:900!important;}
+.gvOpenCard p{font-size:13.5px!important;line-height:1.45!important;color:rgba(255,255,255,.78)!important;margin:0!important;}
+.gvOpenCard small{align-self:flex-end!important;margin-top:18px!important;padding:8px 12px!important;border-radius:999px!important;background:rgba(255,255,255,.12)!important;border:1px solid rgba(255,255,255,.12)!important;color:#ffe7a2!important;font-weight:900!important;letter-spacing:.4px!important;}
+@media(max-width:900px){.gvFourGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important;}.gvOpenCard{min-height:190px!important;}}
+@media(max-width:560px){.gvFourGrid{grid-template-columns:1fr!important;}.gvOpenCard{min-height:165px!important;}}
+
 </style>
 <script>
 function partnerGoalsData(type){
@@ -1248,5 +1990,507 @@ function donationHTML(){return `<div class="space-y-4">
 </div>`}
 </script>
 
+
+<!-- HFGM GLOBAL VISION 4 FULL PAGE MODULES - SAFE UPGRADE -->
+<style>
+.gvUltraWrap{min-height:72vh;text-align:left;position:relative;overflow:hidden;border-radius:30px;padding:18px;background:radial-gradient(circle at 75% 5%,rgba(56,189,248,.20),transparent 30%),radial-gradient(circle at 10% 90%,rgba(250,204,21,.14),transparent 35%),linear-gradient(145deg,#050b18,#07172e 55%,#050814);border:1px solid rgba(255,255,255,.10);box-shadow:0 28px 80px rgba(0,0,0,.45)}
+.gvUltraTop{text-align:center;padding:8px 4px 15px}.gvUltraBadge{display:inline-flex;gap:6px;align-items:center;border:1px solid rgba(250,204,21,.25);background:rgba(250,204,21,.10);color:#fde68a;border-radius:999px;padding:7px 12px;font-size:10px;font-weight:950;letter-spacing:2px}.gvUltraTitle{font-size:31px;font-weight:950;line-height:1.1;margin-top:13px;background:linear-gradient(90deg,#fff,#93c5fd,#fde68a);-webkit-background-clip:text;-webkit-text-fill-color:transparent}.gvUltraSub{color:#cbd5e1;font-size:13px;line-height:1.7;margin:10px auto 0;max-width:420px}.gvGlobeStage{width:178px;height:178px;margin:12px auto 8px;position:relative}.gvGlowRing{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle,rgba(56,189,248,.32),transparent 66%);filter:blur(9px);animation:gvUltraPulse 3s infinite ease-in-out}.gvOrbit{position:absolute;border-radius:50%;border:1px dashed rgba(250,204,21,.42);animation:gvUltraSpin 9s linear infinite}.gvOrbit.one{inset:8px}.gvOrbit.two{inset:24px;border-color:rgba(56,189,248,.42);animation-duration:6s;animation-direction:reverse}.gvEarth{position:absolute;inset:38px;border-radius:50%;display:grid;place-items:center;font-size:66px;background:linear-gradient(135deg,#38bdf8,#0b4da2 62%,#07111f);box-shadow:0 0 45px rgba(56,189,248,.55),inset -16px -14px 28px rgba(0,0,0,.35);animation:gvUltraFloat 3s infinite ease-in-out}.gvDove{position:absolute;right:21px;top:14px;font-size:30px;filter:drop-shadow(0 0 16px #fff);animation:gvUltraDove 2.5s infinite ease-in-out}.gvStats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:14px 0}.gvStats div{border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.055);border-radius:18px;padding:11px;text-align:center}.gvStats b{display:block;color:#facc15;font-size:18px}.gvStats span{font-size:9px;color:#94a3b8;letter-spacing:1px}.gvFourGrid{display:grid;grid-template-columns:1fr;gap:11px;margin-top:13px}.gvOpenCard{position:relative;overflow:hidden;width:100%;border-radius:24px;padding:16px;border:1px solid rgba(255,255,255,.11);background:linear-gradient(145deg,rgba(255,255,255,.08),rgba(255,255,255,.035));display:flex;gap:13px;align-items:center;text-align:left;transition:.25s;color:white}.gvOpenCard:after{content:"";position:absolute;top:0;left:-130%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.16),transparent);animation:gvUltraShine 4s infinite}.gvOpenCard:active{transform:scale(.98)}.gvOpenCard:hover{transform:translateY(-3px);border-color:rgba(250,204,21,.35);box-shadow:0 18px 45px rgba(0,0,0,.28)}.gvOpenIcon{width:55px;height:55px;border-radius:18px;display:grid;place-items:center;font-size:32px;background:rgba(255,255,255,.09);animation:gvUltraFloat 2.6s infinite ease-in-out}.gvOpenCard h3{font-size:16px;font-weight:950}.gvOpenCard p{font-size:11px;color:#94a3b8;margin-top:3px;line-height:1.4}.gvOpenCard small{margin-left:auto;color:#fde68a;font-size:11px;font-weight:950;white-space:nowrap}.gvPrayer{border-color:rgba(56,189,248,.28)}.gvWord{border-color:rgba(250,204,21,.30)}.gvCare{border-color:rgba(34,197,94,.28)}.gvMission{border-color:rgba(168,85,247,.28)}
+.gvPage{min-height:72vh;animation:gvPageIn .25s ease both}.gvBack{width:100%;border:1px solid rgba(255,255,255,.13);background:rgba(255,255,255,.07);color:#fde68a;border-radius:16px;padding:12px;font-weight:950;margin-bottom:13px}.gvHeroFull{text-align:center;border-radius:30px;border:1px solid rgba(255,255,255,.11);background:radial-gradient(circle at 80% 10%,rgba(56,189,248,.24),transparent 28%),radial-gradient(circle at 12% 90%,rgba(250,204,21,.16),transparent 30%),linear-gradient(145deg,#061226,#0f172a);padding:20px 16px;box-shadow:0 24px 65px rgba(0,0,0,.35);overflow:hidden;position:relative}.gvBigIcon{font-size:76px;animation:gvUltraFloat 2.6s infinite ease-in-out}.gvHeroFull .tag{display:inline-block;margin-top:8px;border-radius:999px;background:rgba(250,204,21,.10);border:1px solid rgba(250,204,21,.24);color:#fde68a;padding:6px 11px;font-size:10px;font-weight:950;letter-spacing:2px}.gvHeroFull h2{font-size:30px;font-weight:950;color:#93c5fd;margin:10px 0 8px}.gvHeroFull p{font-size:13px;color:#dbeafe;line-height:1.65}.gvVerseBox{margin-top:13px;border:1px solid rgba(250,204,21,.22);background:rgba(250,204,21,.10);border-radius:18px;padding:13px;color:#fde68a;font-size:13px;line-height:1.6;text-align:center;font-weight:800}.gvInfoGrid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:13px}.gvInfoGrid div{border-radius:18px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);padding:13px;text-align:center}.gvInfoGrid b{display:block;color:#fff;font-size:21px}.gvInfoGrid span{display:block;color:#94a3b8;font-size:10px;margin-top:3px}.gvActionGrid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:13px}.gvActionGrid button,.gvActionGrid a{border-radius:16px;padding:13px 8px;font-weight:950;text-align:center;text-decoration:none;color:white}.gvPrayerWorld{margin-top:14px;border-radius:28px;background:linear-gradient(145deg,rgba(56,189,248,.14),rgba(255,255,255,.04));border:1px solid rgba(56,189,248,.25);padding:18px;text-align:center;position:relative;overflow:hidden}.gvFlagBig{font-size:78px;filter:drop-shadow(0 0 18px rgba(255,255,255,.35));animation:gvFlagZoom 2.4s infinite ease-in-out}.gvCountryTitle{font-size:23px;font-weight:950;color:#fde68a;margin-top:8px}.gvCountryPrayer{font-size:13px;color:#dbeafe;line-height:1.7;margin-top:8px}.gvMapMini{margin-top:12px;height:92px;border-radius:22px;background:radial-gradient(circle at 30% 40%,rgba(34,197,94,.9) 0 8%,transparent 9%),radial-gradient(circle at 56% 45%,rgba(34,197,94,.85) 0 12%,transparent 13%),radial-gradient(circle at 72% 60%,rgba(34,197,94,.8) 0 9%,transparent 10%),linear-gradient(135deg,rgba(56,189,248,.18),rgba(15,23,42,.85));border:1px solid rgba(255,255,255,.08);display:grid;place-items:center;color:#93c5fd;font-size:11px;font-weight:900;letter-spacing:2px}.gvFlagStrip{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;margin-top:11px}.gvFlagStrip span{border-radius:12px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.10);padding:6px 8px;font-size:22px}.gvCounter{margin-top:10px;color:#67e8f9;font-size:10px;font-weight:950;letter-spacing:2px}.gvWordVerse{margin-top:14px;border-radius:24px;padding:18px;background:linear-gradient(145deg,rgba(250,204,21,.14),rgba(255,255,255,.045));border:1px solid rgba(250,204,21,.26);text-align:center}.gvWordVerse h3{color:#fde68a;font-size:19px;font-weight:950;line-height:1.6}.gvWordVerse p{color:#dbeafe;font-size:14px;line-height:1.7;margin-top:8px}.gvList{display:grid;gap:9px;margin-top:13px}.gvList div{border-radius:16px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);padding:12px;color:#e2e8f0;font-size:13px;line-height:1.55}.gvList b{color:#fde68a}.gvTimeline{margin-top:14px;display:grid;gap:10px}.gvTimeline div{position:relative;border-radius:18px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.055);padding:12px 12px 12px 44px}.gvTimeline div:before{content:"✓";position:absolute;left:13px;top:13px;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:#22c55e;color:white;font-weight:950}.gvTimeline b{color:#fde68a}.gvTimeline p{font-size:12px;color:#cbd5e1;margin-top:3px;line-height:1.5}@keyframes gvUltraSpin{to{transform:rotate(360deg)}}@keyframes gvUltraFloat{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-7px) scale(1.04)}}@keyframes gvUltraPulse{0%,100%{opacity:.55;transform:scale(.96)}50%{opacity:1;transform:scale(1.08)}}@keyframes gvUltraDove{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}@keyframes gvUltraShine{0%{left:-130%}55%,100%{left:140%}}@keyframes gvPageIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}@keyframes gvFlagZoom{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
+
+.gvCardsOnlyTitle{
+  margin:18px auto 8px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:10px 22px;
+  border-radius:999px;
+  background:linear-gradient(135deg,rgba(255,215,120,.18),rgba(75,160,255,.12));
+  border:1px solid rgba(255,255,255,.16);
+  color:#fff;
+  font-weight:900;
+  letter-spacing:.7px;
+  box-shadow:0 12px 35px rgba(0,0,0,.25), inset 0 0 25px rgba(255,255,255,.06);
+}
+
+
+/* Clean professional four boxes only - Global Vision */
+.gvFourGrid{margin-top:24px!important;display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:18px!important;}
+.gvOpenCard{min-height:210px!important;border-radius:26px!important;padding:24px!important;text-align:left!important;display:flex!important;flex-direction:column!important;justify-content:space-between!important;align-items:flex-start!important;border:1px solid rgba(255,255,255,.16)!important;background:linear-gradient(145deg,rgba(255,255,255,.12),rgba(255,255,255,.04))!important;box-shadow:0 18px 45px rgba(0,0,0,.32), inset 0 0 35px rgba(255,255,255,.05)!important;backdrop-filter:blur(16px)!important;transition:.35s ease!important;position:relative!important;overflow:hidden!important;}
+.gvOpenCard:before{content:"";position:absolute;inset:-2px;background:radial-gradient(circle at top right,rgba(255,215,120,.26),transparent 38%),radial-gradient(circle at bottom left,rgba(87,166,255,.22),transparent 42%);opacity:.9;pointer-events:none;}
+.gvOpenCard>*{position:relative;z-index:1;}
+.gvOpenCard:hover{transform:translateY(-8px) scale(1.015)!important;box-shadow:0 28px 70px rgba(0,0,0,.45),0 0 34px rgba(80,160,255,.22)!important;}
+.gvOpenIcon{width:62px!important;height:62px!important;border-radius:20px!important;display:flex!important;align-items:center!important;justify-content:center!important;font-size:32px!important;background:rgba(255,255,255,.12)!important;border:1px solid rgba(255,255,255,.18)!important;box-shadow:inset 0 0 20px rgba(255,255,255,.06)!important;}
+.gvOpenCard h3{font-size:21px!important;margin:16px 0 8px!important;color:#fff!important;font-weight:900!important;}
+.gvOpenCard p{font-size:13.5px!important;line-height:1.45!important;color:rgba(255,255,255,.78)!important;margin:0!important;}
+.gvOpenCard small{align-self:flex-end!important;margin-top:18px!important;padding:8px 12px!important;border-radius:999px!important;background:rgba(255,255,255,.12)!important;border:1px solid rgba(255,255,255,.12)!important;color:#ffe7a2!important;font-weight:900!important;letter-spacing:.4px!important;}
+@media(max-width:900px){.gvFourGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important;}.gvOpenCard{min-height:190px!important;}}
+@media(max-width:560px){.gvFourGrid{grid-template-columns:1fr!important;}.gvOpenCard{min-height:165px!important;}}
+
+
+
+/* FINAL FIX: Mission & Vision content in middle + compact professional cards */
+.gvMissionVisionClean{padding:16px!important;min-height:auto!important;}
+.gvMissionVisionClean .gvStats{display:none!important;}
+.gvMissionVisionBox{max-width:820px;margin:16px auto 10px;display:grid;grid-template-columns:1fr 1fr;gap:12px;text-align:left;}
+.gvMissionVisionBox .mvItem{border-radius:20px;padding:16px 16px;background:linear-gradient(145deg,rgba(255,255,255,.10),rgba(255,255,255,.04));border:1px solid rgba(255,255,255,.14);box-shadow:0 14px 34px rgba(0,0,0,.24),inset 0 0 22px rgba(255,255,255,.04);}
+.gvMissionVisionBox h3{margin:0 0 7px;color:#fde68a;font-size:16px;font-weight:950;letter-spacing:.3px;}
+.gvMissionVisionBox p{margin:0;color:#dbeafe;font-size:12.5px;line-height:1.55;}
+.gvMissionVisionClean .gvFourGrid{max-width:820px!important;margin:18px auto 0!important;display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:12px!important;}
+.gvMissionVisionClean .gvOpenCard{min-height:124px!important;border-radius:20px!important;padding:14px!important;text-align:center!important;align-items:center!important;justify-content:center!important;gap:7px!important;box-shadow:0 14px 30px rgba(0,0,0,.28),inset 0 0 22px rgba(255,255,255,.04)!important;}
+.gvMissionVisionClean .gvOpenIcon{width:46px!important;height:46px!important;border-radius:15px!important;font-size:25px!important;margin:0 auto!important;}
+.gvMissionVisionClean .gvOpenCard h3{font-size:15px!important;margin:4px 0 3px!important;text-align:center!important;}
+.gvMissionVisionClean .gvOpenCard p{font-size:11px!important;line-height:1.25!important;text-align:center!important;color:rgba(255,255,255,.74)!important;}
+.gvMissionVisionClean .gvOpenCard small{align-self:center!important;margin:6px 0 0!important;padding:5px 9px!important;font-size:9px!important;}
+@media(max-width:800px){.gvMissionVisionBox{grid-template-columns:1fr;}.gvMissionVisionClean .gvFourGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important;}.gvMissionVisionClean .gvOpenCard{min-height:118px!important;}}
+@media(max-width:430px){.gvMissionVisionClean .gvFourGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important;}.gvMissionVisionClean .gvOpenCard{min-height:108px!important;padding:11px!important;border-radius:18px!important;}.gvMissionVisionClean .gvOpenIcon{width:40px!important;height:40px!important;font-size:22px!important;}.gvMissionVisionClean .gvOpenCard h3{font-size:14px!important;}.gvMissionVisionClean .gvOpenCard p{font-size:10px!important;}.gvMissionVisionBox .mvItem{padding:13px!important;}}
+</style>
+<script>
+(function(){
+const gvCountries=[['🇮🇳','India','Pray for revival, villages, pastors, churches, youth and families in India.'],['🇺🇸','United States','Pray for churches, families, Telugu believers and gospel media doors.'],['🇬🇧','United Kingdom','Pray for spiritual awakening, young generation and prayer fellowships.'],['🇮🇱','Israel','Pray for peace, protection and God’s purpose.'],['🇦🇺','Australia','Pray for families, students, churches and Telugu communities.'],['🇨🇦','Canada','Pray for believers, students and mission partners.'],['🇦🇪','UAE','Pray for workers, families and prayer groups.'],['🇸🇬','Singapore','Pray for unity, churches and mission doors.'],['🇿🇦','South Africa','Pray for healing, revival and community peace.'],['🇰🇪','Kenya','Pray for churches, evangelism and the young generation.'],['🇵🇭','Philippines','Pray for believers, gospel workers and families.'],['🇧🇷','Brazil','Pray for revival, worship and mission fire.'],['🇩🇪','Germany','Pray for families, churches and new believers.'],['🇫🇷','France','Pray for gospel light and spiritual renewal.'],['🇮🇹','Italy','Pray for churches, families and revival.'],['🇪🇸','Spain','Pray for youth, families and gospel outreach.'],['🇳🇱','Netherlands','Pray for prayer groups and mission doors.'],['🇸🇪','Sweden','Pray for churches, families and awakening.'],['🇳🇴','Norway','Pray for believers, youth and revival.'],['🇨🇭','Switzerland','Pray for peace, churches and mission partners.'],['🇯🇵','Japan','Pray for gospel doors and families.'],['🇰🇷','South Korea','Pray for prayer revival and mission work.'],['🇹🇭','Thailand','Pray for families, churches and gospel workers.'],['🇲🇾','Malaysia','Pray for unity, believers and gospel light.'],['🇮🇩','Indonesia','Pray for protection, churches and families.'],['🇳🇿','New Zealand','Pray for families, churches and revival.'],['🇳🇬','Nigeria','Pray for peace, protection and churches.'],['🇬🇭','Ghana','Pray for evangelism, families and youth.'],['🇪🇹','Ethiopia','Pray for healing, provision and churches.'],['🇪🇬','Egypt','Pray for peace, protection and believers.'],['🇲🇽','Mexico','Pray for families, churches and gospel outreach.'],['🇦🇷','Argentina','Pray for revival and mission fire.'],['🇨🇱','Chile','Pray for churches, families and youth.'],['🇵🇪','Peru','Pray for communities, families and gospel work.'],['🇷🇺','Russia','Pray for peace, families and believers.'],['🇺🇦','Ukraine','Pray for peace, protection and healing.'],['🇱🇰','Sri Lanka','Pray for families, churches and provision.'],['🇳🇵','Nepal','Pray for gospel outreach and mountain villages.'],['🇧🇩','Bangladesh','Pray for families, children and gospel doors.'],['🇵🇰','Pakistan','Pray for protection, peace and believers.']];
+function gvSafe(s){return String(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+window.gvHomeHTML=function(){return `<div class="gvUltraWrap gvMissionVisionClean"><div class="gvUltraTop"><div class="gvGlobeStage"><div class="gvGlowRing"></div><div class="gvOrbit one"></div><div class="gvOrbit two"></div><div class="gvEarth">🌍</div><div class="gvDove">🕊️</div></div><div class="gvUltraBadge">HFGM · GLOBAL VISION</div><div class="gvCardsOnlyTitle">Choose Ministry Vision Page</div><div class="gvMissionVisionBox"><div class="mvItem"><h3>Our Mission</h3><p>To preach the Gospel of Jesus Christ, pray for families, strengthen believers and serve people with love, healing and deliverance.</p></div><div class="mvItem"><h3>Our Vision</h3><p>To build a global prayer family and reach nations through the Word of God, worship, media ministry and spiritual revival.</p></div></div></div><div class="gvFourGrid"><button onclick="visionCard('prayer')" class="gvOpenCard gvPrayer"><div class="gvOpenIcon">🕊️</div><div><h3>Prayer</h3><p>Global prayer covering</p></div><small>OPEN</small></button><button onclick="visionCard('word')" class="gvOpenCard gvWord"><div class="gvOpenIcon">📖</div><div><h3>Promise</h3><p>Daily Bible word</p></div><small>OPEN</small></button><button onclick="visionCard('care')" class="gvOpenCard gvCare"><div class="gvOpenIcon">🤝</div><div><h3>Family</h3><p>Believers care</p></div><small>OPEN</small></button><button onclick="visionCard('global')" class="gvOpenCard gvMission"><div class="gvOpenIcon">🌎</div><div><h3>Mission</h3><p>Gospel to nations</p></div><small>OPEN</small></button></div></div>`}
+window.visionCard=function(type){const box=document.getElementById('panelContent'); if(!box)return; const data={prayer:['🕊️','Prayer Covering','GLOBAL PRAYER ROOM','HFGM prayer covering for nations, families, pastors, youth and revival.','“Pray without ceasing.” — 1 Thessalonians 5:17'],word:['📖','Promise Word','DAILY BIBLE ENCOURAGEMENT','Daily Telugu and English promise word for believers with share option.','“Your word is a lamp to my feet.” — Psalm 119:105'],care:['🤝','Family Care','BELIEVERS SUPPORT','Prayer support, family care, birthday follow-up and spiritual encouragement.','“Carry each other’s burdens.” — Galatians 6:2'],global:['🌎','Global Mission','WORLDWIDE GOSPEL VISION','Connecting nations through prayer, media mission and gospel outreach.','“Go into all the world and preach the gospel.” — Mark 16:15']}; const d=data[type]||data.prayer; let extra='';
+if(type==='prayer'){extra=`<div class="gvPrayerPremiumPage">
+  <div class="gvPrayerGlobePro">
+    <div class="gvPrayerRing"></div>
+    <div id="gvFlag" class="gvFlagBig">🇮🇳</div>
+  </div>
+  <div class="gvPrayerProBox">
+    <div class="gvPrayerLabel">LIVE NATION PRAYER</div>
+    <div id="gvCountry" class="gvCountryTitle">Prayer for India</div>
+    <div id="gvPrayerText" class="gvCountryPrayer">Pray for revival, villages, pastors, churches, youth and families in India.</div>
+    <div id="gvCounter" class="gvCounter">COUNTRY PRAYER 1 / ${gvCountries.length}</div>
+    <button class="gvSharePrayerBtn" onclick="sharePrayerNow()">🙏 Share Prayer</button>
+  </div>
+  <div class="gvPrayerMiniGrid">
+    <div><b>Prayer Tower</b><span>24/7 Intercession Vision</span></div>
+    <div><b>Healing</b><span>Miracles & Deliverance</span></div>
+    <div><b>Families</b><span>Prayer Covering</span></div>
+    <div><b>Nations</b><span>Global Revival</span></div>
+  </div>
+  <div class="gvFlagStrip">${gvCountries.slice(0,16).map(c=>`<span>${c[0]}</span>`).join('')}</div>
+</div>`;}
+if(type==='word'){extra=`<div class="gvWordVerse"><h3>“భయపడకుము, నేను నీతో ఉన్నాను.”</h3><p>Fear not, for I am with you. — Isaiah 41:10<br>WhatsApp share button tho daily promise believers ki pampinchachu.</p></div><div class="gvActionGrid"><button onclick="shareVerseNow()" style="background:linear-gradient(135deg,#22c55e,#16a34a)">📲 Share Word</button><button onclick="openPanel('family')" style="background:linear-gradient(135deg,#f59e0b,#fde68a);color:#111827">🏠 Vision Home</button></div>`;}
+if(type==='care'){
+extra=`
+<div class="gvFamilyPremiumPage">
+  <div class="gvFamilyHero">
+    <div class="gvFamilyGlobe">👨‍👩‍👧‍👦</div>
+    <div class="gvFamilyBadge">GLOBAL FAMILY VISION</div>
+    <h2>HFGM Global Believers Family</h2>
+    <p>
+      Public page lo personal member numbers, private photos and sensitive details show avvavu.
+      This page shows only spiritual family vision, prayer unity and global ministry connection.
+    </p>
+  </div>
+
+  <div class="gvFamilyStats">
+    <div><b>24/7</b><span>Prayer Support</span></div>
+    <div><b>Global</b><span>Believers Unity</span></div>
+    <div><b>Daily</b><span>Promise Word</span></div>
+    <div><b>Safe</b><span>Public Vision</span></div>
+  </div>
+
+  <div class="gvFamilyGrid">
+    <div class="gvFamilyCard">
+      <div class="gvFamilyIcon">🙏</div>
+      <h3>Prayer Families</h3>
+      <p>Families connected through prayer, encouragement and spiritual support.</p>
+    </div>
+
+    <div class="gvFamilyCard">
+      <div class="gvFamilyIcon">🌍</div>
+      <h3>Global Vision</h3>
+      <p>Connecting believers from different places into one prayer family.</p>
+    </div>
+
+    <div class="gvFamilyCard">
+      <div class="gvFamilyIcon">💙</div>
+      <h3>Care & Support</h3>
+      <p>Prayer care, emotional support and ministry encouragement.</p>
+    </div>
+
+    <div class="gvFamilyCard">
+      <div class="gvFamilyIcon">📖</div>
+      <h3>Word Fellowship</h3>
+      <p>Daily promise words, worship and Bible encouragement together.</p>
+    </div>
+  </div>
+
+  <div class="gvFamilyPrayerBox">
+    <div class="gvFamilyPrayerTitle">✨ Family Prayer Blessing</div>
+    <p>
+      “As for me and my house, we will serve the Lord.” — Joshua 24:15
+    </p>
+    <button onclick="shareFamilyNow()" class="gvFamilyShareBtn">📲 Share Family Vision</button>
+  </div>
+</div>`;
+};
+window.shareVerseNow=function(){const msg='🙏 HFGM Promise Word\n“భయపడకుము, నేను నీతో ఉన్నాను.”\nFear not, for I am with you. — Isaiah 41:10'; window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank')};
+const prevOpen=window.openPanel; window.openPanel=function(type){ if(type==='family'){const box=document.getElementById('panelContent'); if(box){box.innerHTML=window.gvHomeHTML(); const p=document.getElementById('panel'); if(p)p.classList.remove('hidden'); return;}} if(prevOpen) return prevOpen(type); };
+})();
+</script>
+<!-- /HFGM GLOBAL VISION 4 FULL PAGE MODULES -->
+
+
+<!-- HFGM FINAL ULTRA APP MODE UPGRADE START -->
+<style>
+#hfgmSplashFinal{
+  position:fixed;inset:0;z-index:9999999;
+  background:radial-gradient(circle at top,#0b4da2,#06111f 60%,#020617);
+  display:flex;align-items:center;justify-content:center;flex-direction:column;
+  color:#fff;text-align:center;font-family:Arial,sans-serif;
+  transition:opacity .8s ease,visibility .8s ease;
+}
+#hfgmSplashFinal.hide{opacity:0;visibility:hidden;pointer-events:none}
+.hfgmSplashLogoFinal{width:105px;height:105px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:55px;background:rgba(255,255,255,.08);border:1px solid rgba(125,211,252,.25);box-shadow:0 0 45px rgba(14,165,233,.65);animation:hfgmPulseFinal 1.8s infinite alternate}
+#hfgmSplashFinal h2{margin:18px 0 6px;font-size:25px}#hfgmSplashFinal p{opacity:.82;margin:0}
+@keyframes hfgmPulseFinal{from{transform:scale(.96)}to{transform:scale(1.05)}}
+.hfgmFinalParticles{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}.hfgmFinalParticles span{position:absolute;width:5px;height:5px;border-radius:50%;background:rgba(125,211,252,.5);box-shadow:0 0 15px rgba(14,165,233,.9);animation:hfgmFloatFinal 12s linear infinite}
+@keyframes hfgmFloatFinal{from{transform:translateY(105vh) scale(.6);opacity:0}15%{opacity:.8}to{transform:translateY(-15vh) scale(1.2);opacity:0}}
+.hfgmBottomNavFinal{position:fixed;left:50%;bottom:12px;transform:translateX(-50%);width:min(94%,480px);z-index:99999;display:flex;justify-content:space-around;gap:6px;padding:10px;border-radius:24px;background:rgba(3,11,24,.86);backdrop-filter:blur(16px);border:1px solid rgba(125,211,252,.20);box-shadow:0 18px 45px rgba(0,0,0,.38)}
+.hfgmBottomNavFinal button{border:0;background:transparent;color:#dff8ff;font-size:10px;font-weight:800;display:flex;flex-direction:column;gap:2px;align-items:center;justify-content:center;cursor:pointer;min-width:48px}.hfgmBottomNavFinal span{font-size:18px}
+body{padding-bottom:82px}@media(min-width:900px){.hfgmBottomNavFinal{display:none}}
+</style>
+<div id="hfgmSplashFinal"><div class="hfgmSplashLogoFinal">🕊️</div><h2>HFGM</h2><p>Holy Spirit Fellowship Global Ministry</p></div>
+<div id="hfgmFinalParticles" class="hfgmFinalParticles"></div>
+<nav class="hfgmBottomNavFinal">
+  <button onclick="window.scrollTo({top:0,behavior:'smooth'})"><span>🏠</span>Home</button>
+  <button onclick="openPanel('family')"><span>🌍</span>Vision</button>
+  <button onclick="openPanel('media')"><span>🎬</span>Media</button>
+  <button onclick="openPanel('donate')"><span>💝</span>Donate</button>
+  <button onclick="openPanel('admin')"><span>👤</span>Admin</button>
+</nav>
+<script>
+(function(){
+  setTimeout(function(){var s=document.getElementById('hfgmSplashFinal'); if(s){s.classList.add('hide');}},900);
+  var p=document.getElementById('hfgmFinalParticles');
+  if(p && !p.dataset.ready){p.dataset.ready='1'; for(var x=0;x<28;x++){var sp=document.createElement('span'); sp.style.left=Math.random()*100+'%'; sp.style.animationDelay=(Math.random()*12)+'s'; sp.style.animationDuration=(9+Math.random()*10)+'s'; p.appendChild(sp);}}
+})();
+</script>
+<!-- HFGM FINAL ULTRA APP MODE UPGRADE END -->
+
+
+<script>
+window.nextVerseNow=function(){
+  try{
+    if(typeof gvVerses==='undefined'){return;}
+    window.__hfgmVerseIndex=(window.__hfgmVerseIndex||0)+1;
+    var v=gvVerses[window.__hfgmVerseIndex % gvVerses.length];
+    var t=document.getElementById('gvVerseTitle');
+    var p=document.getElementById('gvVerseText');
+    if(t){t.innerText=v.t;}
+    if(p){p.innerText=v.v;}
+  }catch(e){}
+};
+</script>
+
+
+<script>
+window.hfgmGoVision = function(type){
+  try{
+    if(typeof openPanel === "function"){ openPanel("family"); }
+    setTimeout(function(){
+      if(typeof visionCard === "function"){ visionCard(type); }
+    },180);
+  }catch(e){
+    console.log("HFGM navigation error", e);
+  }
+};
+</script>
+
+
+
+<!-- HFGM MEDIA SEPARATE PAGE UPGRADE - added by ChatGPT -->
+<style>
+.hfgmMediaPage{min-height:78vh;text-align:left;animation:slideUp .25s ease-out}.mediaHeroUltra{position:relative;overflow:hidden;border-radius:30px;padding:22px;background:radial-gradient(circle at 78% 12%,rgba(56,189,248,.26),transparent 30%),radial-gradient(circle at 15% 85%,rgba(250,204,21,.18),transparent 32%),linear-gradient(145deg,#061528,#0f172a 62%,#020617);border:1px solid rgba(56,189,248,.22);box-shadow:0 25px 70px rgba(0,0,0,.45);text-align:center}.mediaHeroUltra:after{content:'LIVE';position:absolute;right:18px;top:18px;border-radius:999px;background:rgba(239,68,68,.18);border:1px solid rgba(248,113,113,.35);color:#fecaca;font-size:10px;font-weight:900;padding:5px 9px;letter-spacing:2px}.mediaPlayOrb{width:116px;height:116px;margin:6px auto 14px;border-radius:50%;display:grid;place-items:center;font-size:46px;background:radial-gradient(circle,#38bdf8,#0b4da2 60%,#06101d);box-shadow:0 0 45px rgba(56,189,248,.55),inset -16px -12px 24px rgba(0,0,0,.3);animation:float 3s infinite ease-in-out}.mediaPill{display:inline-flex;border-radius:999px;background:rgba(250,204,21,.12);border:1px solid rgba(250,204,21,.25);color:#fde68a;padding:6px 10px;font-size:10px;letter-spacing:2px;font-weight:900}.mediaHeroUltra h2{font-size:30px;font-weight:900;margin-top:10px;color:#93c5fd}.mediaHeroUltra p{font-size:13px;line-height:1.7;color:#cbd5e1;margin-top:8px}.mediaUploadBox{margin-top:14px;border-radius:24px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.10);padding:14px}.mediaUploadGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}.mediaUploadLabel{border-radius:18px;border:1px dashed rgba(56,189,248,.45);background:rgba(56,189,248,.08);padding:14px;text-align:center;font-weight:900;font-size:12px;color:#dbeafe;cursor:pointer}.mediaUploadLabel input{display:none}.mediaTabs{display:flex;gap:8px;overflow:auto;padding:14px 0 10px}.mediaTabs button{flex-shrink:0;border-radius:999px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.06);color:#cbd5e1;padding:10px 13px;font-size:12px;font-weight:900}.mediaTabs button.active{background:linear-gradient(135deg,#38bdf8,#2563eb);color:white}.mediaLiveCard{border-radius:24px;padding:16px;background:linear-gradient(145deg,rgba(239,68,68,.14),rgba(255,255,255,.05));border:1px solid rgba(248,113,113,.20);margin-bottom:12px}.mediaLiveScreen{height:168px;border-radius:22px;background:radial-gradient(circle at center,rgba(239,68,68,.20),transparent 34%),linear-gradient(135deg,#111827,#020617);display:grid;place-items:center;text-align:center;border:1px solid rgba(255,255,255,.09);box-shadow:inset 0 0 40px rgba(0,0,0,.45)}.mediaLiveScreen b{display:block;font-size:18px;color:#fff}.mediaLiveScreen span{display:block;color:#94a3b8;font-size:12px;margin-top:5px}.mediaActionGrid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}.mediaActionGrid button,.mediaPrimaryBtn{border-radius:16px;padding:12px 9px;font-weight:900;color:white;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.07)}.mediaPrimaryBtn{width:100%;background:linear-gradient(135deg,#22c55e,#16a34a);margin-top:10px}.mediaGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.mediaCardPro{position:relative;overflow:hidden;border-radius:22px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.10);padding:12px;min-height:145px;display:flex;flex-direction:column;justify-content:space-between}.mediaThumb{height:78px;border-radius:17px;display:grid;place-items:center;font-size:34px;background:linear-gradient(135deg,rgba(56,189,248,.25),rgba(250,204,21,.12));border:1px solid rgba(255,255,255,.08);margin-bottom:10px}.mediaCardPro b{font-size:13px;color:white}.mediaCardPro p{font-size:11px;color:#94a3b8;margin-top:4px;line-height:1.45}.mediaCardPro:after{content:'';position:absolute;top:0;left:-120%;width:55%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.13),transparent);animation:gvShine 5s linear infinite}.mediaPreviewList{margin-top:12px;display:grid;gap:10px}.mediaPreviewItem{border-radius:18px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.10);padding:10px}.mediaPreviewItem img,.mediaPreviewItem video{width:100%;max-height:230px;border-radius:14px;object-fit:cover;background:#020617}.mediaBackBtn{width:100%;border-radius:16px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:#fde68a;padding:12px;font-weight:900;margin-bottom:14px}
+</style>
+<script>
+(function(){
+  const previousOpenPanel = window.openPanel;
+  window.hfgmMediaFilter='all';
+  window.mediaHTML=function(){return `<div class="hfgmMediaPage">
+    <button onclick="closePanel()" class="mediaBackBtn">← Back / Close Media</button>
+    <div class="mediaHeroUltra"><div class="mediaPlayOrb">▶️</div><div class="mediaPill">HFGM MEDIA CENTER</div><h2>Videos · Photos · Live Stream</h2><p>Ministry videos, prayer meeting photos, testimonies and YouTube style media screen. Upload preview works on this mobile app page.</p></div>
+    <div class="mediaUploadBox"><div class="font-black text-yellow-300">⬆️ Upload Ministry Media</div><p class="text-xs text-slate-400 mt-1">Choose photos or videos from your phone. Preview will show here; for permanent online storage use Firebase/hosting later.</p><div class="mediaUploadGrid"><label class="mediaUploadLabel">📸 Upload Photos<input id="hfgmPhotoUpload" type="file" accept="image/*" multiple onchange="previewHfgmMedia(event,'photo')"></label><label class="mediaUploadLabel">🎥 Upload Videos<input id="hfgmVideoUpload" type="file" accept="video/*" multiple onchange="previewHfgmMedia(event,'video')"></label></div><div id="mediaPreviewList" class="mediaPreviewList"></div></div>
+    <div class="mediaTabs"><button class="active" onclick="mediaTab(this,'all')">All</button><button onclick="mediaTab(this,'videos')">Videos</button><button onclick="mediaTab(this,'photos')">Photos</button><button onclick="mediaTab(this,'live')">Live</button><button onclick="mediaTab(this,'updates')">Updates</button></div>
+    <div class="mediaLiveCard mediaBlock" data-type="live"><div class="mediaLiveScreen"><div><div class="text-5xl mb-2">🔴</div><b>Live Prayer Stream</b><span>Connect YouTube / Facebook live link here</span></div></div><div class="mediaActionGrid"><button onclick="window.open('https://www.youtube.com/@hfgmministry','_blank')">▶️ YouTube Channel</button><button onclick="shareHfgmMedia()">📲 Share Media</button></div><button class="mediaPrimaryBtn" onclick="alert('Live stream link place ready. YouTube live URL add cheyyachu.')">🔗 Add Live Link Area</button></div>
+    <div class="mediaGrid">
+      <div class="mediaCardPro mediaBlock" data-type="videos"><div><div class="mediaThumb">🎬</div><b>Sermon Videos</b><p>Sunday message, Friday prayer, deliverance clips.</p></div></div>
+      <div class="mediaCardPro mediaBlock" data-type="photos"><div><div class="mediaThumb">📷</div><b>Ministry Photos</b><p>Prayer meetings, outreach and church moments.</p></div></div>
+      <div class="mediaCardPro mediaBlock" data-type="videos"><div><div class="mediaThumb">🙌</div><b>Testimonies</b><p>Healing, deliverance and blessing reports.</p></div></div>
+      <div class="mediaCardPro mediaBlock" data-type="updates"><div><div class="mediaThumb">📢</div><b>Mission Updates</b><p>Promise word, mission news and announcements.</p></div></div>
+    </div>
+  </div>`};
+  window.previewHfgmMedia=function(event,type){const box=document.getElementById('mediaPreviewList'); if(!box)return; [...event.target.files].slice(0,8).forEach(file=>{const url=URL.createObjectURL(file); const item=document.createElement('div'); item.className='mediaPreviewItem'; item.innerHTML=(type==='video'?`<video src="${url}" controls></video>`:`<img src="${url}" alt="HFGM photo">`)+`<div class="text-xs text-slate-300 mt-2 font-bold">${file.name}</div>`; box.prepend(item);});};
+  window.mediaTab=function(btn,type){document.querySelectorAll('.mediaTabs button').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); document.querySelectorAll('.mediaBlock').forEach(x=>{x.style.display=(type==='all'||x.dataset.type===type)?'':'none'});};
+  window.shareHfgmMedia=function(){const msg='🎬 HFGM Media Center\nVideos, Photos, Live Prayer Stream\nHoly Spirit Fellowship Global Ministry\nhttps://www.youtube.com/@hfgmministry'; window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');};
+  window.openPanel=function(type){
+    if(type==='media'){
+      const box=document.getElementById('panelContent');
+      const panel=document.getElementById('panel');
+      if(!box || !panel){ alert('Media panel loading problem. Please reload page.'); return; }
+      box.innerHTML=window.mediaHTML();
+      panel.classList.remove('hidden');
+      setTimeout(function(){ const first=document.querySelector('.hfgmMediaPage'); if(first) first.scrollIntoView({block:'start'}); },30);
+      return;
+    }
+    if(typeof previousOpenPanel==='function') return previousOpenPanel(type);
+  };
+})();
+</script>
+
+<!-- HFGM SAFE MEDIA ADMIN OVERRIDE ONLY - HOME UNTOUCHED -->
+<style id="safe-media-admin-css">
+.safeMediaWrap{padding-bottom:100px}
+.safeMediaBack{width:100%;padding:13px;border-radius:18px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.08);color:#fde68a;font-weight:900;margin-bottom:14px}
+.safeMediaHero{border-radius:30px;padding:22px 16px;text-align:center;background:linear-gradient(145deg,#07111f,#0b1f3a);border:1px solid rgba(56,189,248,.22);box-shadow:0 22px 60px rgba(0,0,0,.38)}
+.safeMediaOrb{width:82px;height:82px;border-radius:50%;display:grid;place-items:center;margin:0 auto 10px;background:linear-gradient(135deg,#ef4444,#f59e0b);font-size:40px}
+.safeMediaHero h2{font-size:30px;font-weight:1000;color:#93c5fd;margin:8px 0}
+.safeMediaHero p{font-size:13px;color:#cbd5e1;line-height:1.6}
+.safeMediaBox{margin-top:14px;border-radius:24px;padding:16px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.10)}
+.safeMediaBtn{width:100%;padding:14px;border:0;border-radius:18px;font-weight:900;color:white;margin-top:10px;background:#f59e0b}
+.safeMediaGrid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.safeMediaGrid2 button{min-height:90px;border:0;border-radius:20px;font-weight:900;color:white;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12)}
+.safeMediaGrid2 span{display:block;font-size:32px;margin-bottom:5px}
+.safeUploadPhoto{background:linear-gradient(135deg,#16a34a,#22c55e)!important}
+.safeUploadVideo{background:linear-gradient(135deg,#dc2626,#f97316)!important}
+.safeTabs{display:flex;gap:8px;overflow:auto;margin:14px 0 12px;padding-bottom:6px}
+.safeTabs button{border:0;border-radius:999px;padding:9px 13px;background:rgba(255,255,255,.08);color:#cbd5e1;font-size:12px;font-weight:900;white-space:nowrap}
+.safeTabs button.active{background:#38bdf8;color:white}
+.safeMediaGrid{display:grid;grid-template-columns:1fr;gap:14px}
+.safeCard{position:relative;overflow:hidden;border-radius:24px;background:#081426;border:1px solid rgba(255,255,255,.11);box-shadow:0 15px 40px rgba(0,0,0,.30)}
+.safeThumb{height:225px;display:grid;place-items:center;text-align:center;background:linear-gradient(145deg,#0b4da2,#06152c)}
+.safeThumb.live{background:linear-gradient(145deg,#7f1d1d,#020617)}
+.safeThumb.photo{background:linear-gradient(145deg,#064e3b,#111827)}
+.safeThumb .em{font-size:64px;display:block}
+.safeCard img,.safeCard video{width:100%;height:265px;object-fit:cover;background:#000;display:block}
+.safeTitle{padding:14px;color:white}.safeTitle b{font-size:17px}.safeTitle span{display:block;color:#94a3b8;font-size:12px;margin-top:4px}
+.safeDel{position:absolute;right:10px;top:10px;z-index:6;border:0;border-radius:999px;background:#dc2626;color:white;padding:8px 13px;font-size:12px;font-weight:900}
+@media(min-width:720px){.safeMediaGrid{grid-template-columns:1fr 1fr}}
+</style>
+
+<script id="safe-media-admin-js">
+(function(){
+  var mediaAdmin=false;
+
+  function ensureInputs(){
+    if(!document.getElementById('safePhotoInput')){
+      var p=document.createElement('input');
+      p.type='file'; p.accept='image/*'; p.multiple=true; p.id='safePhotoInput'; p.style.display='none';
+      p.onchange=function(e){ addSafeMedia(e.target.files,'photo'); e.target.value=''; };
+      document.body.appendChild(p);
+    }
+    if(!document.getElementById('safeVideoInput')){
+      var v=document.createElement('input');
+      v.type='file'; v.accept='video/*'; v.multiple=true; v.id='safeVideoInput'; v.style.display='none';
+      v.onchange=function(e){ addSafeMedia(e.target.files,'video'); e.target.value=''; };
+      document.body.appendChild(v);
+    }
+  }
+
+  window.safeMediaLogin=function(){
+    var p=prompt('Media Admin Password');
+    if(p==='media123'){
+      mediaAdmin=true;
+      alert('✅ Media Admin Login Success');
+      if(window.openPanel) window.openPanel('media');
+    }else alert('Wrong Media Admin Password');
+  };
+
+  window.safeMediaUpload=function(type){
+    if(!mediaAdmin){ alert('Media Admin login required'); return; }
+    ensureInputs();
+    document.getElementById(type==='photo'?'safePhotoInput':'safeVideoInput').click();
+  };
+
+  function addSafeMedia(files,type){
+    var grid=document.getElementById('safeMediaGrid');
+    if(!grid){ alert('Open Media page first'); return; }
+    Array.from(files||[]).forEach(function(file){
+      var url=URL.createObjectURL(file);
+      var card=document.createElement('div');
+      card.className='safeCard safeBlock';
+      card.dataset.type=type==='photo'?'photos':'videos';
+      card.innerHTML=
+        '<button class="safeDel" onclick="safeDeleteMedia(this)">Delete</button>'+
+        (type==='photo'?'<img src="'+url+'">':'<video controls playsinline src="'+url+'"></video>')+
+        '<div class="safeTitle"><b>'+(type==='photo'?'📸 Ministry Photo':'🎥 Ministry Video')+'</b><span>'+file.name+'</span></div>';
+      grid.prepend(card);
+    });
+  }
+
+  window.safeDeleteMedia=function(btn){
+    if(!mediaAdmin){ alert('Only Media Admin can delete'); return; }
+    if(confirm('Delete media?')) btn.closest('.safeCard').remove();
+  };
+
+  window.safeMediaTab=function(btn,type){
+    document.querySelectorAll('.safeTabs button').forEach(function(b){b.classList.remove('active')});
+    if(btn) btn.classList.add('active');
+    document.querySelectorAll('.safeBlock').forEach(function(x){
+      x.style.display=(type==='all'||x.dataset.type===type)?'':'none';
+    });
+  };
+
+  window.safeMediaHTML=function(){
+    return '<div class="safeMediaWrap">'+
+    '<button class="safeMediaBack" onclick="closePanel()">← Back / Close Media</button>'+
+    '<div class="safeMediaHero"><div class="safeMediaOrb">▶️</div><h2>Videos · Photos · Live Stream</h2><p>Public can see/share only. Separate Media Admin can upload/delete.</p></div>'+
+    '<div class="safeMediaBox"><h3 style="font-size:22px;font-weight:1000;color:#fde68a">🎬 Media Admin Only</h3><p style="font-size:13px;color:#cbd5e1">Separate from Global Admin. Password: media123</p>'+
+    (mediaAdmin?'<div class="safeMediaGrid2"><button class="safeUploadPhoto" onclick="safeMediaUpload(\\'photo\\')"><span>📸</span>Upload Photos</button><button class="safeUploadVideo" onclick="safeMediaUpload(\\'video\\')"><span>🎥</span>Upload Videos</button></div>':'<button class="safeMediaBtn" onclick="safeMediaLogin()">🔐 Open Media Admin</button>')+
+    '</div>'+
+    '<div class="safeMediaBox"><div class="safeMediaGrid2"><button onclick="window.open(\\'https://www.youtube.com/@hfgmministry/live\\',\\'_blank\\')"><span>🔴</span>Live Stream</button><button onclick="safeMediaTab(document.querySelector(\\'.safeTabs button:nth-child(2)\\'),\\'videos\\')"><span>🎥</span>Ministry Videos</button><button onclick="safeMediaTab(document.querySelector(\\'.safeTabs button:nth-child(3)\\'),\\'photos\\')"><span>📸</span>Ministry Photos</button><button onclick="window.open(\\'https://wa.me/?text=\\'+encodeURIComponent(\\'HFGM Media Center https://www.youtube.com/@hfgmministry\\'),\\'_blank\\')"><span>📲</span>Share</button></div></div>'+
+    '<div class="safeTabs"><button class="active" onclick="safeMediaTab(this,\\'all\\')">All</button><button onclick="safeMediaTab(this,\\'videos\\')">Videos</button><button onclick="safeMediaTab(this,\\'photos\\')">Photos</button><button onclick="safeMediaTab(this,\\'live\\')">Live</button></div>'+
+    '<div id="safeMediaGrid" class="safeMediaGrid">'+
+    '<div class="safeCard safeBlock" data-type="live"><div class="safeThumb live"><div><span class="em">🔴</span><b>Live Prayer Stream</b></div></div><div class="safeTitle"><b>HFGM Live Stream</b><span>Open and share YouTube live.</span></div></div>'+
+    '<div class="safeCard safeBlock" data-type="videos"><div class="safeThumb"><div><span class="em">🎥</span><b>Ministry Videos</b></div></div><div class="safeTitle"><b>YouTube-style Video Thumbnails</b><span>Media admin can upload videos.</span></div></div>'+
+    '<div class="safeCard safeBlock" data-type="photos"><div class="safeThumb photo"><div><span class="em">📸</span><b>Ministry Photos</b></div></div><div class="safeTitle"><b>Photo Gallery</b><span>Media admin can upload photos.</span></div></div>'+
+    '</div></div>';
+  };
+
+  var oldOpenPanel=window.openPanel;
+  window.openPanel=function(type){
+    if(type==='media'){
+      ensureInputs();
+      var box=document.getElementById('panelContent');
+      var panel=document.getElementById('panel');
+      if(!box||!panel){ alert('Panel not found'); return; }
+      box.innerHTML=window.safeMediaHTML();
+      panel.classList.remove('hidden');
+      return;
+    }
+    return oldOpenPanel?oldOpenPanel.apply(this,arguments):undefined;
+  };
+})();
+</script>
+
 </body>
 </html>
+
+<!-- FINAL MEDIA ADMIN FIX -->
+<script>
+(function(){
+
+window.hfgmMediaAdmin = false;
+
+const oldAdminLogin = window.adminLogin;
+window.adminLogin = function(){
+  if(oldAdminLogin) oldAdminLogin.apply(this, arguments);
+
+  setTimeout(function(){
+    window.hfgmMediaAdmin = true;
+    localStorage.setItem('hfgm_media_admin','yes');
+    createMediaAdminPanel();
+  },500);
+};
+
+function createMediaAdminPanel(){
+
+  if(document.getElementById('finalMediaAdminPanel')) return;
+
+  const target = document.body;
+
+  const panel = document.createElement('div');
+  panel.id = 'finalMediaAdminPanel';
+
+  panel.innerHTML = `
+  <div style="position:fixed;right:15px;bottom:15px;z-index:99999;background:#081426;padding:15px;border-radius:22px;border:2px solid #22c55e;width:320px;box-shadow:0 20px 40px rgba(0,0,0,.45)">
+    <div style="font-size:20px;font-weight:900;color:#22c55e;margin-bottom:12px">📤 HFGM Media Upload</div>
+
+    <input type="file" id="realPhotoInput" accept="image/*" multiple style="display:none">
+    <input type="file" id="realVideoInput" accept="video/*" multiple style="display:none">
+
+    <button id="realPhotoBtn" style="width:100%;padding:14px;border:none;border-radius:16px;background:#16a34a;color:white;font-weight:900;margin-bottom:10px">
+      📸 Upload Photos
+    </button>
+
+    <button id="realVideoBtn" style="width:100%;padding:14px;border:none;border-radius:16px;background:#dc2626;color:white;font-weight:900">
+      🎥 Upload Videos
+    </button>
+  </div>
+  `;
+
+  target.appendChild(panel);
+
+  document.getElementById('realPhotoBtn').onclick = function(e){
+    e.preventDefault();
+    document.getElementById('realPhotoInput').click();
+  };
+
+  document.getElementById('realVideoBtn').onclick = function(e){
+    e.preventDefault();
+    document.getElementById('realVideoInput').click();
+  };
+
+  document.getElementById('realPhotoInput').addEventListener('change', function(e){
+    addMediaCards(e.target.files, 'photo');
+  });
+
+  document.getElementById('realVideoInput').addEventListener('change', function(e){
+    addMediaCards(e.target.files, 'video');
+  });
+}
+
+function addMediaCards(files, type){
+
+  let grid = document.getElementById('hfgmRealMediaGrid');
+
+  if(!grid){
+    grid = document.createElement('div');
+    grid.id = 'hfgmRealMediaGrid';
+    grid.style.cssText = "display:grid;grid-template-columns:1fr;gap:15px;padding:20px";
+    document.body.appendChild(grid);
+  }
+
+  Array.from(files).forEach(file => {
+
+    const url = URL.createObjectURL(file);
+
+    const card = document.createElement('div');
+    card.style.cssText = "background:#081426;border-radius:24px;overflow:hidden;border:1px solid rgba(255,255,255,.1);position:relative";
+
+    if(type === 'video'){
+      card.innerHTML = `
+        <button onclick="deleteAdminMedia(this)" style="position:absolute;top:10px;right:10px;z-index:5;background:red;color:white;border:none;border-radius:999px;padding:8px 12px;font-weight:900">Delete</button>
+
+        <video controls src="${url}" style="width:100%;height:260px;object-fit:cover"></video>
+
+        <div style="padding:14px">
+          <div style="font-size:18px;font-weight:900;color:white">🎥 Ministry Video</div>
+          <div style="font-size:12px;color:#94a3b8">${file.name}</div>
+        </div>
+      `;
+    } else {
+      card.innerHTML = `
+        <button onclick="deleteAdminMedia(this)" style="position:absolute;top:10px;right:10px;z-index:5;background:red;color:white;border:none;border-radius:999px;padding:8px 12px;font-weight:900">Delete</button>
+
+        <img src="${url}" style="width:100%;height:240px;object-fit:cover">
+
+        <div style="padding:14px">
+          <div style="font-size:18px;font-weight:900;color:white">📸 Ministry Photo</div>
+          <div style="font-size:12px;color:#94a3b8">${file.name}</div>
+        </div>
+      `;
+    }
+
+    grid.prepend(card);
+  });
+}
+
+window.deleteAdminMedia = function(btn){
+
+  const ok = localStorage.getItem('hfgm_media_admin') === 'yes';
+
+  if(!ok){
+    alert('Only admin can delete');
+    return;
+  }
+
+  if(confirm('Delete media?')){
+    btn.parentElement.remove();
+  }
+};
+
+})();
+</script>
