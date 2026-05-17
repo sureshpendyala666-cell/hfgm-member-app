@@ -2240,128 +2240,212 @@ window.hfgmGoVision = function(type){
 })();
 </script>
 
-<!-- HFGM SAFE MEDIA ADMIN OVERRIDE ONLY - HOME UNTOUCHED -->
-<style id="safe-media-admin-css">
-.safeMediaWrap{padding-bottom:100px}
-.safeMediaBack{width:100%;padding:13px;border-radius:18px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.08);color:#fde68a;font-weight:900;margin-bottom:14px}
-.safeMediaHero{border-radius:30px;padding:22px 16px;text-align:center;background:linear-gradient(145deg,#07111f,#0b1f3a);border:1px solid rgba(56,189,248,.22);box-shadow:0 22px 60px rgba(0,0,0,.38)}
-.safeMediaOrb{width:82px;height:82px;border-radius:50%;display:grid;place-items:center;margin:0 auto 10px;background:linear-gradient(135deg,#ef4444,#f59e0b);font-size:40px}
-.safeMediaHero h2{font-size:30px;font-weight:1000;color:#93c5fd;margin:8px 0}
-.safeMediaHero p{font-size:13px;color:#cbd5e1;line-height:1.6}
-.safeMediaBox{margin-top:14px;border-radius:24px;padding:16px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.10)}
-.safeMediaBtn{width:100%;padding:14px;border:0;border-radius:18px;font-weight:900;color:white;margin-top:10px;background:#f59e0b}
-.safeMediaGrid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
-.safeMediaGrid2 button{min-height:90px;border:0;border-radius:20px;font-weight:900;color:white;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12)}
-.safeMediaGrid2 span{display:block;font-size:32px;margin-bottom:5px}
-.safeUploadPhoto{background:linear-gradient(135deg,#16a34a,#22c55e)!important}
-.safeUploadVideo{background:linear-gradient(135deg,#dc2626,#f97316)!important}
-.safeTabs{display:flex;gap:8px;overflow:auto;margin:14px 0 12px;padding-bottom:6px}
-.safeTabs button{border:0;border-radius:999px;padding:9px 13px;background:rgba(255,255,255,.08);color:#cbd5e1;font-size:12px;font-weight:900;white-space:nowrap}
-.safeTabs button.active{background:#38bdf8;color:white}
-.safeMediaGrid{display:grid;grid-template-columns:1fr;gap:14px}
-.safeCard{position:relative;overflow:hidden;border-radius:24px;background:#081426;border:1px solid rgba(255,255,255,.11);box-shadow:0 15px 40px rgba(0,0,0,.30)}
-.safeThumb{height:225px;display:grid;place-items:center;text-align:center;background:linear-gradient(145deg,#0b4da2,#06152c)}
-.safeThumb.live{background:linear-gradient(145deg,#7f1d1d,#020617)}
-.safeThumb.photo{background:linear-gradient(145deg,#064e3b,#111827)}
-.safeThumb .em{font-size:64px;display:block}
-.safeCard img,.safeCard video{width:100%;height:265px;object-fit:cover;background:#000;display:block}
-.safeTitle{padding:14px;color:white}.safeTitle b{font-size:17px}.safeTitle span{display:block;color:#94a3b8;font-size:12px;margin-top:4px}
-.safeDel{position:absolute;right:10px;top:10px;z-index:6;border:0;border-radius:999px;background:#dc2626;color:white;padding:8px 13px;font-size:12px;font-weight:900}
-@media(min-width:720px){.safeMediaGrid{grid-template-columns:1fr 1fr}}
+<!-- ✅ HFGM FULL APP UPGRADE: Bible full-chapter reader + Audio Songs player -->
+<style id="hfgm-final-spiritual-css">
+#hfgmFinalTools{position:fixed;right:12px;bottom:88px;z-index:99999;display:grid;gap:8px}
+#hfgmFinalTools button{border:0;border-radius:999px;padding:11px 14px;color:white;font-weight:1000;box-shadow:0 10px 28px rgba(0,0,0,.42)}
+#hfgmFinalTools .bible{background:linear-gradient(135deg,#2563eb,#0ea5e9)}
+#hfgmFinalTools .songs{background:linear-gradient(135deg,#9333ea,#ec4899)}
+#hfgmFinalOverlay{position:fixed;inset:0;z-index:99998;background:rgba(2,6,23,.97);display:none;overflow:auto;padding:14px;color:white;font-family:Arial,"Noto Sans Telugu",sans-serif}
+#hfgmFinalOverlay.show{display:block}
+.finalApp{max-width:580px;margin:auto;padding-bottom:90px}
+.finalBack{width:100%;border:0;border-radius:16px;background:#334155;color:white;padding:13px;font-weight:1000;margin-bottom:12px;position:sticky;top:8px;z-index:5}
+.finalHero{border-radius:30px;padding:24px 18px;text-align:center;background:radial-gradient(circle at top right,rgba(250,204,21,.22),transparent 36%),linear-gradient(145deg,#07111f,#0b4da2);border:1px solid rgba(56,189,248,.22);box-shadow:0 20px 55px rgba(0,0,0,.36)}
+.finalHero h2{font-size:30px;font-weight:1000;margin:8px 0;color:#fff}
+.finalHero p{font-size:13px;color:#dbeafe;line-height:1.6;margin:0}
+.finalCard{border-radius:24px;background:rgba(255,255,255,.075);border:1px solid rgba(255,255,255,.12);padding:16px;margin-top:14px}
+.finalGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.finalBtn{width:100%;border:0;border-radius:16px;padding:13px;margin-top:10px;background:linear-gradient(135deg,#facc15,#f59e0b);color:#111827;font-weight:1000}
+.finalBtn.green{background:linear-gradient(135deg,#22c55e,#16a34a);color:white}
+.finalBtn.blue{background:linear-gradient(135deg,#0ea5e9,#2563eb);color:white}
+.finalBtn.red{background:linear-gradient(135deg,#ef4444,#dc2626);color:white}
+.finalInput,.finalSelect{width:100%;border-radius:16px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.08);padding:13px;color:white;outline:none;margin-top:10px}
+.finalSelect option{color:#111827}
+.finalTabs{display:flex;gap:8px;overflow:auto;margin:12px 0}
+.finalTabs button{border:0;border-radius:999px;padding:10px 14px;background:rgba(255,255,255,.08);color:#cbd5e1;font-weight:900;white-space:nowrap}
+.finalTabs button.active{background:linear-gradient(135deg,#facc15,#f59e0b);color:#111827}
+.finalVerse,.finalSong{border-radius:20px;background:rgba(255,255,255,.065);border:1px solid rgba(255,255,255,.10);padding:14px;margin-top:12px}
+.finalVerse b,.finalSong b{color:#fde68a}
+.finalTel{font-size:16px;line-height:1.8;color:white;margin-top:8px}
+.finalEng{font-size:14px;line-height:1.65;color:#bfdbfe;margin-top:8px}
+.finalLyrics{white-space:pre-line;color:#dbeafe;line-height:1.85;margin-top:8px;font-size:15px}
+.finalAudio{width:100%;margin-top:10px}
+.finalSmall{font-size:12px;color:#94a3b8;line-height:1.55;margin-top:6px}
+.finalBookBtn{border:0;border-radius:16px;padding:12px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.10);color:white;font-weight:900;text-align:left}
+.finalBookBtn span{display:block;font-size:11px;color:#94a3b8;margin-top:3px}
+.finalTag{font-size:10px;color:#111827;background:#fde68a;border-radius:999px;padding:4px 8px;font-weight:1000}
+.finalSongHead{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.finalHomeBlock{border-radius:26px;background:rgba(255,255,255,.065);border:1px solid rgba(255,255,255,.12);padding:18px;margin:16px 0;box-shadow:0 18px 45px rgba(0,0,0,.28)}
+.finalHomeBlock h3{font-size:23px;font-weight:1000;color:#fde68a;margin:0 0 7px}
+.finalHomeTile{border:0;border-radius:24px;min-height:110px;background:linear-gradient(145deg,rgba(255,255,255,.10),rgba(255,255,255,.045));border:1px solid rgba(255,255,255,.12);color:white;font-weight:1000;font-size:17px}
+.finalHomeTile span{display:block;font-size:40px;margin-bottom:8px}
+@media(max-width:420px){#hfgmFinalTools{right:9px;bottom:88px}.finalHero h2{font-size:26px}.finalHomeTile{min-height:98px}}
 </style>
 
-<script id="safe-media-admin-js">
+<div id="hfgmFinalTools">
+  <button class="bible" onclick="hfgmFinalOpen('bible')">📖 Bible</button>
+  <button class="songs" onclick="hfgmFinalOpen('songs')">🎵 Songs</button>
+</div>
+
+<div id="hfgmFinalOverlay">
+  <div class="finalApp">
+    <button class="finalBack" onclick="hfgmFinalClose()">← Back / Close</button>
+    <div id="hfgmFinalContent"></div>
+  </div>
+</div>
+
+<script id="hfgm-final-spiritual-js">
 (function(){
-  var mediaAdmin=false;
+  const books=[
+    ["Genesis","ఆదికాండము",50],["Exodus","నిర్గమకాండము",40],["Leviticus","లేవీయకాండము",27],["Numbers","సంఖ్యాకాండము",36],["Deuteronomy","ద్వితీయోపదేశకాండము",34],
+    ["Joshua","యెహోషువ",24],["Judges","న్యాయాధిపతులు",21],["Ruth","రూతు",4],["1 Samuel","1 సమూయేలు",31],["2 Samuel","2 సమూయేలు",24],
+    ["1 Kings","1 రాజులు",22],["2 Kings","2 రాజులు",25],["1 Chronicles","1 దినవృత్తాంతములు",29],["2 Chronicles","2 దినవృత్తాంతములు",36],["Ezra","ఎజ్రా",10],
+    ["Nehemiah","నెహెమ్యా",13],["Esther","ఎస్తేరు",10],["Job","యోబు",42],["Psalms","కీర్తనలు",150],["Proverbs","సామెతలు",31],
+    ["Ecclesiastes","ప్రసంగి",12],["Song of Solomon","పరమగీతము",8],["Isaiah","యెషయా",66],["Jeremiah","యిర్మీయా",52],["Lamentations","విలాపవాక్యములు",5],
+    ["Ezekiel","యెహెజ్కేలు",48],["Daniel","దానియేలు",12],["Hosea","హోషేయ",14],["Joel","యోవేలు",3],["Amos","ఆమోసు",9],
+    ["Obadiah","ఓబద్యా",1],["Jonah","యోనా",4],["Micah","మీకా",7],["Nahum","నహూము",3],["Habakkuk","హబక్కూకు",3],
+    ["Zephaniah","జెఫన్యా",3],["Haggai","హగ్గయి",2],["Zechariah","జెకర్యా",14],["Malachi","మలాకీ",4],
+    ["Matthew","మత్తయి",28],["Mark","మార్కు",16],["Luke","లూకా",24],["John","యోహాను",21],["Acts","అపొస్తలుల కార్యములు",28],
+    ["Romans","రోమీయులకు",16],["1 Corinthians","1 కొరింథీయులకు",16],["2 Corinthians","2 కొరింథీయులకు",13],["Galatians","గలతీయులకు",6],["Ephesians","ఎఫెసీయులకు",6],
+    ["Philippians","ఫిలిప్పీయులకు",4],["Colossians","కొలొస్సయులకు",4],["1 Thessalonians","1 థెస్సలొనీకయులకు",5],["2 Thessalonians","2 థెస్సలొనీకయులకు",3],["1 Timothy","1 తిమోతికి",6],
+    ["2 Timothy","2 తిమోతికి",4],["Titus","తీతుకు",3],["Philemon","ఫిలేమోనుకు",1],["Hebrews","హెబ్రీయులకు",13],["James","యాకోబు",5],
+    ["1 Peter","1 పేతురు",5],["2 Peter","2 పేతురు",3],["1 John","1 యోహాను",5],["2 John","2 యోహాను",1],["3 John","3 యోహాను",1],
+    ["Jude","యూదా",1],["Revelation","ప్రకటన గ్రంథము",22]
+  ];
 
-  function ensureInputs(){
-    if(!document.getElementById('safePhotoInput')){
-      var p=document.createElement('input');
-      p.type='file'; p.accept='image/*'; p.multiple=true; p.id='safePhotoInput'; p.style.display='none';
-      p.onchange=function(e){ addSafeMedia(e.target.files,'photo'); e.target.value=''; };
-      document.body.appendChild(p);
-    }
-    if(!document.getElementById('safeVideoInput')){
-      var v=document.createElement('input');
-      v.type='file'; v.accept='video/*'; v.multiple=true; v.id='safeVideoInput'; v.style.display='none';
-      v.onchange=function(e){ addSafeMedia(e.target.files,'video'); e.target.value=''; };
-      document.body.appendChild(v);
-    }
+  const seedBible={
+    "John|3":[["16","దేవుడు లోకమును ఎంతో ప్రేమించెను గనుక తన అద్వితీయ కుమారుని అనుగ్రహించెను; ఆయనయందు విశ్వాసముంచు ప్రతి వాడును నశింపక నిత్యజీవము పొందునట్లు.","For God so loved the world that He gave His only begotten Son, that whoever believes in Him should not perish but have everlasting life."],["17","లోకము తనవలన రక్షింపబడుటకే దేవుడు తన కుమారుని లోకములోనికి పంపెను.","For God did not send His Son into the world to condemn the world, but that the world through Him might be saved."]],
+    "Psalms|23":[["1","యెహోవా నా కాపరి; నాకు లేమి కలుగదు.","The Lord is my shepherd; I shall not want."],["2","పచ్చిక బయళ్లలో ఆయన నన్ను పరుండజేయును; నిశ్చల జలములయొద్ద నన్ను నడిపించును.","He makes me lie down in green pastures; He leads me beside the still waters."],["3","నా ప్రాణమునకు ఆయన సేదదీర్చును; తన నామమునుబట్టి నీతిమార్గములలో నన్ను నడిపించును.","He restores my soul; He leads me in the paths of righteousness for His name's sake."]],
+    "Isaiah|41":[["10","భయపడకుము, నేను నీతో కూడ ఉన్నాను; దిగులుపడకుము, నేను నీ దేవుడను.","Fear not, for I am with you; be not dismayed, for I am your God."]],
+    "Philippians|4":[["13","నన్ను బలపరచువానియందే నేను సమస్తము చేయగలను.","I can do all things through Christ who strengthens me."]],
+    "Matthew|6":[["33","మొదట ఆయన రాజ్యమును నీతిని వెదకుడి; అప్పుడు అవన్నియు మీకు అనుగ్రహింపబడును.","Seek first the kingdom of God and His righteousness, and all these things shall be added to you."]],
+    "Romans|8":[["28","దేవుని ప్రేమించువారికి, ఆయన సంకల్పము చొప్పున పిలువబడినవారికి, సమస్తమును మేలుకై జరుగునని ఎరుగుదుము.","All things work together for good to those who love God, to those who are called according to His purpose."]]
+  };
+
+  const baseSongs=[
+    {cat:"old",title:"యేసయ్య నీ ప్రేమ",lyrics:"యేసయ్య నీ ప్రేమ ఎంతో మధురం\\nనీ సన్నిధిలో నా జీవితం\\nనీ కృపతో నేను నిలిచియున్నాను",audio:""},
+    {cat:"old",title:"నీ సన్నిధి చాలు",lyrics:"నీ సన్నిధి చాలు యేసయ్య\\nనీ కృప చాలు నా దేవా\\nనీ ప్రేమ నన్ను నడిపించును",audio:""},
+    {cat:"latest",title:"నూతన గీతము పాడుదాం",lyrics:"నూతన గీతము పాడుదాం\\nయేసు నామము ఎత్తుదాం\\nఆయన కృపను ప్రకటిద్దాం",audio:""},
+    {cat:"worship",title:"ఆరాధింతును నిన్నే",lyrics:"ఆరాధింతును నిన్నే యేసయ్య\\nస్తుతింతును నిన్నే ప్రభువా\\nనా జీవితం నీకే సమర్పణ",audio:""},
+    {cat:"prayer",title:"ప్రార్థనలో శక్తి ఉంది",lyrics:"ప్రార్థనలో శక్తి ఉంది\\nవిశ్వాసంలో విజయం ఉంది\\nయేసు నామంలో జయం ఉంది",audio:""},
+    {cat:"holy",title:"పరిశుద్ధాత్మా రా",lyrics:"పరిశుద్ధాత్మా రా\\nమా హృదయంలో నిలువా\\nనీ అగ్ని మాలో రగుల్చుమా",audio:""},
+    {cat:"healing",title:"స్వస్థపరిచే యేసయ్య",lyrics:"స్వస్థపరిచే యేసయ్య\\nనీ రక్తమే మా బలం\\nనీ నామమే మా రక్షణ",audio:""}
+  ];
+
+  window.HFGM_FINAL_BIBLE = JSON.parse(localStorage.getItem("hfgm_final_bible_json")||"null") || seedBible;
+  window.HFGM_FINAL_SONGS = window.HFGM_FINAL_SONGS || baseSongs;
+
+  function esc(v){return String(v||"").replace(/[&<>"']/g,s=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[s]));}
+  window.hfgmFinalOpen=function(type){document.getElementById("hfgmFinalOverlay").classList.add("show"); type==="songs"?renderSongsPage():renderBiblePage();};
+  window.hfgmFinalClose=function(){document.getElementById("hfgmFinalOverlay").classList.remove("show");};
+  window.hfgmFinalShare=function(t){window.open("https://wa.me/?text="+encodeURIComponent(t),"_blank");};
+
+  function renderBiblePage(){
+    document.getElementById("hfgmFinalContent").innerHTML=`<div class="finalHero"><div style="font-size:58px">📖</div><h2>Bible Telugu + English</h2><p>66 books, chapters, Telugu + English reader. Full Bible JSON import support included.</p></div>
+      <div class="finalCard"><h3 style="color:#fde68a;margin:0">📥 Import Full Bible JSON</h3><div class="finalSmall">Format: {"John|3":[["16","Telugu verse","English verse"]]}</div><input class="finalInput" type="file" accept=".json,application/json" onchange="importBibleJSON(event)"></div>
+      <div class="finalCard"><h3 style="color:#fde68a;margin:0">📖 Open Book & Chapter</h3>
+        <select id="finalBook" class="finalSelect" onchange="finalSetChapters()">${books.map((b,i)=>`<option value="${i}">${b[1]} / ${b[0]}</option>`).join("")}</select>
+        <select id="finalChapter" class="finalSelect"></select>
+        <button class="finalBtn blue" onclick="finalOpenChapter()">Open / చదవండి</button>
+        <div id="finalChapterBox"></div>
+      </div>
+      <div class="finalCard"><h3 style="color:#fde68a;margin:0">🔍 Search Bible</h3>
+        <input id="finalSearch" class="finalInput" placeholder="యోహాను / John / fear / కీర్తనలు">
+        <button class="finalBtn" onclick="finalSearchBible()">Search</button>
+        <div id="finalSearchBox"></div>
+      </div>
+      <div class="finalCard"><h3 style="color:#fde68a;margin:0">📚 66 Books</h3>
+        <div class="finalGrid">${books.map((b,i)=>`<button class="finalBookBtn" onclick="document.getElementById('finalBook').value='${i}';finalSetChapters();finalOpenChapter();">${b[1]}<span>${b[0]} · ${b[2]} chapters</span></button>`).join("")}</div>
+      </div>`;
+    finalSetChapters();
   }
 
-  window.safeMediaLogin=function(){
-    var p=prompt('Media Admin Password');
-    if(p==='media123'){
-      mediaAdmin=true;
-      alert('✅ Media Admin Login Success');
-      if(window.openPanel) window.openPanel('media');
-    }else alert('Wrong Media Admin Password');
+  window.importBibleJSON=function(event){
+    const file=event.target.files[0]; if(!file)return;
+    const reader=new FileReader();
+    reader.onload=function(){
+      try{
+        const data=JSON.parse(reader.result);
+        window.HFGM_FINAL_BIBLE=data;
+        localStorage.setItem("hfgm_final_bible_json",JSON.stringify(data));
+        alert("Full Bible JSON imported ✅");
+        renderBiblePage();
+      }catch(e){alert("Invalid Bible JSON");}
+    };
+    reader.readAsText(file);
   };
 
-  window.safeMediaUpload=function(type){
-    if(!mediaAdmin){ alert('Media Admin login required'); return; }
-    ensureInputs();
-    document.getElementById(type==='photo'?'safePhotoInput':'safeVideoInput').click();
+  window.finalSetChapters=function(){
+    const book=books[Number(document.getElementById("finalBook").value||0)];
+    document.getElementById("finalChapter").innerHTML=Array.from({length:book[2]},(_,i)=>`<option value="${i+1}">Chapter ${i+1}</option>`).join("");
   };
 
-  function addSafeMedia(files,type){
-    var grid=document.getElementById('safeMediaGrid');
-    if(!grid){ alert('Open Media page first'); return; }
-    Array.from(files||[]).forEach(function(file){
-      var url=URL.createObjectURL(file);
-      var card=document.createElement('div');
-      card.className='safeCard safeBlock';
-      card.dataset.type=type==='photo'?'photos':'videos';
-      card.innerHTML=
-        '<button class="safeDel" onclick="safeDeleteMedia(this)">Delete</button>'+
-        (type==='photo'?'<img src="'+url+'">':'<video controls playsinline src="'+url+'"></video>')+
-        '<div class="safeTitle"><b>'+(type==='photo'?'📸 Ministry Photo':'🎥 Ministry Video')+'</b><span>'+file.name+'</span></div>';
-      grid.prepend(card);
-    });
-  }
-
-  window.safeDeleteMedia=function(btn){
-    if(!mediaAdmin){ alert('Only Media Admin can delete'); return; }
-    if(confirm('Delete media?')) btn.closest('.safeCard').remove();
-  };
-
-  window.safeMediaTab=function(btn,type){
-    document.querySelectorAll('.safeTabs button').forEach(function(b){b.classList.remove('active')});
-    if(btn) btn.classList.add('active');
-    document.querySelectorAll('.safeBlock').forEach(function(x){
-      x.style.display=(type==='all'||x.dataset.type===type)?'':'none';
-    });
-  };
-
-  window.safeMediaHTML=function(){
-    return '<div class="safeMediaWrap">'+
-    '<button class="safeMediaBack" onclick="closePanel()">← Back / Close Media</button>'+
-    '<div class="safeMediaHero"><div class="safeMediaOrb">▶️</div><h2>Videos · Photos · Live Stream</h2><p>Public can see/share only. Separate Media Admin can upload/delete.</p></div>'+
-    '<div class="safeMediaBox"><h3 style="font-size:22px;font-weight:1000;color:#fde68a">🎬 Media Admin Only</h3><p style="font-size:13px;color:#cbd5e1">Separate from Global Admin. Password: media123</p>'+
-    (mediaAdmin?'<div class="safeMediaGrid2"><button class="safeUploadPhoto" onclick="safeMediaUpload(\\'photo\\')"><span>📸</span>Upload Photos</button><button class="safeUploadVideo" onclick="safeMediaUpload(\\'video\\')"><span>🎥</span>Upload Videos</button></div>':'<button class="safeMediaBtn" onclick="safeMediaLogin()">🔐 Open Media Admin</button>')+
-    '</div>'+
-    '<div class="safeMediaBox"><div class="safeMediaGrid2"><button onclick="window.open(\\'https://www.youtube.com/@hfgmministry/live\\',\\'_blank\\')"><span>🔴</span>Live Stream</button><button onclick="safeMediaTab(document.querySelector(\\'.safeTabs button:nth-child(2)\\'),\\'videos\\')"><span>🎥</span>Ministry Videos</button><button onclick="safeMediaTab(document.querySelector(\\'.safeTabs button:nth-child(3)\\'),\\'photos\\')"><span>📸</span>Ministry Photos</button><button onclick="window.open(\\'https://wa.me/?text=\\'+encodeURIComponent(\\'HFGM Media Center https://www.youtube.com/@hfgmministry\\'),\\'_blank\\')"><span>📲</span>Share</button></div></div>'+
-    '<div class="safeTabs"><button class="active" onclick="safeMediaTab(this,\\'all\\')">All</button><button onclick="safeMediaTab(this,\\'videos\\')">Videos</button><button onclick="safeMediaTab(this,\\'photos\\')">Photos</button><button onclick="safeMediaTab(this,\\'live\\')">Live</button></div>'+
-    '<div id="safeMediaGrid" class="safeMediaGrid">'+
-    '<div class="safeCard safeBlock" data-type="live"><div class="safeThumb live"><div><span class="em">🔴</span><b>Live Prayer Stream</b></div></div><div class="safeTitle"><b>HFGM Live Stream</b><span>Open and share YouTube live.</span></div></div>'+
-    '<div class="safeCard safeBlock" data-type="videos"><div class="safeThumb"><div><span class="em">🎥</span><b>Ministry Videos</b></div></div><div class="safeTitle"><b>YouTube-style Video Thumbnails</b><span>Media admin can upload videos.</span></div></div>'+
-    '<div class="safeCard safeBlock" data-type="photos"><div class="safeThumb photo"><div><span class="em">📸</span><b>Ministry Photos</b></div></div><div class="safeTitle"><b>Photo Gallery</b><span>Media admin can upload photos.</span></div></div>'+
-    '</div></div>';
-  };
-
-  var oldOpenPanel=window.openPanel;
-  window.openPanel=function(type){
-    if(type==='media'){
-      ensureInputs();
-      var box=document.getElementById('panelContent');
-      var panel=document.getElementById('panel');
-      if(!box||!panel){ alert('Panel not found'); return; }
-      box.innerHTML=window.safeMediaHTML();
-      panel.classList.remove('hidden');
+  window.finalOpenChapter=function(){
+    const book=books[Number(document.getElementById("finalBook").value||0)];
+    const ch=document.getElementById("finalChapter").value;
+    const verses=window.HFGM_FINAL_BIBLE[book[0]+"|"+ch]||[];
+    const box=document.getElementById("finalChapterBox");
+    if(!verses.length){
+      box.innerHTML=`<div class="finalVerse"><b>${book[1]} / ${book[0]} - Chapter ${ch}</b><div class="finalEng">ఈ chapter data ఇంకా import కాలేదు. Full Bible JSON import చేస్తే ఇక్కడ పూర్తి chapter open అవుతుంది.</div></div>`;
       return;
     }
-    return oldOpenPanel?oldOpenPanel.apply(this,arguments):undefined;
+    box.innerHTML=verses.map(v=>`<div class="finalVerse"><b>${book[1]} ${ch}:${v[0]}</b><div class="finalTel">${esc(v[1])}</div><div class="finalEng">${esc(v[2])}</div><button class="finalBtn green" onclick="hfgmFinalShare('${esc(book[1]+" "+ch+":"+v[0]+" - "+v[1])}')">📲 Share</button></div>`).join("");
   };
+
+  window.finalSearchBible=function(){
+    const q=(document.getElementById("finalSearch").value||"").toLowerCase();
+    let results=[];
+    Object.entries(window.HFGM_FINAL_BIBLE).forEach(([key,arr])=>arr.forEach(v=>{if((key+" "+v.join(" ")).toLowerCase().includes(q))results.push({key,v});}));
+    document.getElementById("finalSearchBox").innerHTML=results.length?results.slice(0,60).map(r=>`<div class="finalVerse"><b>${esc(r.key)}:${r.v[0]}</b><div class="finalTel">${esc(r.v[1])}</div><div class="finalEng">${esc(r.v[2])}</div></div>`).join(""):`<div class="finalEng">No result.</div>`;
+  };
+
+  function renderSongsPage(){
+    document.getElementById("hfgmFinalContent").innerHTML=`<div class="finalHero"><div style="font-size:58px">🎵</div><h2>Telugu Songs Book + Audio</h2><p>Old songs, latest songs, lyrics and direct audio player. Audio upload support included.</p></div>
+      <div class="finalCard"><h3 style="color:#fde68a;margin:0">🎧 Add Audio Song</h3>
+        <input id="finalSongTitle" class="finalInput" placeholder="Song title">
+        <select id="finalSongCat" class="finalSelect"><option value="latest">Latest</option><option value="old">Old</option><option value="worship">Worship</option><option value="prayer">Prayer</option><option value="holy">Holy Spirit</option><option value="healing">Healing</option></select>
+        <input id="finalSongAudio" class="finalInput" type="file" accept="audio/*">
+        <textarea id="finalSongLyrics" class="finalInput" rows="4" placeholder="Lyrics"></textarea>
+        <button class="finalBtn green" onclick="finalAddAudioSong()">➕ Add & Play Song</button>
+      </div>
+      <div class="finalCard">
+        <div class="finalTabs"><button class="active" onclick="finalRenderSongs('all',this)">All</button><button onclick="finalRenderSongs('old',this)">Old</button><button onclick="finalRenderSongs('latest',this)">Latest</button><button onclick="finalRenderSongs('worship',this)">Worship</button><button onclick="finalRenderSongs('prayer',this)">Prayer</button><button onclick="finalRenderSongs('holy',this)">Holy Spirit</button><button onclick="finalRenderSongs('healing',this)">Healing</button></div>
+        <div id="finalSongsBox"></div>
+      </div>`;
+    finalRenderSongs("all");
+  }
+
+  window.finalRenderSongs=function(cat,btn){
+    document.querySelectorAll(".finalTabs button").forEach(b=>b.classList.remove("active"));
+    if(btn)btn.classList.add("active");
+    const list=cat==="all"?window.HFGM_FINAL_SONGS:window.HFGM_FINAL_SONGS.filter(s=>s.cat===cat);
+    document.getElementById("finalSongsBox").innerHTML=list.map(s=>`<div class="finalSong"><div class="finalSongHead"><b>${esc(s.title)}</b><span class="finalTag">${esc(s.cat)}</span></div>${s.audio?`<audio class="finalAudio" controls src="${s.audio}"></audio>`:`<div class="finalSmall">Audio add cheyyandi. Lyrics ready.</div>`}<div class="finalLyrics">${esc(s.lyrics)}</div><button class="finalBtn green" onclick="hfgmFinalShare('${esc(s.title+"\\n"+s.lyrics)}')">📲 Share Lyrics</button></div>`).join("");
+  };
+
+  window.finalAddAudioSong=function(){
+    const title=document.getElementById("finalSongTitle").value||"HFGM Telugu Song";
+    const cat=document.getElementById("finalSongCat").value||"latest";
+    const file=document.getElementById("finalSongAudio").files[0];
+    const lyrics=document.getElementById("finalSongLyrics").value||"";
+    const url=file?URL.createObjectURL(file):"";
+    window.HFGM_FINAL_SONGS.unshift({cat,title,audio:url,lyrics});
+    alert("Song added ✅ Audio direct app lo play avuthundi.");
+    renderSongsPage();
+  };
+
+  function addFinalHomeBlock(){
+    if(document.getElementById("hfgmFinalHomeBlock"))return;
+    const block=document.createElement("div");
+    block.id="hfgmFinalHomeBlock";
+    block.className="finalHomeBlock";
+    block.innerHTML=`<h3>📖 Bible & 🎵 Songs</h3><div class="finalSmall">Bible full chapter reader + Telugu songs audio player.</div><div class="finalGrid" style="margin-top:12px"><button class="finalHomeTile" onclick="hfgmFinalOpen('bible')"><span>📖</span>Bible</button><button class="finalHomeTile" onclick="hfgmFinalOpen('songs')"><span>🎵</span>Songs</button><button class="finalHomeTile" onclick="hfgmFinalOpen('bible')"><span>📚</span>66 Books</button><button class="finalHomeTile" onclick="alert('Chrome menu ⋮ → Add to Home screen')"><span>📱</span>Install</button></div>`;
+    const target=document.querySelector(".quickCard")?.parentElement || document.querySelector("main") || document.body;
+    if(target.parentElement && target!==document.body) target.parentElement.insertBefore(block,target.nextSibling);
+    else target.prepend(block);
+  }
+
+  setTimeout(addFinalHomeBlock,900);
+  window.addEventListener("load",()=>setTimeout(addFinalHomeBlock,800));
 })();
 </script>
 
